@@ -1,0 +1,7 @@
+.h1 Iniciar Sesión 
+
+.well.col-md-4.col-md-offset-4
+  = simple_form_for :session, url: new_session_path, html: { class: 'form-horizontal' } do |f|
+    = f.input :registration_number
+    = f.input :password
+    = f.submit 'Sign In', class: 'btn btn-primary'
