@@ -5,8 +5,9 @@ FactoryGirl.define do
   factory :user do
     name 'John'
     lastname 'Doe'
-    registration_number 'A001'
-    email 'A001@itesm.mx'
+    sequence(:registration_number) { |n| "A000#{n}" }
+    sequence(:email) { |n| "A000#{n}@itesm.mx" }
+    password '123456'
     admin false
     teacher false
   end

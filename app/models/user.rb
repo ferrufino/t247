@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :lastname, presence: true
   validates :email, presence: true
+  validates :password, presence: true
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
