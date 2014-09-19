@@ -18,4 +18,5 @@
           td.text-center = user.email
           td
             a = link_to 'Edit', edit_user_path(user), class: 'btn btn-default btn-sm'
-            a = link_to 'Delete', user, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm'
+            - if current_user != user
+              a = link_to 'Delete', user, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm'

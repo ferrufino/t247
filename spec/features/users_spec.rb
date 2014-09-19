@@ -39,12 +39,12 @@ feature 'Users' do
     expect(page).to have_content 'User updated successfully'
   end
 
-  xscenario 'Delete existing user' do
-    user = create :user
+  scenario 'Delete existing user' do
+    user = create :user, name: 'Test ToBeDestroyed'
     visit users_path
-    fill_in 'Name', with: 'Test 2'
+    click_on 'Delete'
 
-    click_on 'Edit User'
-    expect(page).to have_content 'User updated successfully'
+    expect(page).to have_content 'User deleted successfully'
+    expect(page).not_to have_content user.name
   end
 end

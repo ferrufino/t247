@@ -11,10 +11,8 @@ class SessionsController < ApplicationController
       remember user
       flash[:success] = 'Succesfully logged in'
       redirect_to root_path
-      puts '11111111111111111111111111111'
     else
-      puts '************************************************'
-      flash.now[:danger] = 'Invalid'
+      flash.now[:danger] = 'Incorrect registration number or password'
       render 'new'
     end
   end
