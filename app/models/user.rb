@@ -1,3 +1,9 @@
+# Model User
+# Table users
+# Fields     id:integer, registration_number:string, email:string, name:string,
+#            lastname:string, admin:boolean, teacher:boolean,
+#            created_at:datetime, updated_at:datetime, password_digest:string,
+#            remember_digest:string
 class User < ActiveRecord::Base
   attr_accessor :remember_token
   has_secure_password

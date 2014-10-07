@@ -8,7 +8,12 @@ FactoryGirl.define do
     sequence(:registration_number) { |n| "A000#{n}" }
     sequence(:email) { |n| "A000#{n}@itesm.mx" }
     password '123456'
-    admin false
+    admin true
     teacher false
+  end
+
+  factory :course do
+    key 'TC0001'
+    name 'Course 101'
   end
 end

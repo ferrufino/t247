@@ -17,6 +17,7 @@ Rails.application.routes.draw do
    #      as: :delete_user
 
    resources :users
+   resources :courses
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

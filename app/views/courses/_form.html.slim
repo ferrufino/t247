@@ -1,0 +1,5 @@
+.col-md-8
+  = simple_form_for @course, html: { class: 'form form-horizontal'}, wrapper: :horizontal_form do |f|
+    = f.input :key
+    = f.input :name
+    = f.button :submit
