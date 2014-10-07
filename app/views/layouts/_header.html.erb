@@ -13,8 +13,12 @@
         <div class="navbar-collapse collapse pull-right">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
-            <li><a href="/users">Users</a></li>
-            <li><a href="/courses">Courses</a></li>
+            <% if policy(:user).index? %>
+              <li><%= link_to 'Users', users_path%></li>
+            <% end %>
+            <% if policy(:course).index? %>
+              <li><%= link_to 'Courses', courses_path%></li>
+            <% end %>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name%> <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
