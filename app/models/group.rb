@@ -5,9 +5,11 @@
 class Group < ActiveRecord::Base
   belongs_to :teacher, class_name: 'User'
   belongs_to :course
+  has_many :enrollments
   has_many :users, through: :enrollments
 
   validates :name, presence: true
   validates :period, presence: true
   validates :teacher, presence: true
+  validates :course, presence: true
 end
