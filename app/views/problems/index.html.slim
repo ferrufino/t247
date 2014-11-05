@@ -1,0 +1,20 @@
+= link_to 'New Problem', new_problem_path, class: 'btn btn-default'
+
+.table-responsive
+  table.table.table-striped
+    thead
+      tr
+        th.text-center Name
+        th.text-center Difficulty
+        th.text-center Active
+        th
+    tbody
+      - @problems.each do |problem|
+        tr
+          td.text-center = problem.name
+          td.text-center = problem.difficulty
+          td.text-center = problem.active
+          td
+            a = link_to 'Details', problem_path(problem), class: 'btn btn-default btn-sm'
+            a = link_to 'Edit', edit_problem_path(problem), class: 'btn btn-default btn-sm'
+            a = link_to 'Delete', problem, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm'

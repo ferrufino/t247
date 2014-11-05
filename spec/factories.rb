@@ -33,4 +33,12 @@ FactoryGirl.define do
     teacher
     course
   end
+
+  factory :problem do
+    name 'Testing Problem'
+    kind 2
+    difficulty 1
+    description 'My problem description'
+    main 'Problem main function'
+  end
 end
