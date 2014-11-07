@@ -15,6 +15,12 @@ class GroupsController < ApplicationController
     authorize @group
   end
 
+  def show
+    @group = Group.find(params[:id])
+    @enrollments = @group.enrollments
+    authorize @group
+  end
+
   def create
     @group = Group.new(course_params)
     authorize @group

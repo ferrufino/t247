@@ -19,5 +19,6 @@
           - if current_user.admin?
             td.text-center = group.teacher.name
           td
+            a = link_to 'Details', group_path(group), class: 'btn btn-default btn-sm'
             a = link_to 'Edit', edit_group_path(group), class: 'btn btn-default btn-sm'
             a = link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm'
