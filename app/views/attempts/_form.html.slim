@@ -1,0 +1,6 @@
+.col-md-4
+  = simple_nested_form_for @attempt do |f|
+    = f.input :user_id, input_html: { value: current_user.id }, as: :hidden
+    = f.association :problem, collection: Problem.all.map { |p| [p.name, p.id] }, required: true
+    = f.input :code
+    = f.button :submit

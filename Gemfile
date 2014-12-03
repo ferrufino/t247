@@ -13,6 +13,7 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 gem 'slim-rails'
 gem 'simple_form', '~> 3.1.0.rc2', github: 'plataformatec/simple_form', branch: 'master'
+gem "nested_form"
 gem 'pundit'
 
 gem 'sdoc', '~> 0.4.0',          group: :doc

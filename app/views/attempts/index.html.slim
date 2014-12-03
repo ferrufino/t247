@@ -1,0 +1,13 @@
+= link_to 'New Attempt', new_attempt_path, class: 'btn btn-default'
+
+.table-responsive
+  table.table.table-striped
+    thead
+      tr
+        th.text-center Name
+        th.text-center Result
+    tbody
+      - @attempts.each do |attempt|
+        tr
+          td.text-center = attempt.problem.name
+          td.text-center = attempt.result

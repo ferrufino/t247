@@ -1,0 +1,23 @@
+.col-md-4
+  = simple_nested_form_for @problem do |f|
+    = f.input :name
+    = f.input :difficulty
+    = f.input :kind, input_html: { value: 2 }, as: :hidden
+    = f.input :description
+    = f.input :main
+
+    = f.simple_fields_for :cases do |ff|
+      = ff.input :input
+      = ff.input :output
+      = ff.input :time_limit
+      = ff.input :memory_limit
+      = ff.input :number
+      = ff.link_to_remove "Remove this case", class: 'btn btn-default'
+    = f.link_to_add 'Add Case', :cases, class: 'btn btn-default add'
+
+    = f.button :submit, class: 'btn btn-primary'
+
+javascript:
+  $(document).ready(function(e) {
+    $('FORM').nestedFields();
+  });

@@ -1,0 +1,7 @@
+.col-md-8
+  = simple_form_for @group, html: { class: 'form form-horizontal'}, wrapper: :horizontal_form do |f|
+    = f.association :course, collection: Course.all.map { |c| [c.key + ' - ' + c.name, c.id] }, required: true
+    = f.input :name
+    = f.input :period
+    = f.association :teacher, collection: User.where(teacher: true)
+    = f.button :submit

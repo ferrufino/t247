@@ -19,6 +19,15 @@
             <% if policy(:course).index? %>
               <li><%= link_to 'Courses', courses_path%></li>
             <% end %>
+            <% if policy(:course).index? %>
+              <li><%= link_to 'Courses', courses_path%></li>
+            <% end %>
+            <% if policy(:group).index? %>
+              <li><%= link_to 'Groups', groups_path%></li>
+            <% end %>
+            <% if policy(:enrollment).index? %>
+              <li><%= link_to 'Enrollments', new_enrollment_path%></li>
+            <% end %>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name%> <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">

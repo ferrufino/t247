@@ -1,0 +1,24 @@
+= link_to 'New Group', new_group_path, class: 'btn btn-default'
+
+.table-responsive
+  table.table.table-striped
+    thead
+      tr
+        th.text-center Key
+        th.text-center Name
+        th.text-center Period
+        - if current_user.admin?
+          th.text-center Teacher
+        th
+    tbody
+      - @groups.each do |group|
+        tr
+          td.text-center = group.course.key
+          td.text-center = group.name
+          td.text-center = group.period
+          - if current_user.admin?
+            td.text-center = group.teacher.name
+          td
+            a = link_to 'Details', group_path(group), class: 'btn btn-default btn-sm'
+            a = link_to 'Edit', edit_group_path(group), class: 'btn btn-default btn-sm'
+            a = link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm'
