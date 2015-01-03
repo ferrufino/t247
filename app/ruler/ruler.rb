@@ -1,26 +1,30 @@
 require 'pqueue'
 require 'thread'
+require 'singleton'
 
 class Ruler
-	attr_reader :pqRequests, :mutex, :cv, :threads
+	include Singleton
+	attr_reader :pqRequests, :mutex, :threads
 	def initialize
 		@pqRequests = PQueue.new
 		@mutex = Mutex.new
-		@cv = ConditionVariable.new
 		@threads = []
 		5.times do |i|
-			@threads[i] = Thread.new { Evaluator.new(@pqRequests).run(@mutex, @cv) }
+			@threads[i] = Thread.new do
+				Evaluator.new(@pqRequests).run(@mutex)
+			end
 		end
 	end
 	def pushRequest(request)
-		@mutex.synchronize {
+		@mutex.synchronize do
 			@pqRequests.push(request)
 			puts "Adding to the PQueue"
-			@cv.signal
-		}
+		end
 	end
 	def exitThreads
-		@threads.each { |t| t.exit }
+		@threads.each do
+			|t| t.exit
+		end
 	end
 	def queueEmpty? 
 		@pqRequests.empty?
@@ -32,27 +36,29 @@ class Evaluator
 	def initialize(pqRequests)
 		@pqRequests = pqRequests
 	end
-	def run(mutex, cv)
+	def run(mutex)
 		loop do
-			mutex.synchronize {
-				if @pqRequests.empty? then
-					cv.wait(mutex)
+			mutex.synchronize do
+				if not @pqRequests.empty? then
+					request = @pqRequests.pop
+					puts "Popped value from PQueue: " + request.to_s
 				end
-				request = @pqRequests.pop
-				puts "Popped value from PQueue: " + request.to_s
-			}
+			end
+			sleep(0.1)
 		end
 	end
 end
 
-ruler = Ruler.new
+ruler = Ruler.instance
 requests = [5, 2, 4, 3, 9, 1, 10, 8, 7, 6]
-requests.each { |request| ruler.pushRequest(request) }
+requests.each do
+	|request| ruler.pushRequest(request)
+end
 
 print "Waiting until requests finish"
 while not ruler.queueEmpty? do
 	print "."
-	sleep(1) #seconds
+	sleep(0.5) #seconds
 end
 puts " done!"
 
