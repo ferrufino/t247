@@ -39,7 +39,11 @@ def f(code)
 	return str
 end
 
-codigo=f($code)
+def formatCode(str)
+	str.gsub(/[\'\\]/, '\\' => "\\\\\\\\", '\'' => "\\\'")
+end
+
+codigo=formatCode($code)
 
 # Creacion de la imagen de Ubuntu e insercion de archivo timeout.pl
 im=Docker::Image.build("FROM ubuntu:14.04\nMAINTAINER Sergio msf1013@gmail.com\nRUN apt-get update && apt-get install -y build-essential")

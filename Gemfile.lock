@@ -1,9 +1,13 @@
 GIT
   remote: git://github.com/plataformatec/simple_form.git
+<<<<<<< HEAD
   revision: 932619c180f90c5aebbb23f4d92fa254b430c775
+=======
+  revision: 7abd871b520b24d10d676338801f49004398acd4
+>>>>>>> ruler
   branch: master
   specs:
-    simple_form (3.1.0.rc2)
+    simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
 
@@ -79,7 +83,11 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.6)
     formatador (0.2.5)
+<<<<<<< HEAD
     guard (2.7.0)
+=======
+    guard (2.10.1)
+>>>>>>> ruler
       formatador (>= 0.2.4)
       listen (~> 2.7)
       lumberjack (~> 1.0)
@@ -91,20 +99,30 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     i18n (0.6.11)
+<<<<<<< HEAD
     jbuilder (2.2.4)
+=======
+    jbuilder (2.2.5)
+>>>>>>> ruler
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    less (2.5.1)
+    less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (2.5.0)
+    less-rails (2.6.0)
       actionpack (>= 3.1)
+<<<<<<< HEAD
       less (~> 2.5.0)
     libv8 (3.16.14.7)
     listen (2.7.11)
+=======
+      less (~> 2.6.0)
+    libv8 (3.16.14.7)
+    listen (2.8.3)
+>>>>>>> ruler
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -114,6 +132,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
+<<<<<<< HEAD
     mini_portile (0.6.0)
     minitest (5.4.2)
     multi_json (1.10.1)
@@ -121,10 +140,20 @@ GEM
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     parser (2.2.0.pre.6)
+=======
+    mini_portile (0.6.1)
+    minitest (5.4.3)
+    multi_json (1.10.1)
+    nested_form (0.3.2)
+    nokogiri (1.6.5)
+      mini_portile (~> 0.6.0)
+    parser (2.2.0.pre.8)
+>>>>>>> ruler
       ast (>= 1.1, < 3.0)
       slop (~> 3.4, >= 3.4.5)
     polyglot (0.3.5)
     powerpack (0.0.9)
+    pqueue (2.0.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -150,7 +179,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
-    rake (10.3.2)
+    rake (10.4.2)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
@@ -177,6 +206,7 @@ GEM
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
+<<<<<<< HEAD
     rubocop (0.26.1)
       astrolabe (~> 1.3)
       parser (>= 2.2.0.pre.4, < 3.0)
@@ -184,11 +214,20 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
     ruby-progressbar (1.6.0)
+=======
+    rubocop (0.27.1)
+      astrolabe (~> 1.3)
+      parser (>= 2.2.0.pre.7, < 3.0)
+      powerpack (~> 0.0.6)
+      rainbow (>= 1.99.1, < 3.0)
+      ruby-progressbar (~> 1.4)
+    ruby-progressbar (1.7.0)
+>>>>>>> ruler
     sass (3.2.19)
-    sass-rails (4.0.3)
+    sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
-      sass (~> 3.2.0)
-      sprockets (~> 2.8, <= 2.11.0)
+      sass (~> 3.2.2)
+      sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
@@ -204,19 +243,27 @@ GEM
       railties (>= 3.0, < 4.2)
       slim (~> 2.0)
     slop (3.6.0)
-    spring (1.1.3)
+    spring (1.2.0)
     spring-commands-rspec (1.0.2)
       spring (>= 0.9.1)
-    sprockets (2.11.0)
+    sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+<<<<<<< HEAD
     sprockets-rails (2.2.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.9)
+=======
+    sprockets-rails (2.2.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      sprockets (>= 2.8, < 4.0)
+    sqlite3 (1.3.10)
+>>>>>>> ruler
     temple (0.6.10)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
@@ -229,7 +276,11 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+<<<<<<< HEAD
     turbolinks (2.5.1)
+=======
+    turbolinks (2.5.2)
+>>>>>>> ruler
       coffee-rails
     twitter-bootstrap-rails (3.2.0)
       actionpack (~> 4.1)
@@ -260,6 +311,7 @@ DEPENDENCIES
   jquery-rails
   less-rails
   nested_form
+  pqueue
   pundit
   rails (= 4.1.5)
   rspec-rails
