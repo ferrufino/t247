@@ -42,6 +42,7 @@ end
 def formatCode(str)
 	str.gsub(/[\'\\]/, '\\' => "\\\\\\\\", '\'' => "\\\'")
 end
+#prueba
 
 codigo=formatCode($code)
 
