@@ -7,7 +7,7 @@ module Ruler
 	class Evaluator
 		testMemoryLimit = 50000
 		testTimeLimit = 5
-		image = 'evaluator'
+		image = 't247/evaluator:v1'
 		def initialize
 			@container = Docker::Container.create('Image' => image, 'Tty' => true)
 			@container.start
