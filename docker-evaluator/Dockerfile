@@ -23,3 +23,7 @@ RUN \
 
 # Define commonly used JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+# Copiar archivo del script timeout al contenedor
+ADD timeout/timeout /etc/timeout.pl
+RUN sudo chmod a+x /etc/timeout.pl

@@ -62,7 +62,7 @@ module Ruler
 				cases.each do |testCase|
 					timeLimit = testCase.memoryLimit
 					memoryLimit = testCase.memoryLimit
-					self.runInContainer(attempt.language)
+					self.runInContainer(attempt.language, timeLimit, memoryLimit)
 
 					output = self.getFileContent('sOut.txt')
 					errors = self.getFileContent('sExecErr.txt')
@@ -114,13 +114,13 @@ module Ruler
 			@container.wait(10)
 		end
 
-		def compilerInContainer(compiler, language)
+		def compileInContainer(compiler, language)
 			command = ['bash', '-c', compiler + ' /etc/code' + Ruler.extensions[language]]
 			@container = @container.run(command, 0)
 			@container.wait(10)
 		end
 
-		def runInContainer(language)
+		def runInContainer(language, timeLimit, memoryLimit)
 			command = ['bash', '-c', '( /etc/timeout.pl -t ' + timeLimit + ' -m ' + memoryLimit + ' "bash -c \'' + Ruler.runners[language] + ' < echo ' + input + ' > sOut.txt\' 2>sExecErr.txt" ) 2> sEst.txt']
 			@container = @container.run(command, 0)
 			@container.wait(10)
