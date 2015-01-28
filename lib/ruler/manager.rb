@@ -3,29 +3,30 @@ require 'thread'
 require 'singleton'
 
 module Ruler
-	compilers = {
+	Compilers = {
 		"C++" => "g++",
 		"Java" => "javac"
 	}
-	runners = {
+	Runners = {
 		"C++" => "./a.out",
 		"Java" => "java Main.class" # Requiere que la clase tenga el nombre Main y el archivo se nombre Main.java
 	}
-	extensions = {
+	Extensions = {
 		"C++" => ".cpp",
 		"Java" => ".java"
 	}
 	class Manager
 		include Singleton
-		numberOfThreads = 5
+		NUM_THREADS = 5
 		def initialize
 			@requestsQueue = PQueue.new do |requestA, requestB|
 				requestA[:priority] > requestB[:priority]
 			end
 			@lock = Mutex.new
 			@semaphore = ConditionVariable.new
-			numberOfThreads.times do |i|
-				@evaluators[i] = RulerEvaluator.new
+			@evaluators = Array.new
+			NUM_THREADS.times do |i|
+				@evaluators[i] = Ruler::Evaluator.new
 			end
 			self
 		end

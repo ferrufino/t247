@@ -5,13 +5,13 @@ require 'docker'
 
 module Ruler
 	class Evaluator
-		testMemoryLimit = 50000
-		testTimeLimit = 5
-		image = 't247/evaluator:v1'
+		TEST_MEM_LIMIT = 50000
+		TEST_TIME_LIMIT = 5
+		IMAGE_TAG = 't247/evaluator:v1'
 		def initialize
-			@container = Docker::Container.create('Image' => image, 'Tty' => true)
+			@container = Docker::Container.create('Image' => IMAGE_TAG, 'Tty' => true)
 			@container.start
-			@thread.new do
+			@thread = Thread.new do
 				self.run
 			end
 			self
@@ -47,8 +47,8 @@ module Ruler
 			# TODO: verificar funcionamiento con los modelos de Rails
 			code = self.formatCode(attempt.code)
 			cases = attempt.problem.cases
-			compilerCommand = Ruler.compilers[attempt.language]
-			runCommand = Ruler.runners[attempt.language]
+			compilerCommand = Ruler::Compilers[attempt.language]
+			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
 			attempt.state = nil
 
@@ -81,7 +81,7 @@ module Ruler
 					attempt.result = attempt.result + output
 					if output.eq? testCase.output then
 						attempt.grade += 1
-					elsif !wrong
+					elsif !wrong then
 						feedback = testCase.feedback
 						wrong = true
 					end
@@ -95,8 +95,8 @@ module Ruler
 				end
 
 				attempt.save
-			elsif then
-				# TODO: imprimir error de lenguaje no soportado 
+			else
+				puts "ERROR: Unsupported language ${attempt.language}"
 			end
 		end
 
@@ -109,19 +109,19 @@ module Ruler
 		end
 
 		def insertInContainer(code, language)
-			command = ['bash', '-c', 'echo -e $\'' + code + '\' >> /etc/code' + Ruler.extensions[language]]
+			command = ['bash', '-c', 'echo -e $\'' + code + '\' >> /etc/code' + Ruler::Extensions[language]]
 			@container = @container.run(command, 0)
 			@container.wait(10)
 		end
 
 		def compileInContainer(compiler, language)
-			command = ['bash', '-c', compiler + ' /etc/code' + Ruler.extensions[language]]
+			command = ['bash', '-c', compiler + ' /etc/code' + Ruler::Extensions[language]]
 			@container = @container.run(command, 0)
 			@container.wait(10)
 		end
 
 		def runInContainer(language, timeLimit, memoryLimit)
-			command = ['bash', '-c', '( /etc/timeout.pl -t ' + timeLimit + ' -m ' + memoryLimit + ' "bash -c \'' + Ruler.runners[language] + ' < echo ' + input + ' > sOut.txt\' 2>sExecErr.txt" ) 2> sEst.txt']
+			command = ['bash', '-c', '( /etc/timeout.pl -t ' + timeLimit + ' -m ' + memoryLimit + ' "bash -c \'' + Ruler::Runners[language] + ' < echo ' + input + ' > sOut.txt\' 2>sExecErr.txt" ) 2> sEst.txt']
 			@container = @container.run(command, 0)
 			@container.wait(10)
 		end
