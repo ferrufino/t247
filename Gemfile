@@ -16,6 +16,8 @@ gem 'simple_form', '~> 3.1.0.rc2', github: 'plataformatec/simple_form', branch: 
 gem "nested_form"
 gem 'pundit'
 gem "paperclip"
+gem 'pqueue'
+gem 'docker-api', :require => 'docker'
 
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'rubocop', require: false
