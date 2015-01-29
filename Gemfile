@@ -15,6 +15,7 @@ gem 'slim-rails'
 gem 'simple_form', '~> 3.1.0.rc2', github: 'plataformatec/simple_form', branch: 'master'
 gem "nested_form"
 gem 'pundit'
+gem "paperclip"
 
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'rubocop', require: false
