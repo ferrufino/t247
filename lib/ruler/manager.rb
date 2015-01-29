@@ -32,7 +32,9 @@ module Ruler
 		end
 
 		def requestAttempt(priority, attemptID)
+			puts "Manager::requestAttempt: entering lock"
 			@lock.synchronize do
+				puts "Adding attempt to the PQueue"
 				@requestsQueue.push({
 					:priority => priority,
 					:type => :attempt,
@@ -58,8 +60,11 @@ module Ruler
 		end
 
 		def getRequest
+			puts "Manager::getRequest: entering lock"
 			@lock.synchronize do
+				puts "Getting request from the PQueue"
 				@semaphore.wait(lock) if @requestsQueue.empty?
+				puts "Popping request from the PQueue"
 				return @requestsQueue.pop
 			end
 		end

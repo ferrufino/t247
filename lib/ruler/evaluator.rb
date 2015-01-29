@@ -33,7 +33,9 @@ module Ruler
 
 		def run
 			loop do
-				request = Ruler::Manager.getRequest
+				puts "Evaluator: getting request from Manager"
+				request = Ruler::Manager.instance.getRequest
+				puts "Got request"
 				if request[:type] == :attempt then
 					self.evaluateAttempt(request)
 				elsif request[:type] == :test then
@@ -50,7 +52,8 @@ module Ruler
 			compilerCommand = Ruler::Compilers[attempt.language]
 			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
-			attempt.state = nil
+			feedback = nil
+			#attempt.state = nil
 
 			self.insertInContainer(code, attempt.language)
 			if !compilerCommand.nil? then
@@ -69,13 +72,16 @@ module Ruler
 					timeout = self.getFileContent('sEst.txt')
 
 					if timeout.match(/^TIME LIMIT/) then
-						attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
+						puts Ruler::AttemptStatus::TIME_LIMIT_ERROR
+						#attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
 					elsif timeout.match(/^MEMORY LIMIT/) then
-						attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
+						puts Ruler::AttemptStatus::MEMORY_LIMIT_ERROR
+						#attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
 					end
 
 					if !errors.nil? || !errors.empty? then
-						attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
+						puts Ruler::AttemptStatus::RUNTIME_ERROR
+						#attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
 					end
 
 					attempt.result = attempt.result + output
@@ -88,11 +94,13 @@ module Ruler
 				end
 				attempt.grade = attempt.grade / cases.count
 
-				if attempt.state.nil? && !wrong then
-					attempt.state = Ruler::AttemptStatus.ACCEPTED
-				elsif attempt.state.nil? && wrong then
-					attempt.state = Ruler::AttemptStatus.INCOMPLETE
-				end
+				#if attempt.state.nil? && !wrong then
+					#attempt.state = Ruler::AttemptStatus.ACCEPTED
+				#elsif attempt.state.nil? && wrong then
+					#attempt.state = Ruler::AttemptStatus.INCOMPLETE
+					#attempt.feedback = feedback
+				#end
+				attempt.feedback = nil
 
 				attempt.save
 			else
