@@ -33,9 +33,7 @@ module Ruler
 
 		def run
 			loop do
-				puts "Evaluator: getting request from Manager"
 				request = Ruler::Manager.instance.getRequest
-				puts "Got request"
 				if request[:type] == :attempt then
 					self.evaluateAttempt(request)
 				elsif request[:type] == :test then
