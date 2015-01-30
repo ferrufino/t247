@@ -44,22 +44,25 @@ module Ruler
 
 		def evaluateAttempt(request)
 			attempt = Attempt.find(request[:attemptID])
-			# TODO: verificar funcionamiento con los modelos de Rails
 			code = self.formatCode(attempt.code)
+			puts "My formatted code:"
+			puts code
 			cases = attempt.problem.cases
 			compilerCommand = Ruler::Compilers[attempt.language]
 			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
 			feedback = nil
-			attempt.state = nil
+			puts "All set up to evaluate!"
 
 			self.insertInContainer(code, attempt.language)
 			if !compilerCommand.nil? then
 				self.compileInContainer(compiler, attempt.language)
+				puts "All compiled"
 				# TODO: validar errores de compilacion
 			end
 			if !runCommand.nil? then
 				attempt.grade = 0
+				puts "About to start running test cases"
 				cases.each do |testCase|
 					timeLimit = testCase.memoryLimit
 					memoryLimit = testCase.memoryLimit
@@ -89,6 +92,7 @@ module Ruler
 						feedback = testCase.feedback
 						wrong = true
 					end
+					"Test case done!"
 				end
 				attempt.grade = attempt.grade / cases.count
 
@@ -110,12 +114,14 @@ module Ruler
 		end
 
 		def formatCode(str)
-			str.gsub(/[\'\\]/, '\\' => "\\\\\\\\", '\'' => "\\\'")
+			str.gsub(/[\'\\]/, '\\' => '\\\\\\\\', '\'' => '\\\'')
 		end
 
 		def insertInContainer(code, language)
 			command = ['bash', '-c', 'echo -e $\'' + code + '\' >> /etc/code' + Ruler::Extensions[language]]
+			puts "Calling container"
 			@container = @container.run(command, 0)
+			puts "Running insertInContainer"
 			@container.wait(10)
 		end
 
