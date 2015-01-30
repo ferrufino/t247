@@ -51,7 +51,7 @@ module Ruler
 			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
 			feedback = nil
-			#attempt.state = nil
+			attempt.state = nil
 
 			self.insertInContainer(code, attempt.language)
 			if !compilerCommand.nil? then
@@ -71,15 +71,15 @@ module Ruler
 
 					if timeout.match(/^TIME LIMIT/) then
 						puts Ruler::AttemptStatus::TIME_LIMIT_ERROR
-						#attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
+						attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
 					elsif timeout.match(/^MEMORY LIMIT/) then
 						puts Ruler::AttemptStatus::MEMORY_LIMIT_ERROR
-						#attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
+						attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
 					end
 
 					if !errors.nil? || !errors.empty? then
 						puts Ruler::AttemptStatus::RUNTIME_ERROR
-						#attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
+						attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
 					end
 
 					attempt.result = attempt.result + output
@@ -92,13 +92,12 @@ module Ruler
 				end
 				attempt.grade = attempt.grade / cases.count
 
-				#if attempt.state.nil? && !wrong then
-					#attempt.state = Ruler::AttemptStatus.ACCEPTED
-				#elsif attempt.state.nil? && wrong then
-					#attempt.state = Ruler::AttemptStatus.INCOMPLETE
-					#attempt.feedback = feedback
-				#end
-				attempt.feedback = nil
+				if attempt.state.nil? && !wrong then
+					attempt.state = Ruler::AttemptStatus.ACCEPTED
+				elsif attempt.state.nil? && wrong then
+					attempt.state = Ruler::AttemptStatus.INCOMPLETE
+					attempt.feedback = feedback
+				end
 
 				attempt.save
 			else
