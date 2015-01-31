@@ -17,10 +17,12 @@ class ProblemsController < ApplicationController
   def create
     @problem = Problem.new(problem_params)
     authorize @problem
-    if @problem.save
+    if @problem.save!
+
       flash[:success] = 'Problem created successfully'
       redirect_to problems_path
     else
+      flash[:error] = @problem.errors.full_messages.to_s
       render 'new'
     end
   end
@@ -58,6 +60,7 @@ class ProblemsController < ApplicationController
 
   def problem_params
     params.require(:problem).permit(:name, :kind, :difficulty, :description,
-                                    :main, :method, :active)
+                                    :main, :method, :active,
+                                    cases_attributes: [:input, :output, :time_limit, :memory_limit, :number, :_destroy])
   end
 end
