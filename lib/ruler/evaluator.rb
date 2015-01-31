@@ -33,9 +33,7 @@ module Ruler
 
 		def run
 			loop do
-				puts "Evaluator: getting request from Manager"
 				request = Ruler::Manager.instance.getRequest
-				puts "Got request"
 				if request[:type] == :attempt then
 					self.evaluateAttempt(request)
 				elsif request[:type] == :test then
@@ -46,22 +44,25 @@ module Ruler
 
 		def evaluateAttempt(request)
 			attempt = Attempt.find(request[:attemptID])
-			# TODO: verificar funcionamiento con los modelos de Rails
 			code = self.formatCode(attempt.code)
+			puts "My formatted code:"
+			puts code
 			cases = attempt.problem.cases
 			compilerCommand = Ruler::Compilers[attempt.language]
 			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
 			feedback = nil
-			#attempt.state = nil
+			puts "All set up to evaluate!"
 
 			self.insertInContainer(code, attempt.language)
 			if !compilerCommand.nil? then
 				self.compileInContainer(compiler, attempt.language)
+				puts "All compiled"
 				# TODO: validar errores de compilacion
 			end
 			if !runCommand.nil? then
 				attempt.grade = 0
+				puts "About to start running test cases"
 				cases.each do |testCase|
 					timeLimit = testCase.memoryLimit
 					memoryLimit = testCase.memoryLimit
@@ -73,15 +74,15 @@ module Ruler
 
 					if timeout.match(/^TIME LIMIT/) then
 						puts Ruler::AttemptStatus::TIME_LIMIT_ERROR
-						#attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
+						attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
 					elsif timeout.match(/^MEMORY LIMIT/) then
 						puts Ruler::AttemptStatus::MEMORY_LIMIT_ERROR
-						#attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
+						attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
 					end
 
 					if !errors.nil? || !errors.empty? then
 						puts Ruler::AttemptStatus::RUNTIME_ERROR
-						#attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
+						attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
 					end
 
 					attempt.result = attempt.result + output
@@ -91,16 +92,16 @@ module Ruler
 						feedback = testCase.feedback
 						wrong = true
 					end
+					"Test case done!"
 				end
 				attempt.grade = attempt.grade / cases.count
 
-				#if attempt.state.nil? && !wrong then
-					#attempt.state = Ruler::AttemptStatus.ACCEPTED
-				#elsif attempt.state.nil? && wrong then
-					#attempt.state = Ruler::AttemptStatus.INCOMPLETE
-					#attempt.feedback = feedback
-				#end
-				attempt.feedback = nil
+				if attempt.state.nil? && !wrong then
+					attempt.state = Ruler::AttemptStatus.ACCEPTED
+				elsif attempt.state.nil? && wrong then
+					attempt.state = Ruler::AttemptStatus.INCOMPLETE
+					attempt.feedback = feedback
+				end
 
 				attempt.save
 			else
@@ -113,12 +114,14 @@ module Ruler
 		end
 
 		def formatCode(str)
-			str.gsub(/[\'\\]/, '\\' => "\\\\\\\\", '\'' => "\\\'")
+			str.gsub(/[\'\\]/, '\\' => '\\\\\\\\', '\'' => '\\\'')
 		end
 
 		def insertInContainer(code, language)
 			command = ['bash', '-c', 'echo -e $\'' + code + '\' >> /etc/code' + Ruler::Extensions[language]]
+			puts "Calling container"
 			@container = @container.run(command, 0)
+			puts "Running insertInContainer"
 			@container.wait(10)
 		end
 

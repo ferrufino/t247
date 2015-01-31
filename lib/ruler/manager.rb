@@ -1,5 +1,6 @@
 require 'pqueue'
 require 'thread'
+require 'monitor'
 require 'singleton'
 
 module Ruler
@@ -22,8 +23,8 @@ module Ruler
 			@requestsQueue = PQueue.new do |requestA, requestB|
 				requestA[:priority] > requestB[:priority]
 			end
-			@lock = Mutex.new
-			@semaphore = ConditionVariable.new
+			@requestsQueue.extend(MonitorMixin)
+			@empty_cond = @requestsQueue.new_cond
 			@evaluators = Array.new
 			NUM_THREADS.times do |i|
 				@evaluators[i] = Ruler::Evaluator.new
@@ -32,21 +33,19 @@ module Ruler
 		end
 
 		def requestAttempt(priority, attemptID)
-			puts "Manager::requestAttempt: entering lock"
-			@lock.synchronize do
-				puts "Adding attempt to the PQueue"
+			@requestsQueue.synchronize do
 				@requestsQueue.push({
 					:priority => priority,
 					:type => :attempt,
 					:attemptID => attemptID
 				})
-				@semaphore.signal
+				@empty_cond.signal
 			end
 			self
 		end
 
 		def requestTest(priority, attemptID, input, callback)
-			@lock.synchronize do
+			@requestsQueue.synchronize do
 				@requestsQueue.push({
 					:priority => priority,
 					:type => :test,
@@ -54,17 +53,14 @@ module Ruler
 					:input => input,
 					:callback => callback
 				})
-				@semaphore.signal
+				@empty_cond.signal
 			end
 			self
 		end
 
 		def getRequest
-			puts "Manager::getRequest: entering lock"
-			@lock.synchronize do
-				puts "Getting request from the PQueue"
-				@semaphore.wait(lock) if @requestsQueue.empty?
-				puts "Popping request from the PQueue"
+			@requestsQueue.synchronize do
+				@empty_cond.wait_while { @requestsQueue.empty? }
 				return @requestsQueue.pop
 			end
 		end
