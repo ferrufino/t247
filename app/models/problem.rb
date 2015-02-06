@@ -8,6 +8,6 @@ class Problem < ActiveRecord::Base
   validates :kind, presence: true
   validates :description, presence: true
 
-  has_many :cases
+  has_many :cases, inverse_of: :problem
   accepts_nested_attributes_for :cases
 end

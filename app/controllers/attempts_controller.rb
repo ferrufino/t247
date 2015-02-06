@@ -6,7 +6,7 @@ class AttemptsController < ApplicationController
 
   def index
     @attempts = Attempt.all
-    @attempts = Attempt.where(user: curent_user) if current_user.role == 'Student'
+    @attempts = Attempt.where(user: current_user) if current_user.role == 'Student'
     authorize Attempt
   end
 

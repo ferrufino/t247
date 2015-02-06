@@ -3,7 +3,10 @@
 # Fields         code:text, grade:integer, feedback:string, result:integer,
 #                user_id:integer, problem_id:integer
 class Attempt < ActiveRecord::Base
-  validates :code, presence: true
+  has_attached_file :source_file
+  
+  validates_attachment_content_type :source_file, :content_type => /\Atext/
+  # validates :code, presence: true, unless: :source_file?
   validates :user, presence: true
   validates :problem, presence: true
 
