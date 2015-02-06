@@ -18,7 +18,7 @@ module Ruler
 	}
 	class Manager
 		include Singleton
-		NUM_THREADS = 5
+		NUM_THREADS = 1
 		def initialize
 			@requestsQueue = PQueue.new do |requestA, requestB|
 				requestA[:priority] > requestB[:priority]
