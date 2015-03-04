@@ -9,7 +9,7 @@ module Ruler
 		TEST_TIME_LIMIT = 5
 		IMAGE_TAG = 't247/evaluator:v1'
 		def initialize
-			@container = Docker::Container.create('Image' => IMAGE_TAG, 'Tty' => true)
+			@container = Docker::Container.create('Image' => IMAGE_TAG, 'Cmd' =>'ls', 'Tty' => true)
 			@container.start
 			@thread = Thread.new do
 				self.run
@@ -56,7 +56,7 @@ module Ruler
 
 			self.insertInContainer(code, attempt.language)
 			if !compilerCommand.nil? then
-				self.compileInContainer(compiler, attempt.language)
+				self.compileInContainer(compilerCommand, attempt.language)
 				puts "All compiled"
 				# TODO: validar errores de compilacion
 			end
@@ -64,29 +64,42 @@ module Ruler
 				attempt.grade = 0
 				puts "About to start running test cases"
 				cases.each do |testCase|
-					timeLimit = testCase.memoryLimit
-					memoryLimit = testCase.memoryLimit
-					self.runInContainer(attempt.language, timeLimit, memoryLimit)
+					puts "Entering loop"
+					timeLimit = testCase.time_limit
+					memoryLimit = testCase.memory_limit
+					self.runInContainer(attempt.language, timeLimit, memoryLimit, testCase.input)
 
+					puts "Capturing outputs"
 					output = self.getFileContent('sOut.txt')
 					errors = self.getFileContent('sExecErr.txt')
 					timeout = self.getFileContent('sEst.txt')
+					puts "Validating output"
 
-					if timeout.match(/^TIME LIMIT/) then
+					if timeout.match(/^TIMEOUT/) then
 						puts Ruler::AttemptStatus::TIME_LIMIT_ERROR
-						attempt.state = Ruler::AttemptStatus.TIME_LIMIT_ERROR
-					elsif timeout.match(/^MEMORY LIMIT/) then
+						attempt.state = Ruler::AttemptStatus::TIME_LIMIT_ERROR
+					elsif timeout.match(/^MEM/) then
 						puts Ruler::AttemptStatus::MEMORY_LIMIT_ERROR
-						attempt.state = Ruler::AttemptStatus.MEMORY_LIMIT_ERROR
+						attempt.state = Ruler::AttemptStatus::MEMORY_LIMIT_ERROR
 					end
 
-					if !errors.nil? || !errors.empty? then
+					puts "Checking for errors"
+
+					if errors then
+						puts errors
 						puts Ruler::AttemptStatus::RUNTIME_ERROR
-						attempt.state = Ruler::AttemptStatus.RUNTIME_ERROR
+						attempt.state = Ruler::AttemptStatus::RUNTIME_ERROR
 					end
+					
+					puts "Appending output: " + output
 
-					attempt.result = attempt.result + output
-					if output.eq? testCase.output then
+					if !attempt.result then
+						attempt.result = output
+					else
+						attempt.result = attempt.result + '\n' + output
+					end
+					puts "Calculating grade"
+					if output.eql? testCase.output then
 						attempt.grade += 1
 					elsif !wrong then
 						feedback = testCase.feedback
@@ -97,9 +110,9 @@ module Ruler
 				attempt.grade = attempt.grade / cases.count
 
 				if attempt.state.nil? && !wrong then
-					attempt.state = Ruler::AttemptStatus.ACCEPTED
+					attempt.state = Ruler::AttemptStatus::ACCEPTED
 				elsif attempt.state.nil? && wrong then
-					attempt.state = Ruler::AttemptStatus.INCOMPLETE
+					attempt.state = Ruler::AttemptStatus::INCOMPLETE
 					attempt.feedback = feedback
 				end
 
@@ -118,8 +131,9 @@ module Ruler
 		end
 
 		def insertInContainer(code, language)
-			command = ['bash', '-c', 'echo -e $\'' + code + '\' >> /etc/code' + Ruler::Extensions[language]]
+			command = ['bash', '-c', 'echo -e $\'' + code + '\' > /etc/code' + Ruler::Extensions[language]]
 			puts "Calling container"
+			puts command
 			@container = @container.run(command, 0)
 			puts "Running insertInContainer"
 			@container.wait(10)
@@ -127,14 +141,28 @@ module Ruler
 
 		def compileInContainer(compiler, language)
 			command = ['bash', '-c', compiler + ' /etc/code' + Ruler::Extensions[language]]
+			puts command
 			@container = @container.run(command, 0)
+			puts "Waiting for compilation..."
 			@container.wait(10)
+			puts "Printing logs:"
+			puts @container.logs(stdout: true)
 		end
 
-		def runInContainer(language, timeLimit, memoryLimit)
-			command = ['bash', '-c', '( /etc/timeout.pl -t ' + timeLimit + ' -m ' + memoryLimit + ' "bash -c \'' + Ruler::Runners[language] + ' < echo ' + input + ' > sOut.txt\' 2>sExecErr.txt" ) 2> sEst.txt']
+		def runInContainer(language, timeLimit, memoryLimit, input)
+			puts "Running runInContainer"
+			command = ['bash', '-c', 'echo -e $\'' + input + '\' > input.txt']
+			puts command
 			@container = @container.run(command, 0)
+			puts "Copying input..."
 			@container.wait(10)
+			puts "Copied"
+			command = ['bash', '-c', '( /etc/timeout.pl -t ' + timeLimit.to_s + ' -m ' + memoryLimit.round.to_s + ' "bash -c \'' + Ruler::Runners[language] + ' < input.txt > sOut.txt\' 2>sExecErr.txt" ) 2> sEst.txt']
+			puts command
+			@container = @container.run(command, 0)
+			puts "Running..."
+			@container.wait(10)
+			puts "Finished running"
 		end
 
 		def getFileContent(fileName)
