@@ -1,7 +1,6 @@
 # Encoding: utf-8 #
 
 FactoryGirl.define do
-
   factory :user do
     name 'John'
     lastname 'Doe'

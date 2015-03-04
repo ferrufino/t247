@@ -3,4 +3,5 @@
     = f.input :user_id, input_html: { value: current_user.id }, as: :hidden
     = f.association :problem, collection: Problem.all.map { |p| [p.name, p.id] }, required: true
     = f.input :code
+    = f.input :source_file
     = f.button :submit
