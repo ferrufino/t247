@@ -52,6 +52,8 @@ module Ruler
 			runCommand = Ruler::Runners[attempt.language]
 			wrong = false
 			feedback = nil
+			result = nil
+			grade = 0.0
 			puts "All set up to evaluate!"
 
 			self.insertInContainer(code, attempt.language)
@@ -61,7 +63,6 @@ module Ruler
 				# TODO: validar errores de compilacion
 			end
 			if !runCommand.nil? then
-				attempt.grade = 0
 				puts "About to start running test cases"
 				cases.each do |testCase|
 					puts "Entering loop"
@@ -93,21 +94,22 @@ module Ruler
 					
 					puts "Appending output: " + output
 
-					if !attempt.result then
-						attempt.result = output
+					if !result then
+						result = output
 					else
-						attempt.result = attempt.result + '\n' + output
+						result = result << "\n" << output
 					end
 					puts "Calculating grade"
 					if output.eql? testCase.output then
-						attempt.grade += 1
+						grade += 1
 					elsif !wrong then
 						feedback = testCase.feedback
 						wrong = true
 					end
 					"Test case done!"
 				end
-				attempt.grade = attempt.grade / cases.count
+				attempt.result = result
+				attempt.grade = 100 * grade / cases.count
 
 				if attempt.state.nil? && !wrong then
 					attempt.state = Ruler::AttemptStatus::ACCEPTED
