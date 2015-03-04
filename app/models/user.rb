@@ -8,23 +8,23 @@ class User < ActiveRecord::Base
   attr_accessor :remember_token
   has_secure_password
 
+  has_many :enrollments
+  has_many :groups
+
   validates :registration_number, presence: true, uniqueness: true
   validates :name, presence: true
   validates :lastname, presence: true
   validates :email, presence: true
   validates :password, presence: true, on: :create
 
-  has_many :enrollments
-  has_many :groups
-
-  def User.digest(string)
+  def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
   # Returns a random token.
-  def User.new_token
+  def self.new_token
     SecureRandom.urlsafe_base64
   end
 

@@ -8,16 +8,16 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
-gem "therubyracer"
-gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-gem "twitter-bootstrap-rails"
+gem 'therubyracer'
+gem 'less-rails' # Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem 'twitter-bootstrap-rails'
 gem 'slim-rails'
 gem 'simple_form', '~> 3.1.0.rc2', github: 'plataformatec/simple_form', branch: 'master'
-gem "nested_form"
+gem 'nested_form'
 gem 'pundit'
-gem "paperclip"
+gem 'paperclip'
 gem 'pqueue'
-gem 'docker-api', :require => 'docker'
+gem 'docker-api', require: 'docker'
 
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'rubocop', require: false
@@ -25,8 +25,8 @@ gem 'rubocop', require: false
 group :development, :test do
   gem 'spring', require: false
   gem 'spring-commands-rspec', require: false
-  gem "binding_of_caller"
-  gem "better_errors"
+  gem 'binding_of_caller'
+  gem 'better_errors'
   gem 'rspec-rails'
 end
 

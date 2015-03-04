@@ -1,5 +1,4 @@
 module SessionsHelper
-
   # Logs in the given user.
   def log_in(user)
     session[:user_id] = user.id
@@ -40,7 +39,7 @@ module SessionsHelper
   def logged_in_user
     unless logged_in?
       # store_location
-      redirect_to root_url, notice: "Please sign in."
+      redirect_to root_url, notice: 'Please sign in.'
     end
   end
 end

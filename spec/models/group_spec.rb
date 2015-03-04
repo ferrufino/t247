@@ -8,5 +8,4 @@ RSpec.describe Group do
   it { should belong_to :teacher }
   it { should belong_to :course }
   it { should have_many :users }
-
 end

@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Tutoring 24/7</a>
+          <a class="navbar-brand" href="#">Code Tutor</a>
         </div>
         <div class="navbar-collapse collapse pull-right">
           <ul class="nav navbar-nav">
@@ -16,8 +16,11 @@
             <% if policy(:user).index? %>
               <li><%= link_to 'Users', users_path%></li>
             <% end %>
-            <% if policy(:course).index? %>
-              <li><%= link_to 'Courses', courses_path%></li>
+            <% if policy(:problem).index? %>
+              <li><%= link_to 'Problems', problems_path%></li>
+            <% end %>
+            <% if policy(:attempt).index? %>
+              <li><%= link_to 'Attempts', attempts_path%></li>
             <% end %>
             <% if policy(:course).index? %>
               <li><%= link_to 'Courses', courses_path%></li>
