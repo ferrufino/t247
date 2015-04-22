@@ -18,6 +18,7 @@ gem 'pundit'
 gem 'paperclip'
 gem 'pqueue'
 gem 'docker-api', require: 'docker'
+gem 'archive-tar-minitar'
 
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'rubocop', require: false

@@ -20,6 +20,7 @@ class AttemptsController < ApplicationController
     authorize @attempt
     if @attempt.save
       flash[:success] = 'Attempt created successfully'
+      Ruler::Manager.instance.requestAttempt(1, @attempt.id)
       redirect_to attempts_path
     else
       flash[:danger] = 'Error'
@@ -30,6 +31,6 @@ class AttemptsController < ApplicationController
   private
 
   def attempt_params
-    params.require(:attempt).permit(:user_id, :problem_id, :code)
+    params.require(:attempt).permit(:user_id, :problem_id, :code, :language)
   end
 end
