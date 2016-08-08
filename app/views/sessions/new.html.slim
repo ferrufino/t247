@@ -1,8 +1,0 @@
-
-.row
-  .col-md-6.col-md-offset-3
-    .h1.text-center Iniciar Sesión 
-    = simple_form_for :session, url: new_session_path do |f|
-      = f.input :registration_number
-      = f.input :password
-      = f.submit 'Log In', class: 'btn btn-block btn-primary'
