@@ -42,7 +42,7 @@ def set_limits():
     global time_limit 
 
     # Time 
-    resource.setrlimit(resource.RLIMIT_CPU, (time_limit, 60))
+    resource.setrlimit(resource.RLIMIT_CPU, (time_limit, 5))
 
     # Data
     resource.setrlimit(resource.RLIMIT_DATA, (5000000, 6000000))
@@ -78,6 +78,7 @@ status = None
 
 # Monitor child process
 while (p.status() == psutil.STATUS_RUNNING):
+    pass
     # Check memory exceeded
     mem = getMemoryUsage(pid)
     #print(mem)
