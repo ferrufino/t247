@@ -79,3 +79,8 @@ def evaluate(code, lang_id, problem_id, time_limit, mem_limit, total_tests, judg
 
     return results
 
+file = open("cpp.cpp")
+code = file.read()
+results = evaluate(code, 0, 1, 1, 300, 5, 1)
+print(results)
+
