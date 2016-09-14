@@ -14,7 +14,7 @@ sudo npm run typings install
 npm start
 ```
 
-**Additionally if you are using Webstorm remeber to use the _"tsconfig.json"_ for the compiler, to do that follow the next steps:**
+**Additionally if you are using Webstorm remember to use the _"tsconfig.json"_ for the compiler, to do that follow the next steps:**
 
 1. Go to "Settings.."
 2. "Languages & Frameworks" -> "TypeScript"
