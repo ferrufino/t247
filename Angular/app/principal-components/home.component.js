@@ -16,9 +16,13 @@ var authentication_service_1 = require('../services/authentication.service');
 var HomeComponent = (function () {
     function HomeComponent(_service) {
         this._service = _service;
+        this.userName = JSON.parse(localStorage.getItem("user")).email;
     }
     HomeComponent.prototype.ngOnInit = function () {
         this._service.checkCredentials();
+        $(".dropdown-button").dropdown();
+        $(".dropdown-button-mobile").dropdown();
+        $(".button-collapse").sideNav();
     };
     HomeComponent.prototype.logout = function () {
         this._service.logout();
@@ -27,7 +31,7 @@ var HomeComponent = (function () {
         core_1.Component({
             selector: 'login-form',
             providers: [authentication_service_1.AuthenticationService],
-            template: "\n            <div class=\"container\" >\n                <div class=\"content\">\n                    <span>Congratulations, you have successfully logged in!!</span>\n                    <br />\n                    <a (click)=\"logout()\" href=\"#\">Click Here to logout</a>\n                </div>\n            </div>\n    \t"
+            template: "\n            <ul id=\"dropdownUser\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li><a href=\"#!\">Admin</a></li>\n              <li><a href=\"#!\">Prof</a></li>\n              <li><a href=\"#!\">Student</a></li>\n            </ul>\n            <ul id=\"dropdownMobile\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li><a href=\"#!\">Admin</a></li>\n              <li><a href=\"#!\">Prof</a></li>\n              <li><a href=\"#!\">Student</a></li>\n            </ul>\n            <nav>\n              <div class=\"nav-wrapper\">\n                <a href=\"#\" class=\"brand-logo\">T247</a>\n                <a href=\"#\" data-activates=\"mobile-demo\" class=\"button-collapse\"><i class=\"material-icons\">menu</i></a>\n                <ul class=\"right hide-on-med-and-down\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button\" href=\"#!\" data-activates=\"dropdownUser\">{{userName}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n                <ul class=\"side-nav\" id=\"mobile-demo\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button-mobile\" href=\"#!\" data-activates=\"dropdownMobile\">{{userName}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n              </div>\n            </nav>\n            <div class=\"container\" >\n              <div class=\"content\">\n                <span>Congratulations, you have successfully logged in!!</span>\n              </div>\n            </div>\n    \t"
         }), 
         __metadata('design:paramtypes', [authentication_service_1.AuthenticationService])
     ], HomeComponent);
