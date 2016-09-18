@@ -13,9 +13,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var authentication_service_1 = require('../services/authentication.service');
+var router_1 = require("@angular/router");
 var HomeComponent = (function () {
-    function HomeComponent(_service) {
+    function HomeComponent(_service, _router) {
         this._service = _service;
+        this._router = _router;
     }
     HomeComponent.prototype.ngOnInit = function () {
         this._service.checkCredentials();
@@ -27,9 +29,9 @@ var HomeComponent = (function () {
         core_1.Component({
             selector: 'login-form',
             providers: [authentication_service_1.AuthenticationService],
-            template: "\n            <div class=\"container\" >\n                <div class=\"content\">\n                    <span>Congratulations, you have successfully logged in!!</span>\n                    <br />\n                    <a (click)=\"logout()\" href=\"#\">Click Here to logout</a>\n                </div>\n            </div>\n    \t"
+            template: "\n            <div class=\"container\" >\n                <div class=\"content\">\n                    <span>Congratulations, you have successfully logged in!!</span>\n                    <br />\n                    <a routerLink=\"/myAssignments\">Click Here to My Assignments</a>\n                    <a (click)=\"logout()\" href=\"#\">Click Here to logout</a>\n                </div>\n            </div>\n    \t"
         }), 
-        __metadata('design:paramtypes', [authentication_service_1.AuthenticationService])
+        __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, router_1.Router])
     ], HomeComponent);
     return HomeComponent;
 }());

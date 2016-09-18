@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import {routing} from "./app.routing";
 
 import { AppComponent }   from './app.component';
-import {LoginComponent} from "./principal-components/login.component";
-import {HomeComponent} from "./principal-components/home.component";
+import { LoginComponent } from "./principal-components/login.component";
+import { HomeComponent } from "./principal-components/home.component";
+import {MyAssignments} from "./user-components/my-assignments.component";
 
 @NgModule({
     imports:      [
@@ -16,7 +17,8 @@ import {HomeComponent} from "./principal-components/home.component";
     declarations: [
         AppComponent,
         LoginComponent,
-        HomeComponent
+        HomeComponent,
+        MyAssignments
     ],
     bootstrap:    [ AppComponent ]
 })

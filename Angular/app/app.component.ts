@@ -16,5 +16,5 @@ import {AuthenticationService} from './services/authentication.service';
 
 
 export class  AppComponent {
-    title = 'Toturing 24/7';
+    title = 'Tutoring 24/7';
 }
