@@ -18,7 +18,7 @@ var MyCourses = (function () {
     MyCourses = __decorate([
         core_1.Component({
             selector: 'my-courses',
-            template: 'hello prof'
+            template: "\n  <table class=\"bordered centered\">\n      <thead>\n        <tr>\n            <th data-field=\"id\">#</th>\n            <th data-field=\"course\">Course</th>\n            <th data-field=\"group\">Group</th>\n            <th data-field=\"period\">Period</th>\n            <th data-field=\"details\"></th>\n        </tr>\n      </thead>\n\n      <tbody>\n        <tr>\n          <td>1</td>\n          <td>Data Structures</td>\n          <td>Mon-Thu 16:30</td>\n          <td>Aug-Dec 2016</td>\n          <td>\n            <a class=\"waves-effect waves-light btn\">Details</a>\n          </td>\n        </tr>\n        <tr>\n          <td>2</td>\n          <td>Data Structures</td>\n          <td>Mon-Thu 16:30</td>\n          <td>Aug-Dec 2016</td>\n          <td>\n            <a class=\"waves-effect waves-light btn\">Details</a>\n          </td>\n        </tr>\n        <tr>\n          <td>3</td>\n          <td>Data Structures</td>\n          <td>Mon-Thu 16:30</td>\n          <td>Aug-Dec 2016</td>\n          <td>\n            <a class=\"waves-effect waves-light btn\">Details</a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n                      "
         }), 
         __metadata('design:paramtypes', [])
     ], MyCourses);
