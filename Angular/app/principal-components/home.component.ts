@@ -6,22 +6,22 @@ import {Component} from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service'
 
 @Component({
-    selector: 'login-form',
+    selector: 'home',
     providers: [AuthenticationService],
     template: `
             <ul id="dropdownUser" class="dropdown-content">
               <li><a href="#!">Profile</a></li>
               <li class="divider"></li>
-              <li><a href="#!">Admin</a></li>
-              <li><a href="#!">Prof</a></li>
-              <li><a href="#!">Student</a></li>
+              <li *ngFor="let role of roles">
+                <a (click)="changeSelectedRole(role)" href="#!">{{role}}</a>
+              </li>
             </ul>
             <ul id="dropdownMobile" class="dropdown-content">
               <li><a href="#!">Profile</a></li>
               <li class="divider"></li>
-              <li><a href="#!">Admin</a></li>
-              <li><a href="#!">Prof</a></li>
-              <li><a href="#!">Student</a></li>
+              <li *ngFor="let role of roles">
+                <a (click)="changeSelectedRole(role)" href="#!">{{role}}</a>
+              </li>
             </ul>
             <nav>
               <div class="nav-wrapper">
@@ -32,7 +32,7 @@ import {AuthenticationService} from '../services/authentication.service'
                   <li><a href="badges.html">Components</a></li>
                   <li><a href="collapsible.html">JavaScript</a></li>
                   <!-- Dropdown Trigger -->
-                  <li><a class="dropdown-button" href="#!" data-activates="dropdownUser">{{userName}}<i class="material-icons right">arrow_drop_down</i></a></li>
+                  <li><a class="dropdown-button" href="#!" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
                   <li><a (click)="logout()" href="#">Logout</a></li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
@@ -40,26 +40,33 @@ import {AuthenticationService} from '../services/authentication.service'
                   <li><a href="badges.html">Components</a></li>
                   <li><a href="collapsible.html">JavaScript</a></li>
                   <!-- Dropdown Trigger -->
-                  <li><a class="dropdown-button-mobile" href="#!" data-activates="dropdownMobile">{{userName}}<i class="material-icons right">arrow_drop_down</i></a></li>
+                  <li><a class="dropdown-button-mobile" href="#!" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
                   <li><a (click)="logout()" href="#">Logout</a></li>
                 </ul>
               </div>
             </nav>
             <div class="container" >
-              <div class="content">
-                <span>Congratulations, you have successfully logged in!!</span>
+              <div class="content" [ngSwitch]="selectedRole">
+                <my-assignments *ngSwitchCase="'user'"></my-assignments>
+                <list-of-problems *ngSwitchCase="'admin'"></list-of-problems>
+                <my-courses *ngSwitchCase="'prof'"></my-courses>
               </div>
             </div>
     	`
 })
 
 export class HomeComponent {
-
+    roles: [string]
+    selectedRole : string
     constructor(
         private _service:AuthenticationService){}
 
     ngOnInit(){
         this._service.checkCredentials();
+        if(localStorage.getItem("user")){
+          this.roles = JSON.parse(localStorage.getItem("user")).roles;
+          this.selectedRole = JSON.parse(localStorage.getItem("user")).roles[0];
+        }
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();
         $(".button-collapse").sideNav();
@@ -69,5 +76,8 @@ export class HomeComponent {
         this._service.logout();
     }
 
-    userName = JSON.parse(localStorage.getItem("user")).email;
+    changeSelectedRole(role){
+      var index = this.roles.indexOf(role);
+      this.selectedRole = this.roles[index];
+    }
 }

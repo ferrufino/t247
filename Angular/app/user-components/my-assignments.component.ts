@@ -5,9 +5,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-
+  selector: 'my-assignments',
+  template: 'hello user'
 })
 
 export class MyAssignments {
-    
+
 }

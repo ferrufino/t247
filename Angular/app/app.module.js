@@ -15,6 +15,9 @@ var app_routing_1 = require("./app.routing");
 var app_component_1 = require('./app.component');
 var login_component_1 = require("./principal-components/login.component");
 var home_component_1 = require("./principal-components/home.component");
+var my_assignments_component_1 = require("./user-components/my-assignments.component");
+var my_courses_component_1 = require("./professor-components/my-courses.component");
+var list_of_problems_component_1 = require("./admin-components/list-of-problems.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -28,7 +31,10 @@ var AppModule = (function () {
             declarations: [
                 app_component_1.AppComponent,
                 login_component_1.LoginComponent,
-                home_component_1.HomeComponent
+                home_component_1.HomeComponent,
+                my_assignments_component_1.MyAssignments,
+                my_courses_component_1.MyCourses,
+                list_of_problems_component_1.ListOfProblems
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

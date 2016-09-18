@@ -14,16 +14,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var User = (function () {
-    function User(email, password) {
+    function User(email, password, roles) {
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
     return User;
 }());
 exports.User = User;
 var users = [
-    new User('admin@admin.com', 'admin'),
-    new User('root@gmail.com', 'root')
+    new User('admin@admin.com', 'admin', ['admin', 'prof', 'user']),
+    new User('root@gmail.com', 'root', ['user'])
 ];
 var AuthenticationService = (function () {
     function AuthenticationService(_router) {

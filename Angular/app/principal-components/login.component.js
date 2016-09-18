@@ -16,7 +16,7 @@ var authentication_service_1 = require('../services/authentication.service');
 var LoginComponent = (function () {
     function LoginComponent(_service) {
         this._service = _service;
-        this.user = new authentication_service_1.User('', '');
+        this.user = new authentication_service_1.User('', '', ['']);
         this.errorMsg = '';
     }
     LoginComponent.prototype.login = function () {
@@ -28,7 +28,7 @@ var LoginComponent = (function () {
         core_1.Component({
             selector: 'login-form',
             providers: [authentication_service_1.AuthenticationService],
-            template: "\n        <div class=\"container\" >\n            <div class=\"title\">\n                Welcome\n            </div>\n            <div class=\"panel-body\">\n                <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                        <input [(ngModel)]=\"user.email\" id=\"email\" \n                            type=\"email\" class=\"validate\">\n                        <label for=\"email\">Email</label>\n                    </div>\n                </div>\n \n                <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                        <input [(ngModel)]=\"user.password\" id=\"password\" \n                            type=\"password\" class=\"validate\">\n                        <label for=\"password\">Password</label>\n                    </div>\n                </div>\n \n                <span>{{errorMsg}}</span>\n                <button (click)=\"login()\" \n                    class=\"btn waves-effect waves-light\" \n                    type=\"submit\" name=\"action\">Login</button>\n            </div>\n        </div>\n    \t"
+            template: "\n        <div class=\"container\" >\n            <div class=\"title\">\n                Welcome\n            </div>\n            <div class=\"panel-body\">\n                <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                        <input [(ngModel)]=\"user.email\" id=\"email\"\n                            type=\"email\" class=\"validate\">\n                        <label for=\"email\">Email</label>\n                    </div>\n                </div>\n\n                <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                        <input [(ngModel)]=\"user.password\" id=\"password\"\n                            type=\"password\" class=\"validate\">\n                        <label for=\"password\">Password</label>\n                    </div>\n                </div>\n\n                <span>{{errorMsg}}</span>\n                <button (click)=\"login()\"\n                    class=\"btn waves-effect waves-light\"\n                    type=\"submit\" name=\"action\">Login</button>\n            </div>\n        </div>\n    \t"
         }), 
         __metadata('design:paramtypes', [authentication_service_1.AuthenticationService])
     ], LoginComponent);

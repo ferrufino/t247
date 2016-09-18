@@ -1,5 +1,5 @@
 /**
- * Created by ahinojosa on 14/09/16.
+ * Created by ikerarb on 18/09/16.
  */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -12,17 +12,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var MyAssignments = (function () {
-    function MyAssignments() {
+var MyCourses = (function () {
+    function MyCourses() {
     }
-    MyAssignments = __decorate([
+    MyCourses = __decorate([
         core_1.Component({
-            selector: 'my-assignments',
-            template: 'hello user'
+            selector: 'my-courses',
+            template: 'hello prof'
         }), 
         __metadata('design:paramtypes', [])
-    ], MyAssignments);
-    return MyAssignments;
+    ], MyCourses);
+    return MyCourses;
 }());
-exports.MyAssignments = MyAssignments;
-//# sourceMappingURL=my-assignments.component.js.map
+exports.MyCourses = MyCourses;
+//# sourceMappingURL=my-courses.component.js.map
