@@ -47,7 +47,6 @@ import {AuthenticationService} from '../services/authentication.service'
             </nav>
             <div class="container" >
               <div class="content" [ngSwitch]="selectedRole">
-                <topics-dashboard *ngSwitchCase="'user'"></topics-dashboard>
                 <my-assignments *ngSwitchCase="'user'"></my-assignments>
                 <list-of-problems *ngSwitchCase="'admin'"></list-of-problems>
                 <my-courses *ngSwitchCase="'prof'"></my-courses>
