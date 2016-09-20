@@ -1,3 +1,16 @@
+.topic-box {
+    line-height: 100px;
+    text-align: center;
+    background-color: #EC6F75;
+    color: white;
+    margin: 1px;
+}
+
+.topic-box:hover {
+    background-color: #D5646A;
+    cursor: pointer;
+}
+
 #logo {
     padding-left: 30px;
 }
