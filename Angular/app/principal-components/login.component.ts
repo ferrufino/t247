@@ -22,10 +22,9 @@ import {AuthenticationService, User} from '../services/authentication.service'
                <div class="col s6">
                    <h2>Welcome</h2>
                    <br><br>
-                   <form>
                        <div class="row">
                             <div class="input-field col s12">
-                                <input [(ngModel)]="user.email" id="email"
+                                <input [(ngModel)]="user.email" id="email" 
                                     type="email" class="validate">
                                 <label for="email">Email</label>
                             </div>
@@ -37,13 +36,11 @@ import {AuthenticationService, User} from '../services/authentication.service'
                                 <label for="password">Password</label>
                            </div>
                        </div>
-                       <a href="http://tutoring247.mty.itesm.mx/"><h6>Forgot your password?</h6></a>
+                       <a href=""><h6>Forgot your password?</h6></a>  
                        <br><br>
                        <span>{{errorMsg}}</span>
-                       <button (click)="login()" 
-                            class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
+                       <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
                             type="submit" name="action">Login</button>
-                   </form>
                </div>
               </div>
         </div>
