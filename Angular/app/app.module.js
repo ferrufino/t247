@@ -18,6 +18,7 @@ var home_component_1 = require("./principal-components/home.component");
 var my_assignments_component_1 = require("./user-components/my-assignments.component");
 var my_courses_component_1 = require("./professor-components/my-courses.component");
 var list_of_problems_component_1 = require("./admin-components/list-of-problems.component");
+var topics_dashboard_component_1 = require("./principal-components/topics-dashboard.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -34,7 +35,8 @@ var AppModule = (function () {
                 home_component_1.HomeComponent,
                 my_assignments_component_1.MyAssignments,
                 my_courses_component_1.MyCourses,
-                list_of_problems_component_1.ListOfProblems
+                list_of_problems_component_1.ListOfProblems,
+                topics_dashboard_component_1.TopicsDashboard
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
