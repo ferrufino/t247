@@ -12,7 +12,6 @@ db = SQLAlchemy(app)
 
 from models import *
 
-
 from api.users.users import ns as users_namespace
 from api.restplus import api
 
