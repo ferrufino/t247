@@ -10,7 +10,7 @@ import sys
         - Download from: https://pypi.python.org/pypi/psutil
 '''
 
-lang_id = int(sys.argv[1])
+language = sys.argv[1]
 time_limit = int(sys.argv[2])
 mem_limit = int(sys.argv[3])
 
@@ -67,9 +67,9 @@ def set_limits():
 
 # Spawn child process
 pro = ""
-if (lang_id == 0): # CPP
+if (language == "cpp"): # CPP
     pro = subprocess.Popen(["./a.out"], preexec_fn=set_limits)
-elif (lang_id == 1): # Java
+elif (language == "java"): # Java
     pro = subprocess.Popen(["java", "Main"], preexec_fn=set_limits)
 
 pid = pro.pid

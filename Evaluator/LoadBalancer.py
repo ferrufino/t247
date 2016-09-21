@@ -18,7 +18,7 @@ class LoadBalancerRequestHandler(socketserver.BaseRequestHandler):
         print("Llego esto al LoadBalancer: data - " + str(rawData, encoding="utf-8"))
         
         # Start queues access
-        #lock.acquire()
+        lock.acquire()
         
         #Choose least busy Judge
         pos = 0
@@ -33,7 +33,7 @@ class LoadBalancerRequestHandler(socketserver.BaseRequestHandler):
         queues[pos].put(rawData)
 
         # End queues access
-        #lock.release()
+        lock.release()
 
 # Launch LoadBalancer process
 if __name__ == "__main__":
