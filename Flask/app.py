@@ -16,6 +16,10 @@ from api.users.users import ns as users_namespace
 from api.restplus import api
 
 
+from api.users.users import ns as users_namespace
+from api.restplus import api
+
+
 @app.route('/')
 def hello():
     return "Hello World!"
