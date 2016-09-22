@@ -42,7 +42,7 @@ if __name__ == "__main__":
     for i in range(total_judges):
         q = multiprocessing.Queue()        
         queues.append(q)
-        p = Judge(i+1, q)
+        p = Judge(i, q)
         p.start()    
 
     # Instantiate server process
