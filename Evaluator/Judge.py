@@ -48,14 +48,14 @@ class Judge(multiprocessing.Process):
         if (request_type == "submission"):
             problem_id    = request["problem_id"]
             submission_id = request["submission_id"]
+            problem_dir = self.base_dir + "problems/" + str(problem_id) + "/"
         # Problem upload parameters
         elif (request_type == "upload"):
             problem_id = request["temporary_problem_id"]
             test_cases = request["test_cases"]          
     
         results = []
-        problem_dir = self.base_dir + "problems/" + str(problem_id) + "/"
-      
+              
         src_file = ""
         obj_file = ""
         compilation_status = ""  
@@ -90,13 +90,16 @@ class Judge(multiprocessing.Process):
         src_file.close()
         
         if (language == "cpp"): # CPP
-            process = subprocess.Popen(self.arr_compilation[language] + [self.arr_obj_file[language]] + [self.arr_src_file[language]], cwd=self.working_dir)
+            process = subprocess.Popen(self.arr_compilation[language] + [self.arr_obj_file[language]] + [self.arr_src_file[language]], cwd=self.working_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         elif (language == "java"): # Java
-            process = subprocess.Popen(self.arr_compilation[language] + [self.arr_src_file[language]], cwd=self.working_dir)
+            process = subprocess.Popen(self.arr_compilation[language] + [self.arr_src_file[language]], cwd=self.working_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         stdout, stderr = process.communicate()
         
-        if (stdout is None and stderr is None):
+        stdout = str(stdout, 'utf-8')
+        stderr = str(stderr, 'utf-8')
+        
+        if (stdout is "" and stderr is ""):
             compilation_status = "compiled successfully"
         
             # Iterate over different test cases
@@ -109,6 +112,7 @@ class Judge(multiprocessing.Process):
                 # 3) Copy object file to container
                 process = subprocess.Popen(['sudo', 'docker', 'cp', self.working_dir + self.arr_obj_file[language], self.ctr_name+':/'+self.arr_obj_file[language]])
                 process.wait()
+                               
                 
                 # 4) Copy input file to container
                 
@@ -124,6 +128,10 @@ class Judge(multiprocessing.Process):
                 
                 process.wait()
                 
+                # Delete input file
+                if (request_type == "upload"):
+                    os.remove(self.working_dir + 'std_in.txt')
+                
                 # Copy evaluator script to container
                 # TODO: Copy script to container during image creation 
                 # (currently copying script in runtime in order to allow quick changes)
@@ -132,8 +140,10 @@ class Judge(multiprocessing.Process):
                     
                 # 5) Execute  
                 process = subprocess.Popen(['sudo', 'docker', 'exec', self.ctr_name, 'python3', 'evaluator.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                status = process.stdout.read()
-                process.wait()
+                #status = process.stdout.read()
+                status, placeholder = process.communicate()
+                print("MALO" + str(process.returncode))
+                print(str(status))                
                 
                 # 6) Stop container
                 process = subprocess.Popen(['sudo', 'docker', 'stop', self.ctr_name])
@@ -171,14 +181,15 @@ class Judge(multiprocessing.Process):
                         results.append({ "status" : status, "output" : output })
                     else:
                         results.append({ "status" : status })
-        
+            
+            # Remove obj file
+            os.remove(self.working_dir + self.arr_obj_file[language])
         else:
             compilation_status = "compilation error"
         
-        # Remove src and obj files
+        # Remove src file
         os.remove(self.working_dir + self.arr_src_file[language])
-        os.remove(self.working_dir + self.arr_obj_file[language]) 
-        
+                
         # Prepare returned object
         return_obj = {}
         return_obj["angular_id"]    = angular_id
