@@ -41,26 +41,33 @@ def getMemoryUsage(pid):
 def set_limits():
     global time_limit 
 
+    print("time")
     # Time 
     resource.setrlimit(resource.RLIMIT_CPU, (time_limit, 5))
 
+    print("data")
     # Data
     resource.setrlimit(resource.RLIMIT_DATA, (5000000, 6000000))
 
+    print("stack")
     # Stack
     resource.setrlimit(resource.RLIMIT_STACK, (5000000, 6000000))
 
+    print("nproc")
     # Number of processes the current process may create
     resource.setrlimit(resource.RLIMIT_NPROC, (0, 0))
     
+    print("stdin")
     # Redirect STDIN
     redirectionSTDIN = os.open("std_in.txt", os.O_RDONLY)
     os.dup2(redirectionSTDIN,0)
     
+    print("stdout")
     # Redirect STDOUT
     redirectionSTDOUT = os.open("std_out.txt", os.O_RDWR|os.O_CREAT)
     os.dup2(redirectionSTDOUT,1)
 
+    print("stderr")
     # Redirect STDERROR
     redirectionSTDERROR = os.open('std_err.txt', os.O_RDWR|os.O_CREAT)
     os.dup2(redirectionSTDERROR, 2)
@@ -78,7 +85,6 @@ status = None
 
 # Monitor child process
 while (p.status() == psutil.STATUS_RUNNING):
-    pass
     # Check memory exceeded
     mem = getMemoryUsage(pid)
     #print(mem)
