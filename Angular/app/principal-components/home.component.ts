@@ -68,9 +68,9 @@ export class HomeComponent {
           this.roles = JSON.parse(sessionStorage.getItem("user")).roles;
           this.selectedRole = JSON.parse(sessionStorage.getItem("user")).roles[0];
         }
-       $(".dropdown-button").dropdown();
-       $(".dropdown-button-mobile").dropdown();
-       $(".button-collapse").sideNav();
+      //  $(".dropdown-button").dropdown();
+      //  $(".dropdown-button-mobile").dropdown();
+      //  $(".button-collapse").sideNav();
     }
 
     logout() {

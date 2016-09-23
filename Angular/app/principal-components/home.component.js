@@ -23,9 +23,9 @@ var HomeComponent = (function () {
             this.roles = JSON.parse(sessionStorage.getItem("user")).roles;
             this.selectedRole = JSON.parse(sessionStorage.getItem("user")).roles[0];
         }
-        $(".dropdown-button").dropdown();
-        $(".dropdown-button-mobile").dropdown();
-        $(".button-collapse").sideNav();
+        //  $(".dropdown-button").dropdown();
+        //  $(".dropdown-button-mobile").dropdown();
+        //  $(".button-collapse").sideNav();
     };
     HomeComponent.prototype.logout = function () {
         this._service.logout();
