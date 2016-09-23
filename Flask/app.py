@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 import config
 import os
 from api.users.users import ns as users_namespace
+from api.evaluators.evaluator import nse as evaluator_namespace
+
 from api.restplus import api
 from models import db
 
@@ -30,6 +32,7 @@ def initialize_app(flask_app):
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     api.add_namespace(users_namespace)
+    api.add_namespace(evaluator_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
