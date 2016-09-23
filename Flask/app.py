@@ -4,17 +4,14 @@ from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 import config
 import os
+from api.users.users import ns as users_namespace
+from api.restplus import api
+from models import db
 
 
 app = Flask(__name__)
 app.config.from_object(config.DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-from models import *
-
-from api.users.users import ns as users_namespace
-from api.restplus import api
 
 
 @app.route('/')
