@@ -2,6 +2,11 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {routing} from "./app.routing";
+import { HttpModule }    from '@angular/http';
+
+// Imports for loading & configuring the in-memory web api
+import { InMemoryWebApiModule } from 'angular2-in-memory-web-api';
+import { InMemoryDataService }  from './services/authentication.service';
 
 import { AppComponent }   from './app.component';
 import {LoginComponent} from "./principal-components/login.component";
@@ -15,6 +20,8 @@ import {TopicsDashboard} from "./principal-components/topics-dashboard.component
     imports:      [
         BrowserModule,
         FormsModule,
+        HttpModule,
+        InMemoryWebApiModule.forRoot(InMemoryDataService),
         routing
     ],
     declarations: [

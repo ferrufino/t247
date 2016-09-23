@@ -12,6 +12,10 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var app_routing_1 = require("./app.routing");
+var http_1 = require('@angular/http');
+// Imports for loading & configuring the in-memory web api
+var angular2_in_memory_web_api_1 = require('angular2-in-memory-web-api');
+var authentication_service_1 = require('./services/authentication.service');
 var app_component_1 = require('./app.component');
 var login_component_1 = require("./principal-components/login.component");
 var home_component_1 = require("./principal-components/home.component");
@@ -27,6 +31,8 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
+                http_1.HttpModule,
+                angular2_in_memory_web_api_1.InMemoryWebApiModule.forRoot(authentication_service_1.InMemoryDataService),
                 app_routing_1.routing
             ],
             declarations: [

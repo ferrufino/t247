@@ -24,7 +24,7 @@ import {AuthenticationService, User} from '../services/authentication.service'
                    <br><br>
                        <div class="row">
                             <div class="input-field col s12">
-                                <input [(ngModel)]="user.email" id="email" 
+                                <input [(ngModel)]="user.email" id="email"
                                     type="email" class="validate">
                                 <label for="email">Email</label>
                             </div>
@@ -36,7 +36,7 @@ import {AuthenticationService, User} from '../services/authentication.service'
                                 <label for="password">Password</label>
                            </div>
                        </div>
-                       <a href=""><h6>Forgot your password?</h6></a>  
+                       <a href=""><h6>Forgot your password?</h6></a>
                        <br><br>
                        <span>{{errorMsg}}</span>
                        <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
@@ -63,8 +63,10 @@ export class LoginComponent {
         private _service:AuthenticationService) {}
 
     login() {
-        if(!this._service.login(this.user)){
-            this.errorMsg = 'Failed to login';
+      this._service.login(this.user).subscribe((result) => {
+        if (!result) {
+          this.errorMsg = 'Failed to login';
         }
+      });
     }
 }
