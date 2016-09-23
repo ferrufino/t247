@@ -1,8 +1,9 @@
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin
 from sqlalchemy.ext.declarative import declared_attr
 
-from app import db
+db = SQLAlchemy()
 
 
 class Base(db.Model):
@@ -98,7 +99,7 @@ class Course(Base):
     __tablename__ = 'course'
     name = db.Column(db.String(255))
     groups = db.relationship("Group", back_populates="course")
-    topics = db.relationship("Topic", secondary="relevanttopics",
+    topics = db.relationship("Topic", secondary="relevanttopic",
                              back_populates="courses")
 
 
@@ -124,18 +125,19 @@ class Group(Base):
     """docstring for Group"""
     __tablename__ = 'group'
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    course = db.relationship("Course", back_populates="groups")
     period = db.Column(db.String(255))
     students = db.relationship("Student", secondary="enrollment",
                                back_populates="groups")
     teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     teacher = db.relationship("Teacher", back_populates="managed_groups")
-    assignments = db.relationship("Assignment", back_populates="groups")
+    assignments = db.relationship("Assignment", back_populates="group")
 
 
 class Enrollment(Base):
     """docstring for Enrollment"""
     __tablename__ = 'enrollment'
-    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
@@ -162,7 +164,7 @@ class Problem(Base):
     assignments = db.relationship("Assignment", back_populates="problem")
     submissions = db.relationship("Submission", back_populates="problem")
     topics = db.relationship("Topic", secondary="problemtopic",
-                             back_populates="problem")
+                             back_populates="problems")
 
 
 class Case(Base):
@@ -190,7 +192,7 @@ class Submission(Base):
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     student = db.relationship("Student", back_populates="submissions")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
-    problem = db.relationship("Problem", back_populates="problems")
+    problem = db.relationship("Problem", back_populates="submissions")
 
 
 class Assignment(Base):
