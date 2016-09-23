@@ -2,16 +2,19 @@ import logging.config
 
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security
 import config
 import os
 from api.users.users import ns as users_namespace
 from api.restplus import api
-from models import db
+from models import db, User
 
 
 app = Flask(__name__)
 app.config.from_object(config.DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+security = Security(app)
 
 
 @app.route('/')
