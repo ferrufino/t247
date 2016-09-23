@@ -127,7 +127,7 @@ class Group(Base):
     period = db.Column(db.String(255))
     students = db.relationship("Student", secondary="enrollment",
                                back_populates="groups")
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     teacher = db.relationship("Teacher", back_populates="managed_groups")
     assignments = db.relationship("Assignment", back_populates="groups")
 
@@ -135,8 +135,8 @@ class Group(Base):
 class Enrollment(Base):
     """docstring for Enrollment"""
     __tablename__ = 'enrollment'
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class ProblemTopic(Base):
@@ -187,7 +187,7 @@ class Submission(Base):
     result = db.Column(db.Integer)
     grade = db.Column(db.Integer)
 
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     student = db.relationship("Student", back_populates="submissions")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="problems")
