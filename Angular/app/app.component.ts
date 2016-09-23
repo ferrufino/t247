@@ -4,6 +4,7 @@
 
 import {Component} from "@angular/core";
 import {AuthenticationService} from './services/authentication.service';
+import './rxjs-operators.ts';
 
 @Component({
     selector: 'my-app',
