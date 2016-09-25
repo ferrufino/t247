@@ -3,6 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
+    WTF_CSRF_ENABLED = False
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
