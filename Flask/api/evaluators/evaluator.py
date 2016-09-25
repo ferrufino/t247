@@ -33,7 +33,7 @@ class EvaluatorAttemptSubmission(Resource):
     @api.expect(evaluatorSubmission)
     def post(self):
         """
-        Receives Post From Evaluator of Problem Created
+        Receives Post as an Attempt succesfully submitted.
         """
         data = request.json
         st = data.get('status')
