@@ -65,6 +65,7 @@ class UserAuth(Resource):
         """
         Logs user
         """
+        print (request)
         email = request.json.get('email')
         password = request.json.get('password')
         if verify_password(email, password):

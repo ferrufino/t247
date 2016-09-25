@@ -2,64 +2,69 @@
  * Created by ahinojosa on 13/09/16.
  */
 
+ import '../rxjs-operators';
+ import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Http, Response} from '@angular/http';
-import {Headers, RequestOptions} from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import { Headers, Http, Response, RequestOptions } from '@angular/http';
+// import { Observable }     from 'rxjs/Observable';
 
 export class User {
     constructor(
-        public email: string,
-        public password: string) { }
+        public email?: string,
+        public password?: string,
+        public roles?: [string],
+        public token?: string) { }
 }
 
 var users = [
-    new User('admin@admin.com','admin'),
-    new User('root@gmail.com','root')
+    new User('admin@admin.com','admin',['admin','prof','user']),
+    new User('root@gmail.com','root',['user'])
 ];
 
 @Injectable()
 export class AuthenticationService {
 
-    constructor(
-        private _router: Router,
-        private http: Http){}
+  private loggedIn = false;
 
-    private loginUrl = 'localhost:5000/api/users/login';
-    private headers = new Headers({'Content-Type': 'application/json'});
+  private loginUrl = 'http://localhost:5000/api/users/login';
+
+  private headers = new Headers({'Content-Type': 'application/json'});
+
+    constructor(
+        private _router: Router, private http: Http){
+          this.loggedIn = !!sessionStorage.getItem('auth_token');
+        }
 
     logout() {
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("email_user")
+        sessionStorage.removeItem("auth_token");
+        this.loggedIn = false;
         this._router.navigate(['login']);
     }
 
     login(user){
-        var authenticationTry = this.http
-                .post(this.loginUrl, JSON.stringify({email:user.email,password:user.password}), {headers: this.headers})
-               .toPromise()
-               .then(response => response.json().data)
-               .catch(this.handleError);
-      if(authenticationTry.token!=undefined){
-        sessionStorage.setItem("user",JSON.stringify(authenticationTry));
-        this._router.navigate(['']);
-        return true;
-      }
-      return false;
+      return this.http
+      .post(
+        this.loginUrl,
+        { "email":user.email, "password":user.password },
+        this.headers
+      )
+      .map(res => res.json())
+      .map((res) => {
+        if (res.token) {
+          sessionStorage.setItem('auth_token', res.token);
+          sessionStorage.setItem('email_user',user.email);
+          this.loggedIn = true;
+        }
 
+        return res.token;
+      });
     }
 
     checkCredentials(){
-        if (localStorage.getItem("user") === null){
-            this._router.navigate(['login']);
-        }
+      if (!this.loggedIn){
+        this._router.navigate(['login']);
+      }
     }
-
-    handleError(error : any) {
-        let errMsg = (error.message) ? error.message :
-        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg); // log to console instead
-        //return Observable.throw(errMsg);
-  }
 }
-

@@ -11,56 +11,59 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+require('../rxjs-operators');
+require('rxjs/add/operator/map');
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
-var http_2 = require('@angular/http');
+// import { Observable }     from 'rxjs/Observable';
 var User = (function () {
-    function User(email, password) {
+    function User(email, password, roles, token) {
         this.email = email;
         this.password = password;
+        this.roles = roles;
+        this.token = token;
     }
     return User;
 }());
 exports.User = User;
 var users = [
-    new User('admin@admin.com', 'admin'),
-    new User('root@gmail.com', 'root')
+    new User('admin@admin.com', 'admin', ['admin', 'prof', 'user']),
+    new User('root@gmail.com', 'root', ['user'])
 ];
 var AuthenticationService = (function () {
     function AuthenticationService(_router, http) {
         this._router = _router;
         this.http = http;
-        this.loginUrl = 'localhost:5000/api/users/login';
-        this.headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        this.loggedIn = false;
+        this.loginUrl = 'http://localhost:5000/api/users/login';
+        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        this.loggedIn = !!sessionStorage.getItem('auth_token');
     }
     AuthenticationService.prototype.logout = function () {
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("email_user");
+        sessionStorage.removeItem("auth_token");
+        this.loggedIn = false;
         this._router.navigate(['login']);
     };
     AuthenticationService.prototype.login = function (user) {
-        var authenticationTry = this.http
-            .post(this.loginUrl, JSON.stringify({ email: user.email, password: user.password }), { headers: this.headers })
-            .toPromise()
-            .then(function (response) { return response.json().data; })
-            .catch(this.handleError);
-        if (authenticationTry.token != undefined) {
-            sessionStorage.setItem("user", JSON.stringify(authenticationTry));
-            this._router.navigate(['']);
-            return true;
-        }
-        return false;
+        var _this = this;
+        return this.http
+            .post(this.loginUrl, { "email": user.email, "password": user.password }, this.headers)
+            .map(function (res) { return res.json(); })
+            .map(function (res) {
+            if (res.token) {
+                sessionStorage.setItem('auth_token', res.token);
+                sessionStorage.setItem('email_user', user.email);
+                _this.loggedIn = true;
+            }
+            return res.token;
+        });
     };
     AuthenticationService.prototype.checkCredentials = function () {
-        if (localStorage.getItem("user") === null) {
+        if (!this.loggedIn) {
             this._router.navigate(['login']);
         }
-    };
-    AuthenticationService.prototype.handleError = function (error) {
-        var errMsg = (error.message) ? error.message :
-            error.status ? error.status + " - " + error.statusText : 'Server error';
-        console.error(errMsg); // log to console instead
-        //return Observable.throw(errMsg);
     };
     AuthenticationService = __decorate([
         core_1.Injectable(), 
