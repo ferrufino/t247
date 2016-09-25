@@ -1,5 +1,5 @@
 /**
- * Created by ahinojosa on 13/09/16.
+ * Created by Alfredo Hinojosa on 9/22/2016.
  */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -11,19 +11,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Toturing 24/7';
+var core_1 = require('@angular/core');
+var ProgLanguage = (function () {
+    function ProgLanguage(name, version) {
+        this.name = name;
+        this.version = version;
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            template: "\n   <router-outlet></router-outlet>\n "
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    return ProgLanguage;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ProgLanguage = ProgLanguage;
+var languges = [
+    new ProgLanguage('C++', 'C++14'),
+    new ProgLanguage('Java', 'Java 8')
+];
+var SupportedLanguages = (function () {
+    function SupportedLanguages() {
+    }
+    SupportedLanguages.prototype.getLanguages = function () {
+        return languges;
+    };
+    SupportedLanguages = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], SupportedLanguages);
+    return SupportedLanguages;
+}());
+exports.SupportedLanguages = SupportedLanguages;
+//# sourceMappingURL=supported-languages.service.js.map

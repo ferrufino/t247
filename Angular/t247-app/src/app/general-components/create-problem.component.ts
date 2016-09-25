@@ -2,27 +2,28 @@
  * Created by Alfredo Hinojosa on 9/22/2016.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {SupportedLanguages, ProgLanguage} from "../services/supported-languages.service";
 import {ProblemDifficulties} from "../services/problem-difficulties.service";
 
 @Component({
-  selector: 'app-create-problem',
-  templateUrl: './create-problem.component.html',
-  styleUrls: ['./create-problem.component.css']
+    selector: 'create-problem',
+    providers: [SupportedLanguages, ProblemDifficulties],
+    templateUrl: './create-problem.component.html'
 })
-export class CreateProblemComponent {
 
-  constructor(
-    private _supportedLanguages:SupportedLanguages,
-    private _problemDifficulties:ProblemDifficulties){}
+export class CreateProblem {
 
-  supportedLanguages : ProgLanguage[]
-  difficulties : string[]
+    constructor(
+        private _supportedLanguages:SupportedLanguages,
+        private _problemDifficulties:ProblemDifficulties){}
 
-  ngOnInit(){
-    this.supportedLanguages = this._supportedLanguages.getLanguages();
-    this.difficulties = this._problemDifficulties.getDifficulties();
-  }
+    supportedLanguages : ProgLanguage[];
+    difficulties : string[]
+
+    ngOnInit(){
+        this.supportedLanguages = this._supportedLanguages.getLanguages();
+        this.difficulties = this._problemDifficulties.getDifficulties();
+    }
 
 }

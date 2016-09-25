@@ -1,5 +1,5 @@
 /**
- * Created by ahinojosa on 13/09/16.
+ * Created by Alfredo Hinojosa on 9/23/2016.
  */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -11,19 +11,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Toturing 24/7';
+var core_1 = require('@angular/core');
+var ProblemDifficulties = (function () {
+    function ProblemDifficulties() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            template: "\n   <router-outlet></router-outlet>\n "
-        }), 
+    ProblemDifficulties.prototype.getDifficulties = function () {
+        var diff = ["Easy", "Medium", "Hard", "Extreme"];
+        return diff;
+    };
+    ProblemDifficulties = __decorate([
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ProblemDifficulties);
+    return ProblemDifficulties;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ProblemDifficulties = ProblemDifficulties;
+//# sourceMappingURL=problem-difficulties.service.js.map
