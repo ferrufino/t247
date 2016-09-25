@@ -21,15 +21,26 @@ var HomeComponent = (function () {
     }
     HomeComponent.prototype.ngOnInit = function () {
         this._service.checkCredentials();
+        if (localStorage.getItem("user")) {
+            this.roles = JSON.parse(sessionStorage.getItem("user")).roles;
+            this.selectedRole = JSON.parse(sessionStorage.getItem("user")).roles[0];
+        }
+        //  $(".dropdown-button").dropdown();
+        //  $(".dropdown-button-mobile").dropdown();
+        //  $(".button-collapse").sideNav();
     };
     HomeComponent.prototype.logout = function () {
         this._service.logout();
     };
+    HomeComponent.prototype.changeSelectedRole = function (role) {
+        var index = this.roles.indexOf(role);
+        this.selectedRole = this.roles[index];
+    };
     HomeComponent = __decorate([
         core_1.Component({
-            selector: 'login-form',
+            selector: 'home',
             providers: [authentication_service_1.AuthenticationService],
-            template: "\n            <div class=\"container\" >\n                <div class=\"content\">\n                    <span>Congratulations, you have successfully logged in!!</span>\n                    <br />\n                    <a routerLink=\"/myAssignments\">Click Here to My Assignments</a>\n                    <a (click)=\"logout()\" href=\"#\">Click Here to logout</a>\n                </div>\n            </div>\n    \t"
+            template: "\n            <ul id=\"dropdownUser\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li *ngFor=\"let role of roles\">\n                <a (click)=\"changeSelectedRole(role)\" href=\"#!\">{{role}}</a>\n              </li>\n            </ul>\n            <ul id=\"dropdownMobile\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li *ngFor=\"let role of roles\">\n                <a (click)=\"changeSelectedRole(role)\" href=\"#!\">{{role}}</a>\n              </li>\n            </ul>\n            <nav>\n              <div class=\"nav-wrapper\">\n                <a href=\"#\" class=\"brand-logo\">T247</a>\n                <a href=\"#\" data-activates=\"mobile-demo\" class=\"button-collapse\"><i class=\"material-icons\">menu</i></a>\n                <ul class=\"right hide-on-med-and-down\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button\" href=\"#!\" data-activates=\"dropdownUser\">{{selectedRole}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n                <ul class=\"side-nav\" id=\"mobile-demo\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button-mobile\" href=\"#!\" data-activates=\"dropdownMobile\">{{selectedRole}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n              </div>\n            </nav>\n            <div class=\"container\" >\n              <div class=\"content\" [ngSwitch]=\"selectedRole\">\n                <topics-dashboard *ngSwitchCase=\"'user'\"></topics-dashboard>\n                <my-assignments *ngSwitchCase=\"'user'\"></my-assignments>\n                <list-of-problems *ngSwitchCase=\"'admin'\"></list-of-problems>\n                <my-courses *ngSwitchCase=\"'prof'\"></my-courses>\n              </div>\n            </div>\n    \t"
         }), 
         __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, router_1.Router])
     ], HomeComponent);
