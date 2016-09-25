@@ -27,7 +27,18 @@ class Judge(multiprocessing.Process):
         self.arr_compilation = { "cpp" : ["g++", "-o"], "java": ["javac"] }
         # Directories
         self.base_dir    = "/home/msf1013/Desktop/t247/Evaluator/"
-        self.working_dir = self.base_dir + "/compilation/judge_" + str(self.judge_id) + "/"
+        self.working_dir = self.base_dir + "compilation/judge_" + str(self.judge_id) + "/"
+        
+    def wait_result(self, process, timeout): 
+        try:
+            process.wait(timeout=timeout)
+            if (process.returncode != 0):
+                return process.returncode
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+            force_close_container(self.ctr_name)  
+            return 
 
     # Method that runs submitted code in a sandboxed environment (Docker container)
     # and returns the evaluation results
@@ -107,11 +118,22 @@ class Judge(multiprocessing.Process):
             
                 # 2) Create container
                 process = subprocess.Popen(['sudo', 'docker', 'run', '-dit', '--name', self.ctr_name, 'judge', 'bash'])
-                process.wait()
+                
+                # Capture errors while running Docker
+                
                 
                 # 3) Copy object file to container
                 process = subprocess.Popen(['sudo', 'docker', 'cp', self.working_dir + self.arr_obj_file[language], self.ctr_name+':/'+self.arr_obj_file[language]])
-                process.wait()
+                try:
+                    process.wait(timeout=1)
+                    if (process.returncode != 0):
+                        print("INTERNAL ERROR: " + str(process.returncode))
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+                    print("TIMEOUT: " + str(process.returncode))
+                
+                print("AFUERA: " + str(process.returncode))
                                
                 
                 # 4) Copy input file to container
