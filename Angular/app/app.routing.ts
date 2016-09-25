@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent }      from './principal-components/login.component';
 import {HomeComponent} from "./principal-components/home.component";
 import {AppComponent} from "./app.component";
+import {MyAssignments} from "./user-components/my-assignments.component";
 
 const appRoutes: Routes = [
     {
@@ -20,6 +21,10 @@ const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'myAssignments',
+        component: MyAssignments
     }
 ];
 

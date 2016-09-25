@@ -25,6 +25,9 @@ var LoginComponent = (function () {
             if (!result) {
                 _this.errorMsg = 'Failed to login';
             }
+            else {
+                _this._router.navigate(['']);
+            }
         });
     };
     LoginComponent = __decorate([

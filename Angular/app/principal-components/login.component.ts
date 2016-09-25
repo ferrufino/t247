@@ -67,6 +67,9 @@ export class LoginComponent {
         if (!result) {
           this.errorMsg = 'Failed to login';
         }
+        else{
+          this._router.navigate(['']);
+        }
       });
     }
 }

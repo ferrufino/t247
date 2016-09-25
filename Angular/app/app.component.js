@@ -12,9 +12,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+require('./rxjs-operators');
 var AppComponent = (function () {
     function AppComponent() {
-        this.title = 'Toturing 24/7';
+        this.title = 'Tutoring 24/7';
     }
     AppComponent = __decorate([
         core_1.Component({

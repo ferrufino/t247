@@ -2,32 +2,12 @@
  * Created by ahinojosa on 13/09/16.
  */
 
+ import '../rxjs-operators';
+ import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-
-import { Headers, Http } from '@angular/http';
-
-
-import { InMemoryDbService } from 'angular2-in-memory-web-api';
-export class InMemoryDataService implements InMemoryDbService {
-  createDb() {
-    let heroes = [
-      {id: 11, name: 'Mr. Nice'},
-      {id: 12, name: 'Narco'},
-      {id: 13, name: 'Bombasto'},
-      {id: 14, name: 'Celeritas'},
-      {id: 15, name: 'Magneta'},
-      {id: 16, name: 'RubberMan'},
-      {id: 17, name: 'Dynama'},
-      {id: 18, name: 'Dr IQ'},
-      {id: 19, name: 'Magma'},
-      {id: 20, name: 'Tornado'}
-    ];
-    return {heroes};
-  }
-}
+import { Headers, Http, Response, RequestOptions } from '@angular/http';
+// import { Observable }     from 'rxjs/Observable';
 
 export class User {
     constructor(
@@ -47,7 +27,7 @@ export class AuthenticationService {
 
   private loggedIn = false;
 
-  private loginUrl = 'http://localhost:5000/api/login';
+  private loginUrl = 'http://localhost:5000/api/users/login';
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
@@ -67,18 +47,18 @@ export class AuthenticationService {
       return this.http
       .post(
         this.loginUrl,
-        JSON.stringify({ email:user.email, password:user.password }),
+        { "email":user.email, "password":user.password },
         this.headers
       )
       .map(res => res.json())
       .map((res) => {
-        if (res.success) {
-          sessionStorage.setItem('auth_token', res.auth_token);
+        if (res.token) {
+          sessionStorage.setItem('auth_token', res.token);
           sessionStorage.setItem('email_user',user.email);
           this.loggedIn = true;
         }
 
-        return res.success;
+        return res.token;
       });
     }
 

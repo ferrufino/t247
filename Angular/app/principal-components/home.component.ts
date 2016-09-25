@@ -4,6 +4,7 @@
 
 import {Component} from '@angular/core';
 import {AuthenticationService} from '../services/authentication.service'
+import {Route, Router} from "@angular/router";
 
 @Component({
     selector: 'home',
@@ -60,7 +61,8 @@ export class HomeComponent {
     roles: [string]
     selectedRole : string
     constructor(
-        private _service:AuthenticationService){}
+        private _service: AuthenticationService,
+        private _router: Router){}
 
     ngOnInit(){
         this._service.checkCredentials();

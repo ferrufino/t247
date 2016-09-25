@@ -13,9 +13,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var authentication_service_1 = require('../services/authentication.service');
+var router_1 = require("@angular/router");
 var HomeComponent = (function () {
-    function HomeComponent(_service) {
+    function HomeComponent(_service, _router) {
         this._service = _service;
+        this._router = _router;
     }
     HomeComponent.prototype.ngOnInit = function () {
         this._service.checkCredentials();
@@ -40,7 +42,7 @@ var HomeComponent = (function () {
             providers: [authentication_service_1.AuthenticationService],
             template: "\n            <ul id=\"dropdownUser\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li *ngFor=\"let role of roles\">\n                <a (click)=\"changeSelectedRole(role)\" href=\"#!\">{{role}}</a>\n              </li>\n            </ul>\n            <ul id=\"dropdownMobile\" class=\"dropdown-content\">\n              <li><a href=\"#!\">Profile</a></li>\n              <li class=\"divider\"></li>\n              <li *ngFor=\"let role of roles\">\n                <a (click)=\"changeSelectedRole(role)\" href=\"#!\">{{role}}</a>\n              </li>\n            </ul>\n            <nav>\n              <div class=\"nav-wrapper\">\n                <a href=\"#\" class=\"brand-logo\">T247</a>\n                <a href=\"#\" data-activates=\"mobile-demo\" class=\"button-collapse\"><i class=\"material-icons\">menu</i></a>\n                <ul class=\"right hide-on-med-and-down\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button\" href=\"#!\" data-activates=\"dropdownUser\">{{selectedRole}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n                <ul class=\"side-nav\" id=\"mobile-demo\">\n                  <li><a href=\"sass.html\">Sass</a></li>\n                  <li><a href=\"badges.html\">Components</a></li>\n                  <li><a href=\"collapsible.html\">JavaScript</a></li>\n                  <!-- Dropdown Trigger -->\n                  <li><a class=\"dropdown-button-mobile\" href=\"#!\" data-activates=\"dropdownMobile\">{{selectedRole}}<i class=\"material-icons right\">arrow_drop_down</i></a></li>\n                  <li><a (click)=\"logout()\" href=\"#\">Logout</a></li>\n                </ul>\n              </div>\n            </nav>\n            <div class=\"container\" >\n              <div class=\"content\" [ngSwitch]=\"selectedRole\">\n                <topics-dashboard *ngSwitchCase=\"'user'\"></topics-dashboard>\n                <my-assignments *ngSwitchCase=\"'user'\"></my-assignments>\n                <list-of-problems *ngSwitchCase=\"'admin'\"></list-of-problems>\n                <my-courses *ngSwitchCase=\"'prof'\"></my-courses>\n              </div>\n            </div>\n    \t"
         }), 
-        __metadata('design:paramtypes', [authentication_service_1.AuthenticationService])
+        __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, router_1.Router])
     ], HomeComponent);
     return HomeComponent;
 }());

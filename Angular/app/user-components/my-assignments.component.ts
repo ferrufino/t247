@@ -3,63 +3,16 @@
  */
 
 import { Component } from '@angular/core';
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'my-assignments',
-  template: `
-  <table class="bordered centered">
-      <thead>
-        <tr>
-            <th data-field="id">#</th>
-            <th data-field="name">Name</th>
-            <th data-field="course">Course</th>
-            <th data-field="topic">Topic</th>
-            <th data-field="completed">Completed</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>
-            <a href="#">Something</a>
-          </td>
-          <td>Data Structures</td>
-          <td>Linked Lists</td>
-          <td>
-            <input type="checkbox" id="check1" />
-            <label for="check1"></label>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>
-            <a href="#">Something</a>
-          </td>
-          <td>Data Structures</td>
-          <td>Linked Lists</td>
-          <td>
-            <input type="checkbox" id="check2" />
-            <label for="check2"></label>
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>
-            <a href="#">Something</a>
-          </td>
-          <td>Data Structures</td>
-          <td>Linked Lists</td>
-          <td>
-            <input type="checkbox" id="check3" />
-            <label for="check3"></label>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-                      `
+  templateUrl: 'app/user-components/templates/my-assignments.component.html'
 })
 
 export class MyAssignments {
 
+    title = 'Test';
+    constructor(
+        private _router: Router){}
 }

@@ -11,32 +11,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+require('../rxjs-operators');
+require('rxjs/add/operator/map');
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-require('rxjs/add/operator/toPromise');
-require('rxjs/add/operator/map');
 var http_1 = require('@angular/http');
-var InMemoryDataService = (function () {
-    function InMemoryDataService() {
-    }
-    InMemoryDataService.prototype.createDb = function () {
-        var heroes = [
-            { id: 11, name: 'Mr. Nice' },
-            { id: 12, name: 'Narco' },
-            { id: 13, name: 'Bombasto' },
-            { id: 14, name: 'Celeritas' },
-            { id: 15, name: 'Magneta' },
-            { id: 16, name: 'RubberMan' },
-            { id: 17, name: 'Dynama' },
-            { id: 18, name: 'Dr IQ' },
-            { id: 19, name: 'Magma' },
-            { id: 20, name: 'Tornado' }
-        ];
-        return { heroes: heroes };
-    };
-    return InMemoryDataService;
-}());
-exports.InMemoryDataService = InMemoryDataService;
+// import { Observable }     from 'rxjs/Observable';
 var User = (function () {
     function User(email, password, roles, token) {
         this.email = email;
@@ -56,7 +36,7 @@ var AuthenticationService = (function () {
         this._router = _router;
         this.http = http;
         this.loggedIn = false;
-        this.loginUrl = 'http://localhost:5000/api/login';
+        this.loginUrl = 'http://localhost:5000/api/users/login';
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         this.loggedIn = !!sessionStorage.getItem('auth_token');
     }
@@ -69,15 +49,15 @@ var AuthenticationService = (function () {
     AuthenticationService.prototype.login = function (user) {
         var _this = this;
         return this.http
-            .post(this.loginUrl, JSON.stringify({ email: user.email, password: user.password }), this.headers)
+            .post(this.loginUrl, { "email": user.email, "password": user.password }, this.headers)
             .map(function (res) { return res.json(); })
             .map(function (res) {
-            if (res.success) {
-                sessionStorage.setItem('auth_token', res.auth_token);
+            if (res.token) {
+                sessionStorage.setItem('auth_token', res.token);
                 sessionStorage.setItem('email_user', user.email);
                 _this.loggedIn = true;
             }
-            return res.success;
+            return res.token;
         });
     };
     AuthenticationService.prototype.checkCredentials = function () {

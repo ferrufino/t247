@@ -10,7 +10,7 @@ import sys
         - Download from: https://pypi.python.org/pypi/psutil
 '''
 
-lang_id = int(sys.argv[1])
+language = sys.argv[1]
 time_limit = int(sys.argv[2])
 mem_limit = int(sys.argv[3])
 
@@ -41,35 +41,42 @@ def getMemoryUsage(pid):
 def set_limits():
     global time_limit 
 
+    print("time")
     # Time 
     resource.setrlimit(resource.RLIMIT_CPU, (time_limit, 5))
 
+    print("data")
     # Data
     resource.setrlimit(resource.RLIMIT_DATA, (5000000, 6000000))
 
+    print("stack")
     # Stack
     resource.setrlimit(resource.RLIMIT_STACK, (5000000, 6000000))
 
+    print("nproc")
     # Number of processes the current process may create
     resource.setrlimit(resource.RLIMIT_NPROC, (0, 0))
     
+    print("stdin")
     # Redirect STDIN
     redirectionSTDIN = os.open("std_in.txt", os.O_RDONLY)
     os.dup2(redirectionSTDIN,0)
     
+    print("stdout")
     # Redirect STDOUT
     redirectionSTDOUT = os.open("std_out.txt", os.O_RDWR|os.O_CREAT)
     os.dup2(redirectionSTDOUT,1)
 
+    print("stderr")
     # Redirect STDERROR
     redirectionSTDERROR = os.open('std_err.txt', os.O_RDWR|os.O_CREAT)
     os.dup2(redirectionSTDERROR, 2)
 
 # Spawn child process
 pro = ""
-if (lang_id == 0): # CPP
+if (language == "cpp"): # CPP
     pro = subprocess.Popen(["./a.out"], preexec_fn=set_limits)
-elif (lang_id == 1): # Java
+elif (language == "java"): # Java
     pro = subprocess.Popen(["java", "Main"], preexec_fn=set_limits)
 
 pid = pro.pid
@@ -78,7 +85,6 @@ status = None
 
 # Monitor child process
 while (p.status() == psutil.STATUS_RUNNING):
-    pass
     # Check memory exceeded
     mem = getMemoryUsage(pid)
     #print(mem)
