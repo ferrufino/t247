@@ -1,0 +1,61 @@
+<div class="container" style="margin-top: 100px;">
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="problem_name" type="text" class="validate">
+          <label for="problem_name">Name of problem</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field col s6">
+            <textarea id="desc_eng" class="materialize-textarea"></textarea>
+            <label for="desc_eng">Problem description: English</label>
+          </div>
+          <div class="input-field col s6">
+            <textarea id="desc_spn" class="materialize-textarea"></textarea>
+            <label for="desc_spn">Problem description: Spanish</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field col s6">
+            <input id="memory_limit" type="number" class="validate">
+            <label for="desc_eng">Memory limit</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="time_limit" type="number" class="validate">
+            <label for="desc_spn">Time limit</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field col s6">
+            <select id="languages">
+              <option *ngFor="let lang of supportedLanguages" [value]="lang.name">{{lang.name}}</option>
+            </select>
+            <label>Solution language</label>
+          </div>
+          <div class="input-field col s6">
+            <select>
+              <option value="" disabled selected>Choose the difficulty</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+            </select>
+            <label>Problem difficulty</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="center-align" style="margin-top: 25px;">
+        <a style="margin-right: 20px;" class="waves-effect waves-light btn-large">Full body</a>
+        <a class="waves-effect waves-light btn-large">Function</a>
+      </div>
+
+    </form>
+  </div>
+</div>
