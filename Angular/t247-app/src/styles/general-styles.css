@@ -1,4 +1,4 @@
-.center {
+.center-loading {
     padding-top: 20%;
 }
 
@@ -15,7 +15,9 @@ footer {
     border-top: thin solid #000000;
 }
 
-#main {
-    padding-top: 170px;
-    height: 700px;
+.main {
+    padding-top: 10%;
+    height: 100%;
 }
+
+

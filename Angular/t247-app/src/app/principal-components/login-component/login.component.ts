@@ -6,7 +6,7 @@ import {AuthenticationService, User} from '../../services/authentication.service
     selector: 'login-form',
     providers: [AuthenticationService],
     templateUrl: './login.component.html',
-    styleUrls: ['../../../styles/general-styles.css']
+    styleUrls: ['../../../styles/general-styles.css', './login.component.css']
 })
 
 export class LoginComponent {
