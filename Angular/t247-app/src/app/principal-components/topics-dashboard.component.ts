@@ -6,7 +6,6 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'topics-dashboard',
     template: `
-      <link type="text/css" rel="stylesheet" href="styles/estilosHomePage.css"/>
       <h3> Topics </h3>
       <div class="row">
         <div class="col s2 offset-s1 card-panel hoverable topic-box">DP</div>

@@ -1,7 +1,3 @@
-/**
- * Created by ahinojosa on 13/09/16.
- */
-
 import {Component} from "@angular/core";
 
 @Component({
@@ -14,5 +10,5 @@ import {Component} from "@angular/core";
 
 
 export class  AppComponent {
-    title = 'Toturing 24/7';
+    title = 'Tutoring 24/7';
 }

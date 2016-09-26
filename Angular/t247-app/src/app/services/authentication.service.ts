@@ -1,7 +1,3 @@
-/**
- * Created by ahinojosa on 13/09/16.
- */
-
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 
