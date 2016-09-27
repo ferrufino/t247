@@ -4,7 +4,6 @@ from api.restplus import api
 #create a problem
 evaluatorSubmission = api.model('Submission', {
     'request_type': fields.String(required=True, description='Evaluation type, must be \'submission\' in this case'),
-    'submission_id': fields.Integer(required=True, description='The unique identifier of Problem Submission'),
     'problem_id': fields.Integer(required=True, description='The unique identifier of the Problem'),
     'code': fields.String(required=True, description='Student\'s code to be executed'),
     'language': fields.String(required=True, description='Language of the code to be executed'),
