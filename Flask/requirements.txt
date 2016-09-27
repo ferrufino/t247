@@ -18,10 +18,13 @@ jsonschema==2.5.1
 Mako==1.0.4
 MarkupSafe==0.23
 passlib==1.6.5
+pkg-resources==0.0.0
 psycopg2==2.6.2
 python-dateutil==2.5.3
 python-editor==1.0.1
 pytz==2016.6.1
+redis==2.10.5
+rq==0.6.0
 six==1.10.0
 SQLAlchemy==1.0.15
 Werkzeug==0.11.11
