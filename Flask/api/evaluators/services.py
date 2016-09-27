@@ -202,7 +202,7 @@ def request_evaluation(data):
     
     data["judge_id"] = judge_id
     
-    job = q.enqueue_call(func=api.evaluators.services.evaluate, args=(data,), ttl=5)
+    job = q.enqueue_call(func=api.evaluators.services.evaluate, args=(data,), ttl=60000000, timeout=1000000000)
     
     # Check job status
     while (job.result is None and not job.is_failed):
@@ -225,8 +225,10 @@ def get_least_busy_queue():
     queue = None
     
     # Connect to queue
-    for i in range(5):     
-        q = Queue("judge_" + str(i), connection=redis_conn)  # no args implies the default queue
+    for i in range(5):
+         
+        q = Queue("j_" + str(i), connection=redis_conn)  # no args implies the default queue
+        print("Q-" + str(i) + ": " + str(len(q)))
         if (len(q) < size):
             size  = len(q)
             index = i

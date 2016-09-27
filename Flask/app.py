@@ -1,4 +1,5 @@
 import logging.config
+import gevent.wsgi
 
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
@@ -40,7 +41,9 @@ def initialize_app(flask_app):
 def main():
     initialize_app(app)
     #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run(debug=app.config['DEBUG'])
+    gevent_server = gevent.wsgi.WSGIServer(('', 5000), app)
+    gevent_server.serve_forever()
+    #app.run(debug=app.config['DEBUG'])
 
 if __name__ == '__main__':
     main()
