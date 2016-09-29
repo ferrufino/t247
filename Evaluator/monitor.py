@@ -97,16 +97,16 @@ pro.wait()
 
 # Check termination by timeout
 if (pro.returncode == -24):
-    print("Time Limit Exceeded", end="")
+    print("time limit exceeded", end="")
 # Check termination by memory limit exceeded
 elif (status == "MLE"):
-     print("Memory Limit Exceeded", end="")
+     print("memory limit exceeded", end="")
 # Check proper termination
 elif (pro.returncode == 0):
-     print("Successful Run", end="")
+     print("successful run", end="")
 # Check termination by any other condition (runtime error)
 else:
-     print("Runtime Error", end="")
+     print("runtime error", end="")
 
 
 

@@ -116,7 +116,7 @@ def evaluate(request):
         for test_no in range(total_tests):
         
             # 2) Create container
-            process = subprocess.Popen(['sudo', 'docker', 'run', '-dit', '--name', ctr_name, 'judge', 'bash'])
+            process = subprocess.Popen(['sudo', 'docker', 'run', '-dit', '--name', ctr_name, 't247', 'bash'])
             
             # Capture errors while running Docker
             execution_status = wait_and_recover(process, 3, ctr_name)
@@ -155,19 +155,8 @@ def evaluate(request):
             if (request_type == "creation"):
                 os.remove(working_dir + 'std_in.txt')
             
-            # Copy evaluator script to container
-            # TODO: Copy script to container during image creation 
-            # (currently copying script in runtime in order to allow quick changes)
-            process = subprocess.Popen(['sudo', 'docker', 'cp', base_dir + 'evaluator.py', ctr_name+':/evaluator.py'])
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
-            
-            if (execution_status == False):
-                return error_response("Error while copying monitor script to container")
-                            
             # 5) Execute  
-            process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'python3', 'evaluator.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'python3', 'monitor.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
             try:
                 status, placeholder = process.communicate(timeout=20)
