@@ -152,7 +152,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
@@ -198,3 +198,9 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Typescript ignore map files and js
+Angular/t247-app/src/app/*.js
+Angular/t247-app/src/app/*.js.map
+Angular/t247-app/src/app/*/*.js
+Angular/t247-app/src/app/*/*.js.map
