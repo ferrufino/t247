@@ -48,10 +48,10 @@ import {Route, Router} from "@angular/router";
             </nav>
             <div class="container" >
               <div class="content" [ngSwitch]="selectedRole">
-                <topics-dashboard *ngSwitchCase="'user'"></topics-dashboard>
-                <my-assignments *ngSwitchCase="'user'"></my-assignments>
+                <topics-dashboard *ngSwitchCase="'student'"></topics-dashboard>
+                <my-assignments *ngSwitchCase="'student'"></my-assignments>
                 <list-of-problems *ngSwitchCase="'admin'"></list-of-problems>
-                <my-courses *ngSwitchCase="'prof'"></my-courses>
+                <my-courses *ngSwitchCase="'professor'"></my-courses>
               </div>
             </div>
     	`
@@ -67,8 +67,8 @@ export class HomeComponent {
     ngOnInit(){
         this._service.checkCredentials();
         if(localStorage.getItem("user")){
-          this.roles = JSON.parse(sessionStorage.getItem("user")).roles;
-          this.selectedRole = JSON.parse(sessionStorage.getItem("user")).roles[0];
+          this.roles = JSON.parse(sessionStorage.getItem("roles"));
+          this.selectedRole = this.roles[0];
         }
       //  $(".dropdown-button").dropdown();
       //  $(".dropdown-button-mobile").dropdown();

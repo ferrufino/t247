@@ -18,29 +18,27 @@ var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
 // import { Observable }     from 'rxjs/Observable';
 var User = (function () {
-    function User(email, password, roles, token) {
+    function User(email, password, role, token) {
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
         this.token = token;
     }
     return User;
 }());
 exports.User = User;
-var users = [
-    new User('admin@admin.com', 'admin', ['admin', 'prof', 'user']),
-    new User('root@gmail.com', 'root', ['user'])
-];
 var AuthenticationService = (function () {
     function AuthenticationService(_router, http) {
         this._router = _router;
         this.http = http;
         this.loggedIn = false;
         this.loginUrl = 'http://localhost:5000/api/users/login';
+        this.rolesUrl = 'http://localhost:5000/api/users/role';
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         this.loggedIn = !!sessionStorage.getItem('auth_token');
     }
     AuthenticationService.prototype.logout = function () {
+        //TODO: Checa si vamos a mandar la acción de logout al api
         sessionStorage.removeItem("email_user");
         sessionStorage.removeItem("auth_token");
         this.loggedIn = false;
@@ -55,7 +53,16 @@ var AuthenticationService = (function () {
             if (res.token) {
                 sessionStorage.setItem('auth_token', res.token);
                 sessionStorage.setItem('email_user', user.email);
+                var roles = ['student'];
+                if (res.role === 'admin') {
+                    roles.push('admin', 'professor');
+                }
+                else if (res.role === 'professor') {
+                    roles.push('professor');
+                }
+                sessionStorage.setItem('roles', JSON.stringify(roles));
                 _this.loggedIn = true;
+                _this._router.navigate(['']);
             }
             return res.token;
         });
