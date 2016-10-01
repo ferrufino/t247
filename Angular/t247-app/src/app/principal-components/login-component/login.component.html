@@ -1,0 +1,43 @@
+<nav>
+    <div class="nav-wrapper #4a148c purple darken-4">
+        <a href="" class="brand-logo" id='logo'>T247</a>
+    </div>
+</nav>
+<div class="container main">
+    <div class="row">
+        <h3 class="center">Welcome to Tutoring 247 </h3>
+        <h4 class="center">Ready to learn some code?</h4>
+        <div class="col s6">
+            <img src="./assets/img/screen.png" >
+        </div>
+        <div class="col s6">
+            <br><br>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input [(ngModel)]="user.email" id="email"
+                           type="email" class="validate">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input [(ngModel)]="user.password" id="password"
+                           type="password" class="validate">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <a href=""><h6>Forgot your password?</h6></a>
+            <br><br>
+            <span>{{errorMsg}}</span>
+            <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
+                    type="submit" name="action">Login</button>
+        </div>
+    </div>
+</div>
+<footer class="page-footer N/A transparent">
+    <div class="footer-copyright N/A transparent">
+        <div class="container" id="footer">
+            <img src="styles/tec.png" class="right">
+        </div>
+    </div>
+</footer>

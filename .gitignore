@@ -200,7 +200,7 @@ jspm_packages
 .node_repl_history
 
 # Typescript ignore map files and js
-Angular/app/*.js
-Angular/app/*.js.map
-Angular/app/*/*.js
-Angular/app/*/*.js.map
+Angular/t247-app/src/app/*.js
+Angular/t247-app/src/app/*.js.map
+Angular/t247-app/src/app/*/*.js
+Angular/t247-app/src/app/*/*.js.map
