@@ -2,6 +2,7 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {routing} from "./app.routing";
+import { HttpModule }    from '@angular/http';
 
 import { AppComponent }   from './app.component';
 import {LoginComponent} from "./principal-components/login-component/login.component";
@@ -16,6 +17,7 @@ import {CreateProblem} from "./general-components/create-problem.component";
     imports:      [
         BrowserModule,
         FormsModule,
+        HttpModule,
         routing
     ],
     declarations: [
