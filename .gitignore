@@ -198,3 +198,7 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Typescript ignore map files and js
+Angular/app/*.js
+Angular/app/*.js.map
