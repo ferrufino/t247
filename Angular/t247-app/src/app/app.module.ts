@@ -11,6 +11,8 @@ import {MyCourses} from "./professor-components/my-courses.component";
 import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboard} from "./principal-components/topics-dashboard.component";
 import {CreateProblem} from "./general-components/create-problem.component";
+import { StudentComponentsComponent } from './student-components/student-components.component';
+import { TopicsDashboardComponent } from './student-components/topics-dashboard/topics-dashboard.component';
 
 @NgModule({
     imports:      [
@@ -26,7 +28,9 @@ import {CreateProblem} from "./general-components/create-problem.component";
         MyCourses,
         ListOfProblems,
         TopicsDashboard,
-        CreateProblem
+        CreateProblem,
+        StudentComponentsComponent,
+        TopicsDashboardComponent
     ],
     bootstrap:    [ AppComponent ]
 })
