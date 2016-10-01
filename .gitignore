@@ -202,3 +202,5 @@ jspm_packages
 # Typescript ignore map files and js
 Angular/app/*.js
 Angular/app/*.js.map
+Angular/app/*/*.js
+Angular/app/*/*.js.map
