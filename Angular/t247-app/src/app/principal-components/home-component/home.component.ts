@@ -16,7 +16,7 @@ export class HomeComponent {
 
   ngOnInit(){
       this._service.checkCredentials();
-      if(localStorage.getItem("user")){
+      if(sessionStorage.getItem("email_user")){
         this.roles = JSON.parse(sessionStorage.getItem("roles"));
         this.selectedRole = this.roles[0];
       }
