@@ -12,12 +12,15 @@ from api.evaluators.evaluator import nse as evaluator_namespace
 from api.restplus import api
 from models import db, User
 
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
 app.config.from_object(config.DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 security = Security(app)
 
+CORS(app)
 
 @app.route('/')
 def hello():
