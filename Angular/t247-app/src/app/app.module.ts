@@ -11,6 +11,7 @@ import {CreateProblem} from "./general-components/create-problem.component";
 import { StudentComponentsComponent } from './student-components/student-components.component';
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { KeysPipe } from './pipes/keys.pipe';
 
 @NgModule({
     imports:      [
@@ -27,7 +28,8 @@ import { FilterPipe } from './pipes/filter.pipe';
         CreateProblem,
         StudentComponentsComponent,
         GenericTableComponent,
-        FilterPipe
+        FilterPipe,
+        KeysPipe
     ],
     bootstrap:    [ AppComponent ]
 })

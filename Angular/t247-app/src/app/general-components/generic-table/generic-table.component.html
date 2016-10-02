@@ -1,4 +1,27 @@
+<span *ngFor="let entry of content | keys">
+  Key: {{entry.key}}, id: {{entry.value.id}}, Status: {{entry.value.isActive}}
+    <br/>
+</span>
+
+
 <input type="text" #filterInput (keyup)="0">
 <ul>
-    <li *ngFor="let item of myvalues | filter:filterInput.value">{{item}}</li>
+    <li >{{item}}</li>
 </ul>
+
+<table>
+    <thead>
+    <tr>
+        <th data-field="id">Name</th>
+        <th data-field="status">Item Name</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let item of myvalues | filterString:filterInput.value">
+        <td>{{item}}</td>
+        <td>$0.87</td>
+    </tr>
+    </tbody>
+</table>
