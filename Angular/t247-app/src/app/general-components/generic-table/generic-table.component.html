@@ -1,0 +1,4 @@
+<input type="text" #filterInput (keyup)="0">
+<ul>
+    <li *ngFor="let item of myvalues | filter:filterInput.value">{{item}}</li>
+</ul>
