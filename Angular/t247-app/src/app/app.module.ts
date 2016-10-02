@@ -12,6 +12,7 @@ import { StudentComponentsComponent } from './student-components/student-compone
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { KeysPipe } from './pipes/keys.pipe';
+import { FilterArrayOfObjectsPipe } from './pipes/filter-array-of-objects.pipe';
 
 @NgModule({
     imports:      [
@@ -29,7 +30,8 @@ import { KeysPipe } from './pipes/keys.pipe';
         StudentComponentsComponent,
         GenericTableComponent,
         FilterPipe,
-        KeysPipe
+        KeysPipe,
+        FilterArrayOfObjectsPipe
     ],
     bootstrap:    [ AppComponent ]
 })
