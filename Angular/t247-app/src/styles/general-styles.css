@@ -1,0 +1,24 @@
+.center-loading {
+    padding-top: 20%;
+    padding-left: 50%;
+}
+
+
+#logo {
+    padding-left: 30px;
+}
+
+footer {
+    align-content: right;
+}
+
+#footer {
+    border-top: thin solid #000000;
+}
+
+.main {
+    padding-top: 10%;
+    height: 100%;
+}
+
+
