@@ -1,6 +1,7 @@
-**Keys Pipe**
+**#Keys Pipe**
 
-_Example of use:_
+_Used for converting a Json into a readable array of objects_
+_#Example of use:_
 
 ### Definition in typescript
  content = [

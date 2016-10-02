@@ -9,7 +9,7 @@ import {JsonPipe} from '@angular/common';
 export class GenericTableComponent implements OnInit{
 
     // @Input('typeOfTable') typeOfTableName: string;
-    typeOfTableName: string = "users";
+    typeOfTableName: string = "courses";
     columns: Array<string>;
     private problemsBool;
     private assignmentsBool;
@@ -177,21 +177,21 @@ export class GenericTableComponent implements OnInit{
                this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                this.content = [
                    {
-                       "enrollmentId": "A0xxxxxx",
+                       "enrollmentId": "A1xxxxxx",
                        "firstName": "Gustavo",
-                       "LastName": "Ferrufino",
+                       "lastName": "Ferrufino",
                        "typeOfUser": 'Admin'
                    },
                    {
-                       "enrollmentId": "A0xxxxxx",
+                       "enrollmentId": "A2xxxxxx",
                        "firstName": "Eduardo",
-                       "LastName": "Zardain",
+                       "lastName": "Zardain",
                        "typeOfUser": 'Admin'
                    },
                    {
                        "enrollmentId": "A0xxxxxx",
                        "firstName": "Sergio",
-                       "LastName": "Fuentes",
+                       "lastName": "Fuentes",
                        "typeOfUser": 'Admin'
                    }
                ];

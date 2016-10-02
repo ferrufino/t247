@@ -12,7 +12,13 @@ import { StudentComponentsComponent } from './student-components/student-compone
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { KeysPipe } from './pipes/keys.pipe';
-import { FilterArrayOfObjectsPipe } from './pipes/filter-array-of-objects.pipe';
+import { FilterUsersPipe } from './pipes/filter-users.pipe';
+import { FilterProblemsPipe } from './pipes/filter-problems.pipe';
+import { FilterAssignmentsPipe } from './pipes/filter-assignments.pipe';
+import { FilterSubmissionsPipe } from './pipes/filter-submissions.pipe';
+import { FilterGroupsPipe } from './pipes/filter-groups.pipe';
+import { FilterCoursesPipe } from './pipes/filter-courses.pipe';
+import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 
 @NgModule({
     imports:      [
@@ -31,7 +37,13 @@ import { FilterArrayOfObjectsPipe } from './pipes/filter-array-of-objects.pipe';
         GenericTableComponent,
         FilterPipe,
         KeysPipe,
-        FilterArrayOfObjectsPipe
+        FilterUsersPipe,
+        FilterProblemsPipe,
+        FilterAssignmentsPipe,
+        FilterSubmissionsPipe,
+        FilterGroupsPipe,
+        FilterCoursesPipe,
+        FilterTopicsPipe
     ],
     bootstrap:    [ AppComponent ]
 })
