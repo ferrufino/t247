@@ -48,12 +48,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test-cases-creator.component.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test-cases-creator.component.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/test-cases-creator.component.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
+            <state relative-caret-position="234">
+              <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.module.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/t247-app/src/app/app.module.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="268">
+              <caret line="45" column="34" selection-start-line="45" selection-start-column="34" selection-end-line="45" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#46#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,13 +145,13 @@
         <option value="$PROJECT_DIR$/t247-app/src/app/principal-components/home-component/home.component.ts" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/fullbody-problem.component.ts" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/functionbody-problem.component.ts" />
-        <option value="$PROJECT_DIR$/t247-app/src/app/app.module.ts" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/fullbody-problem.component.html" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/functionbody-problem.component.html" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/test-cases-creator.component.html" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/create-problem.component.ts" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/create-problem.component.html" />
         <option value="$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/test-cases-creator.component.ts" />
+        <option value="$PROJECT_DIR$/t247-app/src/app/app.module.ts" />
       </list>
     </option>
   </component>
@@ -469,12 +481,12 @@
       <updated>1474818388345</updated>
       <workItem from="1474818403010" duration="1000" />
       <workItem from="1474818968292" duration="15000" />
-      <workItem from="1475422271533" duration="16344000" />
+      <workItem from="1475422271533" duration="17083000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16360000" />
+    <option name="totallyTimeSpent" value="17099000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -607,14 +619,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/t247-app/src/app/app.module.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/create-problem.component.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
@@ -646,9 +650,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/t247-app/src/app/general-components/create-problem/test-cases-creator.component.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
+        <state relative-caret-position="234">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/t247-app/src/app/app.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="45" column="34" selection-start-line="45" selection-start-column="34" selection-end-line="45" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
