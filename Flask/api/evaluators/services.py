@@ -6,6 +6,9 @@ import json
 import os
 import api.evaluators.services
 
+import requests
+import json
+
 # Helper compilation settings for the available languages
 arr_src_file = { "cpp" : "a.cpp", "java" : "Main.java" }
 arr_obj_file = { "cpp" : "a.out", "java" : "Main.class"}
@@ -34,7 +37,7 @@ def wait_and_recover(process, timeout, judge_name):
             remove_container(judge_name)
             return False
     except subprocess.TimeoutExpired:
-        os.system("sudo kill %s" % (process.pid,))
+        process.kill()
         process.wait()
         remove_container(judge_name)
         return False
@@ -164,7 +167,7 @@ def evaluate(request):
                     remove_container(ctr_name)
                     return error_response("Error while executing code inside container")
             except subprocess.TimeoutExpired:
-                os.system("sudo kill %s" % (process.pid,))
+                process.kill()
                 process.wait()
                 remove_container(ctr_name)
                 return error_response("Error while executing code inside container")            
@@ -207,13 +210,13 @@ def evaluate(request):
             
             # Compare actual vs expected output
             if (request_type == "submission"):
-                if (status == "Successful Run"):
+                if (status == "successful run"):
                     results.append("accepted" if (output == expected_output) else "wrong answer")
                 else:
                     results.append(status)
             # Return output as is
             elif (request_type == "creation"):
-                if (status == "Successful Run"):
+                if (status == "successful run"):
                     results.append({ "status" : status, "output" : output })
                 else:
                     results.append({ "status" : status })
@@ -231,8 +234,11 @@ def evaluate(request):
     return_obj["status"] = compilation_status
     if (compilation_status == "compiled successfully"):
         return_obj["test_cases"] = results
+       
+    if (request_type == "submission"):
+                   
+        requests.post("http://localhost:5000/api/evaluator/execution_result", json=return_obj) 
     
-    print(return_obj)
     return return_obj  
 
 # Method that runs an evaluation request using least busy worker
@@ -254,9 +260,12 @@ def request_evaluation(data):
     
     # Return result
     if (job.is_failed):
-        return { "error" : "Internal evaluation error" }
+        response = { "error" : "Internal evaluation error" }
     else:
-        return job.result
+        response = job.result
+    
+    #requests.post("http://localhost:5000/execution_result", data=response)
+    return response   
     
 # Method that returns the least busy worker queue
 def get_least_busy_queue():

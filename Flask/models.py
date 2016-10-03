@@ -52,6 +52,7 @@ class User(Base, UserMixin):
     """
     __tablename__ = 'user'
     email = db.Column(db.String(255), unique=True)
+    enrollment = db.Column(db.String(255), unique=True)
     password_hash = db.Column(db.String(255))
     active = db.Column(db.Boolean)
     first_name = db.Column(db.String(255))

@@ -46,11 +46,12 @@ export class AuthenticationService {
           sessionStorage.setItem('userJson',JSON.stringify(new User(user.email,res.id,res.name,res.lastName,res.enrollment)));
           sessionStorage.setItem('auth_token', res.token);
           sessionStorage.setItem('email_user',user.email);
+          res.role = 'admin';
           let roles = ['student'];
-          if(res.role === 'admin'){
+          if(res.role == 'admin'){
             roles.push('admin','professor');
           }
-          else if(res.role === 'professor'){
+          else if(res.role == 'professor'){
             roles.push('professor');
           }
           sessionStorage.setItem('roles',JSON.stringify(roles));

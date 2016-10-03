@@ -2,14 +2,14 @@
     <li><a href="/profile">Profile</a></li>
     <li class="divider"></li>
     <li *ngFor="let role of roles">
-        <a (click)="changeSelectedRole(role)" href="">{{role}}</a>
+        <a (click)="changeSelectedRole(role)">{{role}}</a>
     </li>
 </ul>
 <ul id="dropdownMobile" class="dropdown-content">
     <li><a href="/profile">Profile</a></li>
     <li class="divider"></li>
     <li *ngFor="let role of roles">
-        <a (click)="changeSelectedRole(role)" href="">{{role}}</a>
+        <a (click)="changeSelectedRole(role)">{{role}}</a>
     </li>
 </ul>
 <nav>
@@ -42,19 +42,19 @@
           </ul>
         </div>
         <div id="problems" class="col s12" *ngSwitchCase="'admin'">
-          <list-of-problems></list-of-problems>
+          <!-- <list-of-problems></list-of-problems> -->
         </div>
         <div id="groups" class="col s12" *ngSwitchCase="'professor'">
           <my-courses></my-courses>
         </div>
         <div id="problems" class="col s12" *ngSwitchCase="'professor'">
-          <list-of-problems></list-of-problems>
+          <!-- <list-of-problems></list-of-problems> -->
         </div>
         <div id="my-assignments" class="col s12" *ngSwitchCase="'student'">
-          <my-assignments></my-assignments>
+          <!-- <my-assignments></my-assignments> -->
         </div>
         <div id="topics-dashboard" class="col s12">
-          <topics-dashboard></topics-dashboard>
+          <app-topics-dashboard></app-topics-dashboard>
         </div>
         <div id="view-users" class="col s12" *ngSwitchCase="'admin'">
           <view-users></view-users>

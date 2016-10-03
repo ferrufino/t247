@@ -14,23 +14,26 @@ export class HomeComponent {
   constructor(
       private _service: AuthenticationService){}
 
-  ngOnInit(){
-      this._service.checkCredentials();
-      if(sessionStorage.getItem("email_user")){
-        this.roles = JSON.parse(sessionStorage.getItem("roles"));
-        this.selectedRole = this.roles[0];
-      }
-    //  $(".dropdown-button").dropdown();
-    //  $(".dropdown-button-mobile").dropdown();
-    //  $(".button-collapse").sideNav();
-  }
+    ngOnInit(){
+        this._service.checkCredentials();
+        if(sessionStorage.getItem("auth_token")){
+            this.roles = JSON.parse(sessionStorage.getItem("roles"));
+            this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
+        }
+        // $(".dropdown-button").dropdown();
+        // $(".dropdown-button-mobile").dropdown();
+    }
 
-  logout() {
-      this._service.logout();
-  }
+    logout() {
+        this._service.logout();
+    }
 
-  changeSelectedRole(role){
-    var index = this.roles.indexOf(role);
-    this.selectedRole = this.roles[index];
+    ngAfterViewInit() {
+        // $('select').material_select();
+    }
+
+    changeSelectedRole(role){
+        var index = this.roles.indexOf(role);
+        this.selectedRole = this.roles[index];
   }
 }

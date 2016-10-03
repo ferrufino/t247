@@ -1,0 +1,76 @@
+<h3>List of {{typeOfTableName}}</h3>
+
+<h5>Search:</h5>
+<input type="text" #filterInput (keyup)="0">
+<ul>
+    <li >{{item}}</li>
+</ul>
+<h5>List:</h5>
+
+<table>
+    <thead>
+    <tr>
+        <th *ngFor="let colName of columns">{{colName}}</th>
+    </tr>
+    </thead>
+    <tbody *ngIf="problemsBool">
+    <tr *ngFor="let entry of content | filterProblems: filterInput.value" >
+        <td>{{entry.value.title}}</td>
+        <td>{{entry.value.difficulty}}</td>
+        <td>{{entry.value.active}}</td>
+        <td>{{entry.value.changeStatus}}</td>
+        <td>edit</td>
+        <td>delete</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="assignmentsBool">
+    <tr *ngFor="let entry of content | filterAssignments: filterInput.value " >
+        <td>{{entry.value.title}}</td>
+        <td>{{entry.value.class}}</td>
+        <td>{{entry.value.topic}}</td>
+        <td>{{entry.value.duedate}}</td>
+        <td>{{entry.value.completed}}</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="submissionsBool">
+    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value" >
+        <td>{{entry.value.name}}</td>
+        <td>{{entry.value.numberOfAttempts}}</td>
+        <td>{{entry.value.solved}}</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="groupsBool">
+    <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
+        <td>{{entry.value.name}}</td>
+        <td>{{entry.value.period}}</td>
+        <td>edit</td>
+        <td>delete</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="usersBool">
+    <tr *ngFor="let entry of content | filterUsers: filterInput.value" >
+        <td>{{entry.value.enrollmentId}}</td>
+        <td>{{entry.value.firstName}}</td>
+        <td>{{entry.value.lastName}}</td>
+        <td>{{entry.value.typeOfUser}}</td>
+        <td>edit</td>
+        <td>delete</td>
+
+    </tr>
+    </tbody>
+    <tbody *ngIf="coursesBool">
+    <tr *ngFor="let entry of content | filterCourses: filterInput.value" >
+        <td>{{entry.value.title}}</td>
+        <td>edit</td>
+        <td>delete</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="topicsBool">
+    <tr *ngFor="let entry of content | filterTopics: filterInput.value" >
+        <td>{{entry.value.title}}</td>
+        <td>edit</td>
+        <td>delete</td>
+    </tr>
+    </tbody>
+</table>
+

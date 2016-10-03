@@ -8,6 +8,7 @@ from flask_restplus import Resource
 # from rest_api_demo.api.blog.business import create_category, delete_category, update_category
 from api.evaluators.serializers import evaluatorProblem
 from api.evaluators.serializers import evaluatorSubmission
+from api.evaluators.serializers import evaluatorResult
 from api.restplus import api
 import api.evaluators.services as services
 
@@ -29,7 +30,7 @@ class EvaluatorProblemCreation(Resource):
         Receives Post From Evaluator of Problem Created
         """
         data = request.json
-        
+                
         # Send job to worker  
         result = services.request_evaluation(data)
         
@@ -49,3 +50,20 @@ class EvaluatorAttemptSubmission(Resource):
         result = services.request_evaluation(data)
         
         return result
+        
+@nse.route('/execution_result')
+class EvaluatorExecutionResult(Resource):
+    @api.response(202, 'Result successfuly sent.')
+    @api.expect(evaluatorResult)
+    def post(self):
+        """
+        Receives Post as an Execution result.
+        """     
+        data = request.json
+        
+        print(request)
+        
+        # Print result  
+        print(data)
+        
+        return data
