@@ -3,8 +3,8 @@
  */
 
 import { Component } from '@angular/core';
-import {SupportedLanguages, ProgLanguage} from "../services/supported-languages.service";
-import {ProblemDifficulties} from "../services/problem-difficulties.service";
+import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
+import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 
 @Component({
     selector: 'create-problem',
@@ -13,6 +13,10 @@ import {ProblemDifficulties} from "../services/problem-difficulties.service";
 })
 
 export class CreateProblem {
+
+    // This variable specifies the form type that will be displayed, in order to upload the problem
+    // 0 = default value, 1 = full problem, 2 = function
+    problemTypeFlag : number = 0;
 
     constructor(
         private _supportedLanguages:SupportedLanguages,
@@ -24,6 +28,11 @@ export class CreateProblem {
     ngOnInit(){
         this.supportedLanguages = this._supportedLanguages.getLanguages();
         this.difficulties = this._problemDifficulties.getDifficulties();
+    }
+
+
+    checkTestCases(){
+      console.log("Sending data to evaluator..");
     }
 
 }

@@ -20,13 +20,13 @@ export class HomeComponent {
           this.roles = JSON.parse(localStorage.getItem("user")).roles;
           this.selectedRole = JSON.parse(localStorage.getItem("user")).roles[0];
         }
-       //$(".dropdown-button").dropdown();
-       //$(".dropdown-button-mobile").dropdown();
+       $(".dropdown-button").dropdown();
+       $(".dropdown-button-mobile").dropdown();
 
     }
 
     ngAfterViewInit() {
-        //$('select').material_select();
+        $('select').material_select();
     }
 
     logout() {

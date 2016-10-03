@@ -23,11 +23,11 @@
                 <div class="col s12">
                     <div class="input-field col s6">
                         <input id="memory_limit" type="number" class="validate">
-                        <label for="desc_eng">Memory limit</label>
+                        <label for="desc_eng">Memory limit (Milliseconds)</label>
                     </div>
                     <div class="input-field col s6">
                         <input id="time_limit" type="number" class="validate">
-                        <label for="desc_spn">Time limit</label>
+                        <label for="desc_spn">Time limit (Milliseconds)</label>
                     </div>
                 </div>
             </div>
@@ -52,9 +52,26 @@
             </div>
 
             <div class="center-align" style="margin-top: 25px;">
-                <a style="margin-right: 20px;" class="waves-effect waves-light btn-large">Full body</a>
-                <a class="waves-effect waves-light btn-large">Function</a>
+                <a (click) = "problemTypeFlag = 1" style="margin-right: 20px;" class="waves-effect waves-light btn-large">Full body problem</a>
+                <a (click) = "problemTypeFlag = 2" class="waves-effect waves-light btn-large">Function problem</a>
             </div>
+
+          <!-- This section is used to upload the problem's files -->
+          <div id="problem-file-upload">
+            <div [ngSwitch]="problemTypeFlag">
+              <app-fullbody-problem *ngSwitchCase="1"></app-fullbody-problem>
+              <app-functionbody-problem *ngSwitchCase="2"></app-functionbody-problem>
+            </div>
+          </div>
+
+          <!-- This section renders the TestCases component -->
+          <div *ngIf="problemTypeFlag != 0" id="testcases-section">
+            <app-test-cases-creator></app-test-cases-creator>
+          </div>
+
+          <button (click)="checkTestCases()" class="btn waves-effect waves-light btn-large" >Submit
+            <i class="material-icons right">send</i>
+          </button>
 
         </form>
     </div>
