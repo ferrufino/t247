@@ -102,9 +102,8 @@ export class CreateProblem {
    */
   evaluteTestCases() {
 
-
-    let inputs: string[] = this.getInputFromTestCases();
-    let sourceCode: string = "";
+    let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
+    let sourceCode: string = ""; // string with the source code of the project
 
     switch (this.problemTypeFlag) {
       case 1:
@@ -117,6 +116,7 @@ export class CreateProblem {
         break;
     }
 
+    // The object that will be sent to the evaluator
     let request = {
       "request_type": "upload",
       "code": sourceCode,
