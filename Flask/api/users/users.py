@@ -73,6 +73,7 @@ class UserAuthentication(Resource):
         if verify_password(email, password):
             token = g.user.generate_auth_token()
             role = g.user.role
+            print("User logged with token: " + token.decode('ascii'))
             return {'token': token.decode('ascii'), 'role': role}, 200
         abort(401)
 
