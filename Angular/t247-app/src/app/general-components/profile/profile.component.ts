@@ -39,5 +39,6 @@ export class ProfileComponent implements OnInit {
     console.log(this.user);
     this.editingProfile = false;
     console.log(this._editUserService.editUser(this.user));
+    sessionStorage.setItem("userJson",JSON.stringify(this.user));
   }
 }

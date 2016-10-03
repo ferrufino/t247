@@ -17,8 +17,6 @@ import { StudentComponentsComponent } from './student-components/student-compone
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
 import { FilterPipe } from './pipes/filter.pipe';
 
-import { FullbodyProblemComponent } from './general-components/create-problem/fullbody-problem.component';
-import { FunctionbodyProblemComponent } from './general-components/create-problem/functionbody-problem.component';
 import { TestCasesCreatorComponent } from './general-components/create-problem/test-cases-creator.component';
 
 import { KeysPipe } from './pipes/keys.pipe';
@@ -52,8 +50,6 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
         StudentComponentsComponent,
         GenericTableComponent,
         FilterPipe,
-        FullbodyProblemComponent,
-        FunctionbodyProblemComponent,
         TestCasesCreatorComponent,
         KeysPipe,
         FilterUsersPipe,

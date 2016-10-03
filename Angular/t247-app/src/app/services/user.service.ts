@@ -22,7 +22,7 @@ export class UserService {
       return this.http
       .put(
         this.editUrl+user.id,
-        {"first_name":user.first_name,"last_name":user.last_name, "password":user.password ,"enrollment":user.enrollment},
+        {"first_name":user.first_name,"last_name":user.last_name,"enrollment":user.enrollment},
         this.headers
       )
       .map(res => res.json());
