@@ -47,13 +47,14 @@ class UserCreation(Resource):
         """
         email = request.json.get('email')
         password = request.json.get('password')
+        enrollment = request.json.get('enrollment')
 
         if email is None or password is None:
             abort(400)  # missing arguments
         if User.query.filter_by(email=email).first() is not None:
             abort(400)  # existing user
 
-        new_user = User(email=email, role='admin')
+        new_user = User(email=email, role='admin', enrollment=enrollment)
         new_user.hash_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -63,7 +64,7 @@ class UserCreation(Resource):
 @ns.route('/login')
 class UserAuthentication(Resource):
     @api.response(200, 'User succesfully logged')
-    @api.expect(api_user)
+    @api.expect(user_auth)
     def post(self):
         """
         Logs user
@@ -73,8 +74,12 @@ class UserAuthentication(Resource):
         if verify_password(email, password):
             token = g.user.generate_auth_token()
             role = g.user.role
+            name = g.user.first_name
+            last_name = g.user.last_name
+            enrollment = g.user.enrollment
             print("User logged with token: " + token.decode('ascii'))
-            return {'token': token.decode('ascii'), 'role': role}, 200
+            return {'token': token.decode('ascii'), 'role': role, 'name': name,
+                    'lastName': last_name, 'enrollment': enrollment}, 200
         abort(401)
 
 
