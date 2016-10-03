@@ -1,7 +1,9 @@
 <div class="container" style="margin-top: 100px;">
-  <form class="col s12" [formGroup]="createProblemForm" (ngSubmit)="onSubmit()">
+
+  <form class="col s12" [formGroup]="createProblemForm" (ngSubmit)="evaluteTestCases()">
 
     <div formGroupName="problemDetails">
+
 
       <!-- Problem name -->
       <div class="row">
@@ -47,7 +49,7 @@
         <div class="col s12">
 
           <div class="input-field col s6">
-            <select id="languages">
+            <select>
               <option *ngFor="let lang of supportedLanguages" [value]="lang.name">{{lang.name}}</option>
             </select>
             <label>Solution language</label>
@@ -55,7 +57,7 @@
 
           <div class="input-field col s6">
             <select>
-              <option *ngFor="let diff of difficulties">{{diff}}</option>
+              <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
             </select>
             <label>Problem difficulty</label>
           </div>
@@ -74,14 +76,60 @@
     <!-- This section is used to upload the problem's files -->
     <div id="problem-file-upload">
       <div [ngSwitch]="problemTypeFlag">
-        <app-fullbody-problem *ngSwitchCase="1"></app-fullbody-problem>
-        <app-functionbody-problem *ngSwitchCase="2"></app-functionbody-problem>
+
+        <div *ngSwitchCase="1">
+          <div class="section" style="margin-top: 20px;">
+            <br>
+
+            <h5> Please input the source code of the problem</h5>
+
+            <div formGroupName="problemSourceFull">
+              <div class="input-field col s12">
+                <textarea id="full_problem_code" formControlName="code" class="materialize-textarea"></textarea>
+                <label for="full_problem_code">Source code:</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div *ngSwitchCase="2">
+          <div class="section" style="margin-top: 20px;">
+
+            <div formGroupName="problemSourceFunction">
+
+              <h5> Please input the source code of the first half for the problem</h5>
+
+              <div class="input-field col s12">
+                <textarea id="first_half_code" formControlName="firstHalf" class="materialize-textarea"></textarea>
+                <label for="first_half_code">First half</label>
+              </div>
+
+              <h5> Please input the source code of the function for the problem</h5>
+
+              <div class="input-field col s12">
+                <textarea id="function_code" formControlName="functionCode" class="materialize-textarea"></textarea>
+                <label for="function_code">Function code</label>
+              </div>
+
+              <h5> Please input the source code of the second half for the problem</h5>
+
+              <div class="input-field col s12">
+                <textarea id="second_half_code" formControlName="secondHalf" class="materialize-textarea"></textarea>
+                <label for="second_half_code">Second half</label>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- This section renders the TestCases component -->
     <div *ngIf="problemTypeFlag != 0" id="testcases-section">
-      <app-test-cases-creator></app-test-cases-creator>
+      <app-test-cases-creator [(testcaseslist)]="problemTestCases"></app-test-cases-creator>
     </div>
 
     <button [disabled]="!createProblemForm.valid" type="submit" class="btn waves-effect waves-light btn-large">Submit

@@ -1,16 +1,5 @@
-import { Component } from '@angular/core';
-
-export class TestCase {
-
-  public onDescription: boolean;
-  public content: string;
-  public output: string;
-  public feedback: string;
-
-  constructor(onDescription: boolean) {
-    this.onDescription = onDescription;
-  }
-}
+import { Component, Input } from '@angular/core';
+import {TestCase} from "./TestCase";
 
 @Component({
   selector: 'app-test-cases-creator',
@@ -18,11 +7,8 @@ export class TestCase {
 })
 export class TestCasesCreatorComponent {
 
-  testcaseslist: TestCase[];
+  @Input('') testcaseslist: TestCase[];
 
-  constructor() {
-    this.testcaseslist = [];
-  }
 
   /**
    * This function creates a new TestCase object with the onDescription property equals to false,

@@ -15,11 +15,11 @@ export class HomeComponent {
       private _service: AuthenticationService){}
 
     ngOnInit(){
-        this._service.checkCredentials();
-        if(localStorage.getItem("user")){
-            this.roles = JSON.parse(localStorage.getItem("user")).roles;
-            this.selectedRole = JSON.parse(localStorage.getItem("user")).roles[0];
-        }
+        // this._service.checkCredentials();
+        // if(localStorage.getItem("user")){
+        //     this.roles = JSON.parse(localStorage.getItem("user")).roles;
+        //     this.selectedRole = JSON.parse(localStorage.getItem("user")).roles[0];
+        // }
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();
     }
@@ -30,10 +30,6 @@ export class HomeComponent {
 
     ngAfterViewInit() {
         $('select').material_select();
-    }
-
-    logout() {
-        this._service.logout();
     }
 
     changeSelectedRole(role){
