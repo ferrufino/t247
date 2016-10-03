@@ -1,15 +1,15 @@
 <ul id="dropdownUser" class="dropdown-content">
-    <li><a href="#!">Profile</a></li>
+    <li><a href="/profile">Profile</a></li>
     <li class="divider"></li>
     <li *ngFor="let role of roles">
-        <a (click)="changeSelectedRole(role)" href="#!">{{role}}</a>
+        <a (click)="changeSelectedRole(role)" href="">{{role}}</a>
     </li>
 </ul>
 <ul id="dropdownMobile" class="dropdown-content">
-    <li><a href="#!">Profile</a></li>
+    <li><a href="/profile">Profile</a></li>
     <li class="divider"></li>
     <li *ngFor="let role of roles">
-        <a (click)="changeSelectedRole(role)" href="#!">{{role}}</a>
+        <a (click)="changeSelectedRole(role)" href="">{{role}}</a>
     </li>
 </ul>
 <nav>
@@ -17,21 +17,54 @@
         <a href="" class="brand-logo" id='logo'>T247</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a class="dropdown-button" href="#!" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
-            <li><a (click)="logout()" href="#">Logout</a></li>
+            <li><a class="dropdown-button" href="" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a (click)="logout()" href="">Logout</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
-            <li><a class="dropdown-button-mobile" href="#!" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
-            <li><a (click)="logout()" href="#">Logout</a></li>
+            <li><a class="dropdown-button-mobile" href="" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a (click)="logout()" href="">Logout</a></li>
         </ul>
     </div>
 </nav>
 <div class="container" >
     <div class="content" [ngSwitch]="selectedRole">
-      <topics-dashboard *ngSwitchCase="'student'"></topics-dashboard>
-      <my-assignments *ngSwitchCase="'student'"></my-assignments>
-      <list-of-problems *ngSwitchCase="'admin'"></list-of-problems>
-      <my-courses *ngSwitchCase="'professor'"></my-courses>
-      <create-problem *ngSwitchCase="'admin'"></create-problem>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3" *ngSwitchCase="'admin'"><a href="#problems">Problems</a></li>
+            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#groups">Groups</a></li>
+            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#problems">Problems</a></li>
+            <li class="tab col s3" *ngSwitchCase="'student'"><a href="#my-assignments">My Assignments</a></li>
+            <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
+            <li class="tab col s3" *ngSwitchCase="'admin'"><a href="#view-users">Users</a></li>
+            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#view-users">Users</a></li>
+            <li class="tab col s3" *ngSwitchCase="'student'"><a href="#submissions">History</a></li>
+          </ul>
+        </div>
+        <div id="problems" class="col s12" *ngSwitchCase="'admin'">
+          <list-of-problems></list-of-problems>
+        </div>
+        <div id="groups" class="col s12" *ngSwitchCase="'professor'">
+          <my-courses></my-courses>
+        </div>
+        <div id="problems" class="col s12" *ngSwitchCase="'professor'">
+          <list-of-problems></list-of-problems>
+        </div>
+        <div id="my-assignments" class="col s12" *ngSwitchCase="'student'">
+          <my-assignments></my-assignments>
+        </div>
+        <div id="topics-dashboard" class="col s12">
+          <topics-dashboard></topics-dashboard>
+        </div>
+        <div id="view-users" class="col s12" *ngSwitchCase="'admin'">
+          <view-users></view-users>
+        </div>
+        <div id="view-users" class="col s12" *ngSwitchCase="'professor'">
+          <view-users></view-users>
+        </div>
+        <div id="submissions" class="col s12" *ngSwitchCase="'student'">
+          <submissions></submissions>
+        </div>
+      </div>
     </div>
 </div>

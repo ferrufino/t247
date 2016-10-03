@@ -12,6 +12,9 @@ import {MyCourses} from "./professor-components/my-courses.component";
 import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboard} from "./principal-components/topics-dashboard.component";
 import {CreateProblem} from "./general-components/create-problem.component";
+import {SubmissionsComponent} from "./submissions/submissions.component";
+import {ProfileComponent} from "./general-components/profile/profile.component";
+import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
 
 @NgModule({
     imports:      [
@@ -28,7 +31,10 @@ import {CreateProblem} from "./general-components/create-problem.component";
         MyCourses,
         ListOfProblems,
         TopicsDashboard,
-        CreateProblem
+        CreateProblem,
+        SubmissionsComponent,
+        ProfileComponent,
+        ViewUsersComponent
     ],
     bootstrap:    [ AppComponent ]
 })
