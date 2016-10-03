@@ -7,15 +7,8 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import {User} from '../user';
 // import { Observable }     from 'rxjs/Observable';
-
-export class User {
-    constructor(
-        public email?: string,
-        public password?: string,
-        public role?: [string],
-        public token?: string) { }
-}
 @Injectable()
 export class AuthenticationService {
 
@@ -50,13 +43,15 @@ export class AuthenticationService {
       .map(res => res.json())
       .map((res) => {
         if (res.token) {
+          sessionStorage.setItem('userJson',JSON.stringify(new User(user.email,res.id,res.name,res.lastName,res.enrollment)));
           sessionStorage.setItem('auth_token', res.token);
           sessionStorage.setItem('email_user',user.email);
+          res.role = 'admin';
           let roles = ['student'];
-          if(res.role === 'admin'){
+          if(res.role == 'admin'){
             roles.push('admin','professor');
           }
-          else if(res.role === 'professor'){
+          else if(res.role == 'professor'){
             roles.push('professor');
           }
           sessionStorage.setItem('roles',JSON.stringify(roles));
