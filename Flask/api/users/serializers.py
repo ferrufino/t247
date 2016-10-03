@@ -14,7 +14,7 @@ user = api.model('User', {
     'email': fields.String(required=True, description='User email'),
     'first_name': fields.String(required=True, description='User name'),
     'last_name': fields.String(required=True, description='User last name'),
-    'role': fields.String(required=True, description='User role')
+    'role': fields.String(required=True, description='User role'),
     'enrollment': fields.String(required=True, description='User enrollment number')
 })
 

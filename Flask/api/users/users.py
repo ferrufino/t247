@@ -58,7 +58,7 @@ class UserCreation(Resource):
         new_user.hash_password(password)
         db.session.add(new_user)
         db.session.commit()
-        return {'email': new_user.email}, 201
+        return {'email': new_user.email, 'id': new_user.id}, 201
 
 
 @ns.route('/login')
@@ -78,8 +78,9 @@ class UserAuthentication(Resource):
             last_name = g.user.last_name
             enrollment = g.user.enrollment
             print("User logged with token: " + token.decode('ascii'))
-            return {'token': token.decode('ascii'), 'role': role, 'name': name,
-                    'lastName': last_name, 'enrollment': enrollment}, 200
+            return {'token': token.decode('ascii'), 'id': g.user.id,
+                    'role': role, 'name': name, 'lastName': last_name,
+                    'enrollment': enrollment}, 200
         abort(401)
 
 
