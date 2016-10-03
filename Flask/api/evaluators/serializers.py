@@ -19,3 +19,8 @@ evaluatorProblem = api.model('Problem', {
     'memory_limit': fields.Integer(required=True, description='Number of KBs before MLE'),
     'test_cases': fields.List(cls_or_instance=fields.String, required=True, description='Array of strings containing the test cases\' input')
 })
+
+evaluatorResult = api.model('Result', {
+    'status': fields.String(required=True, description='Compilation status'),
+    'test_cases': fields.List(cls_or_instance=fields.String, required=True, description='Array of strings containing the test cases\' results')
+})

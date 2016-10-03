@@ -11,15 +11,17 @@ import {AuthenticationService, User} from '../../services/authentication.service
 
 export class LoginComponent {
 
-    public user = new User('','',['']);
-    public errorMsg = '';
+  public user = new User('','',['']);
+  public errorMsg = '';
 
-    constructor(
-        private _service:AuthenticationService) {}
+  constructor(
+      private _service:AuthenticationService) {}
 
-    login() {
-        if(!this._service.login(this.user)){
-            this.errorMsg = 'Failed to login';
-        }
-    }
+  login() {
+    this._service.login(this.user).subscribe((result) => {
+      if (!result) {
+        this.errorMsg = 'Failed to login';
+      }
+    });
+  }
 }

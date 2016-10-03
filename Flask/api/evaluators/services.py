@@ -4,8 +4,10 @@ from redis import Redis
 import subprocess
 import json
 import os
-
 import api.evaluators.services
+
+import requests
+import json
 
 # Helper compilation settings for the available languages
 arr_src_file = { "cpp" : "a.cpp", "java" : "Main.java" }
@@ -14,6 +16,32 @@ arr_compilation = { "cpp" : ["g++", "-o"], "java": ["javac"] }
 
 # Directories
 base_dir    = "/home/msf1013/Desktop/t247/Evaluator/"
+
+# Method that returns custom response dictionary
+def error_response(error):
+    response = { "error" : error }
+    print(response) 
+    return { "error" : error }
+
+# Method that destroys the Docker container with the given id
+def remove_container(judge_name):
+    process = subprocess.Popen(['sudo', 'docker', 'rm', judge_name, "-f"])
+    process.wait()
+
+# Method that returns a Boolean value indicating if the process execution
+# was successful or not. It takes care of terminating the Docker container in case of failure
+def wait_and_recover(process, timeout, judge_name):
+    try:
+        process.wait(timeout=timeout)
+        if (process.returncode != 0):
+            remove_container(judge_name)
+            return False
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+        remove_container(judge_name)
+        return False
+    return True
    
 # Method that runs submitted code in a sandboxed environment (Docker container)
 # and returns the evaluation results
@@ -35,8 +63,8 @@ def evaluate(request):
     if (request_type == "submission"):
         problem_id    = request["problem_id"]
         problem_dir = base_dir + "problems/" + str(problem_id) + "/"
-    # Problem upload parameters
-    elif (request_type == "upload"):
+    # Problem creation parameters
+    elif (request_type == "creation"):
         test_cases = request["test_cases"]          
 
     results = []
@@ -66,7 +94,7 @@ def evaluate(request):
         total_tests = len(input_files)
     
     # Calculate total of incoming test cases
-    elif (request_type == "upload"):
+    elif (request_type == "creation"):
         total_tests = len(test_cases)
     
     # 1) Compile
@@ -91,30 +119,27 @@ def evaluate(request):
         for test_no in range(total_tests):
         
             # 2) Create container
-            process = subprocess.Popen(['sudo', 'docker', 'run', '-dit', '--name', ctr_name, 'judge', 'bash'])
+            process = subprocess.Popen(['sudo', 'docker', 'run', '-dit', '--name', ctr_name, 't247', 'bash'])
             
             # Capture errors while running Docker
-            process.wait()
+            execution_status = wait_and_recover(process, 3, ctr_name)
             
+            if (execution_status == False):
+                return error_response("Error during container creation")
             
             # 3) Copy object file to container
             process = subprocess.Popen(['sudo', 'docker', 'cp', working_dir + arr_obj_file[language], ctr_name+':/'+arr_obj_file[language]])
-            #try:
-            #    process.wait(timeout=1)
-            #    if (process.returncode != 0):
-            #        print("INTERNAL ERROR: " + str(process.returncode))
-            #except subprocess.TimeoutExpired:
-            #    process.kill()
-            #    process.wait()
-            #    print("TIMEOUT: " + str(process.returncode))
             
-            #print("AFUERA: " + str(process.returncode))
-            process.wait()              
+            # Capture errors while running Docker
+            execution_status = wait_and_recover(process, 3, ctr_name)
+            
+            if (execution_status == False):
+                return error_response("Error while copying object code to container")            
             
             # 4) Copy input file to container
             
-            # a) Problem upload: create file from string and copy it
-            if (request_type == "upload"):
+            # a) Problem creation: create file from string and copy it
+            if (request_type == "creation"):
                 with open(working_dir + "std_in.txt", "w+") as text_file:
                     print(test_cases[test_no], file=text_file, end="")
                 process = subprocess.Popen(['sudo', 'docker', 'cp', working_dir + "std_in.txt", ctr_name+':/std_in.txt'])
@@ -123,38 +148,55 @@ def evaluate(request):
             elif (request_type == "submission"):
                  process = subprocess.Popen(['sudo', 'docker', 'cp', problem_dir + "input/" + input_files[test_no], ctr_name+':/std_in.txt'])   
             
-            process.wait()
+            # Capture errors while running Docker
+            execution_status = wait_and_recover(process, 3, ctr_name)
+            
+            if (execution_status == False):
+                return error_response("Error while copying input to container")
             
             # Delete input file
-            if (request_type == "upload"):
+            if (request_type == "creation"):
                 os.remove(working_dir + 'std_in.txt')
             
-            # Copy evaluator script to container
-            # TODO: Copy script to container during image creation 
-            # (currently copying script in runtime in order to allow quick changes)
-            process = subprocess.Popen(['sudo', 'docker', 'cp', base_dir + 'evaluator.py', ctr_name+':/evaluator.py'])
-            process.wait()
-                
             # 5) Execute  
-            process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'python3', 'evaluator.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            #status = process.stdout.read()
-            status, placeholder = process.communicate()
-            print("MALO" + str(process.returncode))
-            print(str(status))                
+            process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'python3', 'monitor.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            try:
+                status, placeholder = process.communicate(timeout=20)
+                if (process.returncode != 0):
+                    remove_container(ctr_name)
+                    return error_response("Error while executing code inside container")
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+                remove_container(ctr_name)
+                return error_response("Error while executing code inside container")            
             
             # 6) Stop container
             process = subprocess.Popen(['sudo', 'docker', 'stop', ctr_name])
-            process.wait() 
+            
+            # Capture errors while running Docker
+            execution_status = wait_and_recover(process, 3, ctr_name)
+            
+            if (execution_status == False):
+                return error_response("Error while stopping container")
 
             # 7) Retrieve stdout from container
             process = subprocess.Popen(['sudo', 'docker', 'cp', ctr_name+':/std_out.txt', working_dir + 'std_out.txt'])
-            process.wait()
+            
+            # Capture errors while running Docker
+            execution_status = wait_and_recover(process, 3, ctr_name)
+            
+            if (execution_status == False):
+                return error_response("Error while retrieving output from container")
+            
+            # Remove files
             file = open(working_dir + "std_out.txt", "r")
             output = file.read()
             os.remove(working_dir + "std_out.txt")
 
             # 8) Kill container
-            process = subprocess.Popen(['sudo', 'docker', 'rm', ctr_name])
+            process = subprocess.Popen(['sudo', 'docker', 'rm', ctr_name, '-f'])
             process.wait()
             
             # Get expected output
@@ -168,13 +210,13 @@ def evaluate(request):
             
             # Compare actual vs expected output
             if (request_type == "submission"):
-                if (status == "Successful Run"):
+                if (status == "successful run"):
                     results.append("accepted" if (output == expected_output) else "wrong answer")
                 else:
                     results.append(status)
             # Return output as is
-            elif (request_type == "upload"):
-                if (status == "Successful Run"):
+            elif (request_type == "creation"):
+                if (status == "successful run"):
                     results.append({ "status" : status, "output" : output })
                 else:
                     results.append({ "status" : status })
@@ -189,10 +231,14 @@ def evaluate(request):
             
     # Prepare returned object
     return_obj = {}
-    return_obj["status"]        = compilation_status
+    return_obj["status"] = compilation_status
     if (compilation_status == "compiled successfully"):
         return_obj["test_cases"] = results
        
+    if (request_type == "submission"):
+                   
+        requests.post("http://localhost:5000/api/evaluator/execution_result", json=return_obj) 
+    
     return return_obj  
 
 # Method that runs an evaluation request using least busy worker
@@ -202,17 +248,24 @@ def request_evaluation(data):
     
     data["judge_id"] = judge_id
     
-    job = q.enqueue_call(func=api.evaluators.services.evaluate, args=(data,), ttl=60000000, timeout=1000000000)
+    job = q.enqueue_call(func=api.evaluators.services.evaluate, args=(data,), ttl=10000, timeout=60000000)
     
-    # Check job status
+    # Immediate return after problem submission
+    if (data["request_type"] == "submission"):
+        return { "message" : "successful problem submission" }
+    
+    # Check job status in case of problem creation
     while (job.result is None and not job.is_failed):
         pass
     
     # Return result
     if (job.is_failed):
-        return { "error" : "Internal evaluation error" }
+        response = { "error" : "Internal evaluation error" }
     else:
-        return job.result
+        response = job.result
+    
+    #requests.post("http://localhost:5000/execution_result", data=response)
+    return response   
     
 # Method that returns the least busy worker queue
 def get_least_busy_queue():
@@ -227,8 +280,7 @@ def get_least_busy_queue():
     # Connect to queue
     for i in range(5):
          
-        q = Queue("j_" + str(i), connection=redis_conn)  # no args implies the default queue
-        print("Q-" + str(i) + ": " + str(len(q)))
+        q = Queue("j_" + str(i), connection=redis_conn)
         if (len(q) < size):
             size  = len(q)
             index = i
