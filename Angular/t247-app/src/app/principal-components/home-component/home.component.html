@@ -28,10 +28,6 @@
 </nav>
 <div class="container" >
     <div class="content" [ngSwitch]="selectedRole">
-      <topics-dashboard *ngSwitchCase="'student'"></topics-dashboard>
-      <my-assignments *ngSwitchCase="'student'"></my-assignments>
-      <list-of-problems *ngSwitchCase="'admin'"></list-of-problems>
-      <my-courses *ngSwitchCase="'professor'"></my-courses>
-      <create-problem *ngSwitchCase="'admin'"></create-problem>
+      <create-problem></create-problem>
     </div>
 </div>
