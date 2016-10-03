@@ -1,6 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {routing} from "./app.routing";
 import { AppComponent }   from './app.component';
 import {LoginComponent} from "./principal-components/login-component/login.component";
@@ -29,6 +29,7 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
     imports:      [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         routing
     ],
     declarations: [
