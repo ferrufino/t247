@@ -1,12 +1,13 @@
 import logging.config
 import gevent.wsgi
 import werkzeug.serving
+import config
+import os
 
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security
-import config
-import os
+
 from api.users.users import ns as users_namespace
 from api.evaluators.evaluator import nse as evaluator_namespace
 
@@ -43,6 +44,7 @@ def initialize_app(flask_app):
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
+
 
 
 @werkzeug.serving.run_with_reloader
