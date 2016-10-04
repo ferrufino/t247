@@ -42,28 +42,28 @@
           </ul>
         </div>
         <div id="problems" class="col s12" *ngSwitchCase="'admin'">
-          <!-- <list-of-problems></list-of-problems> -->
+          <generic-table [typetable]="'problems'"></generic-table>
         </div>
         <div id="groups" class="col s12" *ngSwitchCase="'professor'">
-          <my-courses></my-courses>
+            <generic-table [typetable]="'groups'"></generic-table>
         </div>
         <div id="problems" class="col s12" *ngSwitchCase="'professor'">
-          <!-- <list-of-problems></list-of-problems> -->
+            <generic-table [typetable]="'problems'"></generic-table>
         </div>
         <div id="my-assignments" class="col s12" *ngSwitchCase="'student'">
-          <!-- <my-assignments></my-assignments> -->
+            <generic-table [typetable]="'assignments'"></generic-table>
         </div>
         <div id="topics-dashboard" class="col s12">
           <app-topics-dashboard></app-topics-dashboard>
         </div>
         <div id="view-users" class="col s12" *ngSwitchCase="'admin'">
-          <view-users></view-users>
+            <generic-table [typetable]="'users'"></generic-table>
         </div>
         <div id="view-users" class="col s12" *ngSwitchCase="'professor'">
-          <view-users></view-users>
+            <generic-table [typetable]="'users'"></generic-table>
         </div>
         <div id="submissions" class="col s12" *ngSwitchCase="'student'">
-          <submissions></submissions>
+            <generic-table [typetable]="'submissions'"></generic-table>
         </div>
       </div>
     </div>
