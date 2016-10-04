@@ -3,8 +3,8 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from flask_security import auth_token_required, utils
-from flask.ext.httpauth import HTTPBasicAuth
-from api.users.serializers import user as api_user, user_auth, user_token
+from flask_httpauth import HTTPBasicAuth
+from api.users.serializers import user as api_user, user_auth, user_token, user_creation
 from api.restplus import api
 from models import db, User
 
@@ -40,7 +40,7 @@ class UserCollection(Resource):
 @ns.route('/create')
 class UserCreation(Resource):
     @api.response(201, 'User succesfully created')
-    @api.expect(api_user)
+    @api.expect(user_creation)
     def post(self):
         """
         Creates user
@@ -50,9 +50,9 @@ class UserCreation(Resource):
         enrollment = request.json.get('enrollment')
 
         if email is None or password is None:
-            abort(400)  # missing arguments
+            return {'error': 'Missing arguments'}, 400
         if User.query.filter_by(email=email).first() is not None:
-            abort(400)  # existing user
+            return {'error': 'Email already exists'}, 400
 
         new_user = User(email=email, role='admin', enrollment=enrollment)
         new_user.hash_password(password)
