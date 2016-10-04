@@ -31,3 +31,4 @@ fg
 
 control-c
 
+deactivate
