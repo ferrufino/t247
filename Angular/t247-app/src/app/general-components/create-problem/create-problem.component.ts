@@ -13,11 +13,12 @@ import {
 
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
+import {HttpProblemsService} from "../../services/http-problems.service";
 import {TestCase} from "./TestCase";
 
 @Component({
   selector: 'create-problem',
-  providers: [SupportedLanguages, ProblemDifficulties],
+  providers: [SupportedLanguages, ProblemDifficulties, HttpProblemsService],
   templateUrl: './create-problem.component.html'
 })
 
@@ -35,7 +36,8 @@ export class CreateProblem {
   problemTypeFlag: number = 0;
 
 
-  constructor(private _supportedLanguages: SupportedLanguages,
+  constructor(private _httpProblemsService: HttpProblemsService,
+              private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _formBuilder: FormBuilder) {
   }
@@ -53,7 +55,7 @@ export class CreateProblem {
     this.difficulties = this._problemDifficulties.getDifficulties();
 
     // TODO: FIX THESE! HARDCODED VALUES
-    this.problemProgLang = this.supportedLanguages[1];
+    this.problemProgLang = this.supportedLanguages[0];
     this.problemDifficulty = this.difficulties[0];
 
 
@@ -98,12 +100,23 @@ export class CreateProblem {
 
   /**
    * This function sends the code and the test cases to the evaluator in order to get the
-   * correct ouput for each test case
+   * correct output for each test case.
+   *
+   * This functions connects to the HTTP PROBLEMS SERVICE
    */
   evaluteTestCases() {
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
     let sourceCode: string = ""; // string with the source code of the project
+
+    let dummy = {
+      "status": "compiled successfully",
+      "test_cases": [
+        {"status": "successful run", "output": "178"},
+        {"status": "time limit exceeded"},
+        {"status": "runtime error"}
+      ]
+    };
 
     switch (this.problemTypeFlag) {
       case 1:
@@ -118,15 +131,35 @@ export class CreateProblem {
 
     // The object that will be sent to the evaluator
     let request = {
-      "request_type": "upload",
+      "request_type": "creation",
       "code": sourceCode,
-      "language": this.problemProgLang.name,
+      "language": this.problemProgLang.value,
       "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
       "test_cases": inputs
     };
 
-    console.log(request);
-  }
+    this._httpProblemsService.checkProblemTestCases(request)
+      .subscribe(
+        data => {
+          console.log(data) // TODO: Use this data, not the dummy one
 
+          let aux = {};
+
+          for (let i = 0; i < this.problemTestCases.length; i++) {
+
+            aux = dummy.test_cases[i];
+
+            if (aux["status"] == "successful run") {
+              this.problemTestCases[i].output = aux["output"];
+            }
+            this.problemTestCases[i].status = aux["status"];
+
+          }
+
+          console.log(this.problemTestCases);
+
+        }
+      );
+  }
 }
