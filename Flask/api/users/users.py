@@ -1,4 +1,5 @@
 import logging
+import redis
 
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
@@ -73,6 +74,7 @@ class UserAuthentication(Resource):
         password = request.json.get('password')
         if verify_password(email, password):
             token = g.user.generate_auth_token()
+            store_user_token(g.user.id, token)
             role = g.user.role
             name = g.user.first_name
             last_name = g.user.last_name
@@ -93,7 +95,9 @@ class UserLogout(Resource):
         Logs out user
         """
         token = request.json.get('token')
-        # TODO: Develop token invalidation for logout
+        if verify_password(token, None):
+            delete_user_token(g.user.id)
+            return 'User succesfully logged out', 200
         abort(401)
 
 
@@ -157,3 +161,13 @@ def verify_password(email_or_token, password):
             return False
     g.user = user
     return True
+
+
+def store_user_token(user_id, token):
+    redis_store = redis.StrictRedis(host='localhost', port=6379, db=0)
+    redis_store.set(user_id, token)
+
+
+def delete_user_token(user_id):
+    redis_store = redis.StrictRedis(host='localhost', port=6379, db=0)
+    redis_store.delete(user_id)

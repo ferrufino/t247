@@ -13,6 +13,7 @@ export class TestCase {
   public content: string;
   public output: string;
   public feedback: string;
+  public status: string;
 
   constructor(onDescription: boolean) {
     this.onDescription = onDescription;
