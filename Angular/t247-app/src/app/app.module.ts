@@ -8,6 +8,10 @@ import {LoginComponent} from "./principal-components/login-component/login.compo
 import {HomeComponent} from "./principal-components/home-component/home.component";
 import {MyCourses} from "./professor-components/my-courses.component";
 import {ListOfProblems} from "./admin-components/list-of-problems.component";
+import {TopicsDashboardComponent} from "./student-components/topics-dashboard/topics-dashboard.component";
+import {SubmissionsComponent} from "./submissions/submissions.component";
+import {ProfileComponent} from "./general-components/profile/profile.component";
+import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 import { StudentComponentsComponent } from './student-components/student-components.component';
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
@@ -38,7 +42,11 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
         HomeComponent,
         MyCourses,
         ListOfProblems,
+        TopicsDashboardComponent,
         CreateProblem,
+        SubmissionsComponent,
+        ProfileComponent,
+        ViewUsersComponent,
         StudentComponentsComponent,
         GenericTableComponent,
         FilterPipe,
