@@ -1,0 +1,28 @@
+.topic-box {
+  line-height: 100px;
+  text-align: center;
+  background-color: #673ab7;
+  color: white;
+  margin: 1px;
+}
+
+.topic-box:hover {
+  background-color: #b39ddb;
+  cursor: pointer;
+}
+
+#logo {
+  padding-left: 30px;
+}
+
+footer {
+  align-content: right;
+}
+
+#footer {
+  border-top: thin solid #000000;
+}
+
+#main {
+  padding-top: 20px;
+}
