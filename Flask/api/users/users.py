@@ -49,13 +49,14 @@ class UserCreation(Resource):
         email = request.json.get('email')
         password = request.json.get('password')
         enrollment = request.json.get('enrollment')
+        role = request.json.get('role')
 
         if email is None or password is None:
             return {'error': 'Missing arguments'}, 400
         if User.query.filter_by(email=email).first() is not None:
             return {'error': 'Email already exists'}, 400
 
-        new_user = User(email=email, role='admin', enrollment=enrollment)
+        new_user = User(email=email, role=role, enrollment=enrollment)
         new_user.hash_password(password)
         db.session.add(new_user)
         db.session.commit()
