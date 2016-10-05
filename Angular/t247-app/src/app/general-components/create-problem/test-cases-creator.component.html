@@ -1,55 +1,53 @@
-<h5 class="left-align">Please enter the test cases for this problem</h5>
-<br>
+<div class="row">
+  <div class="col s10 offset-s1">
+    <h5 class="center-align">Please enter the test cases for this problem</h5>
+    <br>
 
-<div *ngIf="testcaseslist.length == 0" class="center-align">
-  <button (click)="addTestCase()" class="btn waves-effect waves-light">
-    Add new test case
-    <i class="material-icons right">add</i>
-  </button>
-</div>
-
-<ul>
-  <li *ngFor="let testcase of testcaseslist; let idx = index; let last = last; " #val>
-
-    <!-- Materialize Card-->
-
-    <div class="row">
-      <div class="col s12">
-        <div class="card darken-1">
-          <div class="card-content black-text">
-            <div class="right-align">
-              <a (click)="deleteTestCase(idx)" class="waves-effect waves-teal btn-flat">
-                <i class="material-icons">delete</i>
-              </a>
-            </div>
-            <span class="card-title">Test Case number: {{idx + 1}} </span>
-            <div class="row">
-              <div class="input-field col s12">
-                <label>Input for this test case:</label>
-                <textarea [(ngModel)]="testcase.content" class="materialize-textarea"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- TODO: FIX BUG OF CHECKBOX, VALUE CAN CHANGE WHEN CLICKED ON LABEL -->
-          <div class="card-action">
-            <p>
-              <input type="checkbox" [attr.id]="'test' + idx" (click)="testcase.onDescription = !testcase.onDescription" />
-              <label [attr.for]="'test' + idx">Add this test case to problem description</label>
-            </p>
-            <a></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="last" class="center-align">
+    <div *ngIf="testcaseslist.length == 0" class="center-align">
       <button (click)="addTestCase()" class="btn waves-effect waves-light">
         Add new test case
         <i class="material-icons right">add</i>
       </button>
     </div>
 
-    <!-- Materialize Card-->
 
-</ul>
+    <div *ngFor="let testcase of testcaseslist; let idx = index; let last = last;">
+
+      <ul class="collection with-header z-depth-4">
+
+        <li class="collection-header blue">
+          <h4 class="white-text">Test Case number: {{idx + 1}}</h4>
+        </li>
+
+        <div class="collection-item">
+          <div class="row">
+            <div class="input-field col s12">
+              <label>Input for this test case:</label>
+              <textarea [(ngModel)]="testcase.content" class="materialize-textarea"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="collection-item">
+          <div class="row">
+            <input type="checkbox" [attr.id]="'test' + idx"
+                   (click)="testcase.onDescription = !testcase.onDescription"/>
+            <label [attr.for]="'test' + idx">Add this test case to problem description</label>
+          </div>
+        </div>
+
+      </ul>
+
+      <div *ngIf="last" class="center-align">
+        <button (click)="addTestCase()" class="btn waves-effect waves-light z-depth-4">
+          Add new test case
+          <i class="material-icons right">add</i>
+        </button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>

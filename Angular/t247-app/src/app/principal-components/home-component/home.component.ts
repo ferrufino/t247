@@ -15,13 +15,13 @@ export class HomeComponent {
       private _service: AuthenticationService){}
 
     ngOnInit(){
-        this._service.checkCredentials();
-        if(sessionStorage.getItem("auth_token")){
-            this.roles = JSON.parse(sessionStorage.getItem("roles"));
-            this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
-        }
-        // $(".dropdown-button").dropdown();
-        // $(".dropdown-button-mobile").dropdown();
+        //this._service.checkCredentials();
+        // if(sessionStorage.getItem("auth_token")){
+        //     this.roles = JSON.parse(sessionStorage.getItem("roles"));
+        //     this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
+        // }
+        $(".dropdown-button").dropdown();
+        $(".dropdown-button-mobile").dropdown();
     }
 
     logout() {
@@ -29,7 +29,7 @@ export class HomeComponent {
     }
 
     ngAfterViewInit() {
-        // $('select').material_select();
+        $('select').material_select();
     }
 
     changeSelectedRole(role){

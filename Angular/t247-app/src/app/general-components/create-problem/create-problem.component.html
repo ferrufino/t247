@@ -1,13 +1,13 @@
-<div class="container" style="margin-top: 100px;">
+<h2 class="mainTitle">Create New Problem</h2>
+
+<div class="container mainWrapper z-depth-2">
 
   <form class="col s12" [formGroup]="createProblemForm" (ngSubmit)="evaluteTestCases()">
 
     <div formGroupName="problemDetails">
-
-
       <!-- Problem name -->
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s10 offset-s1 firstInput">
           <input id="problem_name" formControlName="problemName" type="text">
           <label for="problem_name">Name of problem</label>
         </div>
@@ -16,11 +16,11 @@
       <!-- Descriptions -->
       <div class="row">
         <div class="col s12">
-          <div class="input-field col s6">
+          <div class="input-field col s5 offset-s1">
             <textarea id="desc_eng" formControlName="engDescription" class="materialize-textarea"></textarea>
             <label for="desc_eng">Problem description: English</label>
           </div>
-          <div class="input-field col s6">
+          <div class="input-field col s5">
             <textarea id="desc_spn" formControlName="spnDescription" class="materialize-textarea"></textarea>
             <label for="desc_spn">Problem description: Spanish</label>
           </div>
@@ -31,12 +31,12 @@
       <div class="row">
         <div class="col s12">
 
-          <div class="input-field col s6">
+          <div class="input-field col s5 offset-s1">
             <input id="memory_limit" formControlName="memoryLimit" type="number">
             <label for="desc_eng">Memory limit (MB)</label>
           </div>
 
-          <div class="input-field col s6">
+          <div class="input-field col s5">
             <input id="time_limit" formControlName="timeLimit" type="number">
             <label for="desc_spn">Time limit (Milliseconds)</label>
           </div>
@@ -48,14 +48,14 @@
       <div class="row">
         <div class="col s12">
 
-          <div class="input-field col s6">
+          <div class="input-field col s5 offset-s1">
             <select>
               <option *ngFor="let lang of supportedLanguages" [value]="lang.name">{{lang.name}}</option>
             </select>
             <label>Solution language</label>
           </div>
 
-          <div class="input-field col s6">
+          <div class="input-field col s5">
             <select>
               <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
             </select>
@@ -67,10 +67,10 @@
 
     </div>
 
-    <div class="center-align" style="margin-top: 25px;">
-      <a (click)="problemTypeFlag = 1" style="margin-right: 20px;" class="waves-effect waves-light btn-large">Full
+    <div class="center-align margin-top20">
+      <a (click)="problemTypeFlag = 1" class=" margin-right20 waves-effect waves-light btn-large">Full
         body problem</a>
-      <a (click)="problemTypeFlag = 2" class="waves-effect waves-light btn-large">Function problem</a>
+      <a (click)="problemTypeFlag = 2" class="z-depth-1 waves-effect waves-light btn-large">Function problem</a>
     </div>
 
     <!-- This section is used to upload the problem's files -->
@@ -78,49 +78,50 @@
       <div [ngSwitch]="problemTypeFlag">
 
         <div *ngSwitchCase="1">
-          <div class="section" style="margin-top: 20px;">
-            <br>
+          <div class="row">
+            <div class="section col s10 offset-s1 margin-top20">
+              <br>
 
-            <h5> Please input the source code of the problem</h5>
+              <h5 class="center-align"> Please input the source code of the problem</h5>
 
-            <div formGroupName="problemSourceFull">
-              <div class="input-field col s12">
-                <textarea id="full_problem_code" formControlName="code" class="materialize-textarea"></textarea>
-                <label for="full_problem_code">Source code:</label>
+              <div formGroupName="problemSourceFull">
+                <div class="input-field col s12">
+                  <textarea id="full_problem_code" formControlName="code" class="materialize-textarea"></textarea>
+                  <label for="full_problem_code">Source code:</label>
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
 
         <div *ngSwitchCase="2">
-          <div class="section" style="margin-top: 20px;">
+          <div class="row">
+            <div class="section col s10 offset-s1 margin-top20">
+              <br>
 
-            <div formGroupName="problemSourceFunction">
+              <h5 class="center-align"> Please input the source code of the problem</h5>
 
-              <h5> Please input the source code of the first half for the problem</h5>
+              <div formGroupName="problemSourceFunction">
 
-              <div class="input-field col s12">
-                <textarea id="first_half_code" formControlName="firstHalf" class="materialize-textarea"></textarea>
-                <label for="first_half_code">First half</label>
-              </div>
+                <div class="input-field col s12">
+                  <textarea id="first_half_code" formControlName="firstHalf" class="materialize-textarea"></textarea>
+                  <label for="first_half_code">First half</label>
+                </div>
 
-              <h5> Please input the source code of the function for the problem</h5>
+                <div class="input-field col s12">
+                  <textarea id="function_code" formControlName="functionCode" class="materialize-textarea"></textarea>
+                  <label for="function_code">Function code</label>
+                </div>
 
-              <div class="input-field col s12">
-                <textarea id="function_code" formControlName="functionCode" class="materialize-textarea"></textarea>
-                <label for="function_code">Function code</label>
-              </div>
+                <div class="input-field col s12">
+                  <textarea id="second_half_code" formControlName="secondHalf" class="materialize-textarea"></textarea>
+                  <label for="second_half_code">Second half</label>
+                </div>
 
-              <h5> Please input the source code of the second half for the problem</h5>
-
-              <div class="input-field col s12">
-                <textarea id="second_half_code" formControlName="secondHalf" class="materialize-textarea"></textarea>
-                <label for="second_half_code">Second half</label>
               </div>
 
             </div>
-
           </div>
         </div>
 
@@ -129,12 +130,15 @@
 
     <!-- This section renders the TestCases component -->
     <div *ngIf="problemTypeFlag != 0" id="testcases-section">
-      <app-test-cases-creator [(testcaseslist)]="problemTestCases"></app-test-cases-creator>
+        <app-test-cases-creator [(testcaseslist)]="problemTestCases"></app-test-cases-creator>
     </div>
 
-    <button [disabled]="!createProblemForm.valid" type="submit" class="btn waves-effect waves-light btn-large">Submit
-      <i class="material-icons right">send</i>
-    </button>
+
+    <div class="center-align margin-top20">
+      <button [disabled]="!createProblemForm.valid" type="submit" class=" btn waves-effect waves-light btn-large">
+        Submit <i class="material-icons right">send</i>
+      </button>
+    </div>
 
   </form>
 </div>

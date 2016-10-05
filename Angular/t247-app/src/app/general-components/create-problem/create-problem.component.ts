@@ -5,10 +5,8 @@
 import {Component} from '@angular/core';
 import {
   FormGroup,
-  FormControl,
   Validators,
   FormBuilder,
-  FormArray
 } from "@angular/forms";
 
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
@@ -19,7 +17,8 @@ import {TestCase} from "./TestCase";
 @Component({
   selector: 'create-problem',
   providers: [SupportedLanguages, ProblemDifficulties, HttpProblemsService],
-  templateUrl: './create-problem.component.html'
+  templateUrl: './create-problem.component.html',
+  styleUrls: ['./create-problem.component.css']
 })
 
 export class CreateProblem {
