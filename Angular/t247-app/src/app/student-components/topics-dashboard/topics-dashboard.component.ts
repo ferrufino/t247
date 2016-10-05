@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopicsDashboardComponent implements OnInit {
 
+  topics: Array<string>;
+
   constructor() { }
 
   ngOnInit() {
+    this.renderTopicCells();
   }
 
+  renderTopicCells() {
+    this.topics = ["System of linear equations", "Arithmetic Expressions", "Backtracking", "Binary Search Tree",
+      "Classes", "Data Structure", "Decisions Structures", "Divide and Conquer", "Dynammic Programming",
+      "Functions or methods", "Geometry", "Graph", "Greedy Algorithms", "Hashing", "Linked List", "Repetitions Stuctures",
+      "STL", "Sorts", "Stacks", "Strings"];
+  }
 }

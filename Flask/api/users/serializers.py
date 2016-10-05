@@ -18,6 +18,14 @@ user = api.model('User', {
     'enrollment': fields.String(required=True, description='User enrollment number')
 })
 
+user_creation = api.model('UserCreation', {
+    'email': fields.String(required=True, description='User email'),
+    'password': fields.String(required=True, description='User password'),
+    'first_name': fields.String(required=True, description='User name'),
+    'last_name': fields.String(required=True, description='User last name'),
+    'enrollment': fields.String(required=True, description='User enrollment number')
+})
+
 
 # blog_post = api.model('Blog post', {
 #     'id': fields.Integer(readOnly=True, description='The unique identifier of a blog post'),

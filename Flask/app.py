@@ -1,11 +1,13 @@
 import logging.config
 import gevent.wsgi
+import werkzeug.serving
+import config
+import os
 
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security
-import config
-import os
+
 from api.users.users import ns as users_namespace
 from api.evaluators.evaluator import nse as evaluator_namespace
 
@@ -44,6 +46,8 @@ def initialize_app(flask_app):
     db.init_app(flask_app)
 
 
+
+@werkzeug.serving.run_with_reloader
 def main():
     initialize_app(app)
     #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))

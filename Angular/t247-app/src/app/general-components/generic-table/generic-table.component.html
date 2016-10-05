@@ -1,12 +1,16 @@
 <h3>List of {{typeOfTableName}}</h3>
 
 <h5>Search:</h5>
-<input type="text" #filterInput (keyup)="0">
-<ul>
-    <li >{{item}}</li>
-</ul>
-<h5>List:</h5>
-
+<nav class="searchBarWidth red lighten-4">
+    <div class="nav-wrapper ">
+        <form>
+            <div class="input-field">
+                <input id="search" type="search" #filterInput (keyup)="0" required>
+                <label for="search"><i class="material-icons">search</i></label>
+            </div>
+        </form>
+    </div>
+</nav>
 <table>
     <thead>
     <tr>

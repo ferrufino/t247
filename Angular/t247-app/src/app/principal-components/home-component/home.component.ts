@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service'
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
     selector: 'home',
@@ -15,10 +15,10 @@ export class HomeComponent {
       private _service: AuthenticationService){}
 
     ngOnInit(){
-        // this._service.checkCredentials();
-        // if(localStorage.getItem("user")){
-        //     this.roles = JSON.parse(localStorage.getItem("user")).roles;
-        //     this.selectedRole = JSON.parse(localStorage.getItem("user")).roles[0];
+        //this._service.checkCredentials();
+        // if(sessionStorage.getItem("auth_token")){
+        //     this.roles = JSON.parse(sessionStorage.getItem("roles"));
+        //     this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
         // }
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();

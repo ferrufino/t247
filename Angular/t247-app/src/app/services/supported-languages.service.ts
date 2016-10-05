@@ -7,12 +7,12 @@ import { Injectable } from '@angular/core';
 export class ProgLanguage {
     constructor(
         public name: string,
-        public version: string) { }
+        public value: string) { }
 }
 
 var languges: ProgLanguage[] = [
-    new ProgLanguage('C++','C++14'),
-    new ProgLanguage('Java','Java 8')
+    new ProgLanguage('C++','cpp'),
+    new ProgLanguage('Java','java')
 ];
 
 @Injectable()

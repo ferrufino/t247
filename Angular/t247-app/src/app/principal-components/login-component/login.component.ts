@@ -1,6 +1,7 @@
 
 import {Component, ElementRef} from '@angular/core';
-import {AuthenticationService, User} from '../../services/authentication.service'
+import {AuthenticationService} from '../../services/authentication.service';
+import {User} from "../../user";
 
 @Component({
     selector: 'login-form',
@@ -11,7 +12,7 @@ import {AuthenticationService, User} from '../../services/authentication.service
 
 export class LoginComponent {
 
-  public user = new User('','',['']);
+  public user = new User();
   public errorMsg = '';
 
   constructor(

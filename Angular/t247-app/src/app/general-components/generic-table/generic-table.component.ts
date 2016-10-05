@@ -8,8 +8,8 @@ import {JsonPipe} from '@angular/common';
 })
 export class GenericTableComponent implements OnInit{
 
-    // @Input('typeOfTable') typeOfTableName: string;
-    typeOfTableName: string = "courses";
+    @Input('typetable') typeOfTableName: string;
+    //typeOfTableName: string = "courses";
     columns: Array<string>;
     private problemsBool;
     private assignmentsBool;
