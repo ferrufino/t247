@@ -25,6 +25,8 @@ export class UserService {
         {"first_name":user.first_name,"last_name":user.last_name,"enrollment":user.enrollment},
         this.headers
       )
-      .map(res => res.json());
+      .map(res => {
+        return res;
+      });
     }
 }
