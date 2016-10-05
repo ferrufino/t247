@@ -72,12 +72,12 @@ class UserAuthentication(Resource):
         email = request.json.get('email')
         password = request.json.get('password')
         if verify_password(email, password):
-            token = g.user.generate_auth_token()
-            role = g.user.role
-            name = g.user.first_name
-            last_name = g.user.last_name
-            enrollment = g.user.enrollment
-            print("User logged with token: " + token.decode('ascii'))
+            #token = g.user.generate_auth_token()
+            #role = g.user.role
+            #name = g.user.first_name
+            #last_name = g.user.last_name
+            #enrollment = g.user.enrollment
+            #print("User logged with token: " + token.decode('ascii'))
             return {'token': token.decode('ascii'), 'id': g.user.id,
                     'role': role, 'name': name, 'lastName': last_name,
                     'enrollment': enrollment}, 200
