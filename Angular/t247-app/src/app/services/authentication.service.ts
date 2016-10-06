@@ -1,9 +1,5 @@
-/**
- * Created by ahinojosa on 13/09/16.
- */
-
- import '../rxjs-operators';
- import 'rxjs/add/operator/map';
+import '../rxjs-operators';
+import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
@@ -15,6 +11,7 @@ export class AuthenticationService {
   private loggedIn = false;
 
   private loginUrl = 'http://localhost:5000/api/users/login';
+    private logoutUrl = 'http://localhost:5000/api/users/logout';
 
   private rolesUrl = 'http://localhost:5000/api/users/role';
 
@@ -26,11 +23,21 @@ export class AuthenticationService {
         }
 
     logout() {
-      //TODO: Checa si vamos a mandar la acción de logout al api
+        let body = JSON.stringify({"token":sessionStorage.getItem("auth_token")});
+        let options = new RequestOptions({ headers: this.headers });
+        this.http.post(this.logoutUrl, {"token":sessionStorage.getItem("auth_token")}, this.headers)
+            .map(res => res.json())
+            .map((res) => { console.log("response from logout:"+res);});
+
         sessionStorage.removeItem("email_user");
         sessionStorage.removeItem("auth_token");
+        sessionStorage.removeItem("userJson");
+        localStorage.removeItem("email_user");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("userJson");
         this.loggedIn = false;
-        this._router.navigate(['login']);
+        this._router.navigate(['/login']);
+
     }
 
     login(user){

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
@@ -8,11 +8,10 @@ import {AuthenticationService} from '../../services/authentication.service';
     styleUrls: ['../../../styles/general-styles.css']
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   roles: [string]
   selectedRole : string
-  constructor(
-      private _service: AuthenticationService){}
+  constructor(private _service: AuthenticationService){}
 
     ngOnInit(){
         //this._service.checkCredentials();
@@ -22,6 +21,9 @@ export class HomeComponent {
         // }
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();
+
+        this._service.checkCredentials();
+
     }
 
     logout() {
