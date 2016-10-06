@@ -141,13 +141,14 @@ export class CreateProblem {
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(
         data => {
+          console.log("RESPONSE")
           console.log(data) // TODO: Use this data, not the dummy one
 
           let aux = {};
 
           for (let i = 0; i < this.problemTestCases.length; i++) {
 
-            aux = dummy.test_cases[i];
+            aux = data.test_cases[i];
 
             if (aux["status"] == "successful run") {
               this.problemTestCases[i].output = aux["output"];
@@ -162,3 +163,4 @@ export class CreateProblem {
       );
   }
 }
+

@@ -46,6 +46,7 @@ def wait_and_recover(process, timeout, judge_name):
 # Method that runs submitted code in a sandboxed environment (Docker container)
 # and returns the evaluation results
 def evaluate(request):
+
     # Base parameters     
     request_type   = request["request_type"]
     code           = request["code"]

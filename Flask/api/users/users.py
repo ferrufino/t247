@@ -75,7 +75,6 @@ class UserAuthentication(Resource):
         password = request.json.get('password')
         if verify_password(email, password):
             token = g.user.generate_auth_token()
-            store_user_token(g.user.id, token)
             role = g.user.role
             name = g.user.first_name
             last_name = g.user.last_name

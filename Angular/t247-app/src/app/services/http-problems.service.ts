@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 import 'rxjs/Rx';
 import { Observable } from "rxjs/Rx";
@@ -17,8 +17,10 @@ export class HttpProblemsService {
    */
   checkProblemTestCases(problem: any){
     const body = JSON.stringify(problem); // parse the problem to string
-    return this.http.post('https://t247-testing.firebaseio.com/data.json', body)
-      .map((data: Response) => data.json())
+    const headers = new Headers({'Content-Type': 'application/json'});
+
+    return this.http.post('http://localhost:5000/api/evaluator/problem_creation', problem, headers)
+      .map((data: Response) => data.json());
   }
 
 }
