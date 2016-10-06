@@ -289,5 +289,31 @@ def get_least_busy_queue():
     
     return queue, index
 
+# Method that creates the 
+def upload_problem(data):
+    test_cases  = data['test_cases']
+
+    # Create problem directory
+    problem_dir = base_dir + 'problems/' + str(data['problem_id']) + '/'
+    os.mkdir(problem_dir)
+
+    # Create input and output folders
+    input_dir  = problem_dir + 'input/'
+    output_dir = problem_dir + 'output/'
+
+    os.mkdir(input_dir)
+    os.mkdir(output_dir)
+
+    # Create input and output files
+    for i in range(len(test_cases)):
+        # Input
+        with open(input_dir + str(i), "w+") as text_file:
+            print(test_cases[i]['content'], file=text_file, end="")
+
+        # Output
+        with open(output_dir + str(i), "w+") as text_file:
+            print(test_cases[i]['output'], file=text_file, end="")
+
+    return { 'status' : 'ok' }   
    
 
