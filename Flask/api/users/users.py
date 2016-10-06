@@ -94,6 +94,7 @@ class UserLogout(Resource):
         """
         Logs out user
         """
+        print("Logging out user")
         token = request.json.get('token')
         if verify_password(token, None):
             delete_user_token(g.user.id)

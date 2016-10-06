@@ -23,14 +23,11 @@ export class AuthenticationService {
         }
 
     logout() {
-        let body = JSON.stringify({"token":sessionStorage.getItem("auth_token")});
-        let options = new RequestOptions({ headers: this.headers });
-        this.http.post(this.logoutUrl, body, options)
-            .map(res => res.json())
-            .map((res) => {
-              console.log("response from logout:"+res);
+        this.request_logout().subscribe(
+            data => {
+                console.log(data)
+                
             });
-
         sessionStorage.removeItem("email_user");
         sessionStorage.removeItem("auth_token");
         sessionStorage.removeItem("userJson");
@@ -39,7 +36,13 @@ export class AuthenticationService {
         localStorage.removeItem("userJson");
         this.loggedIn = false;
         this._router.navigate(['/login']);
+    }
 
+    request_logout() {
+        let body = {"token":sessionStorage.getItem("auth_token")};
+        let options = new RequestOptions({ headers: this.headers });
+        return this.http.post(this.logoutUrl, body, this.headers)
+            .map((data: Response) => data.json());
     }
 
     login(user){
