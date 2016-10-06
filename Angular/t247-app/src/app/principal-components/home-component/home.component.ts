@@ -15,8 +15,7 @@ import {AuthenticationService} from '../../services/authentication.service';
 export class HomeComponent implements OnInit, AfterViewInit{
   roles: [string]
   selectedRole : string
-  constructor(
-      private _service: AuthenticationService){}
+  constructor(private _service: AuthenticationService){}
 
     ngOnInit(){
         //this._service.checkCredentials();
@@ -26,6 +25,9 @@ export class HomeComponent implements OnInit, AfterViewInit{
         // }
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();
+
+        this._service.checkCredentials();
+
     }
 
     logout() {

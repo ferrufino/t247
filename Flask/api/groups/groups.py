@@ -8,8 +8,6 @@ from models import db, Group
 
 log = logging.getLogger(__name__)
 
-auth = HTTPBasicAuth()
-
 ns = api.namespace('groups', description='Operations related to groups')
 
 
@@ -22,7 +20,7 @@ class GroupCollection(Resource):
         Returns list of users.
         """
         groups = Group.query.all()
-        return users
+        return groups
 
 
 @ns.route('/create')
@@ -59,7 +57,7 @@ class UserItem(Resource):
         """
         return Group.query.filter(Group.id == id).one()
 
-    @api.expect(api_grup)
+    @api.expect(api_group)
     @api.response(204, 'Group successfully updated.')
     def put(self, id):
         """
