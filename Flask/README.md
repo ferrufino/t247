@@ -24,8 +24,6 @@ source env/bin/activate
 #Update Database
 python manage.py db upgrade
 #Run all programs
-python manage.py runserver &
-
 redis-server &
 
 python app.py
@@ -43,8 +41,5 @@ fg
 
 control-c
 
-fg
-
-control-c
 
 deactivate
