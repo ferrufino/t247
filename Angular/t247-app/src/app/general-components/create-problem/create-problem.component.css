@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.margin-top50 {
+  margin-top: 50px;
+}
+
+.margin-bottom50 {
+  margin-bottom: 50px;
+}
+
+.margin-left50 {
+  margin-left: 50px;
+}
+
+.margin-right50 {
+  margin-right: 50px;
+}
+
 .margin-top20 {
   margin-top: 20px;
 }
