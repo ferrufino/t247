@@ -17,11 +17,11 @@
         <a href="" class="brand-logo" id='logo'>T247</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a class="dropdown-button" href="" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a class="dropdown-button" href='javascript:void(0);' dropdown data-hover="true" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
             <li><a (click)="logout()" href="">Logout</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
-            <li><a class="dropdown-button-mobile" href="" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a class="dropdown-button-mobile" href='javascript:void(0);' dropdown data-hover="true" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
             <li><a (click)="logout()" href="">Logout</a></li>
         </ul>
     </div>
@@ -30,7 +30,7 @@
     <div class="content" [ngSwitch]="selectedRole">
       <div class="row">
         <div class="col s12">
-          <ul class="tabs">
+          <ul materialize="tabs" class="tabs">
             <li class="tab col s3" *ngSwitchCase="'admin'"><a href="#problems">Problems</a></li>
             <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#groups">Groups</a></li>
             <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#problems">Problems</a></li>
