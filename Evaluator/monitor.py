@@ -11,8 +11,10 @@ import sys
 '''
 
 language = sys.argv[1]
-time_limit = int(sys.argv[2])
-mem_limit = int(sys.argv[3])
+time_limit = int(sys.argv[2]) # seconds
+mem_limit = int(sys.argv[3])  # megabytes
+
+mem_limit = mem_limit * 1000000 # bytes
 
 # Get memory usage
 def getMemoryUsage(pid):
@@ -47,11 +49,11 @@ def set_limits():
 
     print("data")
     # Data
-    resource.setrlimit(resource.RLIMIT_DATA, (5000000, 6000000))
+    resource.setrlimit(resource.RLIMIT_DATA, (mem_limit, 256000000))
 
     print("stack")
     # Stack
-    resource.setrlimit(resource.RLIMIT_STACK, (5000000, 6000000))
+    resource.setrlimit(resource.RLIMIT_STACK, (mem_limit, 256000000))
 
     print("nproc")
     # Number of processes the current process may create
