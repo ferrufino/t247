@@ -207,7 +207,7 @@ Angular/t247-app/src/app/*/*.js.map
 
 
 #Problems folder and compilation
-Evaluator/problems/**/*.txt
+Evaluator/problems/
 Evaluator/compilation/judge_0/*
 Evaluator/compilation/judge_1/*
 Evaluator/compilation/judge_2/*
