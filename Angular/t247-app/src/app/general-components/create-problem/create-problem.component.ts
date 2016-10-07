@@ -137,6 +137,7 @@ export class CreateProblem {
         "difficulty": this.problemDifficulty,
         "memoryLimit": this.createProblemForm.value.problemDetails.memoryLimit,
         "timeLimit": this.createProblemForm.value.problemDetails.timeLimit,
+        "code": this.createProblemForm.value.problemSourceFull.code,
         "type": pType
       }
 
