@@ -5,10 +5,8 @@
 import {Component} from '@angular/core';
 import {
   FormGroup,
-  FormControl,
   Validators,
   FormBuilder,
-  FormArray
 } from "@angular/forms";
 
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
@@ -19,17 +17,21 @@ import {TestCase} from "./TestCase";
 @Component({
   selector: 'create-problem',
   providers: [SupportedLanguages, ProblemDifficulties, HttpProblemsService],
-  templateUrl: './create-problem.component.html'
+  templateUrl: './create-problem.component.html',
+  styleUrls: ['./create-problem.component.css']
 })
 
 export class CreateProblem {
 
-  createProblemForm: FormGroup;
+  createProblemForm: FormGroup; // Form group to get the info of the problem
   supportedLanguages: ProgLanguage[]; // filled from service
   difficulties: string[] // filled from service
-  problemProgLang: ProgLanguage;
-  problemDifficulty: string;
-  problemTestCases: TestCase[];
+  problemProgLang: ProgLanguage; // The selected language of the problem
+  problemDifficulty: string; // The selected difficulty of the problem
+  problemTestCases: TestCase[]; // The array of test cases realted to the problem
+  testCasesReady: boolean; // Flag that when is true means that all test cases passed the check
+  testCaseIndex: number; // Number that is equal to the index of the displayed test case
+  selectedTestCase: TestCase; // Current Test Case being displayed
 
   // This variable specifies the form type that will be displayed, in order to upload the problem
   // 0 = default value, 1 = full problem, 2 = function
@@ -49,7 +51,10 @@ export class CreateProblem {
    */
   ngOnInit() {
 
-    this.problemTestCases = [];
+    this.problemTestCases = []; // the array of testcases that will be tested
+    this.testCaseIndex = 0;
+    this.testCasesReady = false;
+    this.selectedTestCase = null;
 
     this.supportedLanguages = this._supportedLanguages.getLanguages();
     this.difficulties = this._problemDifficulties.getDifficulties();
@@ -98,6 +103,59 @@ export class CreateProblem {
   }
 
 
+  updateSelectedTestCase(): any {
+    this.selectedTestCase = this.problemTestCases[this.testCaseIndex];
+  }
+
+  previousTestCase(): any {
+    let actual = this.testCaseIndex - 1;
+    this.testCaseIndex = (actual < 0) ? this.problemTestCases.length - 1 : actual;
+    this.updateSelectedTestCase();
+  }
+
+  nextTestCase(): any {
+    let actual = this.testCaseIndex + 1;
+    this.testCaseIndex = (actual > this.problemTestCases.length - 1) ? 0 : actual;
+    this.updateSelectedTestCase();
+  }
+
+
+  createProblemRequest() {
+
+      // TODO: GET CORRECT VALUE OF DIFFICULTY AND LANGUAGE
+      // TODO: FIX TEXT AREA VALUE
+
+      // Get the correct type of problem
+      let pType = (this.problemTypeFlag == 1) ? "full" : "function";
+
+    let problemObject = {
+        "authorID": 484,
+        "name": this.createProblemForm.value.problemDetails.problemName,
+        "descriptionEnglish": this.createProblemForm.value.problemDetails.engDescription,
+        "descriptionSpanish": this.createProblemForm.value.problemDetails.spnDescription,
+        "language": this.problemProgLang.value,
+        "difficulty": this.problemDifficulty,
+        "memoryLimit": this.createProblemForm.value.problemDetails.memoryLimit,
+        "timeLimit": this.createProblemForm.value.problemDetails.timeLimit,
+        "type": pType
+      }
+
+    problemObject["testCases"] = this.problemTestCases;
+
+    console.log(problemObject);
+
+    this._httpProblemsService.createNewProblem(problemObject)
+      .subscribe(
+        data => {
+          console.log("RESPONSE")
+          console.log(data) // TODO: Use this data, not the dummy one
+
+
+        }
+      );
+
+  }
+
   /**
    * This function sends the code and the test cases to the evaluator in order to get the
    * correct output for each test case.
@@ -113,8 +171,8 @@ export class CreateProblem {
       "status": "compiled successfully",
       "test_cases": [
         {"status": "successful run", "output": "178"},
-        {"status": "time limit exceeded"},
-        {"status": "runtime error"}
+        {"status": "successful run", "output": "200"},
+        {"status": "successful run", "output": "44"}
       ]
     };
 
@@ -142,17 +200,24 @@ export class CreateProblem {
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(
         data => {
+          console.log("RESPONSE")
           console.log(data) // TODO: Use this data, not the dummy one
 
           let aux = {};
 
+          this.testCasesReady = true;
+          this.selectedTestCase = this.problemTestCases[0];
+
           for (let i = 0; i < this.problemTestCases.length; i++) {
 
-            aux = dummy.test_cases[i];
+            aux = data.test_cases[i];
 
             if (aux["status"] == "successful run") {
               this.problemTestCases[i].output = aux["output"];
+            } else {
+              this.testCasesReady = false;
             }
+
             this.problemTestCases[i].status = aux["status"];
 
           }
@@ -163,3 +228,4 @@ export class CreateProblem {
       );
   }
 }
+

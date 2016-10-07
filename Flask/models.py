@@ -111,12 +111,12 @@ class Student(User):
     }
 
 
-class Teacher(User):
-    """docstring for Teacher"""
-    managed_groups = db.relationship("Group", back_populates="teacher")
+class Professor(User):
+    """docstring for Professor"""
+    managed_groups = db.relationship("Group", back_populates="professor")
 
     __mapper_args__ = {
-        'polymorphic_identity': 'teacher'
+        'polymorphic_identity': 'professor'
     }
 
 
@@ -155,8 +155,8 @@ class Group(Base):
     period = db.Column(db.String(255))
     students = db.relationship("Student", secondary="enrollment",
                                back_populates="groups")
-    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    teacher = db.relationship("Teacher", back_populates="managed_groups")
+    professor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    professor = db.relationship("Professor", back_populates="managed_groups")
     assignments = db.relationship("Assignment", back_populates="group")
 
 

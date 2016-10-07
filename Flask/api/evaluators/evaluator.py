@@ -36,6 +36,31 @@ class EvaluatorProblemCreation(Resource):
         
         return result
 
+@nse.route('/problem_upload')
+class EvaluatorProblemUpload(Resource):
+    @api.response(201, 'Problem successfully uploaded.')
+    @api.expect(evaluatorProblem)
+    def post(self):
+        """
+        Receives Post From Evaluator of Problem Created
+        """
+        data = request.json
+
+        #############
+        # Update DB #
+        #############
+
+        problem_id = 56
+
+        json = {}
+        json['test_cases'] = data['testCases']
+        json['problem_id'] = problem_id
+                
+        # Send job to worker  
+        result = services.upload_problem(json)
+        
+        return result
+
 @nse.route('/problem_submission')
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')

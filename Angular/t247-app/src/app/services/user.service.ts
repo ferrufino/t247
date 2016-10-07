@@ -1,7 +1,3 @@
-/**
- * Created by iker arbulu on 02/10/16.
- */
-
  import '../rxjs-operators';
  import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
@@ -25,6 +21,8 @@ export class UserService {
         {"first_name":user.first_name,"last_name":user.last_name,"enrollment":user.enrollment},
         this.headers
       )
-      .map(res => res.json());
+      .map(res => {
+        return res;
+      });
     }
 }

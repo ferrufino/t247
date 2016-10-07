@@ -15,7 +15,8 @@ export class TestCase {
   public feedback: string;
   public status: string;
 
-  constructor(onDescription: boolean) {
+  constructor(onDescription: boolean, status: string) {
     this.onDescription = onDescription;
+    this.status = "successful run";
   }
 }

@@ -1,4 +1,8 @@
-import {Component} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit
+} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
@@ -8,20 +12,22 @@ import {AuthenticationService} from '../../services/authentication.service';
     styleUrls: ['../../../styles/general-styles.css']
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit{
   roles: [string]
   selectedRole : string
-  constructor(
-      private _service: AuthenticationService){}
+  constructor(private _service: AuthenticationService){}
 
     ngOnInit(){
+        //this._service.checkCredentials();
+        // if(sessionStorage.getItem("auth_token")){
+        //     this.roles = JSON.parse(sessionStorage.getItem("roles"));
+        //     this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
+        // }
+        $(".dropdown-button").dropdown();
+        $(".dropdown-button-mobile").dropdown();
+
         this._service.checkCredentials();
-        if(sessionStorage.getItem("auth_token")){
-            this.roles = JSON.parse(sessionStorage.getItem("roles"));
-            this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
-        }
-        // $(".dropdown-button").dropdown();
-        // $(".dropdown-button-mobile").dropdown();
+
     }
 
     logout() {
@@ -29,7 +35,7 @@ export class HomeComponent {
     }
 
     ngAfterViewInit() {
-        // $('select').material_select();
+      $('select').material_select();
     }
 
     changeSelectedRole(role){

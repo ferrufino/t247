@@ -10,6 +10,7 @@ from flask_security import Security
 
 from api.users.users import ns as users_namespace
 from api.evaluators.evaluator import nse as evaluator_namespace
+from api.groups.groups import ns as groups_namespace
 
 from api.restplus import api
 from models import db, User
@@ -41,10 +42,10 @@ def initialize_app(flask_app):
     api.init_app(blueprint)
     api.add_namespace(users_namespace)
     api.add_namespace(evaluator_namespace)
+    api.add_namespace(groups_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
-
 
 
 @werkzeug.serving.run_with_reloader

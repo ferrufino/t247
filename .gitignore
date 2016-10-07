@@ -1,4 +1,4 @@
-
+Angular/.idea/
 # Created by https://www.gitignore.io/api/python,typings,webstorm,node
 .idea/
 ### Python ###
@@ -6,7 +6,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+dump.rdb
 # C extensions
 *.so
 
