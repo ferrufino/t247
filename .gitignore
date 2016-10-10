@@ -1,4 +1,4 @@
-
+Angular/.idea/
 # Created by https://www.gitignore.io/api/python,typings,webstorm,node
 .idea/
 ### Python ###
@@ -204,3 +204,12 @@ Angular/t247-app/src/app/*.js
 Angular/t247-app/src/app/*.js.map
 Angular/t247-app/src/app/*/*.js
 Angular/t247-app/src/app/*/*.js.map
+
+
+#Problems folder and compilation
+Evaluator/problems/**/*.txt
+Evaluator/compilation/judge_0/*
+Evaluator/compilation/judge_1/*
+Evaluator/compilation/judge_2/*
+Evaluator/compilation/judge_3/*
+Evaluator/compilation/judge_4/*

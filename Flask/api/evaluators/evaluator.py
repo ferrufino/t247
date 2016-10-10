@@ -12,7 +12,7 @@ from api.evaluators.serializers import evaluatorResult
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import Problem
+from models import db, Problem, Case
 from models import Submission
 
 gevent.monkey.patch_all()
@@ -30,11 +30,14 @@ class EvaluatorProblemCreation(Resource):
         Receives Post From Evaluator of Problem Created
         """
         data = request.json
-                
+        print(data)
         # Send job to worker  
         result = services.request_evaluation(data)
-        
+        # result = {'status': 'compiled successfully',
+        #           'test_cases':
+        #           [{'status': 'successful run', 'output': '2'}]}
         return result
+
 
 @nse.route('/problem_upload')
 class EvaluatorProblemUpload(Resource):
@@ -45,12 +48,40 @@ class EvaluatorProblemUpload(Resource):
         Receives Post From Evaluator of Problem Created
         """
         data = request.json
-
+        print(data)
         #############
         # Update DB #
+        problem_name = data.get('name')
+        description = data.get('descriptionEnglish')
+        memory_limit = data.get('memoryLimit')
+        time_limit = data.get('timeLimit')
+        language = data.get('language')
+        # difficulty = data.get('difficulty')
+        difficulty = 0
+        code = data.get('code')
+        test_cases = data['testCases']
+
+        new_problem = Problem(name=problem_name,
+                              difficulty=difficulty, active=True,
+                              language=language, code=code,
+                              description=description)
+        db.session.add(new_problem)
+        db.session.commit()
+        problem_id = new_problem.id
+
+        print('ID PROBLEMA')
+        print(problem_id)
+
+        for i in range(len(test_cases)):
+            new_case = Case(input=test_cases[i]['content'],
+                            time_limit=time_limit, memory_limit=memory_limit,
+                            problem_id=problem_id)
+            db.session.add(new_case)
+            db.session.commit()
+
         #############
 
-        problem_id = 56
+        # problem_id = 56
 
         json = {}
         json['test_cases'] = data['testCases']
@@ -71,6 +102,10 @@ class EvaluatorAttemptSubmission(Resource):
         """     
         data = request.json
         
+        #############
+        # Update DB #
+        #############
+        
         # Send job to worker  
         result = services.request_evaluation(data)
         
@@ -87,6 +122,10 @@ class EvaluatorExecutionResult(Resource):
         data = request.json
         
         print(request)
+
+        #############
+        # Update DB #
+        #############
         
         # Print result  
         print(data)
