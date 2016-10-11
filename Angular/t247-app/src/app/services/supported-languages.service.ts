@@ -1,7 +1,3 @@
-/**
- * Created by Alfredo Hinojosa on 9/22/2016.
- */
-
 import { Injectable } from '@angular/core';
 
 export class ProgLanguage {

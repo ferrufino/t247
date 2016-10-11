@@ -1,7 +1,3 @@
-/**
- * Created by Alfredo Hinojosa on 9/22/2016.
- */
-
 import {Component} from '@angular/core';
 import {
   FormGroup,
