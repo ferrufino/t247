@@ -10,10 +10,10 @@ export class AuthenticationService {
 
   private loggedIn = false;
 
-  private loginUrl = 'http://localhost:5000/api/users/login';
-  private logoutUrl = 'http://localhost:5000/api/users/logout';
+  private loginUrl = 'http://107.170.255.106:5000/api/users/login';
+  private logoutUrl = 'http://107.170.255.106:5000/api/users/logout';
 
-  private rolesUrl = 'http://localhost:5000/api/users/role';
+  private rolesUrl = 'http://107.170.255.106:5000/api/users/role';
 
   private headers = new Headers({'Content-Type': 'application/json'});
 

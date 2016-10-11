@@ -27,7 +27,7 @@ export class HttpProblemsService {
   createNewProblem(problem: any){
     const headers = new Headers({'Content-Type': 'application/json'});
 
-    return this.http.post('http://localhost:5000/api/evaluator/problem_upload', problem, headers)
+    return this.http.post('http://107.170.255.106:5000/api/evaluator/problem_upload', problem, headers)
       .map((data: Response) => data.json());
   }
 
