@@ -50,8 +50,8 @@
         <div class="col s12">
 
           <div class="input-field col s5 offset-s1">
-            <select>
-              <option *ngFor="let lang of supportedLanguages" [value]="lang.name">{{lang.name}}</option>
+            <select id="langSelector">
+              <option *ngFor="let lang of supportedLanguages" [value]="lang.value">{{lang.name}}</option>
             </select>
             <label>Solution language</label>
           </div>
