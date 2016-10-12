@@ -10,12 +10,13 @@ export class AuthenticationService {
 
   private loggedIn = false;
 
-  private loginUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/login';
-  private logoutUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/logout';
+  private loginUrl = 'http://107.170.255.106:5000/api/users/login';
+  private logoutUrl = 'http://107.170.255.106:5000/api/users/logout';
 
-  private rolesUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/role';
+  private rolesUrl = 'http://107.170.255.106:5000/api/users/role';
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
+
 
     constructor(
         private _router: Router, private http: Http){
