@@ -17,8 +17,8 @@ export class HttpProblemsService {
    */
   checkProblemTestCases(problem: any){
     const headers = new Headers({'Content-Type': 'application/json'});
-    // const serviceURL : string = 'http://cors.io/?http://107.170.255.106:5000/api/evaluator/problem_creation';
-    const serviceURL : string = 'https://t247-testing.firebaseio.com/data.json';
+    const serviceURL : string = 'http://107.170.255.106:5000/api/evaluator/problem_creation';
+    //const serviceURL : string = 'https://t247-testing.firebaseio.com/data.json';
 
     return this.http.post(serviceURL, problem, headers)
       .map((data: Response) => data.json());
@@ -26,8 +26,8 @@ export class HttpProblemsService {
 
   createNewProblem(problem: any){
     const headers = new Headers({'Content-Type': 'application/json'});
-
-    return this.http.post('http://cors.io/?http://107.170.255.106:5000/api/evaluator/problem_upload', problem, headers)
+//http://cors.io/?
+    return this.http.post('http://107.170.255.106:5000/api/evaluator/problem_upload', problem, headers)
       .map((data: Response) => data.json());
   }
 
