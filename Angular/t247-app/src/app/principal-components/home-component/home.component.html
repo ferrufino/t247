@@ -28,41 +28,61 @@
 </nav>
 <div class="container" >
     <div class="content" [ngSwitch]="selectedRole">
-      <div class="row">
+      <div class="row" *ngSwitchCase="'admin'">
         <div class="col s12">
-          <ul materialize="tabs" class="tabs">
-            <li class="tab col s3" *ngSwitchCase="'admin'"><a href="#problems">Problems</a></li>
-            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#groups">Groups</a></li>
-            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#problems">Problems</a></li>
-            <li class="tab col s3" *ngSwitchCase="'student'"><a href="#my-assignments">My Assignments</a></li>
+          <ul id="tabsAdmin" materialize="tabs" class="tabs" reload="adminTabsLoaded">
+            <li class="tab col s3" ><a href="#problems">Problems</a></li>
             <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
-            <li class="tab col s3" *ngSwitchCase="'admin'"><a href="#view-users">Users</a></li>
-            <li class="tab col s3" *ngSwitchCase="'professor'"><a href="#view-users">Users</a></li>
-            <li class="tab col s3" *ngSwitchCase="'student'"><a href="#submissions">History</a></li>
+            <li class="tab col s3" ><a href="#view-users">Users</a></li>
           </ul>
         </div>
-        <div id="problems" class="col s12" *ngSwitchCase="'admin'">
+        <div id="problems" class="col s12">
           <generic-table [typetable]="'problems'"></generic-table>
         </div>
-        <div id="groups" class="col s12" *ngSwitchCase="'professor'">
+        <div id="topics-dashboard" class="col s12">
+          <app-topics-dashboard></app-topics-dashboard>
+        </div>
+        <div id="view-users" class="col s12">
+            <generic-table [typetable]="'users'"></generic-table>
+        </div>
+      </div>
+      <div class="row" *ngSwitchCase="'professor'">
+        <div class="col s12">
+          <ul id="tabsProfessor" materialize="tabs" class="tabs" reload="professorTabsLoaded">
+            <li class="tab col s3"><a href="#groups">Groups</a></li>
+            <li class="tab col s3"><a href="#problems">Problems</a></li>
+            <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
+            <li class="tab col s3"><a href="#view-users">Users</a></li>
+          </ul>
+        </div>
+        <div id="groups" class="col s12">
             <generic-table [typetable]="'groups'"></generic-table>
         </div>
-        <div id="problems" class="col s12" *ngSwitchCase="'professor'">
+        <div id="problems" class="col s12">
             <generic-table [typetable]="'problems'"></generic-table>
         </div>
-        <div id="my-assignments" class="col s12" *ngSwitchCase="'student'">
+        <div id="topics-dashboard" class="col s12">
+          <app-topics-dashboard></app-topics-dashboard>
+        </div>
+        <div id="view-users" class="col s12">
+            <generic-table [typetable]="'users'"></generic-table>
+        </div>
+      </div>
+      <div class="row" *ngSwitchCase="'student'">
+        <div class="col s12">
+          <ul id="tabsStudent" materialize="tabs" class="tabs" reload="studentTabsLoaded">
+            <li class="tab col s3"><a href="#my-assignments">My Assignments</a></li>
+            <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
+            <li class="tab col s3"><a href="#submissions">History</a></li>
+          </ul>
+        </div>
+        <div id="my-assignments" class="col s12">
             <generic-table [typetable]="'assignments'"></generic-table>
         </div>
         <div id="topics-dashboard" class="col s12">
           <app-topics-dashboard></app-topics-dashboard>
         </div>
-        <div id="view-users" class="col s12" *ngSwitchCase="'admin'">
-            <generic-table [typetable]="'users'"></generic-table>
-        </div>
-        <div id="view-users" class="col s12" *ngSwitchCase="'professor'">
-            <generic-table [typetable]="'users'"></generic-table>
-        </div>
-        <div id="submissions" class="col s12" *ngSwitchCase="'student'">
+        <div id="submissions" class="col s12">
             <generic-table [typetable]="'submissions'"></generic-table>
         </div>
       </div>

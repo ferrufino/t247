@@ -11,14 +11,22 @@ import {AuthenticationService} from '../../services/authentication.service';
 export class HomeComponent {
   roles: [string]
   selectedRole : string
+  adminTabsLoaded : boolean
+  professorTabsLoaded : boolean
+  studentTabsLoaded : boolean
   constructor(
-      private _service: AuthenticationService){}
+      private _service: AuthenticationService){
+        this.adminTabsLoaded = false;
+        this.professorTabsLoaded = false;
+        this.studentTabsLoaded = false;
+      }
 
     ngOnInit(){
         this._service.checkCredentials();
         if(sessionStorage.getItem("auth_token")){
             this.roles = JSON.parse(sessionStorage.getItem("roles"));
             this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
+            this.tabsLoadedFunction();
         }
         // $(".dropdown-button").dropdown();
         // $(".dropdown-button-mobile").dropdown();
@@ -35,5 +43,22 @@ export class HomeComponent {
     changeSelectedRole(role){
         var index = this.roles.indexOf(role);
         this.selectedRole = this.roles[index];
-  }
+        this.adminTabsLoaded = false;
+        this.professorTabsLoaded = false;
+        this.studentTabsLoaded = false;
+        this.tabsLoadedFunction();
+    }
+    tabsLoadedFunction(){
+      switch(this.selectedRole){
+        case 'admin':
+          this.adminTabsLoaded = true;
+          break;
+        case 'professor':
+          this.professorTabsLoaded = true;
+          break;
+        case 'student':
+          this.studentTabsLoaded = true;
+          break;
+      }
+    }
 }
