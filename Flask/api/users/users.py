@@ -47,15 +47,19 @@ class UserCreation(Resource):
         Creates user
         """
         email = request.json.get('email')
+        name = request.json.get('first_name')
+        last_name = request.json.get('last_name')
         password = request.json.get('password')
         enrollment = request.json.get('enrollment')
+        role = request.json.get('role')
 
         if email is None or password is None:
             return {'error': 'Missing arguments'}, 400
         if User.query.filter_by(email=email).first() is not None:
             return {'error': 'Email already exists'}, 400
 
-        new_user = User(email=email, role='admin', enrollment=enrollment)
+        new_user = User(email=email, name=first_name, last_name=last_name,
+                        role=role, enrollment=enrollment)
         new_user.hash_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -74,7 +78,6 @@ class UserAuthentication(Resource):
         password = request.json.get('password')
         if verify_password(email, password):
             token = g.user.generate_auth_token()
-            store_user_token(g.user.id, token)
             role = g.user.role
             name = g.user.first_name
             last_name = g.user.last_name
@@ -94,6 +97,7 @@ class UserLogout(Resource):
         """
         Logs out user
         """
+        print("Logging out user")
         token = request.json.get('token')
         if verify_password(token, None):
             delete_user_token(g.user.id)
@@ -127,7 +131,7 @@ class UserItem(Resource):
         """
         return User.query.filter(User.id == id).one()
 
-    @api.expect(api_user)
+    @api.expect(user_creation)
     @api.response(204, 'User successfully updated.')
     def put(self, id):
         """

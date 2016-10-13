@@ -2,13 +2,11 @@ import logging
 
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
-from api.groups.serializers import group as api_group, group_id
+from api.groups.serializers import group as api_group, group_creation
 from api.restplus import api
 from models import db, Group
 
 log = logging.getLogger(__name__)
-
-auth = HTTPBasicAuth()
 
 ns = api.namespace('groups', description='Operations related to groups')
 
@@ -19,33 +17,30 @@ class GroupCollection(Resource):
     @api.marshal_list_with(api_group)
     def get(self):
         """
-        Returns list of users.
+        Returns list of groups.
         """
         groups = Group.query.all()
-        return users
+        return groups
 
 
 @ns.route('/create')
 class GroupCreation(Resource):
     @api.response(201, 'User succesfully created')
-    @api.expect(api_group)
+    @api.expect(group_creation)
     def post(self):
         """
         Creates group
         """
-        # email = request.json.get('email')
-        # password = request.json.get('password')
+        period = request.json.get('period')
+        professor_id = request.json.get('professor_id')
+        course_id = request.json.get('course_id')
 
-        # if email is None or password is None:
-        #     abort(400)  # missing arguments
-        # if User.query.filter_by(email=email).first() is not None:
-        #     abort(400)  # existing user
+        new_group = Group(period=period, professor_id=professor_id,
+                          course_id=course_id)
 
-        # new_user = User(email=email, role='admin')
-        # new_user.hash_password(password)
-        # db.session.add(new_user)
-        # db.session.commit()
-        # return {'email': new_user.email}, 201
+        db.session.add(new_group)
+        db.session.commit()
+        return {'id': new_group.id, 'period': new_group.period}, 201
 
 
 @ns.route('/<int:id>')
@@ -59,16 +54,16 @@ class UserItem(Resource):
         """
         return Group.query.filter(Group.id == id).one()
 
-    @api.expect(api_grup)
+    @api.expect(group_creation)
     @api.response(204, 'Group successfully updated.')
     def put(self, id):
         """
         Updates a user.
         Use this method to edit a user.
         """
-        # data = request.json
-        # User.query.filter(User.id == id).update(data)
-        # db.session.commit()
+        data = request.json
+        Group.query.filter(Group.id == id).update(data)
+        db.session.commit()
         return None, 204
 
     @api.response(204, 'Group successfully deleted.')

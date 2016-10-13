@@ -1,9 +1,5 @@
-/**
- * Created by iker arbulu on 02/10/16.
- */
-
- import '../rxjs-operators';
- import 'rxjs/add/operator/map';
+import '../rxjs-operators';
+import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import {User} from '../user';
@@ -11,7 +7,7 @@ import {User} from '../user';
 @Injectable()
 export class UserService {
 
-  private editUrl = 'http://localhost:5000/api/users/';
+  private editUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/';
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
