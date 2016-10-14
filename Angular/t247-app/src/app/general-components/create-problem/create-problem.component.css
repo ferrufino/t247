@@ -1,0 +1,52 @@
+.mainTitle {
+  text-align: center;
+}
+
+.hidden{
+  display: none;
+}
+
+.margin-top50 {
+  margin-top: 50px;
+}
+
+.margin-bottom50 {
+  margin-bottom: 50px;
+}
+
+.margin-left50 {
+  margin-left: 50px;
+}
+
+.margin-right50 {
+  margin-right: 50px;
+}
+
+.margin-top20 {
+  margin-top: 20px;
+}
+
+.margin-bottom20 {
+  margin-bottom: 20px;
+}
+
+.margin-left20 {
+  margin-left: 20px;
+}
+
+.margin-right20 {
+  margin-right: 20px;
+}
+
+.lastInput {
+  margin-bottom: 80px;
+}
+
+.firstInput {
+  margin-top: 80px;
+}
+
+.mainWrapper {
+  margin-top: 60px;
+  padding-bottom: 60px;
+}
