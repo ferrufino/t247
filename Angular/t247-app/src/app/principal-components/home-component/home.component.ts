@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
         $(".dropdown-button").dropdown();
         $(".dropdown-button-mobile").dropdown();
 
-        this._service.checkCredentials();
+        //this._service.checkCredentials();
 
     }
 

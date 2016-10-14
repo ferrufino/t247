@@ -17,8 +17,8 @@ export class HttpProblemsService {
    */
   checkProblemTestCases(problem: any){
     const headers = new Headers({'Content-Type': 'application/json'});
-    // const serviceURL : string = 'http://localhost:5000/api/evaluator/problem_creation';
-    const serviceURL : string = 'https://t247-testing.firebaseio.com/data.json';
+    const serviceURL : string = 'http://localhost:5000/api/evaluator/problem_creation';
+    //const serviceURL : string = 'https://t247-testing.firebaseio.com/data.json';
 
     return this.http.post(serviceURL, problem, headers)
       .map((data: Response) => data.json());

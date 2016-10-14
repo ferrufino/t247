@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.hidden{
+  display: none;
+}
+
 .margin-top50 {
   margin-top: 50px;
 }
