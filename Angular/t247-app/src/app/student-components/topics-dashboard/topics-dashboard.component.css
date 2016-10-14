@@ -1,9 +1,12 @@
 .topic-box {
+  white-space: nowrap;
   line-height: 100px;
   text-align: center;
   background-color: #673ab7;
   color: white;
   margin: 1px;
+  margin:auto;
+  display:block;
 }
 
 .topic-box:hover {

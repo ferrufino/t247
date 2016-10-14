@@ -28,13 +28,17 @@ import { FilterGroupsPipe } from './pipes/filter-groups.pipe';
 import { FilterCoursesPipe } from './pipes/filter-courses.pipe';
 import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 
+import "materialize-css";
+import {MaterializeModule} from "angular2-materialize";
+
 @NgModule({
     imports:      [
         BrowserModule,
         FormsModule,
         HttpModule,
         ReactiveFormsModule,
-        routing
+        routing,
+        MaterializeModule
     ],
     declarations: [
         AppComponent,
