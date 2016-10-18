@@ -3,7 +3,8 @@
 <!-- DIV WRAPPING THE FORM -->
 <div *ngIf="!testCasesReady" class="container mainWrapper z-depth-2">
 
-  <form class="col s12" [formGroup]="createProblemForm" (ngSubmit)="evaluteTestCases()">
+  <form class="col s12" [formGroup]="createProblemForm"
+        (ngSubmit)="evaluteTestCases(selectedLanguage.value, selectedDifficulty.value)">
 
     <div formGroupName="problemDetails">
       <!-- Problem name -->
@@ -34,39 +35,40 @@
 
           <div class="input-field col s5 offset-s1">
             <input id="memory_limit" formControlName="memoryLimit" type="number">
-            <label for="desc_eng">Memory limit (MB)</label>
+            <label for="memory_limit">Memory limit (MB)</label>
           </div>
 
           <div class="input-field col s5">
             <input id="time_limit" formControlName="timeLimit" type="number">
-            <label for="desc_spn">Time limit (Milliseconds)</label>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Language and difficulty -->
-      <div class="row">
-        <div class="col s12">
-
-          <div class="input-field col s5 offset-s1">
-            <select id="langSelector">
-              <option *ngFor="let lang of supportedLanguages" [value]="lang.value">{{lang.name}}</option>
-            </select>
-            <label>Solution language</label>
-          </div>
-
-          <div class="input-field col s5">
-            <select>
-              <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
-            </select>
-            <label>Problem difficulty</label>
+            <label for="time_limit">Time limit (Seconds)</label>
           </div>
 
         </div>
       </div>
 
     </div>
+
+    <!-- Language and difficulty -->
+    <div class="row">
+      <div class="col s12">
+
+        <div class="input-field col s5 offset-s1">
+          <select #selectedLanguage>
+            <option *ngFor="let lang of supportedLanguages" [value]="lang.value">{{lang.name}}</option>
+          </select>
+          <label>Solution language</label>
+        </div>
+
+        <div class="input-field col s5">
+          <select #selectedDifficulty>
+            <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
+          </select>
+          <label>Problem difficulty</label>
+        </div>
+
+      </div>
+    </div>
+
 
     <div class="center-align margin-top20">
       <a (click)="problemTypeFlag = 1" class=" margin-right20 waves-effect waves-light btn-large">Full
@@ -133,9 +135,24 @@
 
 
     <div class="center-align margin-top20">
-      <button [disabled]="!createProblemForm.valid" type="submit" class=" btn waves-effect waves-light btn-large">
+      <button [disabled]="!createProblemForm.valid || problemTestCases.length === 0" [ngClass]="{'hidden': displayLoader}" type="submit" class="btn waves-effect waves-light btn-large">
         Check Test Cases <i class="material-icons right">done</i>
       </button>
+
+      <div class="preloader-wrapper big" [ngClass]="{'active': displayLoader, 'hidden': !displayLoader}">
+        <div class="spinner-layer spinner-red-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </form>
@@ -143,6 +160,7 @@
 </div>
 <!-- DIV WRAPPING THE FORM -->
 
+<!-- FINAL STEP OF CREATING A PROBLEM -->
 <div style="margin-bottom: 100px;" class="container grey darken-1" *ngIf="testCasesReady">
 
   <div class="row">
@@ -199,17 +217,32 @@
 
   <div class="center-align margin-top20">
 
-    <button (click)="previousTestCase()" class="btn margin-bottom50 waves-effect waves-light btn-large">
+    <button [ngClass]="{'hidden': displayLoader}" (click)="previousTestCase()" class="btn margin-bottom50 waves-effect waves-light btn-large">
       Previous <i class="material-icons right">fast_rewind</i>
     </button>
 
-    <button (click)="createProblemRequest()" class=" btn margin-bottom50 waves-effect waves-light btn-large">
+    <button [ngClass]="{'hidden': displayLoader}" (click)="createProblemRequest()" class=" btn margin-bottom50 waves-effect waves-light btn-large">
       Submit problem <i class="material-icons right">send</i>
     </button>
 
-    <button (click)="nextTestCase()" class="btn margin-bottom50 waves-effect waves-light btn-large">
+    <button [ngClass]="{'hidden': displayLoader}" (click)="nextTestCase()" class="btn margin-bottom50 waves-effect waves-light btn-large">
       Next <i class="material-icons right">fast_forward</i>
     </button>
+
+    <div class="preloader-wrapper big" [ngClass]="{'active': displayLoader, 'hidden': !displayLoader}">
+      <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+
 
   </div>
 

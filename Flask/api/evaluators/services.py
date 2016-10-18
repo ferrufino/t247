@@ -21,6 +21,7 @@ base_dir    = "/root/t247/Evaluator/"
 # Method that returns custom response dictionary
 def error_response(error, submission_id):
     response = { "error" : error }
+    print(response)
     if (submission_id != -1):
         requests.post("http://localhost:5000/api/evaluator/execution_result", json=response) 
     return response
@@ -180,7 +181,7 @@ def evaluate(request):
         for test_no in range(total_tests):
         
             # 2) Create container
-            process = subprocess.Popen(['sudo', 'docker', 'run', '--security-opt', 'no-new-privileges', '--network', 'none', '-m', '500m', '-dit', '--name', ctr_name, 't247', 'bash'])
+            process = subprocess.Popen(['sudo', 'docker', 'run', '--security-opt', 'no-new-privileges', '--cap-drop', 'all', '--network', 'none', '-m', '500m', '-dit', '--name', ctr_name, 't247', 'bash'])
             
             # Capture errors while running Docker
             execution_status = wait_and_recover(process, 5, ctr_name)

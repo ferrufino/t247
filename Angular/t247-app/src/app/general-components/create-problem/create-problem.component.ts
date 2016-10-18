@@ -9,6 +9,7 @@ import {SupportedLanguages, ProgLanguage} from "../../services/supported-languag
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {HttpProblemsService} from "../../services/http-problems.service";
 import {TestCase} from "./TestCase";
+declare var Materialize: any; // Local declaration for Materialize Class
 
 @Component({
   selector: 'create-problem',
@@ -20,14 +21,19 @@ import {TestCase} from "./TestCase";
 export class CreateProblem {
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
+  displayLoader: boolean; // Flag used to display the loader when the form is submitted
+
   supportedLanguages: ProgLanguage[]; // filled from service
-  difficulties: string[] // filled from service
   problemProgLang: string; // The selected language of the problem
+
+  difficulties: string[] // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
+
   problemTestCases: TestCase[]; // The array of test cases realted to the problem
   testCasesReady: boolean; // Flag that when is true means that all test cases passed the check
   testCaseIndex: number; // Number that is equal to the index of the displayed test case
   selectedTestCase: TestCase; // Current Test Case being displayed
+
 
   // This variable specifies the form type that will be displayed, in order to upload the problem
   // 0 = default value, 1 = full problem, 2 = function
@@ -51,12 +57,14 @@ export class CreateProblem {
     this.testCaseIndex = 0;
     this.testCasesReady = false;
     this.selectedTestCase = null;
+    this.displayLoader = false;
 
+    // Get the values from services
     this.supportedLanguages = this._supportedLanguages.getLanguages();
     this.difficulties = this._problemDifficulties.getDifficulties();
 
-    // TODO: FIX THESE! HARDCODED VALUES
-    this.problemProgLang = 'test';
+    // Set the default values
+    this.problemProgLang = this.supportedLanguages[0].value;
     this.problemDifficulty = this.difficulties[0];
 
 
@@ -98,7 +106,6 @@ export class CreateProblem {
 
     return inputs;
   }
-
 
   /**
    * Function used in the Carousel
@@ -155,40 +162,29 @@ export class CreateProblem {
   }
 
 
-  createProblemRequest() {
+  /**
+   * This function reads the outputs from the evaluator response to complete the test cases.
+   * @param data, the response from the evaluator
+   * @returns {boolean} a flag that is true when all the test cases have as status successful run
+   */
+  setOutputForTestCases(data: any): boolean {
 
-    // TODO: GET CORRECT VALUE OF DIFFICULTY AND LANGUAGE
-    // TODO: FIX TEXT AREA VALUE
+    let success = true;
 
-    // Get the correct type of problem
-    let pType = (this.problemTypeFlag == 1) ? "full" : "function";
+    for (let i = 0; i < this.problemTestCases.length; i++) {
 
-    let problemObject = {
-      "authorID": 484,
-      "name": this.createProblemForm.value.problemDetails.problemName,
-      "descriptionEnglish": this.createProblemForm.value.problemDetails.engDescription,
-      "descriptionSpanish": this.createProblemForm.value.problemDetails.spnDescription,
-      "language": this.problemProgLang,
-      "difficulty": this.problemDifficulty,
-      "memoryLimit": this.createProblemForm.value.problemDetails.memoryLimit,
-      "timeLimit": this.createProblemForm.value.problemDetails.timeLimit,
-      "type": pType
+      let aux = data.test_cases[i];
+
+      if (aux["status"] == "successful run") {
+        this.problemTestCases[i].output = aux["output"]; // Set the output to the respective test case
+      } else {
+        success = false; // Error in test case, the form is not ready for next step
+      }
+
+      this.problemTestCases[i].status = aux["status"]; // Set the status to the respective test case
     }
 
-    problemObject["testCases"] = this.problemTestCases;
-
-    console.log(problemObject);
-
-    this._httpProblemsService.createNewProblem(problemObject)
-      .subscribe(
-        data => {
-          console.log("RESPONSE")
-          console.log(data) // TODO: Use this data, not the dummy one
-          alert("PROBLEMA CREADO");
-
-        }
-      );
-
+    return success;
   }
 
   /**
@@ -198,20 +194,15 @@ export class CreateProblem {
    *
    * This functions connects to the HTTP PROBLEMS SERVICE
    */
-  evaluteTestCases() {
+  evaluteTestCases(selectedLanguage: string, selectedDifficulty: string) {
 
+
+    // Assign the correct values
+    this.displayLoader = true; // display the loader
+    this.problemProgLang = selectedLanguage;
+    this.problemDifficulty = selectedDifficulty;
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
     let sourceCode: string = this.getSourceCodeString(); // string with the source code of the project
-
-    // TODO: DELETE HIS DUMMY DATA
-    let dummy = {
-      "status": "compiled successfully",
-      "test_cases": [
-        {"status": "successful run", "output": "178"},
-        {"status": "successful run", "output": "200"},
-        {"status": "successful run", "output": "44"}
-      ]
-    };
 
 
     // The object that will be sent to the evaluator
@@ -224,36 +215,65 @@ export class CreateProblem {
       "test_cases": inputs
     };
 
-    // TODO: DELETE THESE LINES
-    console.log("Test request..");
-    console.log(request);
+
 
     // Make the POST
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(
         data => {
-          console.log("RESPONSE")
-          console.log(data) // TODO: delete this log
 
-          let aux = {};
+          this.displayLoader = false; // Turn off loader
 
-          this.testCasesReady = true; // Assume the form is ready for next step
-          this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
-
-          for (let i = 0; i < this.problemTestCases.length; i++) {
-
-            aux = data.test_cases[i];
-
-            if (aux["status"] == "successful run") {
-              this.problemTestCases[i].output = aux["output"]; // Set the output to the respective test case
-            } else {
-              this.testCasesReady = false; // Error in test case, the form is not ready for next step
-            }
-
-            this.problemTestCases[i].status = aux["status"]; // Set the status to the respective test case
+          // Check for compilation error
+          if (data.hasOwnProperty('error')) {
+              let errorLabel = "Error: " + data['error'];
+              Materialize.toast(errorLabel, 4000)
+          } else {
+            // No errors, get the outputs of the test cases
+            this.testCasesReady = this.setOutputForTestCases(data);
+            this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
           }
+
         }
       );
   }
+
+  /**
+   * This function sends the request to Flask in order to create a new problem and save it to the Data Base
+   */
+  createProblemRequest() {
+
+    this.displayLoader = true; // display the loader
+
+    // Get the correct type of problem
+    let pType = (this.problemTypeFlag == 1) ? "full" : "function";
+
+    let problemObject = {
+      "authorID": 444,
+      "name": this.createProblemForm.value.problemDetails.problemName,
+      "descriptionEnglish": this.createProblemForm.value.problemDetails.engDescription,
+      "descriptionSpanish": this.createProblemForm.value.problemDetails.spnDescription,
+      "language": this.problemProgLang,
+      "difficulty": this.problemDifficulty,
+      "memoryLimit": this.createProblemForm.value.problemDetails.memoryLimit,
+      "timeLimit": this.createProblemForm.value.problemDetails.timeLimit,
+      "type": pType
+    }
+
+    problemObject["testCases"] = this.problemTestCases;
+
+
+    this._httpProblemsService.createNewProblem(problemObject)
+      .subscribe(
+        data => {
+
+          this.displayLoader = false;
+          alert("PROBLEM CREATED!");
+
+        }
+      );
+
+  }
+
 }
 

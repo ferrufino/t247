@@ -28,13 +28,18 @@ import { FilterGroupsPipe } from './pipes/filter-groups.pipe';
 import { FilterCoursesPipe } from './pipes/filter-courses.pipe';
 import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 
+import "materialize-css";
+import {MaterializeModule} from "angular2-materialize";
+import {HttpTableService} from "./services/http-table.service";
+
 @NgModule({
     imports:      [
         BrowserModule,
         FormsModule,
         HttpModule,
         ReactiveFormsModule,
-        routing
+        routing,
+        MaterializeModule
     ],
     declarations: [
         AppComponent,
@@ -60,6 +65,7 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
         FilterCoursesPipe,
         FilterTopicsPipe
     ],
-    bootstrap:    [ AppComponent ]
+    bootstrap:    [ AppComponent ],
+    providers: [ HttpTableService ]
 })
 export class AppModule { }

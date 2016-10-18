@@ -14,7 +14,8 @@
       <ul class="collection with-header z-depth-4">
 
         <li class="collection-header" [ngClass]="{'red': testcase.status !== 'successful run', 'blue': testcase.status === 'successful run'}">
-          <h5 class="white-text">Test Case number: {{idx + 1}}</h5>
+          <h5 *ngIf="testcase.status === 'successful run'" class="white-text">Test Case number: {{idx + 1}}</h5>
+          <h5 *ngIf="testcase.status !== 'successful run'" class="white-text">Test Case number: {{idx + 1}} - Error: {{testcase.status}}</h5>
         </li>
 
         <div class="collection-item">
