@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {JsonPipe} from '@angular/common';
+import { Response } from "@angular/http";
+import { HttpTableService } from "../../services/http-table.service";
 
 @Component({
   selector: 'generic-table',
@@ -7,6 +9,8 @@ import {JsonPipe} from '@angular/common';
   styleUrls: ['./generic-table.component.css']
 })
 export class GenericTableComponent implements OnInit{
+
+    constructor(private httpService: HttpTableService) {}
 
     @Input('typetable') typeOfTableName: string;
     //typeOfTableName: string = "courses";
@@ -19,17 +23,16 @@ export class GenericTableComponent implements OnInit{
     private topicsBool;
     private usersBool;
 
-    private content;
+    content: any[] = [];
 
     ngOnInit () {
+      this.renderTable();
 
-        this.renderTable();
     }
     ngAfterViewInit() {
 
 
     }
-
 
 
     renderTable(){
@@ -119,8 +122,22 @@ export class GenericTableComponent implements OnInit{
                break;
 
            case "groups":
-               this.groupsBool = true;
-               this.columns = ["Name", "Period", "Edit", "Delete"];
+   // must be deleted once groups works in flask and should be copied to courses
+             this.httpService.getCourses().subscribe(
+               courses => {
+                 const myArray = [];
+                 for (let key in courses) {
+                   myArray.push(courses[key]);
+                   console.log(courses[key]);
+                 }
+                 this.content = myArray;
+                 this.groupsBool = true;
+                 this.columns = ["Id", "Name", "Edit", "Delete"];
+               }
+             );
+
+// must go once groups works in flask
+    /*           this.columns = ["Name", "Period", "Edit", "Delete"];
                this.content = [
                    {
                        "name": "groupDummy1",
@@ -138,23 +155,23 @@ export class GenericTableComponent implements OnInit{
 
                    }
                ];
+    */
                break;
 
-           case "courses":
-               this.coursesBool = true;
-               this.columns = ["Title", "Edit", "Delete"];
-               this.content = [
-                   {
-                       "title": "Alg"
-                   },
-                   {
-                       "title": "Data Structure"
-                   },
-                   {
-                       "title": "Functional Programming"
-                   }
-               ];
-               break;
+         case "courses":
+           this.httpService.getCourses().subscribe(
+             courses => {
+               const myArray = [];
+               for (let key in courses) {
+                 myArray.push(courses[key]);
+                 console.log(courses[key]);
+               }
+               this.content = myArray;
+               this.groupsBool = true;
+               this.columns = ["Id", "Title", "Edit", "Delete"];
+             }
+           );
+           break;
 
            case "topics":
                this.topicsBool = true;
@@ -195,12 +212,12 @@ export class GenericTableComponent implements OnInit{
                        "typeOfUser": 'Admin'
                    }
                ];
-               
+
                break;
 
        }
 
-        
+
     }
 
 

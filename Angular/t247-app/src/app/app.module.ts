@@ -30,6 +30,7 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
+import {HttpTableService} from "./services/http-table.service";
 
 @NgModule({
     imports:      [
@@ -64,6 +65,7 @@ import {MaterializeModule} from "angular2-materialize";
         FilterCoursesPipe,
         FilterTopicsPipe
     ],
-    bootstrap:    [ AppComponent ]
+    bootstrap:    [ AppComponent ],
+    providers: [ HttpTableService ]
 })
 export class AppModule { }
