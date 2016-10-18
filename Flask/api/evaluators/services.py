@@ -20,7 +20,7 @@ base_dir    = "/home/msf1013/Desktop/t247/Evaluator/"
 
 # Method that returns custom response dictionary
 def error_response(error, submission_id):
-    response = { "error" : error }
+    response = { "status" : "error", "error" : error }
     print(response)
     if (submission_id != -1):
         requests.post("http://localhost:5000/api/evaluator/execution_result", json=response) 
@@ -321,7 +321,7 @@ def request_evaluation(data):
     
     # Return result
     if (job.is_failed):
-        response = { "error" : "Internal evaluation error" }
+        response = { "status" : "error", "error" : "Internal evaluation error" }
     else:
         response = job.result
     

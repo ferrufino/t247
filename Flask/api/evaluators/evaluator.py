@@ -53,14 +53,14 @@ class EvaluatorProblemCreation(Resource):
         
         # Create problem
         problem_name = data.get('name')
-        description = data.get('descriptionEnglish')
-        memory_limit = data.get('memoryLimit')
-        time_limit = data.get('timeLimit')
+        description = data.get('description_english')
+        memory_limit = data.get('memory_limit')
+        time_limit = data.get('time_limit')
         language = data.get('language')
         # difficulty = data.get('difficulty')
         difficulty = 0
         code = data.get('code')
-        test_cases = data['testCases']
+        test_cases = data['test_cases']
 
         new_problem = Problem(name=problem_name,
                               difficulty=difficulty, active=True,
@@ -80,7 +80,7 @@ class EvaluatorProblemCreation(Resource):
 
         # Add input and output files to filesystem
         json = {}
-        json['test_cases'] = data['testCases']
+        json['test_cases'] = data['test_cases']
         json['problem_id'] = problem_id
          
         result = services.upload_problem(json)
