@@ -230,3 +230,12 @@ class Assignment(Base):
     group = db.relationship("Group", back_populates="assignments")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="assignments")
+
+
+class Language(Base):
+    """docstring for Assignment"""
+    __tablename__ = 'language'
+
+    name = db.Column(db.String(255))
+    value = db.Column(db.String(255))
+    extension = db.Column(db.String(255))

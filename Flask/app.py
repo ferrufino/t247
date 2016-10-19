@@ -13,6 +13,7 @@ from api.evaluators.evaluator import nse as evaluator_namespace
 from api.courses.courses import ns as courses_namespace
 from api.groups.groups import ns as groups_namespace
 from api.topics.topics import ns as topics_namespace
+from api.languages.languages import ns as languages_namespace
 
 from api.restplus import api
 from models import db, User
@@ -47,12 +48,13 @@ def initialize_app(flask_app):
     api.add_namespace(courses_namespace)
     api.add_namespace(groups_namespace)
     api.add_namespace(topics_namespace)
+    api.add_namespace(languages_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
 
 
-@werkzeug.serving.run_with_reloader
+#@werkzeug.serving.run_with_reloader
 def main():
     initialize_app(app)
     #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
