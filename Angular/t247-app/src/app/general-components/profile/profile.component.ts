@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 import {User} from '../../user';
-import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'profile',
-  providers: [AuthenticationService,UserService],
+  providers: [UsersService],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -15,7 +14,7 @@ export class ProfileComponent implements OnInit {
 
   editingProfile = false;
 
-  constructor(private _authService: AuthenticationService, private _editUserService:UserService) {
+  constructor(private _authService: UsersService, private _editUserService:UsersService) {
     this.editingProfile = false;
   }
 

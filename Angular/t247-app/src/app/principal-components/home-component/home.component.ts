@@ -3,11 +3,11 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'home',
-  providers: [AuthenticationService],
+  providers: [UsersService],
   templateUrl: './home.component.html',
   styleUrls: ['../../../styles/general-styles.css']
 })
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
   professorTabsLoaded : boolean
   studentTabsLoaded : boolean
   constructor(
-    private _service: AuthenticationService){
+    private _service: UsersService){
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;

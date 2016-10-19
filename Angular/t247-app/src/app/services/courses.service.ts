@@ -1,8 +1,12 @@
+/**
+ * Created by Alfredo Hinojosa on 10/18/2016.
+ */
+
 import { Injectable } from '@angular/core';
 import { Http, Response } from "@angular/http";
 
 @Injectable()
-export class HttpTableService {
+export class CoursesService {
 
   constructor(private http: Http) { }
 

@@ -7,13 +7,13 @@ import {
 
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
-import {HttpProblemsService} from "../../services/http-problems.service";
+import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 declare var Materialize: any; // Local declaration for Materialize Class
 
 @Component({
   selector: 'create-problem',
-  providers: [SupportedLanguages, ProblemDifficulties, HttpProblemsService],
+  providers: [SupportedLanguages, ProblemDifficulties, EvaluatorService],
   templateUrl: './create-problem.component.html',
   styleUrls: ['./create-problem.component.css']
 })
@@ -40,7 +40,7 @@ export class CreateProblem {
   problemTypeFlag: number = 0;
 
 
-  constructor(private _httpProblemsService: HttpProblemsService,
+  constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _formBuilder: FormBuilder) {

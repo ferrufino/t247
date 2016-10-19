@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+// TODO: DEPRECATED DELETE THIS SERVICE
+
 export class ProgLanguage {
     constructor(
         public name: string,
