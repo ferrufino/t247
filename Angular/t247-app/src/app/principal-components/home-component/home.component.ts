@@ -13,11 +13,12 @@ import {UsersService} from '../../services/users.service';
 })
 
 export class HomeComponent implements OnInit, AfterViewInit{
-  roles: [string]
-  selectedRole : string
-  adminTabsLoaded : boolean
-  professorTabsLoaded : boolean
-  studentTabsLoaded : boolean
+
+  roles: [string];
+  selectedRole : string;
+  adminTabsLoaded : boolean;
+  professorTabsLoaded : boolean;
+  studentTabsLoaded : boolean;
   constructor(
     private _service: UsersService){
     this.adminTabsLoaded = false;
@@ -33,8 +34,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
       this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
       this.tabsLoadedFunction();
     }
-    // $(".dropdown-button").dropdown();
-    // $(".dropdown-button-mobile").dropdown();
   }
 
   logout() {
