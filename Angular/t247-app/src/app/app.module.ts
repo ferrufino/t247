@@ -34,6 +34,7 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
 import {CoursesService} from "./services/courses.service";
+import {GroupsService} from "./services/groups.service";
 
 @NgModule({
   imports: [
@@ -71,7 +72,7 @@ import {CoursesService} from "./services/courses.service";
     FilterTopicsPipe
   ],
   bootstrap: [AppComponent],
-  providers: [CoursesService]
+  providers: [CoursesService, GroupsService]
 })
 export class AppModule {
 }

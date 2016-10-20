@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import {Response} from "@angular/http";
 import {CoursesService} from "../../services/courses.service";
+import {GroupsService} from "../../services/groups.service";
 
 @Component({
   selector: 'generic-table',
@@ -10,7 +11,7 @@ import {CoursesService} from "../../services/courses.service";
 })
 export class GenericTableComponent implements OnInit {
 
-  constructor(private coursesService: CoursesService) {
+  constructor(private coursesService: CoursesService, private groupsService: GroupsService) {
   }
 
   @Input('typetable') typeOfTableName: string;
@@ -124,40 +125,18 @@ export class GenericTableComponent implements OnInit {
         break;
 
       case "groups":
-        // must be deleted once groups works in flask and should be copied to courses
-        this.coursesService.getCourses().subscribe(
-          courses => {
+        this.groupsService.getGroups().subscribe(
+          groups => {
             const myArray = [];
-            for (let key in courses) {
-              myArray.push(courses[key]);
-              console.log(courses[key]);
+            for (let key in groups) {
+              myArray.push(groups[key]);
+              console.log(groups[key]);
             }
             this.content = myArray;
             this.groupsBool = true;
-            this.columns = ["Id", "Name", "Edit", "Delete"];
+            this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
           }
         );
-
-// must go once groups works in flask
-        /*           this.columns = ["Name", "Period", "Edit", "Delete"];
-         this.content = [
-         {
-         "name": "groupDummy1",
-         "period": "Aug 2016"
-
-         },
-         {
-         "name": "groupDummy2",
-         "period": "Aug 2016"
-
-         },
-         {
-         "name": "groupDummy3",
-         "period": "Aug 2016"
-
-         }
-         ];
-         */
         break;
 
       case "courses":
