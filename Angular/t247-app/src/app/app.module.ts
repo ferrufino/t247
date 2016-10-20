@@ -15,11 +15,13 @@ import {ViewUsersComponent} from "./admin-components/view-users/view-users.compo
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 import { StudentComponentsComponent } from './student-components/student-components.component';
 import { GenericTableComponent } from './general-components/generic-table/generic-table.component';
-import { FilterPipe } from './pipes/filter.pipe';
-
+import { Tab } from './general-components/tab/tab.component';
+import { Tabs } from './general-components/tabs/tabs.component';
 import { TestCasesCreatorComponent } from './general-components/create-problem/test-cases-creator.component';
 
+
 import { KeysPipe } from './pipes/keys.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
 import { FilterUsersPipe } from './pipes/filter-users.pipe';
 import { FilterProblemsPipe } from './pipes/filter-problems.pipe';
 import { FilterAssignmentsPipe } from './pipes/filter-assignments.pipe';
@@ -53,6 +55,8 @@ import {MaterializeModule} from "angular2-materialize";
         ViewUsersComponent,
         StudentComponentsComponent,
         GenericTableComponent,
+        Tab,
+        Tabs,
         FilterPipe,
         TestCasesCreatorComponent,
         KeysPipe,

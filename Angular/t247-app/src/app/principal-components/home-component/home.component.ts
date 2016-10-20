@@ -13,12 +13,15 @@ import {AuthenticationService} from '../../services/authentication.service';
 })
 
 export class HomeComponent implements OnInit, AfterViewInit{
-  roles: [string]
-  selectedRole : string
-  adminTabsLoaded : boolean
-  professorTabsLoaded : boolean
-  studentTabsLoaded : boolean
-  constructor(
+  roles: [string];
+  selectedRole : string;
+  adminTabsLoaded : boolean;
+  professorTabsLoaded : boolean;
+  studentTabsLoaded : boolean;
+
+    title = 'Angular Nav Tabs';
+
+    constructor(
     private _service: AuthenticationService){
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
@@ -33,8 +36,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
       this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
       this.tabsLoadedFunction();
     }
-    // $(".dropdown-button").dropdown();
-    // $(".dropdown-button-mobile").dropdown();
   }
 
   logout() {
