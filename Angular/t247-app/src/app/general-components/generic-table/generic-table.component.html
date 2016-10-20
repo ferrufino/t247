@@ -72,7 +72,8 @@
     </tbody>
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value" >
-        <td>{{entry.value.title}}</td>
+        <td>{{entry.value.id}}</td>
+        <td>{{entry.value.name}}</td>
         <td>edit</td>
         <td>delete</td>
     </tr>

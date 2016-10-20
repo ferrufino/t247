@@ -148,7 +148,7 @@ export class GenericTableComponent implements OnInit {
               console.log(courses[key]);
             }
             this.content = myArray;
-            this.groupsBool = true;
+            this.coursesBool = true;
             this.columns = ["Id", "Title", "Edit", "Delete"];
           }
         );
