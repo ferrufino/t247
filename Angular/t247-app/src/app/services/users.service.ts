@@ -1,7 +1,3 @@
-/**
- * Created by Alfredo Hinojosa on 10/18/2016.
- */
-
 import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
