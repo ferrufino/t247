@@ -3,26 +3,24 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'home',
-  providers: [AuthenticationService],
+  providers: [UsersService],
   templateUrl: './home.component.html',
   styleUrls: ['../../../styles/general-styles.css']
 })
 
 export class HomeComponent implements OnInit, AfterViewInit{
+
   roles: [string];
   selectedRole : string;
   adminTabsLoaded : boolean;
   professorTabsLoaded : boolean;
   studentTabsLoaded : boolean;
-
-    title = 'Angular Nav Tabs';
-
-    constructor(
-    private _service: AuthenticationService){
+  constructor(
+    private _service: UsersService){
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;

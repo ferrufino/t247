@@ -51,8 +51,8 @@
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
-        <td>{{entry.value.name}}</td>
-        <td>{{entry.value.period}}</td>
+        <td>{{entry.value.id}}</td><!-- should be entrey.value.name once it displays groups for real, not courses -->
+        <td>{{entry.value.name}}</td><!-- should be entrey.value.period once it displays groups for real, not courses-->
         <td>edit</td>
         <td>delete</td>
     </tr>

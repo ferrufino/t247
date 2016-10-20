@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import { Observable } from "rxjs/Rx";
 
 @Injectable()
-export class HttpProblemsService {
+export class EvaluatorService {
 
   constructor(private http: Http) { }
 
@@ -17,7 +17,7 @@ export class HttpProblemsService {
    */
   checkProblemTestCases(problem: any){
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
-    const serviceURL : string = 'http://107.170.255.106:5000/api/evaluator/problem_creation';
+    const serviceURL : string = 'http://107.170.255.106:5000/api/evaluator/problem_evaluation';
 
     //const serviceURL : string = 'https://t247-testing.firebaseio.com/data.json';
 
@@ -28,7 +28,7 @@ export class HttpProblemsService {
   createNewProblem(problem: any){
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
     //http://cors.io/?
-    return this.http.post('http://107.170.255.106:5000/api/evaluator/problem_upload', problem, headers)
+    return this.http.post('http://107.170.255.106:5000/api/evaluator/problem_creation', problem, headers)
       .map((data: Response) => data.json());
   }
 
