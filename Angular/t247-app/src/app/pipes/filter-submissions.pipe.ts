@@ -9,8 +9,7 @@ export class FilterSubmissionsPipe implements PipeTransform {
 
         let ans = [];
         for (let k in items){
-            if(items[k].name.match('^.*' + args +'.*$')
-                || items[k].numberOfAttempts.match('^.*' + args +'.*$')) {
+            if(items[k].name.match('^.*' + args +'.*$')) {
                 ans.push({key: k, value: items[k]});
             }
         }
