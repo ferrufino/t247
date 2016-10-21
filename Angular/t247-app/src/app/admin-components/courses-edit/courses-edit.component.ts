@@ -4,10 +4,9 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 
 import { CoursesService } from '../../services/courses.service.ts';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 
 @Component({
-  providers: [AuthenticationService],
   selector: 'courses-edit',
   templateUrl: './courses-edit.component.html',
   styleUrls: ['./courses-edit.component.css']
@@ -17,7 +16,7 @@ export class CoursesEditComponent implements OnInit{
     constructor(private coursesService : CoursesService,
                 private route: ActivatedRoute,
                 private location: Location,
-                private _authService: AuthenticationService) {}
+                private _authService: UsersService) {}
 
     course;
 

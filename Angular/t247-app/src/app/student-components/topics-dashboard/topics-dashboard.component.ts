@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TopicsService } from '../../services/topics.service';
 
 @Component({
   selector: 'app-topics-dashboard',
@@ -7,18 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopicsDashboardComponent implements OnInit {
 
-  topics: Array<string>;
+  content: any[] = [];
 
-  constructor() { }
+  constructor(private topicsService: TopicsService) {
+  }
 
   ngOnInit() {
     this.renderTopicCells();
   }
 
   renderTopicCells() {
-    this.topics = ["System of linear equations", "Arithmetic Expressions", "Backtracking", "Binary Search Tree",
-      "Classes", "Data Structure", "Decisions Structures", "Divide and Conquer", "Dynammic Programming",
-      "Functions or methods", "Geometry", "Graph", "Greedy Algorithms", "Hashing", "Linked List", "Repetitions Stuctures",
-      "STL", "Sorts", "Stacks", "Strings"];
+    this.topicsService.getTopics().subscribe(
+      topics => {
+        const myArray = [];
+        for (let key in topics) {
+          myArray.push(topics[key]);
+        }
+        this.content = myArray;
+      }
+    );
   }
 }

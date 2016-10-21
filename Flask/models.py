@@ -5,6 +5,7 @@ from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from sqlalchemy.ext.declarative import declared_attr
+from enums import SubmissionState, SubmissionResult
 
 db = SQLAlchemy()
 
@@ -184,9 +185,11 @@ class Problem(Base):
     language = db.Column(db.String(255))
     code = db.Column(db.Text)
     template = db.Column(db.Text)
-    description = db.Column(db.Text)
+    description_english = db.Column(db.Text)
+    description_spanish = db.Column(db.Text)
 
-    cases = db.relationship("Case", back_populates="problem")
+    cases = db.relationship("Case", back_populates="problem",
+                            order_by="Case.id")
     assignments = db.relationship("Assignment", back_populates="problem")
     submissions = db.relationship("Submission", back_populates="problem")
     topics = db.relationship("Topic", secondary="problemtopic",
@@ -210,10 +213,10 @@ class Submission(Base):
     __tablename__ = 'submission'
     code = db.Column(db.Text)
     language = db.Column(db.String(255))
-    state = db.Column(db.Integer)
-    feedback = db.Column(db.Text)
-    result = db.Column(db.Integer)
+    feedback_list = db.Column(db.JSON)
     grade = db.Column(db.Integer)
+    state = db.Column(db.Enum(SubmissionState))
+    result = db.Column(db.Enum(SubmissionResult))
 
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     student = db.relationship("Student", back_populates="submissions")
@@ -230,3 +233,12 @@ class Assignment(Base):
     group = db.relationship("Group", back_populates="assignments")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="assignments")
+
+
+class Language(Base):
+    """docstring for Assignment"""
+    __tablename__ = 'language'
+
+    name = db.Column(db.String(255))
+    value = db.Column(db.String(255))
+    extension = db.Column(db.String(255))

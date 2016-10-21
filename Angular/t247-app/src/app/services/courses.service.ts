@@ -1,10 +1,13 @@
+import { Injectable } from '@angular/core';
+
 import '../rxjs-operators';
 import 'rxjs/add/operator/map';
-import {Injectable} from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
-// import { Observable }     from 'rxjs/Observable';
+
 @Injectable()
 export class CoursesService {
+
+  constructor(private http: Http) { }
 
   private getUrl = 'http://107.170.255.106:5000/api/courses/';
 
@@ -15,9 +18,6 @@ export class CoursesService {
   private createUrl = 'http://107.170.255.106:5000/api/courses/create';
 
   private headers = new Headers({'Content-Type': 'application/json'});
-
-    constructor( private http: Http){
-        }
 
     editCourse(course){
       return this.http
@@ -61,4 +61,10 @@ export class CoursesService {
       )
       .map((response: Response) => response.json());
     }
+
+  getCourses() {
+    const serviceURL : string = 'http://107.170.255.106:5000/api/courses/';
+    return this.http.get(serviceURL).map((response: Response) => response.json());
+  }
+
 }

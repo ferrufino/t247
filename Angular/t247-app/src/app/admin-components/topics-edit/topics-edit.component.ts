@@ -4,10 +4,9 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 
 import { TopicsService } from '../../services/topics.service.ts';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 
 @Component({
-  providers: [AuthenticationService],
   selector: 'topics-edit',
   templateUrl: './topics-edit.component.html',
   styleUrls: ['./topics-edit.component.css']
@@ -17,7 +16,7 @@ export class TopicsEditComponent implements OnInit{
     constructor(private topicsService : TopicsService,
                 private route: ActivatedRoute,
                 private location: Location,
-                private _authService: AuthenticationService) {}
+                private _authService: UsersService) {}
 
 
     topic;

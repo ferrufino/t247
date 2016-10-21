@@ -1,11 +1,10 @@
 
 import {Component, ElementRef} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 import {User} from "../../user";
 
 @Component({
     selector: 'login-form',
-    providers: [AuthenticationService],
     templateUrl: './login.component.html',
     styleUrls: ['../../../styles/general-styles.css', './login.component.css']
 })
@@ -16,7 +15,7 @@ export class LoginComponent {
   public errorMsg = '';
 
   constructor(
-      private _service:AuthenticationService) {}
+      private _service:UsersService) {}
 
   login() {
     this._service.login(this.user).subscribe((result) => {

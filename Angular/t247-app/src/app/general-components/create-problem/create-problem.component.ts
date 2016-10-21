@@ -7,13 +7,13 @@ import {
 
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
-import {HttpProblemsService} from "../../services/http-problems.service";
+import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 declare var Materialize: any; // Local declaration for Materialize Class
 
 @Component({
   selector: 'create-problem',
-  providers: [SupportedLanguages, ProblemDifficulties, HttpProblemsService],
+  providers: [SupportedLanguages, ProblemDifficulties, EvaluatorService],
   templateUrl: './create-problem.component.html',
   styleUrls: ['./create-problem.component.css']
 })
@@ -40,7 +40,7 @@ export class CreateProblem {
   problemTypeFlag: number = 0;
 
 
-  constructor(private _httpProblemsService: HttpProblemsService,
+  constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _formBuilder: FormBuilder) {
@@ -224,8 +224,8 @@ export class CreateProblem {
 
           this.displayLoader = false; // Turn off loader
 
-          // Check for compilation error
-          if (data.hasOwnProperty('error')) {
+          // Check for server errors
+          if (data['status'] == "error") {
               let errorLabel = "Error: " + data['error'];
               Materialize.toast(errorLabel, 4000)
           } else {
@@ -249,18 +249,18 @@ export class CreateProblem {
     let pType = (this.problemTypeFlag == 1) ? "full" : "function";
 
     let problemObject = {
-      "authorID": 444,
+      "author_id": 444,
       "name": this.createProblemForm.value.problemDetails.problemName,
-      "descriptionEnglish": this.createProblemForm.value.problemDetails.engDescription,
-      "descriptionSpanish": this.createProblemForm.value.problemDetails.spnDescription,
+      "description_english": this.createProblemForm.value.problemDetails.engDescription,
+      "description_spanish": this.createProblemForm.value.problemDetails.spnDescription,
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
-      "memoryLimit": this.createProblemForm.value.problemDetails.memoryLimit,
-      "timeLimit": this.createProblemForm.value.problemDetails.timeLimit,
+      "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
+      "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
       "type": pType
     }
 
-    problemObject["testCases"] = this.problemTestCases;
+    problemObject["test_cases"] = this.problemTestCases;
 
 
     this._httpProblemsService.createNewProblem(problemObject)

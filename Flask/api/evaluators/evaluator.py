@@ -5,15 +5,14 @@ import gevent.monkey
 
 from flask import request
 from flask_restplus import Resource
-# from rest_api_demo.api.blog.business import create_category, delete_category, update_category
-from api.evaluators.serializers import evaluatorProblem
-from api.evaluators.serializers import evaluatorSubmission
-from api.evaluators.serializers import evaluatorResult
+from api.evaluators.serializers import (evaluator_submission,
+                                        problem_evaluation, problem_creation,
+                                        evaluator_result)
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import db, Problem, Case
-from models import Submission
+from models import db, Problem, Case, Submission
+from enums import SubmissionState, SubmissionResult
 
 gevent.monkey.patch_all()
 
@@ -21,110 +20,150 @@ log = logging.getLogger(__name__)
 
 nse = api.namespace('evaluator', description='Operations related to Evaluator')
 
+# Route for problem evaluation, which returns the test cases' output
+# of a problem to be created
+@nse.route('/problem_evaluation')
+class EvaluatorProblemEvaluation(Resource):
+    @api.response(201, 'Problem successfully evaluated.')
+    @api.expect(problem_evaluation)
+    def post(self):
+        """
+        Returns evaluation results of problem to be created
+        """
+        data = request.json
+        # Evaluate test cases in worker, and synchronously retrieve results
+        result = services.request_evaluation(data)
+        return result
+
+# Route for problem creation, which uploads a problem to DB and
+# creates the input/output files in the server's filesystem
 @nse.route('/problem_creation')
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
-    @api.expect(evaluatorProblem)
+    @api.expect(problem_creation)
     def post(self):
         """
-        Receives Post From Evaluator of Problem Created
+        Creates a problem
         """
         data = request.json
-        print(data)
-        # Send job to worker  
-        result = services.request_evaluation(data)
-        # result = {'status': 'compiled successfully',
-        #           'test_cases':
-        #           [{'status': 'successful run', 'output': '2'}]}
-        return result
-
-
-@nse.route('/problem_upload')
-class EvaluatorProblemUpload(Resource):
-    @api.response(201, 'Problem successfully uploaded.')
-    @api.expect(evaluatorProblem)
-    def post(self):
-        """
-        Receives Post From Evaluator of Problem Created
-        """
-        data = request.json
-        print(data)
+        
         #############
         # Update DB #
+        #############
+        
+        # Create problem
         problem_name = data.get('name')
-        description = data.get('descriptionEnglish')
-        memory_limit = data.get('memoryLimit')
-        time_limit = data.get('timeLimit')
+        description_english = data.get('description_english')
+        description_spanish = data.get('description_spanish')
+        memory_limit = data.get('memory_limit')
+        time_limit = data.get('time_limit')
         language = data.get('language')
         # difficulty = data.get('difficulty')
         difficulty = 0
         code = data.get('code')
-        test_cases = data['testCases']
+        test_cases = data['test_cases']
 
         new_problem = Problem(name=problem_name,
                               difficulty=difficulty, active=True,
                               language=language, code=code,
-                              description=description)
+                              description_english=description_english,
+                              description_spanish=description_spanish)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
-
-        print('ID PROBLEMA')
-        print(problem_id)
-
+        
+        # Create test cases
         for i in range(len(test_cases)):
             new_case = Case(input=test_cases[i]['content'],
+                            feedback=test_cases[i]['feedback'],
                             time_limit=time_limit, memory_limit=memory_limit,
                             problem_id=problem_id)
             db.session.add(new_case)
             db.session.commit()
 
-        #############
-
-        # problem_id = 56
-
+        # Add input and output files to filesystem
         json = {}
-        json['test_cases'] = data['testCases']
+        json['test_cases'] = data['test_cases']
         json['problem_id'] = problem_id
-                
-        # Send job to worker  
+         
         result = services.upload_problem(json)
         
         return result
 
+# Route for submitting student code to the Evaluator
 @nse.route('/problem_submission')
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
-    @api.expect(evaluatorSubmission)
+    @api.expect(evaluator_submission)
     def post(self):
         """
-        Receives Post as an Attempt succesfully submitted.
-        """     
-        data = request.json
-        
-        #############
-        # Update DB #
-        #############
-        
-        # Send job to worker  
-        result = services.request_evaluation(data)
-        
-        return result
-        
-@nse.route('/execution_result')
-class EvaluatorExecutionResult(Resource):
-    @api.response(202, 'Result successfuly sent.')
-    @api.expect(evaluatorResult)
-    def post(self):
+        Puts student submitted code in an Evaluation queue
         """
-        Receives Post as an Execution result.
-        """     
         data = request.json
-        
-        print(request)
 
         #############
         # Update DB #
+        code = data.get('code')
+        language = data.get('language')
+        problem_id = data.get('problem_id')
+        student_id = data.get('user_id')
+        new_submission = Submission(code=code, language=language,
+                                    problem_id=problem_id,
+                                    student_id=student_id,
+                                    state=SubmissionState.pending)
+        db.session.add(new_submission)
+        db.session.commit()
+        submission_id = new_submission.id
+        #############
+
+        # Evaluate submitted code in a worker
+        # (caller won't receive evaluation results after the call, because
+        # results will be posted to the DB by a worker after evaluation)
+        data['submission_id'] = submission_id
+        print(data)
+        result = services.request_evaluation(data)
+
+        return result
+
+# Route for updating the submission status after evaluation
+@nse.route('/problem_submission_result')
+class EvaluatorProblemSubmissionResult(Resource):
+    @api.response(202, 'Attempt succesfully evaluated.')
+    @api.expect(evaluator_result)
+    def post(self):
+        """
+        Updates problem submission
+        """
+        data = request.json
+
+        #############
+        # Update DB #
+        submission_id = data.get('submission_id')
+        submission = Submission.query.filter(Submission.id == submission_id).one()
+        problem = submission.problem
+
+        status = data.get('status')
+        test_cases = data['test_cases']
+        grade = 100
+        feedback = []
+        if status == 'error':
+            grade = 0
+        else:
+            problem_test_cases = problem.cases
+            missed_cases = 0
+            for i in range(len(test_cases)):
+                if test_cases[i] != 'accepted':
+                    print(test_cases[i])
+                    case = {'status': test_cases[i],
+                            'feedback': problem_test_cases[i].feedback}
+                    feedback.append(dict(case))
+                    missed_cases += 1
+            grade -= missed_cases*(100/len(test_cases))
+
+        update_data = {'state': SubmissionState.evaluated, 'grade': grade,
+                       'feedback_list': feedback}
+        Submission.query.filter(Submission.id == submission_id).update(update_data)
+        db.session.commit()
         #############
         
         # Print result  

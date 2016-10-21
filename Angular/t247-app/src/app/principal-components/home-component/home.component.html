@@ -26,69 +26,56 @@
     </ul>
   </div>
 </nav>
-<div class="container" >
-  <div class="content" [ngSwitch]="selectedRole">
-    <div class="row" *ngSwitchCase="'admin'">
-      <div class="col s12">
-        <ul id="tabsAdmin" materialize="tabs" class="tabs" reload="adminTabsLoaded">
-          <li class="tab col s3" ><a href="#problems">Problems</a></li>
-          <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
-          <li class="tab col s3"><a href="#courses-dashboard">Courses Dashboard</a></li>
-          <li class="tab col s3" ><a href="#view-users">Users</a></li>
-        </ul>
-      </div>
-      <div id="problems" class="col s12">
-        <generic-table [typetable]="'problems'"></generic-table>
-      </div>
-      <div id="topics-dashboard" class="col s12">
-        <generic-table [typetable]="'topics'"></generic-table>
-      </div>
-      <div id="courses-dashboard" class="col s12">
-        <generic-table [typetable]="'courses'"></generic-table>
-      </div>
-      <div id="view-users" class="col s12">
-        <generic-table [typetable]="'users'"></generic-table>
-      </div>
+
+<div class="container">
+    <div class="content" [ngSwitch]="selectedRole">
+        <div class="row" *ngSwitchCase="'admin'">
+            <tabs>
+                <tab tabTitle="Users">
+                    <generic-table [typetable]="'users'"></generic-table>
+                </tab>
+                <tab tabTitle="Topics">
+                    <generic-table [typetable]="'topics'"></generic-table>
+                </tab>
+                <tab tabTitle="Courses">
+                    <generic-table [typetable]="'courses'"></generic-table>
+                </tab>
+                <tab tabTitle="Problems">
+                    <generic-table [typetable]="'problems'"></generic-table>
+                </tab>
+                <tab tabTitle="Create Problem">
+                    <create-problem></create-problem>
+                </tab>
+            </tabs>
+        </div>
+        <div class="row" *ngSwitchCase="'professor'">
+            <tabs>
+                <tab tabTitle="My Groups">
+                    <generic-table [typetable]="'groups'"></generic-table>
+                </tab>
+                <tab tabTitle="Create Problem">
+                    <create-problem></create-problem>
+                </tab>
+                <tab tabTitle="Topics">
+                    <generic-table [typetable]="'topics'"></generic-table>
+                </tab>
+                <tab tabTitle="Problem">
+                    <generic-table [typetable]="'problems'"></generic-table>
+                </tab>
+            </tabs>
+        </div>
+        <div class="row" *ngSwitchCase="'student'">
+            <tabs>
+                <tab tabTitle="My Assignments">
+                    <generic-table [typetable]="'assignments'"></generic-table>
+                </tab>
+                <tab tabTitle="Topics Dashboard">
+                    <app-topics-dashboard></app-topics-dashboard>
+                </tab>
+                <tab tabTitle="Submissions">
+                    <generic-table [typetable]="'submissions'"></generic-table>
+                </tab>
+            </tabs>
+        </div>
     </div>
-    <div class="row" *ngSwitchCase="'professor'">
-      <div class="col s12">
-        <ul id="tabsProfessor" materialize="tabs" class="tabs" reload="professorTabsLoaded">
-          <li class="tab col s3"><a href="#groups">Groups</a></li>
-          <li class="tab col s3"><a href="#problems">Problems</a></li>
-          <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
-          <li class="tab col s3"><a href="#view-users">Users</a></li>
-        </ul>
-      </div>
-      <div id="groups" class="col s12">
-        <generic-table [typetable]="'groups'"></generic-table>
-      </div>
-      <div id="problems" class="col s12">
-        <generic-table [typetable]="'problems'"></generic-table>
-      </div>
-      <div id="topics-dashboard" class="col s12">
-        <app-topics-dashboard></app-topics-dashboard>
-      </div>
-      <div id="view-users" class="col s12">
-        <generic-table [typetable]="'users'"></generic-table>
-      </div>
-    </div>
-    <div class="row" *ngSwitchCase="'student'">
-      <div class="col s12">
-        <ul id="tabsStudent" materialize="tabs" class="tabs" reload="studentTabsLoaded">
-          <li class="tab col s3"><a href="#my-assignments">My Assignments</a></li>
-          <li class="tab col s3"><a href="#topics-dashboard">Topics Dashboard</a></li>
-          <li class="tab col s3"><a href="#submissions">History</a></li>
-        </ul>
-      </div>
-      <div id="my-assignments" class="col s12">
-        <generic-table [typetable]="'assignments'"></generic-table>
-      </div>
-      <div id="topics-dashboard" class="col s12">
-        <app-topics-dashboard></app-topics-dashboard>
-      </div>
-      <div id="submissions" class="col s12">
-        <generic-table [typetable]="'submissions'"></generic-table>
-      </div>
-    </div>
-  </div>
 </div>
