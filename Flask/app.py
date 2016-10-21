@@ -54,7 +54,7 @@ def initialize_app(flask_app):
     db.init_app(flask_app)
 
 
-#@werkzeug.serving.run_with_reloader
+# @werkzeug.serving.run_with_reloader
 def main():
     initialize_app(app)
     #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))

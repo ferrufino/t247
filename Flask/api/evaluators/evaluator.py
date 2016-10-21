@@ -73,6 +73,7 @@ class EvaluatorProblemCreation(Resource):
         # Create test cases
         for i in range(len(test_cases)):
             new_case = Case(input=test_cases[i]['content'],
+                            feedback=test_cases[i]['feedback'],
                             time_limit=time_limit, memory_limit=memory_limit,
                             problem_id=problem_id)
             db.session.add(new_case)
@@ -116,6 +117,8 @@ class EvaluatorAttemptSubmission(Resource):
         # Evaluate submitted code in a worker
         # (caller won't receive evaluation results after the call, because
         # results will be posted to the DB by a worker after evaluation)
+        data['submission_id'] = submission_id
+        print(data)
         result = services.request_evaluation(data)
 
         return result
@@ -134,13 +137,31 @@ class EvaluatorProblemSubmissionResult(Resource):
         #############
         # Update DB #
         submission_id = data.get('submission_id')
-        status = data.get('status')
-        if status == 'error':
-            result = 'execution_error'
-        else:
-            result = 'accepted'
+        submission = Submission.query.filter(Submission.id == submission_id).one()
+        problem = submission.problem
 
-        print(result)
+        status = data.get('status')
+        test_cases = data['test_cases']
+        grade = 100
+        feedback = []
+        if status == 'error':
+            grade = 0
+        else:
+            problem_test_cases = problem.cases
+            missed_cases = 0
+            for i in range(len(test_cases)):
+                if test_cases[i] != 'accepted':
+                    print(test_cases[i])
+                    case = {'status': test_cases[i],
+                            'feedback': problem_test_cases[i].feedback}
+                    feedback.append(dict(case))
+                    missed_cases += 1
+            grade -= missed_cases*(100/len(test_cases))
+
+        update_data = {'state': SubmissionState.evaluated, 'grade': grade,
+                       'feedback_list': feedback}
+        Submission.query.filter(Submission.id == submission_id).update(update_data)
+        db.session.commit()
         #############
         
         # Print result  
