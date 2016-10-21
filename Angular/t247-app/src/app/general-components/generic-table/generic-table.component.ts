@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import { Response } from "@angular/http";
 import { HttpTableService } from "../../services/http-table.service";
+import { Router } from '@angular/router';
+import { CoursesService } from '../../services/courses.service.ts';
+import { TopicsService } from '../../services/topics.service.ts';
 
 @Component({
   selector: 'generic-table',
@@ -10,7 +13,10 @@ import { HttpTableService } from "../../services/http-table.service";
 })
 export class GenericTableComponent implements OnInit{
 
-    constructor(private httpService: HttpTableService) {}
+    constructor(private coursesService : CoursesService,
+      private topicsService: TopicsService,
+      private httpService: HttpTableService,
+      private router:Router) {}
 
     @Input('typetable') typeOfTableName: string;
     //typeOfTableName: string = "courses";
@@ -23,6 +29,10 @@ export class GenericTableComponent implements OnInit{
     private topicsBool;
     private usersBool;
 
+
+    courseName :string;
+    topicName : string;
+
     content: any[] = [];
 
     ngOnInit () {
@@ -34,6 +44,71 @@ export class GenericTableComponent implements OnInit{
 
     }
 
+    onSelectTopic(topic) {
+      this.router.navigate(['/editTopic', topic.id]);
+    }
+
+    onDeleteTopic(topic){
+      var r = confirm("Are you sure?");
+      if (r == true) {
+        console.log(topic);
+        this.topicsService.deleteTopic(topic).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
+            this.renderTable();
+          }
+        });
+      }
+    }
+
+    onSubmitTopic() {
+      console.log(this.topicName);
+      this.topicsService.createTopic(this.topicName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+
+    onSelectCourse(course) {
+      this.router.navigate(['/editCourse', course.id]);
+    }
+
+    onDeleteCourse(course){
+      var r = confirm("Are you sure?");
+      if (r == true) {
+        console.log(course);
+        this.coursesService.deleteCourse(course).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
+            this.renderTable();
+          }
+        });
+      }
+    }
+
+    onSubmitCourse() {
+      console.log(this.courseName);
+      this.coursesService.createCourse(this.courseName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
 
     renderTable(){
         this.problemsBool = false;
@@ -167,26 +242,25 @@ export class GenericTableComponent implements OnInit{
                  console.log(courses[key]);
                }
                this.content = myArray;
-               this.groupsBool = true;
+               this.coursesBool = true;
                this.columns = ["Id", "Title", "Edit", "Delete"];
              }
            );
            break;
 
            case "topics":
-               this.topicsBool = true;
-               this.columns = ["Title", "Edit", "Delete"];
-               this.content = [
-                   {
-                       "title": "dynamic programming"
-                   },
-                   {
-                       "title": "greedy alg"
-                   },
-                   {
-                       "title": "graphs"
-                   }
-               ];
+             this.httpService.getTopics().subscribe(
+               topics => {
+                 const myArray = [];
+                 for (let key in topics) {
+                   myArray.push(topics[key]);
+                   console.log(topics[key]);
+                 }
+                 this.content = myArray;
+                 this.topicsBool = true;
+                 this.columns = ["Id", "Title", "Edit", "Delete"];
+               }
+             );
                break;
 
            case "users":

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {User} from '../../user';
 import {UserService} from "../../services/user.service";
+import { Location }                 from '@angular/common';
 
 @Component({
   selector: 'profile',
@@ -15,7 +16,8 @@ export class ProfileComponent implements OnInit {
 
   editingProfile = false;
 
-  constructor(private _authService: AuthenticationService, private _editUserService:UserService) {
+  constructor(private _authService: AuthenticationService, private _editUserService:UserService,
+              private location: Location) {
     this.editingProfile = false;
   }
 
@@ -47,5 +49,9 @@ export class ProfileComponent implements OnInit {
         sessionStorage.setItem("userJson",JSON.stringify(this.user));
       }
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

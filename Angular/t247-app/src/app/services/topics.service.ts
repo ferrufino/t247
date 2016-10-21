@@ -6,11 +6,13 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 @Injectable()
 export class TopicsService {
 
-  private editUrl = 'http://cors.io/?http://107.170.255.106:5000/api/topics/';
+  private getUrl = 'http://107.170.255.106:5000/api/topics/';
 
-  private deleteUrl = 'http://cors.io/?http://107.170.255.106:5000/api/topics/';
+  private editUrl = 'http://107.170.255.106:5000/api/topics/';
 
-  private createUrl = 'http://cors.io/?http://107.170.255.106:5000/api/topics/create';
+  private deleteUrl = 'http://107.170.255.106:5000/api/topics/';
+
+  private createUrl = 'http://107.170.255.106:5000/api/topics/create';
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
@@ -40,15 +42,23 @@ export class TopicsService {
       });
     }
 
-    createTopic(topic){
+    createTopic(topicName){
       return this.http
       .post(
         this.createUrl,
-        {"name":topic.name},
+        {"name":topicName},
         this.headers
       )
       .map(res => {
         return res;
       });
+    }
+
+    getTopic(id){
+      return this.http
+      .get(
+        this.getUrl+id
+      )
+      .map((response: Response) => response.json());
     }
 }

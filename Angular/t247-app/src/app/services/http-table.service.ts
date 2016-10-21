@@ -11,4 +11,9 @@ export class HttpTableService {
     return this.http.get(serviceURL).map((response: Response) => response.json());
   }
 
+  getTopics(){
+    const serviceURL : string = 'http://107.170.255.106:5000/api/topics/';
+    return this.http.get(serviceURL).map((response: Response) => response.json());
+  }
+
 }
