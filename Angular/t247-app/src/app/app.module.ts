@@ -33,9 +33,13 @@ import { FilterTopicsPipe } from './pipes/filter-topics.pipe';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
+import {UsersService} from "./services/users.service";
 import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
+
+import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
+import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
 
 @NgModule({
   imports: [
@@ -70,10 +74,12 @@ import {TopicsService} from "./services/topics.service";
     FilterSubmissionsPipe,
     FilterGroupsPipe,
     FilterCoursesPipe,
-    FilterTopicsPipe
+    FilterTopicsPipe,
+    TopicsEditComponent,
+    CoursesEditComponent
   ],
   bootstrap: [AppComponent],
-  providers: [CoursesService, GroupsService, TopicsService]
+  providers: [CoursesService, GroupsService, TopicsService, UsersService]
 })
 export class AppModule {
 }

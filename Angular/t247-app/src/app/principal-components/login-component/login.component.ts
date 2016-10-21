@@ -5,7 +5,6 @@ import {User} from "../../user";
 
 @Component({
     selector: 'login-form',
-    providers: [UsersService],
     templateUrl: './login.component.html',
     styleUrls: ['../../../styles/general-styles.css', './login.component.css']
 })
