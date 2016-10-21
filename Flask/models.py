@@ -185,7 +185,8 @@ class Problem(Base):
     language = db.Column(db.String(255))
     code = db.Column(db.Text)
     template = db.Column(db.Text)
-    description = db.Column(db.Text)
+    description_english = db.Column(db.Text)
+    description_spanish = db.Column(db.Text)
 
     cases = db.relationship("Case", back_populates="problem",
                             order_by="Case.id")

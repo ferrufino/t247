@@ -53,7 +53,8 @@ class EvaluatorProblemCreation(Resource):
         
         # Create problem
         problem_name = data.get('name')
-        description = data.get('description_english')
+        description_english = data.get('description_english')
+        description_spanish = data.get('description_spanish')
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
@@ -65,7 +66,8 @@ class EvaluatorProblemCreation(Resource):
         new_problem = Problem(name=problem_name,
                               difficulty=difficulty, active=True,
                               language=language, code=code,
-                              description=description)
+                              description_english=description_english,
+                              description_spanish=description_spanish)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
