@@ -4,4 +4,4 @@
 source env/bin/activate
 
 #Runs server in background
-unhup python app.py &
+nohup python app.py &
