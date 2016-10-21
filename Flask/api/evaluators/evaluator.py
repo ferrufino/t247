@@ -11,8 +11,8 @@ from api.evaluators.serializers import evaluatorResult
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import db, Problem, Case
-from models import Submission
+from models import db, Problem, Case, Submission
+from enums import SubmissionState, SubmissionResult
 
 gevent.monkey.patch_all()
 
@@ -95,18 +95,29 @@ class EvaluatorAttemptSubmission(Resource):
     def post(self):
         """
         Puts student submitted code in an Evaluation queue
-        """     
+        """
         data = request.json
-        
+
         #############
         # Update DB #
+        code = data.get('code')
+        language = data.get('language')
+        problem_id = data.get('problem_id')
+        student_id = data.get('user_id')
+        new_submission = Submission(code=code, language=language,
+                                    problem_id=problem_id,
+                                    student_id=student_id,
+                                    state=SubmissionState.pending)
+        db.session.add(new_submission)
+        db.session.commit()
+        submission_id = new_submission.id
         #############
-        
+
         # Evaluate submitted code in a worker
         # (caller won't receive evaluation results after the call, because
-        # results will be posted to the DB by a worker after evaluation)  
+        # results will be posted to the DB by a worker after evaluation)
         result = services.request_evaluation(data)
-        
+
         return result
 
 # Route for updating the submission status after evaluation
@@ -117,11 +128,19 @@ class EvaluatorProblemSubmissionResult(Resource):
     def post(self):
         """
         Updates problem submission
-        """   
+        """
         data = request.json
 
         #############
         # Update DB #
+        submission_id = data.get('submission_id')
+        status = data.get('status')
+        if status == 'error':
+            result = 'execution_error'
+        else:
+            result = 'accepted'
+
+        print(result)
         #############
         
         # Print result  

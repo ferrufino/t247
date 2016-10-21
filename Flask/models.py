@@ -5,6 +5,7 @@ from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from sqlalchemy.ext.declarative import declared_attr
+from enums import SubmissionState, SubmissionResult
 
 db = SQLAlchemy()
 
@@ -210,10 +211,10 @@ class Submission(Base):
     __tablename__ = 'submission'
     code = db.Column(db.Text)
     language = db.Column(db.String(255))
-    state = db.Column(db.Integer)
     feedback = db.Column(db.Text)
-    result = db.Column(db.Integer)
     grade = db.Column(db.Integer)
+    state = db.Column(db.Enum(SubmissionState))
+    result = db.Column(db.Enum(SubmissionResult))
 
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     student = db.relationship("Student", back_populates="submissions")

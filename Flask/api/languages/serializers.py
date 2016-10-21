@@ -1,7 +1,7 @@
 from flask_restplus import fields
 from api.restplus import api
 
-language = api.model('Langua', {
+language = api.model('Language', {
     'id': fields.Integer(required=True, description='Language id'),
     'name': fields.String(required=True, description='Language Name'),
     'value': fields.String(required=True, description='Internal value used to identify language'),
