@@ -5,17 +5,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-3">
-            <form action="" class="search-form">
-                <div class="form-group has-feedback">
-                    <label for="search" class="sr-only">Search</label>
+        <div class="center">
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
                     <input id="search" type="search" #filterInput (keyup)="0">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
+               <span class="glyphicon glyphicon-search"></span>
             </form>
         </div>
     </div>
 </div>
+
+
 
 <table>
     <thead>
@@ -51,8 +52,9 @@
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
-        <td>{{entry.value.id}}</td><!-- should be entrey.value.name once it displays groups for real, not courses -->
-        <td>{{entry.value.name}}</td><!-- should be entrey.value.period once it displays groups for real, not courses-->
+        <td>{{entry.value.id}}</td>
+        <td>Falta Get Nombre</td>
+        <td>{{entry.value.period}}</td>
         <td>edit</td>
         <td>delete</td>
     </tr>
@@ -70,7 +72,8 @@
     </tbody>
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value" >
-        <td>{{entry.value.title}}</td>
+        <td>{{entry.value.id}}</td>
+        <td>{{entry.value.name}}</td>
         <td>edit</td>
         <td>delete</td>
     </tr>
