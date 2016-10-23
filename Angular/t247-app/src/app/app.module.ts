@@ -13,7 +13,6 @@ import {SubmissionsComponent} from "./submissions/submissions.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
-import {ProblemComponent} from "./general-components/problem/problem.component";
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
 import {Tab} from './general-components/tab/tab.component';
@@ -33,48 +32,54 @@ import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
+import {UsersService} from "./services/users.service";
 import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
 
+import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
+import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
+
 @NgModule({
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        ReactiveFormsModule,
-        routing,
-        MaterializeModule
-    ],
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        HomeComponent,
-        MyCourses,
-        ListOfProblems,
-        TopicsDashboardComponent,
-        CreateProblem,
-        ProblemComponent,
-        SubmissionsComponent,
-        ProfileComponent,
-        ViewUsersComponent,
-        StudentComponentsComponent,
-        GenericTableComponent,
-        Tab,
-        Tabs,
-        FilterPipe,
-        TestCasesCreatorComponent,
-        KeysPipe,
-        FilterUsersPipe,
-        FilterProblemsPipe,
-        FilterAssignmentsPipe,
-        FilterSubmissionsPipe,
-        FilterGroupsPipe,
-        FilterCoursesPipe,
-        FilterTopicsPipe
-    ],
-    bootstrap: [AppComponent],
-    providers: [CoursesService, GroupsService, TopicsService]
+
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    ReactiveFormsModule,
+    routing,
+    MaterializeModule
+  ],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    MyCourses,
+    ListOfProblems,
+    TopicsDashboardComponent,
+    CreateProblem,
+    SubmissionsComponent,
+    ProfileComponent,
+    ViewUsersComponent,
+    StudentComponentsComponent,
+    GenericTableComponent,
+    Tab,
+    Tabs,
+    FilterPipe,
+    TestCasesCreatorComponent,
+    KeysPipe,
+    FilterUsersPipe,
+    FilterProblemsPipe,
+    FilterAssignmentsPipe,
+    FilterSubmissionsPipe,
+    FilterGroupsPipe,
+    FilterCoursesPipe,
+    FilterTopicsPipe,
+    TopicsEditComponent,
+    CoursesEditComponent
+  ],
+  bootstrap: [AppComponent],
+  providers: [CoursesService, GroupsService, TopicsService, UsersService]
 })
 export class AppModule {
 }

@@ -5,6 +5,8 @@ import { LoginComponent }      from './principal-components/login-component/logi
 import {HomeComponent} from "./principal-components/home-component/home.component";
 import {AppComponent} from "./app.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
+import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
+import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 
 const appRoutes: Routes = [
     {
@@ -22,6 +24,14 @@ const appRoutes: Routes = [
     {
       path: 'profile',
       component: ProfileComponent
+    },
+    {
+      path: 'editTopic/:id',
+      component: TopicsEditComponent
+    },
+    {
+      path: 'editCourse/:id',
+      component: CoursesEditComponent
     }
 ];
 
