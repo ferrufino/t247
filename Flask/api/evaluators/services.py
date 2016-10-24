@@ -270,7 +270,7 @@ def evaluate(request):
             
             # 9) Insert test case entry in results array
             status = status.decode("UTF-8")
-            
+                        
             # Compare actual vs expected output
             if (request_type == "submission"):
                 if (status == "successful run"):
