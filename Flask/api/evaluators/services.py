@@ -16,7 +16,7 @@ arr_obj_file = { "cpp" : "a.out", "java" : "Main.class"}
 arr_compilation = { "cpp" : ["g++", "-o"], "java": ["javac"] }
 
 # Directories
-base_dir    = "/home/msf1013/Desktop/t247/Evaluator/"
+base_dir    = "/Users/Lalo/Documents/Code/t247/Evaluator/"
 
 # Method that returns custom response dictionary
 def error_response(error, submission_id):

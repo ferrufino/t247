@@ -1,7 +1,9 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {JsonPipe} from '@angular/common';
-import {Response} from "@angular/http";
-import {CoursesService} from "../../services/courses.service";
+import { Response } from "@angular/http";
+import { Router } from '@angular/router';
+import { CoursesService } from '../../services/courses.service.ts';
+import { TopicsService } from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
 
 @Component({
@@ -11,7 +13,13 @@ import {GroupsService} from "../../services/groups.service";
 })
 export class GenericTableComponent implements OnInit {
 
-  constructor(private coursesService: CoursesService, private groupsService: GroupsService) {
+  topicName:string;
+  courseName:string;
+
+  constructor(private topicsService:TopicsService,
+    private coursesService: CoursesService,
+    private groupsService: GroupsService,
+    private router: Router) {
   }
 
   @Input('typetable') typeOfTableName: string;
@@ -154,21 +162,20 @@ export class GenericTableComponent implements OnInit {
         );
         break;
 
-      case "topics":
-        this.topicsBool = true;
-        this.columns = ["Title", "Edit", "Delete"];
-        this.content = [
-          {
-            "title": "dynamic programming"
-          },
-          {
-            "title": "greedy alg"
-          },
-          {
-            "title": "graphs"
-          }
-        ];
-        break;
+        case "topics":
+          this.topicsService.getTopics().subscribe(
+            topics => {
+              const myArray = [];
+              for (let key in topics) {
+                myArray.push(topics[key]);
+                console.log(topics[key]);
+              }
+              this.content = myArray;
+              this.topicsBool = true;
+              this.columns = ["Id", "Title", "Edit", "Delete"];
+            }
+          );
+            break;
 
       case "users":
         this.usersBool = true;
@@ -198,8 +205,73 @@ export class GenericTableComponent implements OnInit {
 
     }
 
-
   }
+
+    onSelectTopic(topic) {
+      this.router.navigate(['/editTopic', topic.id]);
+    }
+
+    onDeleteTopic(topic){
+      var r = confirm("Are you sure?");
+      if (r == true) {
+        console.log(topic);
+        this.topicsService.deleteTopic(topic).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
+            this.renderTable();
+          }
+        });
+      }
+    }
+
+    onSubmitTopic() {
+      console.log(this.topicName);
+      this.topicsService.createTopic(this.topicName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+
+    onSelectCourse(course) {
+      this.router.navigate(['/editCourse', course.id]);
+    }
+
+    onDeleteCourse(course){
+      var r = confirm("Are you sure?");
+      if (r == true) {
+        console.log(course);
+        this.coursesService.deleteCourse(course).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
+            this.renderTable();
+          }
+        });
+      }
+    }
+
+    onSubmitCourse() {
+      console.log(this.courseName);
+      this.coursesService.createCourse(this.courseName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
 
 
 }

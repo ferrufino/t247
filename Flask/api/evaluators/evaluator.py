@@ -5,9 +5,9 @@ import gevent.monkey
 
 from flask import request
 from flask_restplus import Resource
-from api.evaluators.serializers import evaluatorProblem
-from api.evaluators.serializers import evaluatorSubmission
-from api.evaluators.serializers import evaluatorResult
+from api.evaluators.serializers import (evaluator_submission,
+                                        problem_evaluation, problem_creation,
+                                        evaluator_result)
 from api.restplus import api
 import api.evaluators.services as services
 
@@ -25,7 +25,7 @@ nse = api.namespace('evaluator', description='Operations related to Evaluator')
 @nse.route('/problem_evaluation')
 class EvaluatorProblemEvaluation(Resource):
     @api.response(201, 'Problem successfully evaluated.')
-    @api.expect(evaluatorProblem)
+    @api.expect(problem_evaluation)
     def post(self):
         """
         Returns evaluation results of problem to be created
@@ -40,7 +40,7 @@ class EvaluatorProblemEvaluation(Resource):
 @nse.route('/problem_creation')
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
-    @api.expect(evaluatorProblem)
+    @api.expect(problem_creation)
     def post(self):
         """
         Creates a problem
@@ -53,7 +53,8 @@ class EvaluatorProblemCreation(Resource):
         
         # Create problem
         problem_name = data.get('name')
-        description = data.get('description_english')
+        description_english = data.get('description_english')
+        description_spanish = data.get('description_spanish')
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
@@ -65,7 +66,8 @@ class EvaluatorProblemCreation(Resource):
         new_problem = Problem(name=problem_name,
                               difficulty=difficulty, active=True,
                               language=language, code=code,
-                              description=description)
+                              description_english=description_english,
+                              description_spanish=description_spanish)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
@@ -92,7 +94,7 @@ class EvaluatorProblemCreation(Resource):
 @nse.route('/problem_submission')
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
-    @api.expect(evaluatorSubmission)
+    @api.expect(evaluator_submission)
     def post(self):
         """
         Puts student submitted code in an Evaluation queue
@@ -126,7 +128,7 @@ class EvaluatorAttemptSubmission(Resource):
 @nse.route('/problem_submission_result')
 class EvaluatorProblemSubmissionResult(Resource):
     @api.response(202, 'Attempt succesfully evaluated.')
-    @api.expect(evaluatorResult)
+    @api.expect(evaluator_result)
     def post(self):
         """
         Updates problem submission

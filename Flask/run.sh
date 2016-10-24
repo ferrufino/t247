@@ -1,3 +1,7 @@
 #! /bin/bash
+
+#Activates virtual environment
 source env/bin/activate
-python app.py
+
+#Runs server in background
+nohup python app.py &
