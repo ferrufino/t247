@@ -143,12 +143,12 @@ class EvaluatorProblemSubmissionResult(Resource):
         problem = submission.problem
 
         status = data.get('status')
-        test_cases = data['test_cases']
         grade = 100
         feedback = []
         if status == 'error':
             grade = 0
         else:
+            test_cases = data['test_cases']
             problem_test_cases = problem.cases
             missed_cases = 0
             for i in range(len(test_cases)):
