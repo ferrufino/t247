@@ -23,7 +23,8 @@ def error_response(error, submission_id):
     response = { "status" : "error", "error" : error }
     print(response)
     if (submission_id != -1):
-        requests.post("http://localhost:5000/api/evaluator/execution_result", json=response) 
+        response["submission_id"] = submission_id
+        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=response) 
     return response
 
 # Method that destroys the Docker container with the given id
@@ -269,7 +270,7 @@ def evaluate(request):
             
             # 9) Insert test case entry in results array
             status = status.decode("UTF-8")
-            
+                        
             # Compare actual vs expected output
             if (request_type == "submission"):
                 if (status == "successful run"):
@@ -296,8 +297,8 @@ def evaluate(request):
         return_obj["test_cases"] = results
        
     if (request_type == "submission"):
-                   
-        requests.post("http://localhost:5000/api/evaluator/execution_result", json=return_obj) 
+        return_obj["submission_id"] = submission_id
+        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=return_obj) 
     
     return return_obj 
         
@@ -313,7 +314,7 @@ def request_evaluation(data):
     
     # Immediate return after problem submission
     if (data["request_type"] == "submission"):
-        return { "message" : "successful problem submission" }
+        return { "status" : "ok" }
     
     # Check job status in case of problem creation
     while (job.result is None and not job.is_failed):

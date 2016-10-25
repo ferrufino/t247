@@ -5,7 +5,6 @@ import {User} from "../../user";
 
 @Component({
     selector: 'login-form',
-    providers: [UsersService],
     templateUrl: './login.component.html',
     styleUrls: ['../../../styles/general-styles.css', './login.component.css']
 })
@@ -19,10 +18,15 @@ export class LoginComponent {
       private _service:UsersService) {}
 
   login() {
-    this._service.login(this.user).subscribe((result) => {
-      if (!result) {
-        this.errorMsg = 'Failed to login';
+    this._service.login(this.user).subscribe(
+      (result) => {
+        if (!result) {
+          this.errorMsg = 'Failed to login';
+        }
+      },
+      err => {
+        console.error(err);
       }
-    });
+    );
   }
 }
