@@ -5,9 +5,9 @@ import gevent.monkey
 
 from flask import request
 from flask_restplus import Resource
-from api.evaluators.serializers import evaluatorProblem
-from api.evaluators.serializers import evaluatorSubmission
-from api.evaluators.serializers import evaluatorResult
+from api.evaluators.serializers import (evaluator_submission,
+                                        problem_evaluation, problem_creation,
+                                        evaluator_result)
 from api.restplus import api
 import api.evaluators.services as services
 
@@ -25,7 +25,7 @@ nse = api.namespace('evaluator', description='Operations related to Evaluator')
 @nse.route('/problem_evaluation')
 class EvaluatorProblemEvaluation(Resource):
     @api.response(201, 'Problem successfully evaluated.')
-    @api.expect(evaluatorProblem)
+    @api.expect(problem_evaluation)
     def post(self):
         """
         Returns evaluation results of problem to be created
@@ -40,7 +40,7 @@ class EvaluatorProblemEvaluation(Resource):
 @nse.route('/problem_creation')
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
-    @api.expect(evaluatorProblem)
+    @api.expect(problem_creation)
     def post(self):
         """
         Creates a problem
@@ -94,7 +94,7 @@ class EvaluatorProblemCreation(Resource):
 @nse.route('/problem_submission')
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
-    @api.expect(evaluatorSubmission)
+    @api.expect(evaluator_submission)
     def post(self):
         """
         Puts student submitted code in an Evaluation queue
@@ -129,7 +129,7 @@ class EvaluatorAttemptSubmission(Resource):
 @nse.route('/problem_submission_result')
 class EvaluatorProblemSubmissionResult(Resource):
     @api.response(202, 'Attempt succesfully evaluated.')
-    @api.expect(evaluatorResult)
+    @api.expect(evaluator_result)
     def post(self):
         """
         Updates problem submission
@@ -143,12 +143,12 @@ class EvaluatorProblemSubmissionResult(Resource):
         problem = submission.problem
 
         status = data.get('status')
-        test_cases = data['test_cases']
         grade = 100
         feedback = []
         if status == 'error':
             grade = 0
         else:
+            test_cases = data['test_cases']
             problem_test_cases = problem.cases
             missed_cases = 0
             for i in range(len(test_cases)):
