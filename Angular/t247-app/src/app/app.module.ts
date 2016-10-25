@@ -36,6 +36,7 @@ import {MaterializeModule} from "angular2-materialize";
 import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
+import {CacheService} from "ng2-cache/src/services/cache.service";
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import {TopicsService} from "./services/topics.service";
     HttpModule,
     ReactiveFormsModule,
     routing,
-    MaterializeModule
+    MaterializeModule,
+    CacheService
   ],
   declarations: [
     AppComponent,

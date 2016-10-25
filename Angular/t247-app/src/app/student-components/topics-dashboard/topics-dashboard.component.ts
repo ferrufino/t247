@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TopicsService } from '../../services/topics.service';
+import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-topics-dashboard',
@@ -10,7 +11,7 @@ export class TopicsDashboardComponent implements OnInit {
 
   content: any[] = [];
 
-  constructor(private topicsService: TopicsService) {
+  constructor(private cacheService: CacheService, private topicsService: TopicsService) {
   }
 
   ngOnInit() {
@@ -24,7 +25,9 @@ export class TopicsDashboardComponent implements OnInit {
         for (let key in topics) {
           myArray.push(topics[key]);
         }
-        this.content = myArray;
+        this.cacheService.set('data', myArray);
+        console.log(cacheService('data'));
+        this.content = this.cacheService.get('data');
       }
     );
   }
