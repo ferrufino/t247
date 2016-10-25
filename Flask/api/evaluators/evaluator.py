@@ -122,7 +122,6 @@ class EvaluatorAttemptSubmission(Resource):
         # (caller won't receive evaluation results after the call, because
         # results will be posted to the DB by a worker after evaluation)
         data['submission_id'] = submission_id
-        print(data)
         result = services.request_evaluation(data)
 
         return result
@@ -137,7 +136,10 @@ class EvaluatorProblemSubmissionResult(Resource):
         Updates problem submission
         """
         data = request.json
-
+        
+        print("EVALUADO")
+        print(data)
+        
         #############
         # Update DB #
         submission_id = data.get('submission_id')
@@ -155,7 +157,6 @@ class EvaluatorProblemSubmissionResult(Resource):
             missed_cases = 0
             for i in range(len(test_cases)):
                 if test_cases[i] != 'accepted':
-                    print(test_cases[i])
                     case = {'status': test_cases[i],
                             'feedback': problem_test_cases[i].feedback}
                     feedback.append(dict(case))
@@ -164,6 +165,7 @@ class EvaluatorProblemSubmissionResult(Resource):
 
         update_data = {'state': SubmissionState.evaluated, 'grade': grade,
                        'feedback_list': feedback}
+                             
         Submission.query.filter(Submission.id == submission_id).update(update_data)
         db.session.commit()
         #############

@@ -1,3 +1,30 @@
-<p>
-  submit-problem works!
-</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-block">
+            <h1>Description</h1>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-block">
+            <h1>Problem Submission</h1>
+            <tabs>
+                <tab tabTitle="New Attempt">
+                    <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
+                                             [(ngModel)]="selectedOptions"
+                                             (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
+
+                    <code-editor (codeToSubmit)="submitCode($event)" ></code-editor>
+                </tab>
+                <tab tabTitle="Attempt #3">
+
+                </tab>
+                <tab tabTitle="Attempt #2">
+
+                </tab>
+                <tab tabTitle="Attempt #1">
+
+                </tab>
+            </tabs>
+        </div>
+    </div>
+</div>

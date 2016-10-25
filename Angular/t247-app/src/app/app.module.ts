@@ -9,7 +9,6 @@ import {HomeComponent} from "./principal-components/home-component/home.componen
 import {MyCourses} from "./professor-components/my-courses.component";
 import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboardComponent} from "./student-components/topics-dashboard/topics-dashboard.component";
-import {SubmissionsComponent} from "./submissions/submissions.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
@@ -18,7 +17,7 @@ import {GenericTableComponent} from './general-components/generic-table/generic-
 import {Tab} from './general-components/tab/tab.component';
 import {Tabs} from './general-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
-
+import {SubmitProblem}  from './general-components/submit-problem/submit-problem.component';
 
 import {KeysPipe} from './pipes/keys.pipe';
 import {FilterPipe} from './pipes/filter.pipe';
@@ -40,46 +39,52 @@ import {TopicsService} from "./services/topics.service";
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
 
+import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import {CodemirrorModule} from 'ng2-codemirror';
+import {EditorComponent} from './general-components/code-editor/editor.component';
 @NgModule({
 
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    ReactiveFormsModule,
-    routing,
-    MaterializeModule
-  ],
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent,
-    MyCourses,
-    ListOfProblems,
-    TopicsDashboardComponent,
-    CreateProblem,
-    SubmissionsComponent,
-    ProfileComponent,
-    ViewUsersComponent,
-    StudentComponentsComponent,
-    GenericTableComponent,
-    Tab,
-    Tabs,
-    FilterPipe,
-    TestCasesCreatorComponent,
-    KeysPipe,
-    FilterUsersPipe,
-    FilterProblemsPipe,
-    FilterAssignmentsPipe,
-    FilterSubmissionsPipe,
-    FilterGroupsPipe,
-    FilterCoursesPipe,
-    FilterTopicsPipe,
-    TopicsEditComponent,
-    CoursesEditComponent
-  ],
-  bootstrap: [AppComponent],
-  providers: [CoursesService, GroupsService, TopicsService, UsersService]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        ReactiveFormsModule,
+        routing,
+        MaterializeModule,
+        MultiselectDropdownModule,
+        CodemirrorModule
+    ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        HomeComponent,
+        MyCourses,
+        ListOfProblems,
+        TopicsDashboardComponent,
+        CreateProblem,
+        SubmitProblem,
+        EditorComponent,
+        ProfileComponent,
+        ViewUsersComponent,
+        StudentComponentsComponent,
+        GenericTableComponent,
+        Tab,
+        Tabs,
+        FilterPipe,
+        TestCasesCreatorComponent,
+        KeysPipe,
+        FilterUsersPipe,
+        FilterProblemsPipe,
+        FilterAssignmentsPipe,
+        FilterSubmissionsPipe,
+        FilterGroupsPipe,
+        FilterCoursesPipe,
+        FilterTopicsPipe,
+        TopicsEditComponent,
+        CoursesEditComponent
+    ],
+    bootstrap: [AppComponent],
+    providers: [CoursesService, GroupsService, TopicsService, UsersService]
 })
 export class AppModule {
 }

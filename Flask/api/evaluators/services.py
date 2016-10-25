@@ -16,7 +16,7 @@ arr_obj_file = { "cpp" : "a.out", "java" : "Main.class"}
 arr_compilation = { "cpp" : ["g++", "-o"], "java": ["javac"] }
 
 # Directories
-base_dir    = "/Users/Lalo/Documents/Code/t247/Evaluator/"
+base_dir    = "/root/t247/Evaluator/"
 
 # Method that returns custom response dictionary
 def error_response(error, submission_id):
@@ -270,7 +270,7 @@ def evaluate(request):
             
             # 9) Insert test case entry in results array
             status = status.decode("UTF-8")
-            
+                        
             # Compare actual vs expected output
             if (request_type == "submission"):
                 if (status == "successful run"):
