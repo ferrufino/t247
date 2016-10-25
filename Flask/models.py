@@ -228,7 +228,9 @@ class Submission(Base):
 class Assignment(Base):
     """docstring for Assignment"""
     __tablename__ = 'assignment'
-    due_date = db.Column
+    title = db.Column(db.String(255))
+    start_date = db.Column(db.DateTime)
+    due_date = db.Column(db.DateTime)
 
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     group = db.relationship("Group", back_populates="assignments")
