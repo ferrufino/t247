@@ -81,7 +81,7 @@
     <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
         <td>{{entry.value.id}}</td>
 
-        <td>Test Group</td>
+        <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
         <td>edit</td>
         <td>delete</td>
