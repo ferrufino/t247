@@ -203,6 +203,7 @@ class Case(Base):
     time_limit = db.Column(db.Integer)
     memory_limit = db.Column(db.Integer)
     feedback = db.Column(db.Text)
+    output = db.Column(db.Text)
 
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="cases")

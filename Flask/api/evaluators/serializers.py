@@ -21,7 +21,8 @@ problem_evaluation = api.model('ProblemEvalution', {
 
 case_creation = api.model('CaseCreation', {
     'input': fields.String(required=True, description='Test case input'),
-    'feedback': fields.String(required=True, description='Test case feedback')
+    'feedback': fields.String(required=True, description='Test case feedback'),
+    'output': fields.String(required=True, description='Test case expected output')
   })
 
 problem_creation = api.model('ProblemCreation', {
