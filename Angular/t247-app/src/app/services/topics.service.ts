@@ -2,6 +2,7 @@ import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 // import { Observable }     from 'rxjs/Observable';
 @Injectable()
 export class TopicsService {
@@ -16,10 +17,12 @@ export class TopicsService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor( private http: Http){
+    constructor( private http: Http, private _cacheService: CacheService){
         }
 
     editTopic(topic){
+      this._cacheService.set('topics', [], {expires: Date.now() - 1});
+      console.log("se supone que cache de topics borrado");
       return this.http
       .put(
         this.editUrl+topic.id,
@@ -65,13 +68,5 @@ export class TopicsService {
   getTopics() {
     const serviceURL : string = 'http://107.170.255.106:5000/api/topics/';
     return this.http.get(serviceURL).map((response: Response) => response.json());
-/*    if(!this._topics){
-      this._topics = this.http.get(serviceURL)
-        .map((response: Response) => response.json())
-        .do(topics => console.log('fetched friends'))
-        .publishReplay(1)
-        .refCount();
-    }
-    return this._topics  */
   }
 }
