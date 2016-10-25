@@ -4,15 +4,16 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import {User} from '../user';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UsersService {
 
   private loggedIn = false;
 
-  private loginUrl = 'http://107.170.255.106:5000/api/users/login';
-  private logoutUrl = 'http://107.170.255.106:5000/api/users/logout';
-  private editUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/';
+  private loginUrl =  environment.apiURL + '/users/login';
+  private logoutUrl = environment.apiURL + '/users/logout';
+  private editUrl = environment.apiURL + '/users/';
 
   private rolesUrl = 'http://107.170.255.106:5000/api/users/role';
 
