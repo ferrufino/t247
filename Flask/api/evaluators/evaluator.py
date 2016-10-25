@@ -136,6 +136,9 @@ class EvaluatorProblemSubmissionResult(Resource):
         """
         data = request.json
         
+        print("EVALUADO")
+        print(data)
+        
         #############
         # Update DB #
         submission_id = data.get('submission_id')
