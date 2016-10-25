@@ -16,6 +16,7 @@ from api.topics.topics import ns as topics_namespace
 from api.languages.languages import ns as languages_namespace
 from api.submissions.submissions import ns as submissions_namespace
 from api.problems.problems import ns as problems_namespace
+from api.assignments.assignments import ns as assignments_namespace
 
 from api.restplus import api
 from models import db, User
@@ -53,6 +54,7 @@ def initialize_app(flask_app):
     api.add_namespace(languages_namespace)
     api.add_namespace(submissions_namespace)
     api.add_namespace(problems_namespace)
+    api.add_namespace(assignments_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)

@@ -12,7 +12,8 @@
                     <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
                                              [(ngModel)]="selectedOptions"
                                              (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
-                    <code-editor></code-editor>
+
+                    <code-editor (codeToSubmit)="submitCode($event)" ></code-editor>
                 </tab>
                 <tab tabTitle="Attempt #3">
 
@@ -23,10 +24,6 @@
                 <tab tabTitle="Attempt #1">
 
                 </tab>
-                <tab tabTitle="More">
-
-                </tab>
-
             </tabs>
         </div>
     </div>
