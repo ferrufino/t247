@@ -33,3 +33,22 @@ class ProblemItem(Resource):
         Returns a problem.
         """
         return Problem.query.filter(Problem.id == id).one()
+        
+@ns.route('/description/<int:id>')
+@api.response(404, 'Problem not found.')
+class ProblemDescription(Resource):
+
+    def get(self, id):
+        """
+        Returns the descriptions of a problem.
+        """
+        problem = Problem.query.filter(Problem.id == id).one()
+        
+        descriptions = {}
+        descriptions["english"] = problem.description_english
+        descriptions["spanish"] = problem.description_spanish
+        
+        print(descriptions)
+        
+        return descriptions
+        
