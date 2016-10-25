@@ -101,7 +101,7 @@ class UserLogout(Resource):
         token = request.json.get('token')
         if verify_password(token, None):
             delete_user_token(g.user.id)
-            return 'User succesfully logged out', 200
+            return {'message': 'User succesfully logged out'}, 200
         abort(401)
 
 

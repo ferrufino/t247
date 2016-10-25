@@ -18,10 +18,15 @@ export class LoginComponent {
       private _service:UsersService) {}
 
   login() {
-    this._service.login(this.user).subscribe((result) => {
-      if (!result) {
-        this.errorMsg = 'Failed to login';
+    this._service.login(this.user).subscribe(
+      (result) => {
+        if (!result) {
+          this.errorMsg = 'Failed to login';
+        }
+      },
+      err => {
+        console.error(err);
       }
-    });
+    );
   }
 }
