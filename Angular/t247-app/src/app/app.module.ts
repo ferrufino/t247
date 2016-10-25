@@ -39,6 +39,7 @@ import {TopicsService} from "./services/topics.service";
 
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
+import { SiteNavbarComponent } from './principal-components/site-navbar-component/site-navbar.component';
 
 @NgModule({
 
@@ -76,7 +77,7 @@ import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.co
     FilterCoursesPipe,
     FilterTopicsPipe,
     TopicsEditComponent,
-    CoursesEditComponent
+    CoursesEditComponent, SiteNavbarComponent
   ],
   bootstrap: [AppComponent],
   providers: [CoursesService, GroupsService, TopicsService, UsersService]
