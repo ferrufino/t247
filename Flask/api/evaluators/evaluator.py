@@ -76,6 +76,7 @@ class EvaluatorProblemCreation(Resource):
         for i in range(len(test_cases)):
             new_case = Case(input=test_cases[i]['content'],
                             feedback=test_cases[i]['feedback'],
+                            output=test_cases[i]['output'],
                             time_limit=time_limit, memory_limit=memory_limit,
                             problem_id=problem_id)
             db.session.add(new_case)
