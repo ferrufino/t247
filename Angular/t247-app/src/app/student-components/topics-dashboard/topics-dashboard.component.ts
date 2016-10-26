@@ -29,11 +29,13 @@ export class TopicsDashboardComponent implements OnInit {
             myArray.push(topics[key]);
           }
           this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
+          this.content = this._cacheService.get('topics');
           console.log("Se hizo get de topics");
         }
       );
+    } else {
+      console.log("Leo topics de cache");
+      this.content = this._cacheService.get('topics');
     }
-    console.log("bofos2");
-    this.content = this._cacheService.get('topics');
   }
 }

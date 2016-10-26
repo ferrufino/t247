@@ -145,8 +145,12 @@ export class GenericTableComponent implements OnInit {
                 console.log(groups[key]);
               }
               this._cacheService.set('groups', myArray, {maxAge: environment.lifeTimeCache});
+              this.content = this._cacheService.get('groups');
+              //console.log("Se hizo get de groups");
             }
-            this.content = this._cacheService.get('groups');
+            else {
+              this.content = this._cacheService.get('groups');
+            }
             this.groupsBool = true;
             this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
           }
@@ -163,8 +167,12 @@ export class GenericTableComponent implements OnInit {
                 console.log(courses[key]);
               }
               this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
+              this.content = this._cacheService.get('courses');
+              //console.log("Se hizo get de courses");
             }
-            this.content = this._cacheService.get('courses');
+            else {
+              this.content = this._cacheService.get('courses');
+            }
             this.coursesBool = true;
             this.columns = ["Id", "Title", "Edit", "Delete"];
           }
@@ -181,12 +189,16 @@ export class GenericTableComponent implements OnInit {
                 console.log(topics[key]);
               }
               this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
+              this.content = this._cacheService.get('topics');
+              //console.log("Se hizo get de topics");
             }
           );
         }
+        else {
+          this.content = this._cacheService.get('topics');
+        }
         this.topicsBool = true;
         this.columns = ["Id", "Title", "Edit", "Delete"];
-        this.content = this._cacheService.get('topics');
         break;
 
       case "users":

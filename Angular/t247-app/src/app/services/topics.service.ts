@@ -22,7 +22,7 @@ export class TopicsService {
 
     editTopic(topic){
       this._cacheService.set('topics', [], {expires: Date.now() - 1});
-      console.log("se supone que cache de topics borrado");
+      console.log("Caching borrado");
       return this.http
       .put(
         this.editUrl+topic.id,
