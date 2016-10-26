@@ -16,7 +16,7 @@ group_with_students = api.model('GroupWithStudents', {
     'period': fields.String(required=True, description='Group period'),
     'professor_id': fields.Integer(required=True, description='Group professor id'),
     'course': fields.Nested(course),
-    'students': fields.Nested(user)
+    'students': fields.List(fields.Nested(user))
 })
 
 group_with_assignments = api.model('GroupWithAssignments', {
