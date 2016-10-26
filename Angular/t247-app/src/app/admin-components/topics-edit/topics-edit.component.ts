@@ -47,6 +47,7 @@ export class TopicsEditComponent implements OnInit{
         }
         else{
           console.log(result);
+
         }
       });
     }

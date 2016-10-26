@@ -58,8 +58,8 @@ class EvaluatorProblemCreation(Resource):
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
-        # difficulty = data.get('difficulty')
-        difficulty = 0
+        author_id = data.get('author_id')
+        difficulty = data.get('difficulty')
         code = data.get('code')
         test_cases = data['test_cases']
 
@@ -67,7 +67,8 @@ class EvaluatorProblemCreation(Resource):
                               difficulty=difficulty, active=True,
                               language=language, code=code,
                               description_english=description_english,
-                              description_spanish=description_spanish)
+                              description_spanish=description_spanish,
+                              author_id=author_id)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
@@ -120,7 +121,10 @@ class EvaluatorAttemptSubmission(Resource):
         # Evaluate submitted code in a worker
         # (caller won't receive evaluation results after the call, because
         # results will be posted to the DB by a worker after evaluation)
+        problem = Problem.query.filter(Problem.id == problem_id).one()
         data['submission_id'] = submission_id
+        data['time_limit'] = problem.cases[0].time_limit
+        data['memory_limit'] = problem.cases[0].memory_limit
         result = services.request_evaluation(data)
 
         return result

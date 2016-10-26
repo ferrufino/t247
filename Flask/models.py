@@ -111,6 +111,14 @@ class Student(User):
         'polymorphic_identity': 'student'
     }
 
+    def last_submission_between_dates(self, problem_id, start_date, due_date):
+        submission = Submission.query.filter(
+            and_(Submission.student_id == self.id,
+                 Submission.problem_id == problem_id,
+                 Submission.created >= start_date,
+                 Submission.created <= due_date)).order_by(Submission.created.desc()).first()
+        return submission
+
 
 class Professor(User):
     """docstring for Professor"""
@@ -228,12 +236,25 @@ class Submission(Base):
 class Assignment(Base):
     """docstring for Assignment"""
     __tablename__ = 'assignment'
-    due_date = db.Column
+    title = db.Column(db.String(255))
+    start_date = db.Column(db.DateTime)
+    due_date = db.Column(db.DateTime)
 
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     group = db.relationship("Group", back_populates="assignments")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="assignments")
+
+    def last_submissions(self):
+        problem = self.problem
+        students = self.group.students
+        submissions = []
+        for student in students:
+            submission = student.last_submission_between_dates(self.problem_id,
+                                                               self.start_date,
+                                                               self.due_date)
+            submissions.append(submission)
+        return submissions
 
 
 class Language(Base):
