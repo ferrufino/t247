@@ -3,7 +3,7 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.groups.serializers import (group as api_group, group_creation,
-                                    group_with_students)
+                                    group_with_students, group_with_assignments)
 from api.restplus import api
 from models import db, Group, Student
 

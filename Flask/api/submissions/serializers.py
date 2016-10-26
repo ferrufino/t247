@@ -18,6 +18,15 @@ submission = api.model('Submission', {
     'user': fields.Nested(user)
   })
 
+simple_submission = api.model('Submission', {
+    'id': fields.Integer(required=True, description='Submission id'),
+    'language': fields.String(required=True, description='Submission lang'),
+    'code': fields.String(required=True, description='Submission code'),
+    'grade': fields.String(required=True, description='Submission grade'),
+    'feedback_list': fields.List(fields.Nested(submission_feedback)),
+    'user': fields.Nested(user)
+  })
+
 last_submission = api.model('Submission', {
     'id': fields.Integer(required=True, description='Submission id'),
     'language': fields.String(required=True, description='Submission lang'),

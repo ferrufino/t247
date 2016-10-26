@@ -121,7 +121,10 @@ class EvaluatorAttemptSubmission(Resource):
         # Evaluate submitted code in a worker
         # (caller won't receive evaluation results after the call, because
         # results will be posted to the DB by a worker after evaluation)
+        problem = Problem.query.filter(Problem.id == problem_id).one()
         data['submission_id'] = submission_id
+        data['time_limit'] = problem.cases[0].time_limit
+        data['memory_limit'] = problem.cases[0].memory_limit
         result = services.request_evaluation(data)
 
         return result
