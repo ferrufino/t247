@@ -8,12 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SiteNavbarComponent implements OnInit {
 
   @Input() rolesArray: string[];
+  // TODO: CHECK DROPDOWN NPM
 
   constructor() { }
 
   ngOnInit() {
-    console.log("Roles:");
-    console.log(this.rolesArray);
+
   }
 
 }
