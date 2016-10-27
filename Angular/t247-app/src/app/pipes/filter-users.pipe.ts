@@ -9,10 +9,10 @@ export class FilterUsersPipe implements PipeTransform {
 
         let ans = [];
         for (let k in items){
-            if(items[k].enrollmentId.match('^.*' + args +'.*$')
-                || items[k].firstName.match('^.*' + args +'.*$')
-                || items[k].lastName.match('^.*' + args +'.*$')
-                || items[k].typeOfUser.match('^.*' + args +'.*$')) {
+            if((items[k].enrollmentId?items[k].enrollmentId.match('^.*' + args +'.*$'):null)
+                || (items[k].firstName?items[k].firstName.match('^.*' + args +'.*$'):null)
+                || (items[k].lastName?items[k].lastName.match('^.*' + args +'.*$'):null)
+                || (items[k].typeOfUser?items[k].typeOfUser.match('^.*' + args +'.*$'):null)) {
                 ans.push({key: k, value: items[k]});
             }
         }
