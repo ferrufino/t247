@@ -195,6 +195,8 @@ class Problem(Base):
     template = db.Column(db.Text)
     description_english = db.Column(db.Text)
     description_spanish = db.Column(db.Text)
+    example_input = db.Column(db.Text)
+    example_output = db.Column(db.Text)
 
     cases = db.relationship("Case", back_populates="problem",
                             order_by="Case.id")
