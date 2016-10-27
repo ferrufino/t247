@@ -15,7 +15,7 @@ submission = api.model('Submission', {
     'grade': fields.String(required=True, description='Submission grade'),
     'feedback_list': fields.List(fields.Nested(submission_feedback)),
     'problem': fields.Nested(problem),
-    'user': fields.Nested(user)
+    'student': fields.Nested(user)
   })
 
 simple_submission = api.model('SimpleSubmission', {

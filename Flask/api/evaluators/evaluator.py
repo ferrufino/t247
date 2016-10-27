@@ -11,7 +11,7 @@ from api.evaluators.serializers import (evaluator_submission,
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import db, Problem, Case, Submission, Student
+from models import db, Problem, Case, Submission, Student, User
 from enums import SubmissionState, SubmissionResult
 
 gevent.monkey.patch_all()
@@ -109,7 +109,7 @@ class EvaluatorAttemptSubmission(Resource):
         language = data.get('language')
         problem_id = data.get('problem_id')
         user_id = data.get('user_id')
-        user = Student.query.filter(Student.id == user_id).one()
+        user = User.query.filter(User.id == user_id).one()
         new_submission = Submission(code=code, language=language,
                                     problem_id=problem_id,
                                     student=user,
