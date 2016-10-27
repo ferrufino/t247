@@ -10,9 +10,11 @@ if(youReallyThinkYouCanCode){
 
 @Component({
     selector: 'code-editor',
-    template: `<div>
+    styleUrls: ['./editor.component.css'],
+    template: `
+  <div class="code-editor">
     <codemirror [(ngModel)]="code" [config]="config"></codemirror>
-    <button type="button" class="btn btn-success" (click)='onClick()'>Submit</button>
+    <button type="button" class="btn btn-success submit-code-btn" (click)='onClick()'>Submit</button>
   </div>`,
 })
 export class EditorComponent {
