@@ -52,8 +52,8 @@ class User(Base, UserMixin):
             Returns the opposite of `__eq__`.
     """
     __tablename__ = 'user'
-    email = db.Column(db.String(255), unique=True)
-    enrollment = db.Column(db.String(255), unique=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    enrollment = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255))
     active = db.Column(db.Boolean)
     first_name = db.Column(db.String(255))
@@ -132,7 +132,7 @@ class Professor(User):
 class Course(Base):
     """docstring for Course"""
     __tablename__ = 'course'
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255), nullable=False)
     groups = db.relationship("Group", back_populates="course")
     topics = db.relationship("Topic", secondary="relevanttopic",
                              back_populates="courses")
@@ -141,7 +141,7 @@ class Course(Base):
 class Topic(Base):
     """docstring for Course"""
     __tablename__ = 'topic'
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255), nullable=False)
     courses = db.relationship("Course", secondary="relevanttopic",
                               back_populates="topics")
     problems = db.relationship("Problem", secondary="problemtopic",
@@ -161,7 +161,7 @@ class Group(Base):
     __tablename__ = 'group'
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     course = db.relationship("Course", back_populates="groups")
-    period = db.Column(db.String(255))
+    period = db.Column(db.String(255), nullable=False)
     students = db.relationship("Student", secondary="enrollment",
                                back_populates="groups")
     professor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -187,14 +187,16 @@ class ProblemTopic(Base):
 class Problem(Base):
     """docstring for Problem"""
     __tablename__ = 'problem'
-    name = db.Column(db.String(255), unique=True)
+    name = db.Column(db.String(255), unique=True, nullable=False)
     difficulty = db.Column(db.Integer)
     active = db.Column(db.Boolean)
-    language = db.Column(db.String(255))
-    code = db.Column(db.Text)
+    language = db.Column(db.String(255), nullable=False)
+    code = db.Column(db.Text, nullable=False)
     template = db.Column(db.Text)
     description_english = db.Column(db.Text)
     description_spanish = db.Column(db.Text)
+    example_input = db.Column(db.Text)
+    example_output = db.Column(db.Text)
 
     cases = db.relationship("Case", back_populates="problem",
                             order_by="Case.id")
@@ -207,7 +209,7 @@ class Problem(Base):
 class Case(Base):
     """docstring for Case"""
     __tablename__ = 'case'
-    input = db.Column(db.Text)
+    input = db.Column(db.Text, nullable=False)
     time_limit = db.Column(db.Integer)
     memory_limit = db.Column(db.Integer)
     feedback = db.Column(db.Text)
@@ -220,8 +222,8 @@ class Case(Base):
 class Submission(Base):
     """docstring for Submission"""
     __tablename__ = 'submission'
-    code = db.Column(db.Text)
-    language = db.Column(db.String(255))
+    code = db.Column(db.Text, nullable=False)
+    language = db.Column(db.String(255), nullable=False)
     feedback_list = db.Column(db.JSON)
     grade = db.Column(db.Integer)
     state = db.Column(db.Enum(SubmissionState))
@@ -236,9 +238,9 @@ class Submission(Base):
 class Assignment(Base):
     """docstring for Assignment"""
     __tablename__ = 'assignment'
-    title = db.Column(db.String(255))
-    start_date = db.Column(db.DateTime)
-    due_date = db.Column(db.DateTime)
+    title = db.Column(db.String(255), nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    due_date = db.Column(db.DateTime, nullable=False)
 
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     group = db.relationship("Group", back_populates="assignments")
@@ -261,6 +263,6 @@ class Language(Base):
     """docstring for Assignment"""
     __tablename__ = 'language'
 
-    name = db.Column(db.String(255))
-    value = db.Column(db.String(255))
-    extension = db.Column(db.String(255))
+    name = db.Column(db.String(255), nullable=False)
+    value = db.Column(db.String(255), nullable=False, unique=True)
+    extension = db.Column(db.String(255), nullable=False)

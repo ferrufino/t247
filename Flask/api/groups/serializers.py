@@ -8,7 +8,9 @@ group = api.model('Group', {
     'id': fields.Integer(required=True, description='Group id'),
     'period': fields.String(required=True, description='Group period'),
     'professor_id': fields.Integer(required=True, description='Group professor id'),
-    'course': fields.Nested(course)
+    'course': fields.Nested(course),
+    'students': fields.List(fields.Nested(user)),
+    'assignments': fields.Nested(assignment)
 })
 
 group_with_students = api.model('GroupWithStudents', {

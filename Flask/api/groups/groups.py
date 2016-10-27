@@ -61,7 +61,7 @@ class GroupCreation(Resource):
 @api.response(404, 'Group not found.')
 class GroupItem(Resource):
 
-    @api.marshal_with(group_with_students)
+    @api.marshal_with(api_group)
     def get(self, id):
         """
         Returns a group.
