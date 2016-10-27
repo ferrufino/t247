@@ -22,6 +22,8 @@ export class SubmitProblem implements OnInit {
     private progLangToSubmit;
     private descriptionEnglish;
     private descriptionSpanish;
+    private descriptionTitle;
+    private attempts;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -40,6 +42,7 @@ export class SubmitProblem implements OnInit {
 
     ngOnInit() {
         this.getContentDescription();
+        this.getContentAttempt();
         this.progLangToSubmit = "none";
         document.getElementById('success-feedback').style.display = "none";
         document.getElementById('error-feedback').style.display = "none";
@@ -125,9 +128,16 @@ export class SubmitProblem implements OnInit {
             content => {
                 this.descriptionEnglish = content.english;
                 this.descriptionSpanish = content.spanish;
+                this.descriptionTitle = content.title;
             }
         );
     }
 
-
+    getContentAttempt() {
+        this._httpSubmitProblemService.getAttempts().subscribe(
+            content => {
+               this.attempts = content;
+            }
+        );
+    }
 }

@@ -9,11 +9,13 @@
             <div class="">
                 <tabs>
                     <tab tabTitle="English">
+                        <h3 class="block__title" >{{descriptionTitle}}</h3>
                         <p>
                             {{descriptionEnglish}}
                         </p>
                     </tab>
                     <tab tabTitle="Español">
+                        <h3 class="block__title" >{{descriptionTitle}}</h3>
                         <p>
                             {{descriptionSpanish}}
                         </p>
@@ -36,13 +38,16 @@
                         <code-editor (codeToSubmit)="codeToSubmit($event)"></code-editor>
                     </div>
                 </tab>
-                <tab tabTitle="Attempt #3">
+                <tab *ngFor="let entry of attempts" tabTitle="Attempt">
+                    <p>Grade: {{entry.grade?entry.grade:"0"}}</p> <br/>
+                    <p>Prog Language: {{entry.language?entry.language:"error"}}</p> <br/>
+                    <div *ngIf="entry.grade != 100">
+                        <div *ngFor="let fb of entry.feedback_list">
+                            <p>Feedback: {{fb.feedback?fb.feedback:"error"}}</p>
+                            <p>Status: {{fb.status?fb.status:"error"}} </p>
+                        </div>
 
-                </tab>
-                <tab tabTitle="Attempt #2">
-
-                </tab>
-                <tab tabTitle="Attempt #1">
+                    </div>
 
                 </tab>
             </tabs>
