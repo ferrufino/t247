@@ -6,7 +6,6 @@ import {HttpModule}    from '@angular/http';
 import {AppComponent}   from './app.component';
 import {LoginComponent} from "./principal-components/login-component/login.component";
 import {HomeComponent} from "./principal-components/home-component/home.component";
-import {MyCourses} from "./professor-components/my-courses.component";
 import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboardComponent} from "./student-components/topics-dashboard/topics-dashboard.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
@@ -18,7 +17,6 @@ import {Tab} from './general-components/tab/tab.component';
 import {Tabs} from './general-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
 import {SubmitProblem}  from './general-components/submit-problem/submit-problem.component';
-
 import {KeysPipe} from './pipes/keys.pipe';
 import {FilterPipe} from './pipes/filter.pipe';
 import {FilterUsersPipe} from './pipes/filter-users.pipe';
@@ -64,7 +62,6 @@ import {EditorComponent} from './general-components/code-editor/editor.component
         AppComponent,
         LoginComponent,
         HomeComponent,
-        MyCourses,
         ListOfProblems,
         TopicsDashboardComponent,
         CreateProblem,
