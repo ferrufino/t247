@@ -35,6 +35,7 @@ import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
 import {SubmitProblemService} from "./services/submit-problem.service";
+import {AssignmentsService} from "./services/assignments.service";
 
 import {CacheService} from "ng2-cache/src/services/cache.service";
 
@@ -45,6 +46,10 @@ import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.co
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {CodemirrorModule} from 'ng2-codemirror';
 import {EditorComponent} from './general-components/code-editor/editor.component';
+import {GroupComponent} from "./professor-components/group/group.component";
+import {AssignmentComponent} from "./professor-components/assignment/assignment.component";
+import {GroupResolve} from "./services/group-resolve.service";
+
 @NgModule({
 
 
@@ -84,10 +89,21 @@ import {EditorComponent} from './general-components/code-editor/editor.component
         FilterCoursesPipe,
         FilterTopicsPipe,
         TopicsEditComponent,
-        CoursesEditComponent
+        CoursesEditComponent,
+        GroupComponent,
+        AssignmentComponent
     ],
     bootstrap: [AppComponent],
-    providers: [CoursesService, GroupsService, TopicsService, UsersService, CacheService, SubmitProblemService]
+    providers: [
+      CoursesService,
+      GroupsService,
+      TopicsService,
+      UsersService,
+      CacheService,
+      SubmitProblemService,
+      GroupResolve,
+      AssignmentsService
+    ]
 })
 export class AppModule {
 }

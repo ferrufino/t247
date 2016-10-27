@@ -6,6 +6,7 @@ import { CoursesService } from '../../services/courses.service.ts';
 import { TopicsService } from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import { AssignmentsService } from '../../services/assignments.service';
 import { environment } from '../../../environments/environment'
 
 @Component({
@@ -21,16 +22,19 @@ export class GenericTableComponent implements OnInit {
   constructor(private topicsService:TopicsService,
               private coursesService: CoursesService,
               private groupsService: GroupsService,
+              private assignmentsService: AssignmentsService,
               private router: Router,
               private _cacheService: CacheService) {
   }
 
   @Input('typetable') typeOfTableName: string;
+  @Input('assignment') assignmentId: number;
   //typeOfTableName: string = "courses";
   columns: Array<string>;
   private problemsBool;
   private assignmentsBool;
   private submissionsBool;
+  private assignmentSubmissionsBool;
   private groupsBool;
   private coursesBool;
   private topicsBool;
@@ -53,6 +57,7 @@ export class GenericTableComponent implements OnInit {
     this.problemsBool = false;
     this.assignmentsBool = false;
     this.submissionsBool = false;
+    this.assignmentSubmissionsBool = false;
     this.groupsBool = false;
     this.coursesBool = false;
     this.topicsBool = false;
@@ -133,6 +138,17 @@ export class GenericTableComponent implements OnInit {
             "solved": true
           }
         ];
+        break;
+
+      case "assignmentSubmissions":
+        this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
+          submissions => {
+            debugger;
+            this.content = submissions;
+            this.assignmentSubmissionsBool = true;
+            this.columns = ["Student", "Date of last submission", "Language", "Solved"];
+          }
+        );
         break;
 
       case "groups":
@@ -229,6 +245,10 @@ export class GenericTableComponent implements OnInit {
 
     }
 
+  }
+
+  onSelectGroup(group) {
+    this.router.navigate(['/groups', group.id]);
   }
 
   onSelectTopic(topic) {

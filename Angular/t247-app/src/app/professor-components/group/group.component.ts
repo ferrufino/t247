@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {GroupsService} from '../../services/groups.service';
+import { GroupsService } from '../../services/groups.service';
+import { UsersService } from '../../services/users.service';
+import { ActivatedRoute, Params }   from '@angular/router';
 import { Location } from '@angular/common';
+import { AssignmentComponent } from "../assignment/assignment.component";
 
 @Component({
   selector: 'group',
@@ -9,17 +12,26 @@ import { Location } from '@angular/common';
 })
 export class GroupComponent implements OnInit {
 
-  private id : number = 0;
-  constructor(private _service GroupsService, id) {
-    this.id = id;
+  public group;
+  constructor(private _service: GroupsService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private _authService: UsersService) {
+
   }
 
   ngOnInit() {
     //this._authService.checkCredentials();
-    this._service.getGroup(this.id)
+    this.route.data.forEach((group : any) => {
+      this.group = group.any;
+    });
   }
 
   goBack() {
     this.location.back();
+  }
+
+  onNewAssignment() {
+
   }
 }

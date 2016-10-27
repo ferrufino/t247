@@ -3,9 +3,10 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.assignments.serializers import (assignment as api_assignment,
-                                         assignment_creation)
+                                         assignment_creation, simple_submission)
 from api.restplus import api
-from models import db, Assignment
+from models import db, Assignment, Submission
+from sqlalchemy import and_
 
 log = logging.getLogger(__name__)
 
@@ -82,12 +83,31 @@ class AssignmentItem(Resource):
         return None, 204
 
 
-# @ns.route('/by_group/<int:id>')
-# class AssignmentCollectionByGroup(Resource):
-#     @api.marshal_with(api_assignment)
-#     def get(self, id):
-#         """
-#         Returns a list of assignments.
-#         """
-#         group = Group.query.filter(Group.id == id).one()
-#         return group.assignments
+@ns.route('/submissions/<int:id>')
+@api.response(404, 'Submission not found.')
+class AssignmentCollectionByGroup(Resource):
+    @api.marshal_list_with(simple_submission)
+    def get(self, id):
+        """
+        Returns a list of the last submission between the assignment dates for
+        the group students.
+        """
+        assignment = Assignment.query.filter(Assignment.id == id).one()
+        problem = assignment.problem
+        start_date = assignment.start_date
+        due_date = assignment.due_date
+        students = assignment.group.students
+
+        submissions = []
+        for student in students:
+            print(str(student.id))
+            submission = Submission.query.filter(
+                and_(Submission.problem_id == problem.id,
+                     Submission.student_id == student.id,
+                     Submission.created >= start_date,
+                     Submission.created <= due_date)).order_by(
+                Submission.created.desc()).first()
+            submissions.append(submission)
+
+        return submissions
+

@@ -3,21 +3,21 @@ import {Http, Response} from "@angular/http";
 import {environment} from '../../environments/environment';
 
 @Injectable()
-export class GroupsService {
+export class AssignmentsService {
 
-  private baseURL: string = environment.apiURL + '/groups/';
+  private baseURL: string = environment.apiURL + '/assignments/';
 
   constructor(private http: Http) {
   }
 
-  getGroups() {
+  getAssignments() {
     return this.http.get(this.baseURL).map((response: Response) => response.json());
   }
 
-  getGroup(id) {
+  getSubmissions(id) {
     return this.http
       .get(
-        this.baseURL + id
+        this.baseURL + 'submissions/' + id
       )
       .map((response: Response) => response.json());
   }
