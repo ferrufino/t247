@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TopicsService } from '../../services/topics.service';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-topics-dashboard',
@@ -7,18 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopicsDashboardComponent implements OnInit {
 
-  topics: Array<string>;
+  content: any[] = [];
 
-  constructor() { }
+  constructor(private topicsService: TopicsService, private _cacheService: CacheService) {
+  }
 
   ngOnInit() {
     this.renderTopicCells();
   }
 
   renderTopicCells() {
-    this.topics = ["System of linear equations", "Arithmetic Expressions", "Backtracking", "Binary Search Tree",
-      "Classes", "Data Structure", "Decisions Structures", "Divide and Conquer", "Dynammic Programming",
-      "Functions or methods", "Geometry", "Graph", "Greedy Algorithms", "Hashing", "Linked List", "Repetitions Stuctures",
-      "STL", "Sorts", "Stacks", "Strings"];
+
+    if (!this._cacheService.exists('topics')) {
+      this.topicsService.getTopics().subscribe(
+        topics => {
+          const myArray = [];
+          for (let key in topics) {
+            myArray.push(topics[key]);
+          }
+          this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
+          this.content = this._cacheService.get('topics');
+          console.log("Se hizo get de topics");
+        }
+      );
+    } else {
+      console.log("Leo topics de cache");
+      this.content = this._cacheService.get('topics');
+    }
   }
 }

@@ -47,10 +47,10 @@ class UserCreation(Resource):
         Creates user
         """
         email = request.json.get('email')
-        name = request.json.get('first_name')
+        first_name = request.json.get('first_name')
         last_name = request.json.get('last_name')
         password = request.json.get('password')
-        enrollment = request.json.get('enrollment')
+        enrollment = request.json.get('enrollment').lower()
         role = request.json.get('role')
 
         if email is None or password is None:
@@ -58,7 +58,7 @@ class UserCreation(Resource):
         if User.query.filter_by(email=email).first() is not None:
             return {'error': 'Email already exists'}, 400
 
-        new_user = User(email=email, name=first_name, last_name=last_name,
+        new_user = User(email=email, first_name=first_name, last_name=last_name,
                         role=role, enrollment=enrollment)
         new_user.hash_password(password)
         db.session.add(new_user)
@@ -101,7 +101,7 @@ class UserLogout(Resource):
         token = request.json.get('token')
         if verify_password(token, None):
             delete_user_token(g.user.id)
-            return 'User succesfully logged out', 200
+            return {'message': 'User succesfully logged out'}, 200
         abort(401)
 
 

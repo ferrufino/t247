@@ -3,23 +3,24 @@ import {
   OnInit,
   AfterViewInit
 } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'home',
-  providers: [AuthenticationService],
+  providers: [UsersService],
   templateUrl: './home.component.html',
   styleUrls: ['../../../styles/general-styles.css']
 })
 
 export class HomeComponent implements OnInit, AfterViewInit{
-  roles: [string]
-  selectedRole : string
-  adminTabsLoaded : boolean
-  professorTabsLoaded : boolean
-  studentTabsLoaded : boolean
+
+  roles: [string];
+  selectedRole : string;
+  adminTabsLoaded : boolean;
+  professorTabsLoaded : boolean;
+  studentTabsLoaded : boolean;
   constructor(
-    private _service: AuthenticationService){
+    private _service: UsersService){
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;
@@ -33,12 +34,27 @@ export class HomeComponent implements OnInit, AfterViewInit{
       this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
       this.tabsLoadedFunction();
     }
-    // $(".dropdown-button").dropdown();
-    // $(".dropdown-button-mobile").dropdown();
   }
 
   logout() {
-    this._service.logout();
+    //this._service.logout();
+    this._service.request_logout().subscribe(
+      data => {
+        console.log('Successfully logged out');
+        console.log(data);
+        sessionStorage.removeItem("email_user");
+        sessionStorage.removeItem("auth_token");
+        sessionStorage.removeItem("userJson");
+        localStorage.removeItem("email_user");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("userJson");
+        this._service.complete_logout();
+      },
+      err => {
+        console.error(err);
+      }
+    );
+
   }
 
   ngAfterViewInit() {

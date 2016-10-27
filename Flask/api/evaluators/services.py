@@ -16,13 +16,15 @@ arr_obj_file = { "cpp" : "a.out", "java" : "Main.class"}
 arr_compilation = { "cpp" : ["g++", "-o"], "java": ["javac"] }
 
 # Directories
-base_dir    = "/home/msf1013/Desktop/t247/Evaluator/"
+base_dir    = "/root/t247/Evaluator/"
 
 # Method that returns custom response dictionary
 def error_response(error, submission_id):
-    response = { "error" : error }
+    response = { "status" : "error", "error" : error }
+    print(response)
     if (submission_id != -1):
-        requests.post("http://localhost:5000/api/evaluator/execution_result", json=response) 
+        response["submission_id"] = submission_id
+        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=response) 
     return response
 
 # Method that destroys the Docker container with the given id
@@ -180,7 +182,7 @@ def evaluate(request):
         for test_no in range(total_tests):
         
             # 2) Create container
-            process = subprocess.Popen(['sudo', 'docker', 'run', '--security-opt', 'no-new-privileges', '--network', 'none', '-m', '500m', '-dit', '--name', ctr_name, 't247', 'bash'])
+            process = subprocess.Popen(['sudo', 'docker', 'run', '--security-opt', 'no-new-privileges', '--cap-drop', 'all', '--network', 'none', '-m', '500m', '-dit', '--name', ctr_name, 't247', 'bash'])
             
             # Capture errors while running Docker
             execution_status = wait_and_recover(process, 5, ctr_name)
@@ -268,7 +270,7 @@ def evaluate(request):
             
             # 9) Insert test case entry in results array
             status = status.decode("UTF-8")
-            
+                        
             # Compare actual vs expected output
             if (request_type == "submission"):
                 if (status == "successful run"):
@@ -295,8 +297,8 @@ def evaluate(request):
         return_obj["test_cases"] = results
        
     if (request_type == "submission"):
-                   
-        requests.post("http://localhost:5000/api/evaluator/execution_result", json=return_obj) 
+        return_obj["submission_id"] = submission_id
+        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=return_obj) 
     
     return return_obj 
         
@@ -312,7 +314,7 @@ def request_evaluation(data):
     
     # Immediate return after problem submission
     if (data["request_type"] == "submission"):
-        return { "message" : "successful problem submission" }
+        return { "status" : "ok" }
     
     # Check job status in case of problem creation
     while (job.result is None and not job.is_failed):
@@ -320,7 +322,7 @@ def request_evaluation(data):
     
     # Return result
     if (job.is_failed):
-        response = { "error" : "Internal evaluation error" }
+        response = { "status" : "error", "error" : "Internal evaluation error" }
     else:
         response = job.result
     
