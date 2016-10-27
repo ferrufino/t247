@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingOne" (click)="toggleOpen($event)">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
+        {{assignment.title}}
+      </a>
+    </h4>
+  </div>
+  <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" [hidden]="!isOpen">
+    <div class="panel-body">
+      <generic-table [typetable]="'assignmentSubmissions'" [assignment]="assignment.id"></generic-table>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,9 @@ import {AppComponent} from "./app.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
+import {GroupComponent} from "./professor-components/group/group.component";
+import { GroupResolve }   from "./services/group-resolve.service";
+
 
 const appRoutes: Routes = [
     {
@@ -32,6 +35,13 @@ const appRoutes: Routes = [
     {
       path: 'editCourse/:id',
       component: CoursesEditComponent
+    },
+    {
+      path: 'groups/:id',
+      component: GroupComponent,
+      resolve : {
+        any: GroupResolve
+      }
     }
 ];
 
