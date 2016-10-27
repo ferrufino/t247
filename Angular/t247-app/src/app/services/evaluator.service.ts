@@ -42,9 +42,8 @@ export class EvaluatorService {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': 'localhost:4200'
         });
-        console.log();
-        const serviceURL:string = 'http://107.170.255.106:5000/api/evaluator/problem_submission';
-        return this.http.post(serviceURL, problem, headers)
+        const submitProblemURL:string = 'http://107.170.255.106:5000/api/evaluator/problem_submission';
+        return this.http.post(submitProblemURL, problem, headers)
             .map((data:Response) => data.json());
     }
 

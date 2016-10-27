@@ -50,24 +50,21 @@ export class SubmitProblem implements OnInit {
         }
     }
 
-    submitCode($event) {
+    codeToSubmit($event) {
         console.log($event);
 
         var codeFromEditor = $event;
         let codeObject = {
-            "code": $event,
+            "code": codeFromEditor,
             "language": this.progLangToSubmit,
             "problem_id": 5,
             "request_type": "submission",
             "user_id": 2
         }
 
-        this._httpProblemsService.submitProblem(codeFromEditor).subscribe(
+        this._httpProblemsService.submitProblem(codeObject).subscribe(
             data => {
                 console.log(data);
-            },
-            err => {
-                console.log(err);
             }
         );
 
