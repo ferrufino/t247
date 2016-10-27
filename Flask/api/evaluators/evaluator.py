@@ -109,6 +109,8 @@ class EvaluatorAttemptSubmission(Resource):
         language = data.get('language')
         problem_id = data.get('problem_id')
         user_id = data.get('user_id')
+        print("USUATIO")
+        print(user_id)
         user = Student.query.filter(Student.id == user_id).one()
         new_submission = Submission(code=code, language=language,
                                     problem_id=problem_id,
