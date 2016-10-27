@@ -5,19 +5,26 @@ import {
     IMultiSelectSettings
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {EvaluatorService} from "../../services/evaluator.service";
+import {SubmitProblemService} from "../../services/submit-problem.service";
 
 @Component({
     selector: 'submit-problem',
     templateUrl: './submit-problem.component.html',
     styleUrls: ['./submit-problem.component.css'],
-    providers: [EvaluatorService]
+    providers: [EvaluatorService, SubmitProblemService]
 })
-export class SubmitProblem {
-    constructor(private _httpProblemsService:EvaluatorService) {
+export class SubmitProblem implements OnInit {
+    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService) {
 
     }
+    ngOnInit() {
+        this.getContentDescription();
 
-    progLangToSubmit;
+
+    }
+    private progLangToSubmit;
+    private descriptionEnglish;
+    private descriptionSpanish;
     private selectedOptions:number[];
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
@@ -43,24 +50,34 @@ export class SubmitProblem {
         }
     }
 
-    submitCode($event) {
+    codeToSubmit($event) {
         console.log($event);
 
         var codeFromEditor = $event;
         let codeObject = {
-            "code": $event,
+            "code": codeFromEditor,
             "language": this.progLangToSubmit,
             "problem_id": 5,
             "request_type": "submission",
             "user_id": 2
         }
 
-        this._httpProblemsService.submitProblem(codeFromEditor).subscribe(
+        this._httpProblemsService.submitProblem(codeObject).subscribe(
             data => {
                 console.log(data);
-            },
-            err => {
-                console.log(err);
+            }
+        );
+
+
+
+    }
+
+    getContentDescription(){
+
+        this._httpSubmitProblemService.getDescriptions().subscribe(
+            content => {
+                this.descriptionEnglish = content.english;
+                this.descriptionSpanish = content.spanish;
             }
         );
     }

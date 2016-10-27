@@ -1,19 +1,36 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card card-block">
-            <h1>Description</h1>
+            <h1 class="block__title">Description</h1>
+            <div class="">
+                <tabs>
+                    <tab tabTitle="English">
+                        <p>
+                            {{descriptionEnglish}}
+                        </p>
+                    </tab>
+                    <tab tabTitle="Español">
+                        <p>
+                            {{descriptionSpanish}}
+                        </p>
+                    </tab>
+                </tabs>
+            </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card card-block">
-            <h1>Problem Submission</h1>
+            <h1 class="block__title">Problem Submission</h1>
             <tabs>
                 <tab tabTitle="New Attempt">
-                    <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
-                                             [(ngModel)]="selectedOptions"
-                                             (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
-
-                    <code-editor (codeToSubmit)="submitCode($event)" ></code-editor>
+                    <div class="new-attempt">
+                        <div class="dropdown-position">
+                            <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
+                                                     [(ngModel)]="selectedOptions"
+                                                     (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
+                        </div>
+                        <code-editor (codeToSubmit)="codeToSubmit($event)"></code-editor>
+                    </div>
                 </tab>
                 <tab tabTitle="Attempt #3">
 

@@ -17,7 +17,6 @@ import {Tab} from './general-components/tab/tab.component';
 import {Tabs} from './general-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
 import {SubmitProblem}  from './general-components/submit-problem/submit-problem.component';
-
 import {KeysPipe} from './pipes/keys.pipe';
 import {FilterPipe} from './pipes/filter.pipe';
 import {FilterUsersPipe} from './pipes/filter-users.pipe';
@@ -30,11 +29,15 @@ import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
+
 import {UsersService} from "./services/users.service";
 import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
+import {SubmitProblemService} from "./services/submit-problem.service";
+
 import {CacheService} from "ng2-cache/src/services/cache.service";
+
 
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
@@ -84,7 +87,7 @@ import {EditorComponent} from './general-components/code-editor/editor.component
         CoursesEditComponent
     ],
     bootstrap: [AppComponent],
-    providers: [CoursesService, GroupsService, TopicsService, UsersService, CacheService]
+    providers: [CoursesService, GroupsService, TopicsService, UsersService, CacheService, SubmitProblemService]
 })
 export class AppModule {
 }
