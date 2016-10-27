@@ -30,12 +30,16 @@ export class TopicsDashboardComponent implements OnInit {
           }
           this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
           this.content = this._cacheService.get('topics');
-          console.log("Se hizo get de topics");
+//          console.log("Se hizo get de topics");
+//          console.log("observing order 4");
         }
       );
+      console.log("observing order 3");
     } else {
-      console.log("Leo topics de cache");
+//      console.log("Leo topics de cache");
       this.content = this._cacheService.get('topics');
+//      console.log("observing order 2");
     }
+//    console.log("observing order 1");
   }
 }
