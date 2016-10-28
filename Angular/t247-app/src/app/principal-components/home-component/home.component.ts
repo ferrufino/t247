@@ -36,7 +36,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (sessionStorage.getItem("auth_token")) {
       this.userRoles = JSON.parse(sessionStorage.getItem("roles"));
       this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
-      this.selectedRole = this.userInformationObject["role"];
+
+      // Check if a role view is stored in local storage
+      if(sessionStorage.getItem("currentRoleView")){
+
+        this.selectedRole = JSON.parse(sessionStorage.getItem("currentRoleView"));
+
+      } else {
+
+        this.selectedRole = this.userInformationObject["role"];
+        // Store current role-view
+        sessionStorage.setItem('currentRoleView', JSON.stringify(this.selectedRole));
+      }
+
 
       this.tabsLoadedFunction(); // Load the correct tabs for the user
     }
@@ -73,6 +85,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
    */
   changeSelectedRole(role) {
     this.selectedRole = role;
+    sessionStorage.setItem('currentRoleView', JSON.stringify(role));
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;
