@@ -14,18 +14,16 @@ import {SubmitProblemService} from "../../services/submit-problem.service";
     providers: [EvaluatorService, SubmitProblemService]
 })
 export class SubmitProblem implements OnInit {
+
     constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService) {
 
     }
-    ngOnInit() {
-        this.getContentDescription();
-
-
-    }
+    /*Main Variables Declaration*/
     private progLangToSubmit;
     private descriptionEnglish;
     private descriptionSpanish;
-    private selectedOptions:number[];
+    private descriptionTitle;
+    private attempts;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -42,6 +40,15 @@ export class SubmitProblem implements OnInit {
         defaultTitle: 'Programming Languages'
     };
 
+    ngOnInit() {
+        this.getContentDescription();
+        this.getContentAttempt();
+        this.progLangToSubmit = "none";
+        document.getElementById('success-feedback').style.display = "none";
+        document.getElementById('error-feedback').style.display = "none";
+
+    }
+
     onChange($event) {
         if ($event == 1) {
             this.progLangToSubmit = "cpp";
@@ -50,37 +57,87 @@ export class SubmitProblem implements OnInit {
         }
     }
 
+    fade(element) {
+        var op = 1;  // initial opacity
+        var timer = setInterval(function () {
+            if (op <= 0.1){
+                clearInterval(timer);
+                element.style.display = 'none';
+            }
+            element.style.opacity = (op).toString();
+            console.log(op);
+            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+            op -= op * 0.1; // control how it disappears
+        }, 50); // time showed
+    }
+
+    hideFeedbackCard(type:string) {
+
+        if (type == "success") {
+            var element = document.getElementById('success-feedback');
+        } else {
+            var element = document.getElementById('error-feedback');
+        }
+        window.setTimeout(() =>{
+            this.fade(element);
+            console.log("despues de fade");
+        }, 5000);
+        element.style.opacity = "1";
+        element.style.filter = 'alpha(opacity=1)';
+
+    }
+
+
     codeToSubmit($event) {
         console.log($event);
+        if(this.progLangToSubmit == "none"){
+            document.getElementById('error-feedback').style.display = "block";
+            this.hideFeedbackCard("error");
 
-        var codeFromEditor = $event;
-        let codeObject = {
-            "code": codeFromEditor,
-            "language": this.progLangToSubmit,
-            "problem_id": 5,
-            "request_type": "submission",
-            "user_id": 2
-        }
-
-        this._httpProblemsService.submitProblem(codeObject).subscribe(
-            data => {
-                console.log(data);
+        }else{
+            var codeFromEditor = $event;
+            let codeObject = {
+                "code": codeFromEditor,
+                "language": this.progLangToSubmit,
+                "problem_id": 5,
+                "request_type": "submission",
+                "user_id": 2
             }
-        );
+
+            this._httpProblemsService.submitProblem(codeObject).subscribe(
+                data => {
+                    if (data["status"] == "ok") {
+                        document.getElementById('success-feedback').style.display = "block";
+                        this.hideFeedbackCard("success");
+                    } else {
+                        document.getElementById('error-feedback').style.display = "block";
+                        this.hideFeedbackCard("error");
+
+                    }
+                }
+            );
+        }
 
 
 
     }
 
-    getContentDescription(){
+    getContentDescription() {
 
         this._httpSubmitProblemService.getDescriptions().subscribe(
             content => {
                 this.descriptionEnglish = content.english;
                 this.descriptionSpanish = content.spanish;
+                this.descriptionTitle = content.title;
             }
         );
     }
 
-
+    getContentAttempt() {
+        this._httpSubmitProblemService.getAttempts().subscribe(
+            content => {
+               this.attempts = content;
+            }
+        );
+    }
 }

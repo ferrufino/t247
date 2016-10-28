@@ -47,6 +47,10 @@ class ProblemDescription(Resource):
         descriptions = {}
         descriptions["english"] = problem.description_english
         descriptions["spanish"] = problem.description_spanish
+        descriptions["title"]   = problem.name
+        descriptions["input"]   = problem.example_input
+        descriptions["output"]  = problem.example_output
+        
         
         print(descriptions)
         
