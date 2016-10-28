@@ -32,6 +32,12 @@
     </div>
 
     <div class="row">
+      <div *ngIf="usersBool">
+        Roles: 
+        <button (click)="filterInput.value='Student'" type="button" class="btn btn-primary btn-round-sm btn-sm">Student</button>
+        <button (click)="filterInput.value='Professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">Professor</button>
+        <button (click)="filterInput.value='Admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">Admin</button>
+      </div>
         <div class="center">
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
@@ -42,7 +48,6 @@
         </div>
     </div>
 </div>
-
 
 
 <table class="table table-hover table-striped">
@@ -101,7 +106,6 @@
         <td>{{entry.value.typeOfUser}}</td>
         <td>edit</td>
         <td>delete</td>
-
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
