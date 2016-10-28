@@ -42,6 +42,7 @@ import {CacheService} from "ng2-cache/src/services/cache.service";
 
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
+import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
 
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {CodemirrorModule} from 'ng2-codemirror';
@@ -52,60 +53,59 @@ import {GroupResolve} from "./services/group-resolve.service";
 import {SiteNavbarComponent} from "./principal-components/site-navbar-component/site-navbar.component";
 
 @NgModule({
-
-
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    ReactiveFormsModule,
-    routing,
-    MaterializeModule,
-    MultiselectDropdownModule,
-    CodemirrorModule
-  ],
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent,
-    ListOfProblems,
-    TopicsDashboardComponent,
-    CreateProblem,
-    SubmitProblem,
-    EditorComponent,
-    ProfileComponent,
-    ViewUsersComponent,
-    SiteNavbarComponent,
-    StudentComponentsComponent,
-    GenericTableComponent,
-    Tab,
-    Tabs,
-    FilterPipe,
-    TestCasesCreatorComponent,
-    KeysPipe,
-    FilterUsersPipe,
-    FilterProblemsPipe,
-    FilterAssignmentsPipe,
-    FilterSubmissionsPipe,
-    FilterGroupsPipe,
-    FilterCoursesPipe,
-    FilterTopicsPipe,
-    TopicsEditComponent,
-    CoursesEditComponent,
-    GroupComponent,
-    AssignmentComponent
-  ],
-  bootstrap: [AppComponent],
-  providers: [
-    CoursesService,
-    GroupsService,
-    TopicsService,
-    UsersService,
-    CacheService,
-    SubmitProblemService,
-    GroupResolve,
-    AssignmentsService
-  ]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        ReactiveFormsModule,
+        routing,
+        MaterializeModule,
+        MultiselectDropdownModule,
+        CodemirrorModule
+    ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        HomeComponent,
+        ListOfProblems,
+        TopicsDashboardComponent,
+        CreateProblem,
+        SubmitProblem,
+        EditorComponent,
+        ProfileComponent,
+        ViewUsersComponent,
+        StudentComponentsComponent,
+        GenericTableComponent,
+        Tab,
+        Tabs,
+        FilterPipe,
+        TestCasesCreatorComponent,
+        KeysPipe,
+        FilterUsersPipe,
+        FilterProblemsPipe,
+        FilterAssignmentsPipe,
+        FilterSubmissionsPipe,
+        FilterGroupsPipe,
+        FilterCoursesPipe,
+        FilterTopicsPipe,
+        TopicsEditComponent,
+        CoursesEditComponent,
+        GroupComponent,
+        AssignmentComponent,
+        UserEditComponent,
+        SiteNavbarComponent
+    ],
+    bootstrap: [AppComponent],
+    providers: [
+      CoursesService,
+      GroupsService,
+      TopicsService,
+      UsersService,
+      CacheService,
+      SubmitProblemService,
+      GroupResolve,
+      AssignmentsService
+    ]
 })
 export class AppModule {
 }

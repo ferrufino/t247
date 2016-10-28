@@ -7,22 +7,26 @@ import {User} from '../user';
 import { environment } from '../../environments/environment';
 import { Observable } from "rxjs/Rx";
 import "rxjs/Rx";
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
 @Injectable()
 export class UsersService {
 
   private loggedIn = false; // Flag that indicating if the user is
 
+
   private LOGIN_URL =  environment.apiURL + '/users/login';
   private LOGOUT_URL = environment.apiURL + '/users/logout';
   private EDIT_URL = environment.apiURL + '/users/';
   private ROLES_URL = environment.apiURL + '/users/role';
+  private GET_URL = this.EDIT_URL;
+  private CREATE_URL = this.GET_URL+"/create";
+  private DELETE_URL = this.GET_URL;
 
   private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
 
-
-  constructor(private _router: Router, private http: Http) {
-    this.loggedIn = !!sessionStorage.getItem('auth_token'); //TODO: CHECK WHY THIS WORKS!!
+  constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
+    this.loggedIn = !!sessionStorage.getItem('auth_token');
   }
 
   logout() {
@@ -120,6 +124,7 @@ export class UsersService {
   }
 
   editUser(user) {
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
       .put(
         this.EDIT_URL + user.id,
@@ -131,5 +136,42 @@ export class UsersService {
       });
   }
 
-}
+  getUsers(){
+    return this.http.get(this.GET_URL).map((response: Response) => response.json());
+  }
 
+  getUser(id){
+    return this.http
+    .get(
+      this.GET_URL+id
+    )
+    .map((response: Response) => response.json());
+  }
+
+  createUser(user){
+    console.log(this.CREATE_URL);
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
+    return this.http
+    .post(
+      this.CREATE_URL,
+      {"email":user.email,"enrollment":user.enrollment,"first_name":user.first_name,"last_name":user.last_name,"password":user.password,"role":user.role},
+      this.headers
+    )
+    .map(res => {
+      return res;
+    });
+  }
+
+  deleteUser(user){
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
+    return this.http
+    .delete(
+      this.DELETE_URL+user.id,
+      this.headers
+    )
+    .map(res => {
+      return res;
+    });
+  }
+
+}

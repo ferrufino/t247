@@ -9,6 +9,7 @@ import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.co
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {GroupComponent} from "./professor-components/group/group.component";
 import { GroupResolve }   from "./services/group-resolve.service";
+import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
 
 
 const appRoutes: Routes = [
@@ -42,6 +43,10 @@ const appRoutes: Routes = [
       resolve : {
         any: GroupResolve
       }
+    },
+    {
+      path: 'editUser/:id',
+      component: UserEditComponent
     }
 ];
 
