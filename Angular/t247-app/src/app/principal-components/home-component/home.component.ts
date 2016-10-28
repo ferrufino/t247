@@ -67,6 +67,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
+  /**
+   * Set the selected  role to the one that was clicked on the Nav bar
+   * @param role
+   */
   changeSelectedRole(role) {
     this.selectedRole = role;
     this.adminTabsLoaded = false;
