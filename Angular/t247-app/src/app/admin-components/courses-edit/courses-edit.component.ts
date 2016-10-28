@@ -39,15 +39,22 @@ export class CoursesEditComponent implements OnInit{
     }
 
     onSubmit() {
+      var llenado = true;
+      if(this.course.name===""){
+        window.alert("Please type a course name");
+        llenado=false;
+      }
       console.log(this.course);
-      this.coursesService.editCourse(this.course).subscribe((result) => {
-        if (!result) {
-          console.log("Fallo");
-        }
-        else{
-          console.log(result);
-        }
-      });
+      if(llenado){
+        this.coursesService.editCourse(this.course).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
+          }
+        });
+      }
     }
 
     logout() {

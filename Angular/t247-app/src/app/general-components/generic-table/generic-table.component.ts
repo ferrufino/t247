@@ -19,8 +19,8 @@ export class GenericTableComponent implements OnInit {
 
   courses:Array<any>;
   user:any={enrollment:"",first_name:"",last_name:"",role:"", email:"", password:""};
-  topicName:string;
-  courseName:string;
+  topicName:string ="";
+  courseName:string="";
   group:any = {courseId:"",enrollmentText:"",period:""};
   constructor(private topicsService:TopicsService,
               private coursesService: CoursesService,
@@ -291,6 +291,11 @@ export class GenericTableComponent implements OnInit {
   }
 
   onSubmitTopic() {
+    var llenado = true;
+    if(this.topicName===""){
+      window.alert("Please type a topic name");
+      llenado=false;
+    }
     console.log(this.topicName);
     this.topicsService.createTopic(this.topicName).subscribe((result) => {
       if (!result) {
@@ -324,16 +329,23 @@ export class GenericTableComponent implements OnInit {
   }
 
   onSubmitCourse() {
+    var llenado = true;
+    if(this.courseName===""){
+      window.alert("Please type a course name");
+      llenado=false;
+    }
     console.log(this.courseName);
-    this.coursesService.createCourse(this.courseName).subscribe((result) => {
-      if (!result) {
-        console.log("Fallo");
-      }
-      else{
-        console.log(result);
-        this.renderTable();
-      }
-    });
+    if(llenado){
+      this.coursesService.createCourse(this.courseName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
   }
 
   onSubmitGroup(){
