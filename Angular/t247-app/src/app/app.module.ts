@@ -49,6 +49,7 @@ import {EditorComponent} from './general-components/code-editor/editor.component
 import {GroupComponent} from "./professor-components/group/group.component";
 import {AssignmentComponent} from "./professor-components/assignment/assignment.component";
 import {GroupResolve} from "./services/group-resolve.service";
+import {SiteNavbarComponent} from "./principal-components/site-navbar-component/site-navbar.component";
 
 @NgModule({
 
@@ -74,6 +75,7 @@ import {GroupResolve} from "./services/group-resolve.service";
     EditorComponent,
     ProfileComponent,
     ViewUsersComponent,
+    SiteNavbarComponent,
     StudentComponentsComponent,
     GenericTableComponent,
     Tab,
