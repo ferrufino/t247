@@ -34,5 +34,6 @@ last_submission = api.model('LastSubmission', {
     'language': fields.String(required=True, description='Submission lang'),
     'code': fields.String(required=True, description='Submission code'),
     'grade': fields.String(required=True, description='Submission grade'),
+    'state': fields.String(required=True, description='Submission state'),
     'feedback_list': fields.List(fields.Nested(submission_feedback))
   })

@@ -153,7 +153,7 @@ class EvaluatorProblemSubmissionResult(Resource):
         status = data.get('status')
         grade = 100
         feedback = []
-        if status == 'error':
+        if status != SubmissionState.evaluated.value:
             grade = 0
         else:
             test_cases = data['test_cases']
@@ -167,7 +167,7 @@ class EvaluatorProblemSubmissionResult(Resource):
                     missed_cases += 1
             grade -= missed_cases*(100/len(test_cases))
 
-        update_data = {'state': SubmissionState.evaluated, 'grade': grade,
+        update_data = {'state': SubmissionState(status), 'grade': grade,
                        'feedback_list': feedback}
                              
         Submission.query.filter(Submission.id == submission_id).update(update_data)

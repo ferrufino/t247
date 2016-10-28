@@ -5,6 +5,7 @@ import subprocess
 import json
 import os
 import api.evaluators.services
+from enums import SubmissionState
 
 import requests
 import json
@@ -23,8 +24,13 @@ def error_response(error, submission_id):
     response = { "status" : "error", "error" : error }
     print(response)
     if (submission_id != -1):
-        response["submission_id"] = submission_id
-        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=response) 
+        submission_response = {}
+        if (error == "Error while compiling code inside container"):
+            submission_response["status"] = SubmissionState.compilation_error.value
+        else:
+            submission_response["status"] = SubmissionState.internal_server_error.value
+        submission_response["submission_id"] = submission_id
+        requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=submission_response) 
     return response
 
 # Method that destroys the Docker container with the given id
@@ -297,6 +303,7 @@ def evaluate(request):
         return_obj["test_cases"] = results
        
     if (request_type == "submission"):
+        return_obj["status"] = SubmissionState.evaluated.value
         return_obj["submission_id"] = submission_id
         requests.post("http://localhost:5000/api/evaluator/problem_submission_result", json=return_obj) 
     
