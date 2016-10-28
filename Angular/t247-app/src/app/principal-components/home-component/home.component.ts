@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
   }
-  
+
   changeSelectedRole(role) {
     this.selectedRole = role;
     this.adminTabsLoaded = false;
