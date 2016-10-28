@@ -42,6 +42,7 @@ import {CacheService} from "ng2-cache/src/services/cache.service";
 
 import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit.component";
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
+import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
 
 import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {CodemirrorModule} from 'ng2-codemirror';
@@ -91,7 +92,8 @@ import {GroupResolve} from "./services/group-resolve.service";
         TopicsEditComponent,
         CoursesEditComponent,
         GroupComponent,
-        AssignmentComponent
+        AssignmentComponent,
+        UserEditComponent
     ],
     bootstrap: [AppComponent],
     providers: [

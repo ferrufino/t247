@@ -1,13 +1,18 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from "@angular/http";
+import {Http, Response, Headers} from "@angular/http";
 import {environment} from '../../environments/environment';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
 @Injectable()
 export class GroupsService {
 
   private baseURL: string = environment.apiURL + '/groups/';
 
-  constructor(private http: Http) {
+  private createUrl = this.baseURL+'create';
+
+  private headers = new Headers({'Content-Type': 'application/json'});
+
+  constructor(private http: Http, private _cacheService: CacheService) {
   }
 
   getGroups() {
@@ -20,5 +25,43 @@ export class GroupsService {
         this.baseURL + id
       )
       .map((response: Response) => response.json());
+  }
+
+  createGroup(group){
+    this._cacheService.set('groups', [], {expires: Date.now() - 1});
+    return this.http
+    .post(
+      this.createUrl,
+      {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
+      this.headers
+    )
+    .map(res => {
+      return res;
+    });
+  }
+
+  deleteGroup(group){
+    this._cacheService.set('groups', [], {expires: Date.now() - 1});
+    return this.http
+    .delete(
+      this.baseURL+group.id,
+      this.headers
+    )
+    .map(res => {
+      return res;
+    });
+  }
+
+  editGroup(group){
+    this._cacheService.set('groups', [], {expires: Date.now() - 1});
+    return this.http
+    .put(
+      this.baseURL+group.id,
+      {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
+      this.headers
+    )
+    .map(res => {
+      return res;
+    });
   }
 }

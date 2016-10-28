@@ -7,7 +7,8 @@ import { TopicsService } from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 import { AssignmentsService } from '../../services/assignments.service';
-import { environment } from '../../../environments/environment'
+import { environment } from '../../../environments/environment';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'generic-table',
@@ -16,15 +17,18 @@ import { environment } from '../../../environments/environment'
 })
 export class GenericTableComponent implements OnInit {
 
+  courses:Array<any>;
+  user:any={enrollment:"",first_name:"",last_name:"",role:"", email:"", password:""};
   topicName:string;
   courseName:string;
-
+  group:any = {courseId:"",enrollmentText:"",period:""};
   constructor(private topicsService:TopicsService,
               private coursesService: CoursesService,
               private groupsService: GroupsService,
               private assignmentsService: AssignmentsService,
               private router: Router,
-              private _cacheService: CacheService) {
+              private _cacheService: CacheService,
+              private usersService: UsersService) {
   }
 
   @Input('typetable') typeOfTableName: string;
@@ -152,6 +156,23 @@ export class GenericTableComponent implements OnInit {
         break;
 
       case "groups":
+        this.coursesService.getCourses().subscribe(
+          courses => {
+            if (!this._cacheService.exists('courses')) {
+              const myArray = [];
+              for (let key in courses) {
+                myArray.push(courses[key]);
+                console.log(courses[key]);
+              }
+              this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
+              this.courses = this._cacheService.get('courses');
+              //console.log("Se hizo get de courses");
+            }
+            else {
+              this.courses = this._cacheService.get('courses');
+            }
+          }
+        );
         this.groupsService.getGroups().subscribe(
           groups => {
             if (!this._cacheService.exists('groups')) {
@@ -220,26 +241,24 @@ export class GenericTableComponent implements OnInit {
       case "users":
         this.usersBool = true;
         this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
-        this.content = [
-          {
-            "enrollmentId": "A1xxxxxx",
-            "firstName": "Gustavo",
-            "lastName": "Ferrufino",
-            "typeOfUser": 'Admin'
-          },
-          {
-            "enrollmentId": "A2xxxxxx",
-            "firstName": "Eduardo",
-            "lastName": "Zardain",
-            "typeOfUser": 'Admin'
-          },
-          {
-            "enrollmentId": "A0xxxxxx",
-            "firstName": "Sergio",
-            "lastName": "Fuentes",
-            "typeOfUser": 'Admin'
-          }
-        ];
+        if (!this._cacheService.exists('users')) {
+          this.usersService.getUsers().subscribe(
+            users => {
+              const myArray = [];
+              for (let key in users) {
+                myArray.push(users[key]);
+                console.log(users[key]);
+              }
+              console.log(myArray);
+              this._cacheService.set('users', myArray, {maxAge: environment.lifeTimeCache});
+              this.content = this._cacheService.get('users');
+              //console.log("Se hizo get de topics");
+            }
+          );
+        }
+        else {
+          this.content = this._cacheService.get('users');
+        }
 
         break;
 
@@ -317,5 +336,111 @@ export class GenericTableComponent implements OnInit {
     });
   }
 
+  onSubmitGroup(){
+    var llenado = true;
+    if(this.group.courseId===""){
+      window.alert("Please choose a course");
+      llenado=false;
+    }
+    if(this.group.enrollmentText===""){
+      window.alert("Please register students");
+      llenado=false;
+    }
+    if(this.group.period===""){
+      window.alert("Please write a period");
+      llenado = false;
+    }
+    this.group.courseId = Number(this.group.courseId);
+    this.group.enrollments=this.group.enrollmentText.split(",");
+    this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
+    if(llenado){
+      console.log(this.group);
+      this.groupsService.createGroup(this.group).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+  }
+
+  onDeleteGroup(group){
+    var r = confirm("Are you sure?");
+    if (r == true) {
+      console.log(group);
+      this.groupsService.deleteGroup(group).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+  }
+
+  onSubmitUser(){
+    var llenado = true;
+    if(this.user.enrollment===""){
+      window.alert("Missing the enrollment");
+      llenado=false;
+    }
+    if(this.user.first_name===""){
+      window.alert("Missing first name");
+      llenado=false;
+    }
+    if(this.user.last_name===""){
+      window.alert("Missing last name");
+      llenado = false;
+    }
+    if(this.user.role===""){
+      window.alert("Please choose a role");
+      llenado = false;
+    }
+    if(this.user.email===""){
+      window.alert("Missing email");
+      llenado = false;
+    }
+    if(this.user.password===""){
+      window.alert("Missing password");
+      llenado = false;
+    }
+    if(llenado){
+      console.log(this.user);
+      this.usersService.createUser(this.user).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+  }
+
+  onDeleteUser(user){
+    var r = confirm("Are you sure?");
+    if (r == true) {
+      console.log(user);
+      this.usersService.deleteUser(user).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+        }
+      });
+    }
+  }
+
+  onSelectUser(user) {
+    this.router.navigate(['/editUser', user.id]);
+  }
 
 }
