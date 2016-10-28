@@ -53,57 +53,57 @@ import {GroupResolve} from "./services/group-resolve.service";
 @NgModule({
 
 
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        ReactiveFormsModule,
-        routing,
-        MaterializeModule,
-        MultiselectDropdownModule,
-        CodemirrorModule
-    ],
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        HomeComponent,
-        ListOfProblems,
-        TopicsDashboardComponent,
-        CreateProblem,
-        SubmitProblem,
-        EditorComponent,
-        ProfileComponent,
-        ViewUsersComponent,
-        StudentComponentsComponent,
-        GenericTableComponent,
-        Tab,
-        Tabs,
-        FilterPipe,
-        TestCasesCreatorComponent,
-        KeysPipe,
-        FilterUsersPipe,
-        FilterProblemsPipe,
-        FilterAssignmentsPipe,
-        FilterSubmissionsPipe,
-        FilterGroupsPipe,
-        FilterCoursesPipe,
-        FilterTopicsPipe,
-        TopicsEditComponent,
-        CoursesEditComponent,
-        GroupComponent,
-        AssignmentComponent
-    ],
-    bootstrap: [AppComponent],
-    providers: [
-      CoursesService,
-      GroupsService,
-      TopicsService,
-      UsersService,
-      CacheService,
-      SubmitProblemService,
-      GroupResolve,
-      AssignmentsService
-    ]
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    ReactiveFormsModule,
+    routing,
+    MaterializeModule,
+    MultiselectDropdownModule,
+    CodemirrorModule
+  ],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    ListOfProblems,
+    TopicsDashboardComponent,
+    CreateProblem,
+    SubmitProblem,
+    EditorComponent,
+    ProfileComponent,
+    ViewUsersComponent,
+    StudentComponentsComponent,
+    GenericTableComponent,
+    Tab,
+    Tabs,
+    FilterPipe,
+    TestCasesCreatorComponent,
+    KeysPipe,
+    FilterUsersPipe,
+    FilterProblemsPipe,
+    FilterAssignmentsPipe,
+    FilterSubmissionsPipe,
+    FilterGroupsPipe,
+    FilterCoursesPipe,
+    FilterTopicsPipe,
+    TopicsEditComponent,
+    CoursesEditComponent,
+    GroupComponent,
+    AssignmentComponent
+  ],
+  bootstrap: [AppComponent],
+  providers: [
+    CoursesService,
+    GroupsService,
+    TopicsService,
+    UsersService,
+    CacheService,
+    SubmitProblemService,
+    GroupResolve,
+    AssignmentsService
+  ]
 })
 export class AppModule {
 }

@@ -39,6 +39,9 @@ export class CreateProblem {
   // 0 = default value, 1 = full problem, 2 = function
   problemTypeFlag: number = 0;
 
+  // This variable specifies if the problem will be uploaded as copy paste text or if it will be uploaded as a file
+  // 0 = copy and paste, 1 = upload file
+  uploadType: number = 0;
 
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,

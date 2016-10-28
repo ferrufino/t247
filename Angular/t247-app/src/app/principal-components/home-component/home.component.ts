@@ -12,28 +12,31 @@ import {UsersService} from '../../services/users.service';
   styleUrls: ['../../../styles/general-styles.css']
 })
 
-export class HomeComponent implements OnInit, AfterViewInit{
+export class HomeComponent implements OnInit, AfterViewInit {
 
   roles: [string];
-  selectedRole : string;
-  adminTabsLoaded : boolean;
-  professorTabsLoaded : boolean;
-  studentTabsLoaded : boolean;
-  constructor(
-    private _service: UsersService){
+  selectedRole: string;
+  adminTabsLoaded: boolean;
+  professorTabsLoaded: boolean;
+  studentTabsLoaded: boolean;
+
+  constructor(private _service: UsersService) {
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
     this._service.checkCredentials();
-    if(sessionStorage.getItem("auth_token")){
+    if (sessionStorage.getItem("auth_token")) {
       this.roles = JSON.parse(sessionStorage.getItem("roles"));
       this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
       this.tabsLoadedFunction();
     }
+
+    //TODO: DELETE THIS LINE
+    this.selectedRole = "admin";
   }
 
   logout() {
@@ -60,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
   ngAfterViewInit() {
   }
 
-  changeSelectedRole(role){
+  changeSelectedRole(role) {
     var index = this.roles.indexOf(role);
     this.selectedRole = this.roles[index];
     this.adminTabsLoaded = false;
@@ -68,8 +71,9 @@ export class HomeComponent implements OnInit, AfterViewInit{
     this.studentTabsLoaded = false;
     this.tabsLoadedFunction();
   }
-  tabsLoadedFunction(){
-    switch(this.selectedRole){
+
+  tabsLoadedFunction() {
+    switch (this.selectedRole) {
       case 'admin':
         this.adminTabsLoaded = true;
         break;
