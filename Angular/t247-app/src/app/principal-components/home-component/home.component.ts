@@ -4,6 +4,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import {UsersService} from '../../services/users.service';
+import {User} from "../../user";
 
 @Component({
   selector: 'home',
@@ -14,7 +15,8 @@ import {UsersService} from '../../services/users.service';
 
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  roles: [string];
+  private userInformationObject: any;
+  userRoles: [string];
   selectedRole: string;
   adminTabsLoaded: boolean;
   professorTabsLoaded: boolean;
@@ -24,19 +26,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;
+    this.userInformationObject = null;
   }
 
   ngOnInit() {
 
-    this._service.checkCredentials();
+    this._service.checkCredentials(); // Check if the user is logged in
+
     if (sessionStorage.getItem("auth_token")) {
-      this.roles = JSON.parse(sessionStorage.getItem("roles"));
-      this.selectedRole = JSON.parse(sessionStorage.getItem("roles"))[0];
-      this.tabsLoadedFunction();
+      this.userRoles = JSON.parse(sessionStorage.getItem("roles"));
+      this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
+
+      // Check if a role view is stored in local storage
+      if(sessionStorage.getItem("currentRoleView")){
+
+        this.selectedRole = JSON.parse(sessionStorage.getItem("currentRoleView"));
+
+      } else {
+
+        this.selectedRole = this.userInformationObject["role"];
+        // Store current role-view
+        sessionStorage.setItem('currentRoleView', JSON.stringify(this.selectedRole));
+      }
+
+
+      this.tabsLoadedFunction(); // Load the correct tabs for the user
     }
 
-    //TODO: DELETE THIS LINE
-    this.selectedRole = "admin";
   }
 
   logout() {
@@ -63,9 +79,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
+  /**
+   * Set the selected  role to the one that was clicked on the Nav bar
+   * @param role
+   */
   changeSelectedRole(role) {
-    var index = this.roles.indexOf(role);
-    this.selectedRole = this.roles[index];
+    this.selectedRole = role;
+    sessionStorage.setItem('currentRoleView', JSON.stringify(role));
     this.adminTabsLoaded = false;
     this.professorTabsLoaded = false;
     this.studentTabsLoaded = false;

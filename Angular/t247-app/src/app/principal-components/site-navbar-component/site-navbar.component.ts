@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-site-navbar',
@@ -7,13 +7,27 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SiteNavbarComponent implements OnInit {
 
-  @Input() rolesArray: string[];
-  // TODO: CHECK DROPDOWN NPM
+  @Input() availableRoles: string[];
+  @Input() actualRole: string;
+  @Output() clickedRole = new EventEmitter();
+  @Output() callLogout = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+  }
 
+  /**
+   * This function emits an event that triggers the logout function, the function that is called is
+   * on the Home Component
+   */
+  sendLogoutEvent(){
+    this.callLogout.emit();
+  }
+
+  testFunc(role) {
+    this.clickedRole.emit(role);
   }
 
 }

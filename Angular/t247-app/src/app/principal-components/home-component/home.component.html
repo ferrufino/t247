@@ -1,33 +1,6 @@
-<ul id="dropdownUser" class="dropdown-content">
-  <li><a href="/profile">Profile</a></li>
-  <li class="divider"></li>
-  <li *ngFor="let role of roles">
-    <a (click)="changeSelectedRole(role)">{{role}}</a>
-  </li>
-</ul>
-<ul id="dropdownMobile" class="dropdown-content">
-  <li><a href="/profile">Profile</a></li>
-  <li class="divider"></li>
-  <li *ngFor="let role of roles">
-    <a (click)="changeSelectedRole(role)">{{role}}</a>
-  </li>
-</ul>
-<nav>
-  <div class="nav-wrapper">
-    <a href="" class="brand-logo" id='logo'>T247</a>
-    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-    <ul class="right hide-on-med-and-down">
-      <li><a class="dropdown-button" href='javascript:void(0);' dropdown data-hover="true" data-activates="dropdownUser">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a (click)="logout()" href="">Logout</a></li>
-    </ul>
-    <ul class="side-nav" id="mobile-demo">
-      <li><a class="dropdown-button-mobile" href='javascript:void(0);' dropdown data-hover="true" data-activates="dropdownMobile">{{selectedRole}}<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a (click)="logout()" href="">Logout</a></li>
-    </ul>
-  </div>
-</nav>
+<app-site-navbar [availableRoles]="userRoles" [actualRole]="selectedRole" (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
 
-<div class="container">
+<div class="container" style="margin-top: 80px">
   <div class="content" [ngSwitch]="selectedRole">
     <div class="row" *ngSwitchCase="'admin'">
       <tabs>

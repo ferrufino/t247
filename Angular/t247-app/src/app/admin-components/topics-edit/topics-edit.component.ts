@@ -40,16 +40,23 @@ export class TopicsEditComponent implements OnInit{
     }
 
     onSubmit() {
+      var llenado = true;
+      if(this.topic.name===""){
+        window.alert("Please type a topic name");
+        llenado=false;
+      }
       console.log(this.topic);
-      this.topicsService.editTopic(this.topic).subscribe((result) => {
-        if (!result) {
-          console.log("Fallo");
-        }
-        else{
-          console.log(result);
+      if(llenado){
+        this.topicsService.editTopic(this.topic).subscribe((result) => {
+          if (!result) {
+            console.log("Fallo");
+          }
+          else{
+            console.log(result);
 
-        }
-      });
+          }
+        });
+      }
     }
 
     logout() {
