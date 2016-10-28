@@ -93,7 +93,6 @@ export class UsersService {
           // Store the user info in local storage
           sessionStorage.setItem('userJson', JSON.stringify(new User(user.email, res.id, res.name, res.lastName, res.enrollment, res.role)));
           sessionStorage.setItem('auth_token', res.token);
-          sessionStorage.setItem('email_user', user.email);
 
           let availableRoles = ['student', 'professor', 'admin'];
 
