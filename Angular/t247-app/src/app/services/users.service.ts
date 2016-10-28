@@ -108,6 +108,7 @@ export class UsersService {
   }
 
   editUser(user) {
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
       .put(
         this.baseURL + user.id,

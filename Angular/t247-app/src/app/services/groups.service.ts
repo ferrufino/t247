@@ -29,6 +29,7 @@ export class GroupsService {
 
   createGroup(group){
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
     .post(
       this.createUrl,
@@ -54,6 +55,7 @@ export class GroupsService {
 
   editGroup(group){
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
     .put(
       this.baseURL+group.id,
