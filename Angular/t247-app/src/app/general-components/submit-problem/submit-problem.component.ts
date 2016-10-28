@@ -90,7 +90,7 @@ export class SubmitProblem implements OnInit {
     }
 
 
-    codeToSubmit($event) {
+    codeToSubmitReceived($event) {
         console.log($event);
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
