@@ -24,6 +24,8 @@ export class SubmitProblem implements OnInit {
     private descriptionSpanish;
     private descriptionTitle;
     private attempts;
+    private input;
+    private output;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -52,9 +54,12 @@ export class SubmitProblem implements OnInit {
     onChange($event) {
         if ($event == 1) {
             this.progLangToSubmit = "cpp";
-        } else {
+        } else if($event == 2) {
             this.progLangToSubmit = "java";
+        } else{
+            this.progLangToSubmit = "none";
         }
+        console.log(this.progLangToSubmit);
     }
 
     fade(element) {
@@ -88,7 +93,7 @@ export class SubmitProblem implements OnInit {
     }
 
 
-    codeToSubmit($event) {
+    codeToSubmitReceived($event) {
         console.log($event);
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
@@ -99,9 +104,9 @@ export class SubmitProblem implements OnInit {
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
-                "problem_id": 5,
+                "problem_id": 13,
                 "request_type": "submission",
-                "user_id": 2
+                "user_id": 5
             }
 
             this._httpProblemsService.submitProblem(codeObject).subscribe(
@@ -129,6 +134,8 @@ export class SubmitProblem implements OnInit {
                 this.descriptionEnglish = content.english;
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
+                this.input = content.input;
+                this.output = content.output;
             }
         );
     }

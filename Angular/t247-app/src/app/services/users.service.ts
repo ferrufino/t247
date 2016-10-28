@@ -12,17 +12,18 @@ import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 @Injectable()
 export class UsersService {
 
-  private loggedIn = false;
+  private loggedIn = false; // Flag that indicating if the user is
 
-  private loginUrl =  environment.apiURL + '/users/login';
-  private logoutUrl = environment.apiURL + '/users/logout';
-  private baseURL = environment.apiURL + '/users/';
-  private createURL = this.baseURL + "create";
 
-  private rolesUrl = 'http://107.170.255.106:5000/api/users/role';
+  private LOGIN_URL =  environment.apiURL + '/users/login';
+  private LOGOUT_URL = environment.apiURL + '/users/logout';
+  private EDIT_URL = environment.apiURL + '/users/';
+  private ROLES_URL = environment.apiURL + '/users/role';
+  private GET_URL = this.EDIT_URL;
+  private CREATE_URL = this.GET_URL+"/create";
+  private DELETE_URL = this.GET_URL;
 
   private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
-
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
     this.loggedIn = !!sessionStorage.getItem('auth_token');
@@ -55,7 +56,7 @@ export class UsersService {
     console.log('Logging out');
     let body = {"token": sessionStorage.getItem("auth_token")};
     let options = new RequestOptions({headers: this.headers});
-    return this.http.post(this.logoutUrl, body, this.headers)
+    return this.http.post(this.LOGOUT_URL, body, this.headers)
       .map(res => res.json())
       .map((res) => {
         console.log(res);
@@ -70,29 +71,40 @@ export class UsersService {
     this._router.navigate(['/login']);
   }
 
+  /**
+   * This functions sends a request to the API with email and password in order to get a valid user
+   * if the credentials match.
+   * This function also stores important information in local storage, please check the 'userJson' variable
+   * @param user, an object of the class User with email and password
+   * @returns {Observable<R>}
+   */
   login(user) {
     return this.http
       .post(
-        this.loginUrl,
+        this.LOGIN_URL,
         {"email": user.email, "password": user.password},
         this.headers
       )
       .map(res => res.json())
       .map((res) => {
         if (res.token) {
-          sessionStorage.setItem('userJson', JSON.stringify(new User(user.email, res.id, res.name, res.lastName, res.enrollment)));
+          console.log(res.token); //TODO: KILL THIS LINE
+
+          // Store the user info in local storage
+          sessionStorage.setItem('userJson', JSON.stringify(new User(user.email, res.id, res.name, res.lastName, res.enrollment, res.role)));
           sessionStorage.setItem('auth_token', res.token);
           sessionStorage.setItem('email_user', user.email);
-          res["role"] = 'admin';
-          let roles = ['student'];
-          if (res.role == 'admin') {
-            roles.push('admin', 'professor');
+
+          let availableRoles = ['student', 'professor', 'admin'];
+
+          // Get the corresponding roles for this user
+          while(res.role != availableRoles[availableRoles.length - 1]){
+            availableRoles.pop(); // Demote this rank - role
           }
-          else if (res.role == 'professor') {
-            roles.push('professor');
-          }
-          sessionStorage.setItem('roles', JSON.stringify(roles));
-          this.loggedIn = true;
+
+          sessionStorage.setItem('roles', JSON.stringify(availableRoles));
+
+          this.loggedIn = true; // Flag true since user is now logged in
           this._router.navigate(['']);
         }
         return res.token;
@@ -101,6 +113,10 @@ export class UsersService {
       });
   }
 
+  /**
+   * This function checks if the user is already logged in with the loggedIn flag, in case the user is
+   * not logged in the this function will redirect the user to the login screen.
+   */
   checkCredentials() {
     if (!this.loggedIn) {
       this._router.navigate(['login']);
@@ -111,7 +127,7 @@ export class UsersService {
     this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
       .put(
-        this.baseURL + user.id,
+        this.EDIT_URL + user.id,
         {"first_name": user.first_name, "last_name": user.last_name, "enrollment": user.enrollment},
         this.headers
       )
@@ -121,23 +137,23 @@ export class UsersService {
   }
 
   getUsers(){
-    return this.http.get(this.baseURL).map((response: Response) => response.json());
+    return this.http.get(this.GET_URL).map((response: Response) => response.json());
   }
 
   getUser(id){
     return this.http
     .get(
-      this.baseURL+id
+      this.GET_URL+id
     )
     .map((response: Response) => response.json());
   }
 
   createUser(user){
-    console.log(this.createURL);
+    console.log(this.CREATE_URL);
     this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
     .post(
-      this.createURL,
+      this.CREATE_URL,
       {"email":user.email,"enrollment":user.enrollment,"first_name":user.first_name,"last_name":user.last_name,"password":user.password,"role":user.role},
       this.headers
     )
@@ -150,7 +166,7 @@ export class UsersService {
     this._cacheService.set('users', [], {expires: Date.now() - 1});
     return this.http
     .delete(
-      this.baseURL+user.id,
+      this.DELETE_URL+user.id,
       this.headers
     )
     .map(res => {

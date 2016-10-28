@@ -50,10 +50,9 @@ import {EditorComponent} from './general-components/code-editor/editor.component
 import {GroupComponent} from "./professor-components/group/group.component";
 import {AssignmentComponent} from "./professor-components/assignment/assignment.component";
 import {GroupResolve} from "./services/group-resolve.service";
+import {SiteNavbarComponent} from "./principal-components/site-navbar-component/site-navbar.component";
 
 @NgModule({
-
-
     imports: [
         BrowserModule,
         FormsModule,
@@ -93,7 +92,8 @@ import {GroupResolve} from "./services/group-resolve.service";
         CoursesEditComponent,
         GroupComponent,
         AssignmentComponent,
-        UserEditComponent
+        UserEditComponent,
+        SiteNavbarComponent
     ],
     bootstrap: [AppComponent],
     providers: [
