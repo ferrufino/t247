@@ -54,9 +54,12 @@ export class SubmitProblem implements OnInit {
     onChange($event) {
         if ($event == 1) {
             this.progLangToSubmit = "cpp";
-        } else {
+        } else if($event == 2) {
             this.progLangToSubmit = "java";
+        } else{
+            this.progLangToSubmit = "none";
         }
+        console.log(this.progLangToSubmit);
     }
 
     fade(element) {
