@@ -297,15 +297,18 @@ export class GenericTableComponent implements OnInit {
       llenado=false;
     }
     console.log(this.topicName);
-    this.topicsService.createTopic(this.topicName).subscribe((result) => {
-      if (!result) {
-        console.log("Fallo");
-      }
-      else{
-        console.log(result);
-        this.renderTable();
-      }
-    });
+    if(llenado){
+      this.topicsService.createTopic(this.topicName).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(result);
+          this.renderTable();
+          this.topicName = '';
+        }
+      });
+    }
   }
 
   onSelectCourse(course) {
@@ -343,6 +346,7 @@ export class GenericTableComponent implements OnInit {
         else{
           console.log(result);
           this.renderTable();
+          this.courseName = '';
         }
       });
     }
@@ -374,6 +378,7 @@ export class GenericTableComponent implements OnInit {
         else{
           console.log(result);
           this.renderTable();
+          this.group = {courseId:"",enrollmentText:"",period:""};
         }
       });
     }
@@ -430,6 +435,7 @@ export class GenericTableComponent implements OnInit {
         else{
           console.log(result);
           this.renderTable();
+          this.user = {enrollment:"",first_name:"",last_name:"",role:"", email:"", password:""};
         }
       });
     }

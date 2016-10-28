@@ -9,7 +9,6 @@ import {SupportedLanguages, ProgLanguage} from "../../services/supported-languag
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
-declare var Materialize: any; // Local declaration for Materialize Class
 
 @Component({
   selector: 'create-problem',
@@ -39,6 +38,9 @@ export class CreateProblem {
   // 0 = default value, 1 = full problem, 2 = function
   problemTypeFlag: number = 0;
 
+  // This variable specifies if the problem will be uploaded as copy paste text or if it will be uploaded as a file
+  // 0 = copy and paste, 1 = upload file
+  uploadType: number = 0;
 
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
@@ -152,9 +154,9 @@ export class CreateProblem {
         sourceCode = this.createProblemForm.value.problemSourceFull.code
         break;
       case 2:
-        sourceCode = this.createProblemForm.value.problemSource.problemSourceFunction.firstHalf +
-          this.createProblemForm.value.problemSource.problemSourceFunction.functionCode +
-          this.createProblemForm.value.problemSource.problemSourceFunction.secondHalf;
+        sourceCode = this.createProblemForm.value.problemSourceFunction.firstHalf +
+          this.createProblemForm.value.problemSourceFunction.functionCode +
+          this.createProblemForm.value.problemSourceFunction.secondHalf;
         break;
     }
 
@@ -217,7 +219,9 @@ export class CreateProblem {
 
 
 
-    // Make the POST
+    console.log(request);
+
+    //Make the POST
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(
         data => {
@@ -226,8 +230,7 @@ export class CreateProblem {
 
           // Check for server errors
           if (data['status'] == "error") {
-              let errorLabel = "Error: " + data['error'];
-              Materialize.toast(errorLabel, 4000)
+              console.log("ERROR!");
           } else {
             // No errors, get the outputs of the test cases
             this.testCasesReady = this.setOutputForTestCases(data);
@@ -236,6 +239,26 @@ export class CreateProblem {
 
         }
       );
+  }
+
+
+  getAppendedTestCases(): string{
+    let result = "";
+
+    for(let testCase of this.problemTestCases ){
+
+      if(testCase.onDescription){
+        let temp = "Input\n";
+        temp += (testCase.content + "\n");
+        temp += "Output\n"
+        temp += (testCase.output + "\n");
+
+        result += (temp + "\n");
+      }
+
+    }
+
+    return result;
   }
 
   /**
@@ -247,12 +270,17 @@ export class CreateProblem {
 
     // Get the correct type of problem
     let pType = (this.problemTypeFlag == 1) ? "full" : "function";
+    let stringAppendedTests = this.getAppendedTestCases();
+    let engDesc = this.createProblemForm.value.problemDetails.engDescription + "\nTest cases:\n\n" + stringAppendedTests;
+    let spnDesc = this.createProblemForm.value.problemDetails.spnDescription + "\nCasos de prueba:\n\n" + stringAppendedTests;
+
+    let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
 
     let problemObject = {
-      "author_id": 444,
+      "author_id": userID,
       "name": this.createProblemForm.value.problemDetails.problemName,
-      "description_english": this.createProblemForm.value.problemDetails.engDescription,
-      "description_spanish": this.createProblemForm.value.problemDetails.spnDescription,
+      "description_english": engDesc,
+      "description_spanish": spnDesc,
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
@@ -272,6 +300,7 @@ export class CreateProblem {
 
         }
       );
+
 
   }
 
