@@ -45,7 +45,7 @@
 
 
 
-<table>
+<table class="table table-hover table-striped">
     <thead>
     <tr>
         <th *ngFor="let colName of columns">{{colName}}</th>
@@ -109,7 +109,7 @@
         <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
         <td> <a class="btn btn-default" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
-        <td><a class="btn btn-default red" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
@@ -117,7 +117,7 @@
       <td>{{entry.value.id}}</td>
       <td>{{entry.value.name}}</td>
       <td> <a class="btn btn-default" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
-      <td><a class="btn btn-default red" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
+      <td><a class="btn btn-default btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
 </table>
