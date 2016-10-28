@@ -50,7 +50,7 @@ class UserCreation(Resource):
         first_name = request.json.get('first_name')
         last_name = request.json.get('last_name')
         password = request.json.get('password')
-        enrollment = request.json.get('enrollment')
+        enrollment = request.json.get('enrollment').lower()
         role = request.json.get('role')
 
         if email is None or password is None:
@@ -101,7 +101,7 @@ class UserLogout(Resource):
         token = request.json.get('token')
         if verify_password(token, None):
             delete_user_token(g.user.id)
-            return 'User succesfully logged out', 200
+            return {'message': 'User succesfully logged out'}, 200
         abort(401)
 
 

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>Group: {{group.period}}</h3>
+    <hr />
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <a (click)="onNewAssignment(group.id)" class="btn btn-sm btn-success">New Assignment</a>
+          </div>
+          <!--
+          <div class="two columns">
+            <i class="icon-ok-sign icon-2x icono-accept"></i>
+            Accepted
+          </div>
+          <div class="two columns">
+            <i class="icon-ok-sign icon-2x icono-timeout"></i>
+            Attempted
+          </div>
+          <div class="two columns end">
+            <i class="icon-remove-sign icon-2x icono-fail"></i>
+            Not Attempted
+          </div>
+          -->
+        </div>
+
+        <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <assignment [assignment]="assignment"></assignment>
+        </div> <!--Accordions-->
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

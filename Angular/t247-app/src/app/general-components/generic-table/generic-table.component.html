@@ -76,14 +76,20 @@
         <td>{{entry.value.numberOfAttempts}}</td>
         <td>{{entry.value.solved}}</td>
     </tr>
+    <tbody *ngIf="assignmentSubmissionsBool">
+    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value" >
+      <td>{{entry.value.student.name}}</td>
+      <td>{{entry.value.numberOfAttempts}}</td>
+      <td>{{entry.value.language}}</td>
+      <!--<td>{{entry.value.solved}}</td>-->
+    </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
         <td>{{entry.value.id}}</td>
-
-        <td>Test Group</td>
+        <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td>edit</td>
+        <td> <a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
         <td>delete</td>
     </tr>
     </tbody>

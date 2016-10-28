@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TopicsService } from '../../services/topics.service';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-topics-dashboard',
@@ -10,7 +12,7 @@ export class TopicsDashboardComponent implements OnInit {
 
   content: any[] = [];
 
-  constructor(private topicsService: TopicsService) {
+  constructor(private topicsService: TopicsService, private _cacheService: CacheService) {
   }
 
   ngOnInit() {
@@ -18,14 +20,26 @@ export class TopicsDashboardComponent implements OnInit {
   }
 
   renderTopicCells() {
-    this.topicsService.getTopics().subscribe(
-      topics => {
-        const myArray = [];
-        for (let key in topics) {
-          myArray.push(topics[key]);
+
+    if (!this._cacheService.exists('topics')) {
+      this.topicsService.getTopics().subscribe(
+        topics => {
+          const myArray = [];
+          for (let key in topics) {
+            myArray.push(topics[key]);
+          }
+          this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
+          this.content = this._cacheService.get('topics');
+//          console.log("Se hizo get de topics");
+//          console.log("observing order 4");
         }
-        this.content = myArray;
-      }
-    );
+      );
+      console.log("observing order 3");
+    } else {
+//      console.log("Leo topics de cache");
+      this.content = this._cacheService.get('topics');
+//      console.log("observing order 2");
+    }
+//    console.log("observing order 1");
   }
 }

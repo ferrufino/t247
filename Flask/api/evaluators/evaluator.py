@@ -11,7 +11,7 @@ from api.evaluators.serializers import (evaluator_submission,
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import db, Problem, Case, Submission
+from models import db, Problem, Case, Submission, Student, User
 from enums import SubmissionState, SubmissionResult
 
 gevent.monkey.patch_all()
@@ -58,8 +58,8 @@ class EvaluatorProblemCreation(Resource):
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
-        # difficulty = data.get('difficulty')
-        difficulty = 0
+        author_id = data.get('author_id')
+        difficulty = data.get('difficulty')
         code = data.get('code')
         test_cases = data['test_cases']
 
@@ -67,7 +67,8 @@ class EvaluatorProblemCreation(Resource):
                               difficulty=difficulty, active=True,
                               language=language, code=code,
                               description_english=description_english,
-                              description_spanish=description_spanish)
+                              description_spanish=description_spanish,
+                              author_id=author_id)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
@@ -76,6 +77,7 @@ class EvaluatorProblemCreation(Resource):
         for i in range(len(test_cases)):
             new_case = Case(input=test_cases[i]['content'],
                             feedback=test_cases[i]['feedback'],
+                            output=test_cases[i]['output'],
                             time_limit=time_limit, memory_limit=memory_limit,
                             problem_id=problem_id)
             db.session.add(new_case)
@@ -106,10 +108,11 @@ class EvaluatorAttemptSubmission(Resource):
         code = data.get('code')
         language = data.get('language')
         problem_id = data.get('problem_id')
-        student_id = data.get('user_id')
+        user_id = data.get('user_id')
+        # user = User.query.filter(User.id == user_id).one()
         new_submission = Submission(code=code, language=language,
                                     problem_id=problem_id,
-                                    student_id=student_id,
+                                    student_id=user_id,
                                     state=SubmissionState.pending)
         db.session.add(new_submission)
         db.session.commit()
@@ -119,8 +122,10 @@ class EvaluatorAttemptSubmission(Resource):
         # Evaluate submitted code in a worker
         # (caller won't receive evaluation results after the call, because
         # results will be posted to the DB by a worker after evaluation)
+        problem = Problem.query.filter(Problem.id == problem_id).one()
         data['submission_id'] = submission_id
-        print(data)
+        data['time_limit'] = problem.cases[0].time_limit
+        data['memory_limit'] = problem.cases[0].memory_limit
         result = services.request_evaluation(data)
 
         return result
@@ -135,7 +140,10 @@ class EvaluatorProblemSubmissionResult(Resource):
         Updates problem submission
         """
         data = request.json
-
+        
+        print("EVALUADO")
+        print(data)
+        
         #############
         # Update DB #
         submission_id = data.get('submission_id')
@@ -153,7 +161,6 @@ class EvaluatorProblemSubmissionResult(Resource):
             missed_cases = 0
             for i in range(len(test_cases)):
                 if test_cases[i] != 'accepted':
-                    print(test_cases[i])
                     case = {'status': test_cases[i],
                             'feedback': problem_test_cases[i].feedback}
                     feedback.append(dict(case))
@@ -162,6 +169,7 @@ class EvaluatorProblemSubmissionResult(Resource):
 
         update_data = {'state': SubmissionState.evaluated, 'grade': grade,
                        'feedback_list': feedback}
+                             
         Submission.query.filter(Submission.id == submission_id).update(update_data)
         db.session.commit()
         #############

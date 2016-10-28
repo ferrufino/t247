@@ -4,15 +4,18 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import {User} from '../user';
+import { environment } from '../../environments/environment';
+import { Observable } from "rxjs/Rx";
+import "rxjs/Rx";
 
 @Injectable()
 export class UsersService {
 
   private loggedIn = false;
 
-  private loginUrl = 'http://107.170.255.106:5000/api/users/login';
-  private logoutUrl = 'http://107.170.255.106:5000/api/users/logout';
-  private editUrl = 'http://cors.io/?http://107.170.255.106:5000/api/users/';
+  private loginUrl =  environment.apiURL + '/users/login';
+  private logoutUrl = environment.apiURL + '/users/logout';
+  private editUrl = environment.apiURL + '/users/';
 
   private rolesUrl = 'http://107.170.255.106:5000/api/users/role';
 
@@ -26,9 +29,16 @@ export class UsersService {
   logout() {
     this.request_logout().subscribe(
       data => {
-        console.log(data)
+        debugger;
+        console.log('Successfully logged out');
+        console.log(data);
+      },
+      err => {
+        debugger;
+        console.error(err);
+      }
 
-      });
+    );
     sessionStorage.removeItem("email_user");
     sessionStorage.removeItem("auth_token");
     sessionStorage.removeItem("userJson");
@@ -39,11 +49,23 @@ export class UsersService {
     this._router.navigate(['/login']);
   }
 
-  request_logout() {
+  request_logout() : Observable<any> {
+    console.log('Logging out');
     let body = {"token": sessionStorage.getItem("auth_token")};
     let options = new RequestOptions({headers: this.headers});
     return this.http.post(this.logoutUrl, body, this.headers)
-      .map((data: Response) => data.json());
+      .map(res => res.json())
+      .map((res) => {
+        console.log(res);
+      })
+      .catch((error:any) => {
+        return Observable.throw(error.json().error || 'Server error');
+      });
+  }
+
+  complete_logout() {
+    this.loggedIn = false;
+    this._router.navigate(['/login']);
   }
 
   login(user) {
@@ -72,6 +94,8 @@ export class UsersService {
           this._router.navigate(['']);
         }
         return res.token;
+      }).catch((error:any) => {
+        return Observable.throw(error.json().error || 'Server error');
       });
   }
 
