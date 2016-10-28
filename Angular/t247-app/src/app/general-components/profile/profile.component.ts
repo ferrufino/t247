@@ -35,17 +35,36 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit() {
+    var llenado = true;
+    if(this.user.enrollment===""){
+      window.alert("Missing the enrollment");
+      llenado=false;
+    }
+    if(this.user.first_name===""||this.user.first_name===null){
+      window.alert("Missing first name");
+      llenado=false;
+    }
+    if(this.user.last_name===""||this.user.last_name===null){
+      window.alert("Missing last name");
+      llenado = false;
+    }
+    if(this.user.email===""){
+      window.alert("Missing email");
+      llenado = false;
+    }
     console.log(this.user);
-    this.editingProfile = false;
-    this._editUserService.editUser(this.user).subscribe((result) => {
-      if (!result) {
-        console.log("Fallo");
-      }
-      else{
-        console.log(this.user);
-        sessionStorage.setItem("userJson",JSON.stringify(this.user));
-      }
-    });
+    if(llenado){
+      this.editingProfile = false;
+      this._editUserService.editUser(this.user).subscribe((result) => {
+        if (!result) {
+          console.log("Fallo");
+        }
+        else{
+          console.log(this.user);
+          sessionStorage.setItem("userJson",JSON.stringify(this.user));
+        }
+      });
+    }
   }
 
   goBack() {

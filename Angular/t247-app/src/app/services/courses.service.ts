@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
 @Injectable()
 export class CoursesService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private _cacheService: CacheService) { }
 
   private getUrl = 'http://107.170.255.106:5000/api/courses/';
 
@@ -20,6 +21,7 @@ export class CoursesService {
   private headers = new Headers({'Content-Type': 'application/json'});
 
     editCourse(course){
+      this._cacheService.set('courses', [], {expires: Date.now() - 1});
       return this.http
       .put(
         this.editUrl+course.id,
@@ -32,6 +34,7 @@ export class CoursesService {
     }
 
     deleteCourse(course){
+      this._cacheService.set('courses', [], {expires: Date.now() - 1});
       return this.http
       .delete(
         this.deleteUrl+course.id,
@@ -43,6 +46,7 @@ export class CoursesService {
     }
 
     createCourse(courseName){
+      this._cacheService.set('courses', [], {expires: Date.now() - 1});
       return this.http
       .post(
         this.createUrl,
