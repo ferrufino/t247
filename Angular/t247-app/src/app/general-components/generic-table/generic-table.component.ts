@@ -280,6 +280,7 @@ export class GenericTableComponent implements OnInit {
       else{
         console.log(result);
         this.renderTable();
+        this.topicName = '';
       }
     });
   }
@@ -313,6 +314,7 @@ export class GenericTableComponent implements OnInit {
       else{
         console.log(result);
         this.renderTable();
+        this.courseName = '';
       }
     });
   }

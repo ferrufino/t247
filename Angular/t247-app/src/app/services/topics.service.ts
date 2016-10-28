@@ -35,6 +35,7 @@ export class TopicsService {
     }
 
     deleteTopic(topic){
+      this._cacheService.set('topics', [], {expires: Date.now() - 1});
       return this.http
       .delete(
         this.deleteUrl+topic.id,
@@ -46,6 +47,7 @@ export class TopicsService {
     }
 
     createTopic(topicName){
+      this._cacheService.set('topics', [], {expires: Date.now() - 1});
       return this.http
       .post(
         this.createUrl,
