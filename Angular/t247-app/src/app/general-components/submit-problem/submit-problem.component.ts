@@ -94,7 +94,7 @@ export class SubmitProblem implements OnInit {
 
 
     codeToSubmitReceived($event) {
-        console.log($event);
+
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
             this.hideFeedbackCard("error");
@@ -108,7 +108,7 @@ export class SubmitProblem implements OnInit {
                 "request_type": "submission",
                 "user_id": 5
             }
-
+            console.log(codeObject);
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
@@ -121,6 +121,7 @@ export class SubmitProblem implements OnInit {
                     }
                 }
             );
+
         }
 
 

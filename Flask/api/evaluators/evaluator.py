@@ -11,7 +11,7 @@ from api.evaluators.serializers import (evaluator_submission,
 from api.restplus import api
 import api.evaluators.services as services
 
-from models import db, Problem, Case, Submission, Student, User
+from models import db, Problem, Case, Submission, Student, User, ProblemTopic
 from enums import SubmissionState, SubmissionResult
 
 gevent.monkey.patch_all()
@@ -58,20 +58,26 @@ class EvaluatorProblemCreation(Resource):
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
-        author_id = data.get('author_id')
+        #author_id = data.get('author_id')
         difficulty = data.get('difficulty')
         code = data.get('code')
         test_cases = data['test_cases']
+        topic_id = data['topic_id']
 
         new_problem = Problem(name=problem_name,
                               difficulty=difficulty, active=True,
                               language=language, code=code,
                               description_english=description_english,
-                              description_spanish=description_spanish,
-                              author_id=author_id)
+                              description_spanish=description_spanish)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
+
+        # Create problem-topic entry
+        new_problemtopic = ProblemTopic(problem_id=problem_id,
+                                        topic_id=topic_id)
+        db.session.add(new_problemtopic)
+        db.session.commit()
         
         # Create test cases
         for i in range(len(test_cases)):
