@@ -56,11 +56,11 @@ class LastSubmissions(Resource):
         return response
 
 
-@ns.route('/attempts/<int:student_id>/<int:problem_id>/')
+@ns.route('/attempts/<int:student_id>/')
 @api.response(404, 'Submission not found.')
 class SubmissionAttempts(Resource):
     @api.marshal_list_with(submission_to_a_problem)
-    def get(self, student_id, problem_id):
+    def get(self, student_id):
         """
          Returns number of attempts and status of a submission
         """
