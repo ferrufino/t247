@@ -1,8 +1,8 @@
 import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
-import { Headers, Http, Response, RequestOptions } from '@angular/http';
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import {Headers, Http, Response, RequestOptions} from '@angular/http';
+import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
 // import { Observable }     from 'rxjs/Observable';
 @Injectable()
 export class TopicsService {
@@ -17,58 +17,58 @@ export class TopicsService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor( private http: Http, private _cacheService: CacheService){
-        }
+  constructor(private http: Http, private _cacheService: CacheService) {
+  }
 
-    editTopic(topic){
-      this._cacheService.set('topics', [], {expires: Date.now() - 1});
-      console.log("Caching borrado");
-      return this.http
+  editTopic(topic) {
+    this._cacheService.set('topics', [], {expires: Date.now() - 1});
+    console.log("Caching borrado");
+    return this.http
       .put(
-        this.editUrl+topic.id,
-        {"name":topic.name},
+        this.editUrl + topic.id,
+        {"name": topic.name},
         this.headers
       )
       .map(res => {
         return res;
       });
-    }
+  }
 
-    deleteTopic(topic){
-      this._cacheService.set('topics', [], {expires: Date.now() - 1});
-      return this.http
+  deleteTopic(topic) {
+    this._cacheService.set('topics', [], {expires: Date.now() - 1});
+    return this.http
       .delete(
-        this.deleteUrl+topic.id,
+        this.deleteUrl + topic.id,
         this.headers
       )
       .map(res => {
         return res;
       });
-    }
+  }
 
-    createTopic(topicName){
-      this._cacheService.set('topics', [], {expires: Date.now() - 1});
-      return this.http
+  createTopic(topicName) {
+    this._cacheService.set('topics', [], {expires: Date.now() - 1});
+    return this.http
       .post(
         this.createUrl,
-        {"name":topicName},
+        {"name": topicName},
         this.headers
       )
       .map(res => {
         return res;
       });
-    }
+  }
 
-    getTopic(id){
-      return this.http
+  getTopic(id) {
+    return this.http
       .get(
-        this.getUrl+id
+        this.getUrl + id
       )
       .map((response: Response) => response.json());
-    }
+  }
 
   getTopics() {
-    const serviceURL : string = 'http://107.170.255.106:5000/api/topics/';
+    const serviceURL: string = 'http://107.170.255.106:5000/api/topics/';
     return this.http.get(serviceURL).map((response: Response) => response.json());
   }
 }

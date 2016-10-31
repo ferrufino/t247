@@ -9,6 +9,7 @@ import {SupportedLanguages, ProgLanguage} from "../../services/supported-languag
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
+import {TopicsService} from "../../services/topics.service";
 
 @Component({
   selector: 'create-problem',
@@ -23,10 +24,12 @@ export class CreateProblem {
   displayLoader: boolean; // Flag used to display the loader when the form is submitted
 
   supportedLanguages: ProgLanguage[]; // filled from service
+  problemTopics: any; // A list of all the topics available for a problem
   problemProgLang: string; // The selected language of the problem
 
   difficulties: string[] // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
+  problemTopicID: number; // The id of the topic for this problem
 
   problemTestCases: TestCase[]; // The array of test cases realted to the problem
   testCasesReady: boolean; // Flag that when is true means that all test cases passed the check
@@ -45,6 +48,7 @@ export class CreateProblem {
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
+              private _topicsService: TopicsService,
               private _formBuilder: FormBuilder) {
   }
 
@@ -63,7 +67,17 @@ export class CreateProblem {
 
     // Get the values from services
     this.supportedLanguages = this._supportedLanguages.getLanguages();
-    this.difficulties = this._problemDifficulties.getDifficulties();
+    this.difficulties = this._problemDifficulties.getDifficulties(); // This is not a service
+
+    this._topicsService.getTopics().subscribe(
+      response => {
+        this.problemTopics = response;
+        console.log(this.problemTopics);
+      },
+      error => {
+        console.log("Error loading the topics!");
+      }
+    );
 
     // Set the default values
     this.problemProgLang = this.supportedLanguages[0].value;
@@ -196,13 +210,16 @@ export class CreateProblem {
    *
    * This functions connects to the HTTP PROBLEMS SERVICE
    */
-  evaluteTestCases(selectedLanguage: string, selectedDifficulty: string) {
+  evaluteTestCases(selectedLanguage: string, selectedDifficulty: string, selectedTopicId: number) {
 
+    console.log(selectedTopicId);
+    this.problemTopicID = selectedTopicId;
 
     // Assign the correct values
     this.displayLoader = true; // display the loader
     this.problemProgLang = selectedLanguage;
     this.problemDifficulty = selectedDifficulty;
+
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
     let sourceCode: string = this.getSourceCodeString(); // string with the source code of the project
 
@@ -218,7 +235,6 @@ export class CreateProblem {
     };
 
 
-
     console.log(request);
 
     //Make the POST
@@ -230,7 +246,7 @@ export class CreateProblem {
 
           // Check for server errors
           if (data['status'] == "error") {
-              console.log("ERROR!");
+            console.log("ERROR!");
           } else {
             // No errors, get the outputs of the test cases
             this.testCasesReady = this.setOutputForTestCases(data);
@@ -242,12 +258,12 @@ export class CreateProblem {
   }
 
 
-  getAppendedTestCases(): string{
+  getAppendedTestCases(): string {
     let result = "";
 
-    for(let testCase of this.problemTestCases ){
+    for (let testCase of this.problemTestCases) {
 
-      if(testCase.onDescription){
+      if (testCase.onDescription) {
         let temp = "Input\n";
         temp += (testCase.content + "\n");
         temp += "Output\n"
@@ -281,6 +297,7 @@ export class CreateProblem {
       "name": this.createProblemForm.value.problemDetails.problemName,
       "description_english": engDesc,
       "description_spanish": spnDesc,
+      "topic_id": this.problemTopicID,
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
