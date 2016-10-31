@@ -1,0 +1,22 @@
+/Library/Python/2.7/site-packages/flask_security/forms.py:89: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class Form(BaseForm):
+/Library/Python/2.7/site-packages/flask_security/forms.py:154: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class SendConfirmationForm(Form, UserEmailFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:173: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class ForgotPasswordForm(Form, UserEmailFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:187: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class PasswordlessLoginForm(Form, UserEmailFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:204: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class LoginForm(Form, NextFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:251: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  UniqueEmailFormMixin, NewPasswordFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:256: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  NextFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:263: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class ResetPasswordForm(Form, NewPasswordFormMixin, PasswordConfirmFormMixin):
+/Library/Python/2.7/site-packages/flask_security/forms.py:269: FlaskWTFDeprecationWarning: "flask_wtf.Form" has been renamed to "FlaskForm" and will be removed in 1.0.
+  class ChangePasswordForm(Form, PasswordFormMixin):
+Traceback (most recent call last):
+  File "app.py", line 11, in <module>
+    from api.users.users import ns as users_namespace
+ImportError: No module named users.users
