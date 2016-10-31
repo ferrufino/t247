@@ -252,7 +252,6 @@ export class GenericTableComponent implements OnInit {
               console.log(myArray);
               this._cacheService.set('users', myArray, {maxAge: environment.lifeTimeCache});
               this.content = this._cacheService.get('users');
-              //console.log("Se hizo get de topics");
             }
           );
         }
