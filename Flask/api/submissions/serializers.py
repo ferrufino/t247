@@ -37,3 +37,9 @@ last_submission = api.model('LastSubmission', {
     'state': fields.String(required=True, description='Submission state'),
     'feedback_list': fields.List(fields.Nested(submission_feedback))
   })
+
+submission_to_a_problem = api.model('SubmissionToAProblem', {
+    'id': fields.Integer(required=True, description='Submission id'),
+    'state': fields.String(required=True, description='Submission state'),
+    'numberOfAttempts': fields.Integer(required=True, description='Number of Attempts to a Problem')
+})
