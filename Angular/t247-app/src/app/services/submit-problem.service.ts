@@ -21,7 +21,7 @@ export class SubmitProblemService{
     }
 
     getSubmissions() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/last/5/13/1';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/attempts/5';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 }
