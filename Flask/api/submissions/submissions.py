@@ -64,6 +64,6 @@ class SubmissionAttempts(Resource):
         """
          Returns number of attempts and status of a submission
         """
-        result = db.engine.execute("SELECT p.name, COUNT(p.name) as no_of_attempts, MAX(s.grade) as max_grade FROM Problem p, Submission s, \"user\" u WHERE p.id = s.problem_id AND s.student_id = u.id AND u.id = %d GROUP BY p.name;" % (student_id))
+        result = db.engine.execute("SELECT p.name, COUNT(p.name) as no_of_attempts, MAX(s.grade) as max_grade FROM Problem p, Submission s, \"user\" u WHERE p.id = s.problem_id AND s.student_id = u.id AND u.id = %d GROUP BY p.name;" % (student_id)).fetchall()
 
         return result
