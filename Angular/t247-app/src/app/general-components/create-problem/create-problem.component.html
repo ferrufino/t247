@@ -6,7 +6,7 @@
     <!-- Start of Problem Basic data -->
 
     <form [formGroup]="createProblemForm"
-          (ngSubmit)="evaluteTestCases(selectedLanguage.value, selectedDifficulty.value, selectedProblemTopic.id)">
+          (ngSubmit)="evaluteTestCases(selectedLanguage.value, selectedDifficulty.value, selectedProblemTopic.value)">
 
       <div class="row" formGroupName="problemDetails">
 
@@ -109,7 +109,7 @@
                     class="input-group col-xs-10 col-md-10 col-lg-10 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
                     <label class="margin-right10" for="selectorDiff">Problem difficulty: </label>
                     <select id="selectorDiff" #selectedDifficulty>
-                      <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
+                      <option *ngFor="let diff of difficulties; let idx = index " [value]="idx">{{diff}}</option>
                     </select>
                   </div>
                 </div>
