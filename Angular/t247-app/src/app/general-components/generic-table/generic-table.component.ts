@@ -131,7 +131,6 @@ export class GenericTableComponent implements OnInit {
                      this.submissionsBool = true;
                      this.columns = ["Name", "Number of Attempts", "Solved"];
                      this.content = submissions;
-
                  }
                 );
 

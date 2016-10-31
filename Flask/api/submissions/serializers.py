@@ -39,7 +39,8 @@ last_submission = api.model('LastSubmission', {
   })
 
 submission_to_a_problem = api.model('SubmissionToAProblem', {
-    'id': fields.Integer(required=True, description='Submission id'),
-    'state': fields.String(required=True, description='Submission state'),
-    'numberOfAttempts': fields.Integer(required=True, description='Number of Attempts to a Problem')
+    'name': fields.String(required=True, description='Name of Problem'),
+    'no_of_attempts': fields.Integer(required=True, description='Number of Attempts to a Problem'),
+    'max_grade': fields.Integer(required=True, description='Maximum Grade')
+
 })
