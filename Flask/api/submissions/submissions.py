@@ -4,7 +4,7 @@ from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.submissions.serializers import submission as api_submission
 from api.submissions.serializers import last_submission
-from api.submission.serializers import submission_to_a_problem
+from api.submissions.serializers import submission_to_a_problem
 from api.restplus import api
 from models import db, Submission, Problem
 from sqlalchemy import and_
