@@ -43,14 +43,25 @@
                     </div>
                 </tab>
                 <tab *ngFor="let entry of attempts" tabTitle="Attempt">
-                    <p>Grade: {{entry.grade?entry.grade:"0"}}</p> <br/>
-                    <p>Prog Language: {{entry.language?entry.language:"error"}}</p> <br/>
-                    <div *ngIf="entry.grade != 100">
-                        <div *ngFor="let fb of entry.feedback_list">
-                            <p>Feedback: {{fb.feedback?fb.feedback:"error"}}</p>
-                            <p>Status: {{fb.status?fb.status:"error"}} </p>
-                        </div>
+                    <div *ngIf="entry.state == 'SubmissionState.evaluated'">
+                        <p>Grade: {{entry.grade?entry.grade:"0"}}</p> <br/>
+                        <p>Prog Language: {{entry.language?entry.language:"error"}}</p> <br/>
+                        <div *ngIf="entry.grade != 100">
+                            <div *ngFor="let fb of entry.feedback_list">
+                                <p>Feedback: {{fb.feedback?fb.feedback:"error"}}</p>
+                                <p>Status: {{fb.status?fb.status:"error"}} </p>
+                            </div>
 
+                        </div>
+                    </div>
+                    <div *ngIf="entry.state == 'SubmissionState.pending'">
+                        <h4 class="block__title">Problem is being evaluated ;)</h4>
+                    </div>
+                    <div *ngIf="entry.state == 'SubmissionState.compilation_error'">
+                        <h4 class="block__title">Compilation error, maybe you missed something in your code :O</h4>
+                    </div>
+                    <div *ngIf="entry.state == 'SubmissionState.internal_server_error'">
+                        <h4 class="block__title">Internal Server Error :/</h4>
                     </div>
 
                 </tab>
