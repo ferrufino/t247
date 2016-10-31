@@ -6,118 +6,124 @@
     </div>
 
     <div class="row" *ngIf="coursesBool">
-      <form class="col-sm-12" (ngSubmit)="onSubmitCourse()">
-        <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="nameCourse" type="text" class="validate"
-             [(ngModel)]="courseName" name="name">
-             <label for="nameCourse">Name</label>
-           </div>
-         </div>
-        <button type="submit" class="btn btn-default">Create</button>
-      </form>
+        <form class="col-sm-12" (ngSubmit)="onSubmitCourse()">
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="nameCourse" type="text" class="validate"
+                           [(ngModel)]="courseName" name="name">
+                    <label for="nameCourse">Name</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
     </div>
 
     <div class="row" *ngIf="topicsBool">
-      <form class="col-sm-12" (ngSubmit)="onSubmitTopic()">
-        <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="nameTopic" type="text" class="validate"
-             [(ngModel)]="topicName" name="name">
-             <label for="nameTopic">Name</label>
-           </div>
-         </div>
-        <button type="submit" class="btn btn-default">Create</button>
-      </form>
+        <form class="col-sm-12" (ngSubmit)="onSubmitTopic()">
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="nameTopic" type="text" class="validate"
+                           [(ngModel)]="topicName" name="name">
+                    <label for="nameTopic">Name</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
     </div>
 
     <div class="row" *ngIf="groupsBool">
-      <form class="col-sm-12" (ngSubmit)="onSubmitGroup()">
-        <div class="row">
-           <div class="input-field col-sm-6">
-             <select id="idCourse" class="form-control"
-             [(ngModel)]="group.courseId" name="idCourse">
-              <option *ngFor="let course of courses" value={{course.id}} >{{course.name}}</option>
-            </select>
-             <label for="idCourse">Course</label>
-           </div>
-           <div class="input-field col-sm-6">
+        <form class="col-sm-12" (ngSubmit)="onSubmitGroup()">
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <select id="idCourse" class="form-control"
+                            [(ngModel)]="group.courseId" name="idCourse">
+                        <option *ngFor="let course of courses" value={{course.id}}>{{course.name}}</option>
+                    </select>
+                    <label for="idCourse">Course</label>
+                </div>
+                <div class="input-field col-sm-6">
              <textarea id="enrollments" class="validate" rows="4"
-             [(ngModel)]="group.enrollmentText" name="name">
+                       [(ngModel)]="group.enrollmentText" name="name">
              </textarea>
-             <label for="enrollments">Enrollments</label>
-           </div>
-         </div>
-         <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="period" type="text" class="validate"
-             [(ngModel)]="group.period" name="periodName">
-             <label for="period">Period</label>
-           </div>
-         </div>
-        <button type="submit" class="btn btn-default">Create</button>
-      </form>
+                    <label for="enrollments">Enrollments</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="period" type="text" class="validate"
+                           [(ngModel)]="group.period" name="periodName">
+                    <label for="period">Period</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
     </div>
 
     <div class="row" *ngIf="usersBool">
-      <form class="col-sm-12" (ngSubmit)="onSubmitUser()">
-        <div class="row">
-          <div class="input-field col-sm-6">
-            <input id="enrollmentUser" type="text" class="validate"
-            [(ngModel)]="user.enrollment" name="enrollmentUser">
-            <label for="enrollmentUser">Enrollment</label>
-          </div>
-           <div class="input-field col-sm-6">
-             <input id="first_name" type="text" class="validate"
-             [(ngModel)]="user.first_name" name="first_name">
-             <label for="first_name">First Name</label>
-           </div>
-         </div>
-         <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="last_name" type="text" class="validate"
-             [(ngModel)]="user.last_name" name="last_name">
-             <label for="last_name">Last Name</label>
-           </div>
-           <div class="input-field col-sm-6">
-             <select id="userRole" class="form-control"
-             [(ngModel)]="user.role" name="userRole">
-              <option value="admin" >admin</option>
-              <option value="professor" >professor</option>
-              <option value="admin" >student</option>
-            </select>
-             <label for="userRole">Role</label>
-           </div>
-         </div>
-         <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="email" type="email" class="validate"
-             [(ngModel)]="user.email" name="email">
-             <label for="email">Email</label>
-           </div>
-            <div class="input-field col-sm-6">
-              <input id="password" type="password" class="validate"
-              [(ngModel)]="user.password" name="password">
-              <label for="password">Password</label>
+        <form class="col-sm-12" (ngSubmit)="onSubmitUser()">
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="enrollmentUser" type="text" class="validate"
+                           [(ngModel)]="user.enrollment" name="enrollmentUser">
+                    <label for="enrollmentUser">Enrollment</label>
+                </div>
+                <div class="input-field col-sm-6">
+                    <input id="first_name" type="text" class="validate"
+                           [(ngModel)]="user.first_name" name="first_name">
+                    <label for="first_name">First Name</label>
+                </div>
             </div>
-          </div>
-        <button type="submit" class="btn btn-default">Create</button>
-      </form>
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="last_name" type="text" class="validate"
+                           [(ngModel)]="user.last_name" name="last_name">
+                    <label for="last_name">Last Name</label>
+                </div>
+                <div class="input-field col-sm-6">
+                    <select id="userRole" class="form-control"
+                            [(ngModel)]="user.role" name="userRole">
+                        <option value="admin">admin</option>
+                        <option value="professor">professor</option>
+                        <option value="admin">student</option>
+                    </select>
+                    <label for="userRole">Role</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col-sm-6">
+                    <input id="email" type="email" class="validate"
+                           [(ngModel)]="user.email" name="email">
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field col-sm-6">
+                    <input id="password" type="password" class="validate"
+                           [(ngModel)]="user.password" name="password">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
     </div>
 
     <div class="row">
-      <div *ngIf="usersBool">
-        Roles:
-        <button (click)="filterInput.value='Student'" type="button" class="btn btn-primary btn-round-sm btn-sm">Student</button>
-        <button (click)="filterInput.value='Professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">Professor</button>
-        <button (click)="filterInput.value='Admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">Admin</button>
-      </div>
+        <div *ngIf="usersBool">
+            Roles:
+            <button (click)="filterInput.value='student'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+                Student
+            </button>
+            <button (click)="filterInput.value='professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+                Professor
+            </button>
+            <button (click)="filterInput.value='admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+                Admin
+            </button>
+        </div>
         <div class="center">
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
                     <input id="search" type="search" #filterInput (keyup)="0">
                 </div>
-               <span class="glyphicon glyphicon-search"></span>
+                <span class="glyphicon glyphicon-search"></span>
             </form>
         </div>
     </div>
@@ -131,7 +137,7 @@
     </tr>
     </thead>
     <tbody *ngIf="problemsBool">
-    <tr *ngFor="let entry of content | filterProblems: filterInput.value" >
+    <tr *ngFor="let entry of content | filterProblems: filterInput.value">
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.difficulty}}</td>
         <td>{{entry.value.active}}</td>
@@ -141,7 +147,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="assignmentsBool">
-    <tr *ngFor="let entry of content | filterAssignments: filterInput.value " >
+    <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.class}}</td>
         <td>{{entry.value.topic}}</td>
@@ -150,52 +156,54 @@
     </tr>
     </tbody>
     <tbody *ngIf="submissionsBool">
-    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value" >
+    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td>{{entry.value.numberOfAttempts}}</td>
-        <td>{{entry.value.solved}}</td>
+        <td>{{entry.value.no_of_attempts}}</td>
+        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
+        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
-    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value" >
-      <td>{{entry.value.student.name}}</td>
-      <td>{{entry.value.numberOfAttempts}}</td>
-      <td>{{entry.value.language}}</td>
-      <!--<td>{{entry.value.solved}}</td>-->
+    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value">
+        <td>{{entry.value.student.name}}</td>
+        <td>{{entry.value.numberOfAttempts}}</td>
+        <td>{{entry.value.language}}</td>
+        <!--<td>{{entry.value.solved}}</td>-->
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
-    <tr *ngFor="let entry of content | filterGroups: filterInput.value" >
+    <tr *ngFor="let entry of content | filterGroups: filterInput.value">
         <td>{{entry.value.id}}</td>
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td> <a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
+        <td><a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
         <td><a class="btn btn-default red" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
-    <tr *ngFor="let entry of content | filterUsers: filterInput.value" >
+    <tr *ngFor="let entry of content | filterUsers: filterInput.value">
         <td>{{entry.value.enrollment}}</td>
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td> <a class="btn btn-default" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
+        <td><a class="btn btn-default" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
         <td><a class="btn btn-default red" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
-    <tr *ngFor="let entry of content | filterCourses: filterInput.value" >
+    <tr *ngFor="let entry of content | filterCourses: filterInput.value">
         <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
-        <td> <a class="btn btn-default" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-default" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-default btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
-    <tr *ngFor="let entry of content | filterTopics: filterInput.value" >
-      <td>{{entry.value.id}}</td>
-      <td>{{entry.value.name}}</td>
-      <td> <a class="btn btn-default" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
-      <td><a class="btn btn-default btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
+    <tr *ngFor="let entry of content | filterTopics: filterInput.value">
+        <td>{{entry.value.id}}</td>
+        <td>{{entry.value.name}}</td>
+        <td><a class="btn btn-default" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
 </table>

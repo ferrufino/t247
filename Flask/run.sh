@@ -8,4 +8,10 @@ source env/bin/activate
 nohup python app.py &
 
 
+#Runs rq workers
+nohup rq worker j_0 &
+nohup rq worker j_1 &
+nohup rq worker j_2 &
+nohup rq worker j_3 &
+nohup rq worker j_4 &
 

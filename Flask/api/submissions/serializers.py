@@ -34,5 +34,13 @@ last_submission = api.model('LastSubmission', {
     'language': fields.String(required=True, description='Submission lang'),
     'code': fields.String(required=True, description='Submission code'),
     'grade': fields.String(required=True, description='Submission grade'),
+    'state': fields.String(required=True, description='Submission state'),
     'feedback_list': fields.List(fields.Nested(submission_feedback))
   })
+
+submission_to_a_problem = api.model('SubmissionToAProblem', {
+    'name': fields.String(required=True, description='Name of Problem'),
+    'no_of_attempts': fields.Integer(required=True, description='Number of Attempts to a Problem'),
+    'max_grade': fields.Integer(required=True, description='Maximum Grade')
+
+})

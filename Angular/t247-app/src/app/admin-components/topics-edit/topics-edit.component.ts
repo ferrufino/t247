@@ -27,7 +27,6 @@ export class TopicsEditComponent implements OnInit{
           this.topicsService.getTopic(id)
           .subscribe(
             topic => {
-              console.log(topic);
               this.topic = topic;
             }
           );
