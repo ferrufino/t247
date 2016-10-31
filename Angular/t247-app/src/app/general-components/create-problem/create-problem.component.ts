@@ -66,13 +66,21 @@ export class CreateProblem {
     this.displayLoader = false;
 
     // Get the values from services
-    this.supportedLanguages = this._supportedLanguages.getLanguages();
     this.difficulties = this._problemDifficulties.getDifficulties(); // This is not a service
+
+    this._supportedLanguages.getLanguages().subscribe(
+      respose => {
+        this.supportedLanguages = respose;
+        this.problemProgLang = this.supportedLanguages[0].value;
+      },
+      error => {
+        console.log("Error loading the supported languages!");
+      }
+    );
 
     this._topicsService.getTopics().subscribe(
       response => {
         this.problemTopics = response;
-        console.log(this.problemTopics);
       },
       error => {
         console.log("Error loading the topics!");
@@ -80,7 +88,6 @@ export class CreateProblem {
     );
 
     // Set the default values
-    this.problemProgLang = this.supportedLanguages[0].value;
     this.problemDifficulty = this.difficulties[0];
 
 
