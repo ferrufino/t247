@@ -30,6 +30,7 @@ assignment_creation = api.model('AssignmentCreation', {
 
 assignment_submission_summary = api.model('AssignmentSubmissionSummary', {
     'student_id': fields.Integer(required=True, description='Student ID'),
+    'student_name': fields.String(required=True, description='Student name'),
     'enrollment': fields.String(required=True, description='Student enrollment'),
     'no_of_attempts': fields.Integer(required=True, description='Number of attempts'),
     'date': fields.DateTime(required=True, description='Date of last submission'),

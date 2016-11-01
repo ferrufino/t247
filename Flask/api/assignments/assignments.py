@@ -120,7 +120,7 @@ class AssignmentSubmissionSummary(Resource):
         """
          Returns number of attempts and status of a submission
         """
-        result = db.engine.execute("SELECT u.id as student_id, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade FROM \"user\" u, submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.student_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date GROUP BY u.id, u.enrollment;" % (assignment_id)).fetchall()
+        result = db.engine.execute("SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade FROM \"user\" u, submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.student_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date GROUP BY u.id, u.enrollment;" % (assignment_id)).fetchall()
 
         return result
 
