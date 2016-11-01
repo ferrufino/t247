@@ -27,3 +27,11 @@ assignment_creation = api.model('AssignmentCreation', {
     'group_id': fields.Integer(required=True, description='Id of the group where the assignment is due'),
     'problem_id': fields.Integer(required=True, description='Id of the assigned problem')
 })
+
+assignment_submission_summary = api.model('AssignmentSubmissionSummary', {
+    'student_id': fields.Integer(required=True, description='Student ID'),
+    'enrollment': fields.String(required=True, description='Student enrollment'),
+    'no_of_attempts': fields.Integer(required=True, description='Number of attempts'),
+    'date': fields.DateTime(required=True, description='Date of last submission'),
+    'grade': fields.Integer(required=True, description='Maximum grade')
+})

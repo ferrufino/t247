@@ -3,7 +3,8 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.assignments.serializers import (assignment as api_assignment,
-                                         assignment_creation, simple_submission)
+                                         assignment_creation, simple_submission,
+                                         assignment_submission_summary)
 from api.restplus import api
 from models import db, Assignment, Submission
 from sqlalchemy import and_
@@ -110,4 +111,16 @@ class AssignmentCollectionByGroup(Resource):
             submissions.append(submission)
 
         return submissions
+
+@ns.route('/submissionslist/<int:assignment_id>/')
+@api.response(404, 'Submission not found.')
+class AssignmentSubmissionSummary(Resource):
+    @api.marshal_list_with(assignment_submission_summary)
+    def get(self, assignment_id):
+        """
+         Returns number of attempts and status of a submission
+        """
+        result = db.engine.execute("SELECT u.id as student_id, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade FROM \"user\" u, submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.student_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date GROUP BY u.id, u.enrollment;" % (assignment_id)).fetchall()
+
+        return result
 
