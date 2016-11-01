@@ -3,6 +3,7 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
+from api.problems.serializers import problem_table 
 from api.restplus import api
 from models import db, Problem, Topic, ProblemTopic
 
@@ -83,4 +84,17 @@ class ProblemsByTopic(Resource):
                 problems_list.append({'id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'accepted'})
         
         return problems_list
-        
+
+
+@ns.route('/list/')
+class ProblemsList(Resource):
+
+    @api.marshal_list_with(problem_table)
+    def get(self):
+        """
+        Returns list of problems for table display
+        """
+        # Retrieve raw list of problems by topic
+        result = db.engine.execute("SELECT p.id, p.name, p.difficulty, p.active FROM Problem p").fetchall()
+        return result
+

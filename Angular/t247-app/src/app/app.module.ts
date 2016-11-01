@@ -36,7 +36,7 @@ import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
 import {SubmitProblemService} from "./services/submit-problem.service";
 import {AssignmentsService} from "./services/assignments.service";
-
+import {ProblemsService} from "./services/problems.service";
 import {CacheService} from "ng2-cache/src/services/cache.service";
 
 
@@ -108,9 +108,11 @@ import { PolymerElement } from '@vaadin/angular2-polymer';
       CacheService,
       SubmitProblemService,
       GroupResolve,
-      AssignmentsService
+      AssignmentsService,
+      ProblemsService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class AppModule {
 }
