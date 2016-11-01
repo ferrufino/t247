@@ -76,7 +76,7 @@ export class GenericTableComponent implements OnInit {
             case "problems":
                 this.problemsService.getProblems().subscribe(
                     submissions => {
-                        debugger;
+                        console.log(submissions);
                         this.content = submissions;
                         this.problemsBool = true;
                         this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
