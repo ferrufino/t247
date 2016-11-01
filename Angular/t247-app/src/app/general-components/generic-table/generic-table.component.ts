@@ -140,7 +140,6 @@ export class GenericTableComponent implements OnInit {
             case "assignmentSubmissions":
                 this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
                     submissions => {
-                        debugger;
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
                         this.columns = ["Student", "Date of last submission", "Language", "Solved"];
