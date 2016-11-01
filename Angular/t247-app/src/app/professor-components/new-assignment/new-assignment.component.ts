@@ -46,7 +46,6 @@ export class NewAssignmentComponent implements OnInit {
     };
 
     console.log(request);
-    debugger;
 
     this._service.createAssignment(request)
       .subscribe(
