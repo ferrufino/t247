@@ -83,4 +83,17 @@ class ProblemsByTopic(Resource):
                 problems_list.append({'id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'accepted'})
         
         return problems_list
-        
+
+
+@ns.route('/list/')
+class ProblemsList(Resource):
+    def get(self, user_id, topic_id):
+        """
+        Returns list of problems for table display
+        """
+
+        # Retrieve raw list of problems by topic
+        result = db.engine.execute(
+            "SELECT p.author, p.name, p.difficulty, p.active FROM Problem p, ")
+        return result
+
