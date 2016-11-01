@@ -35,6 +35,7 @@ problem_creation = api.model('ProblemCreation', {
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
     'time_limit': fields.Integer(required=True, description='Number of seconds before TLE'),
     'memory_limit': fields.Integer(required=True, description='Number of KBs before MLE'),
+    'topic_id': fields.Integer(required=True, description='Problem\'s topic'),
     'type': fields.String(required=True, description='Problem type'),
     'test_cases': fields.List(fields.Nested(case_creation), required=True, description='Array of strings containing the test cases\' input')
 })
