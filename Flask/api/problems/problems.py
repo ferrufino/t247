@@ -91,9 +91,8 @@ class ProblemsList(Resource):
         """
         Returns list of problems for table display
         """
-
         # Retrieve raw list of problems by topic
         result = db.engine.execute(
-            "SELECT p.author, p.name, p.difficulty, p.active FROM Problem p, ")
+            "SELECT p.author, p.name, p.difficulty, p.active FROM Problem p")
         return result
 
