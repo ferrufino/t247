@@ -4,6 +4,10 @@ body{
   background-color: #FFFFFF;
 }
 
+.navbar-container {
+  margin-bottom: 80px;
+}
+
 .margin-left10{
   margin-left: 10px;
 }

@@ -1,65 +1,76 @@
-<div class="row">
-  <div class="col-md-12">
-    <h3>Group: {{group.period}}</h3>
-    <hr />
+<div class="navbar-container">
+  <app-site-navbar [availableRoles]="" [hideDropdown]="true"  [actualRole]="" (callLogout)="logout()"></app-site-navbar>
+</div>
 
-    <div class="row" *ngIf="this.group">
-      <form class="col-sm-12" (ngSubmit)="onSubmit()">
-        <div class="row">
-           <div class="input-field col-sm-6">
-             <select id="idCourse" class="form-control"
-             [(ngModel)]="group.course.id" name="idCourse">
-              <option *ngFor="let course of courses" value={{course.id}} [selected]="course.id===group.course.id" >{{course.name}}</option>
-            </select>
-             <label for="idCourse">Course</label>
-           </div>
-           <div class="input-field col-sm-6">
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Group: {{group.period}}</h3>
+      <hr/>
+
+      <div class="row" *ngIf="this.group">
+        <form class="col-sm-12" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="input-field col-sm-6">
+              <select id="idCourse" class="form-control"
+                      [(ngModel)]="group.course.id" name="idCourse">
+                <option *ngFor="let course of courses" value={{course.id}} [selected]="course.id===group.course.id">
+                  {{course.name}}
+                </option>
+              </select>
+              <label for="idCourse">Course</label>
+            </div>
+            <div class="input-field col-sm-6">
              <textarea id="enrollments" class="validate" rows="4"
-             [(ngModel)]="group.enrollmentText" name="name">
+                       [(ngModel)]="group.enrollmentText" name="name">
              </textarea>
-             <label for="enrollments">Enrollments</label>
-           </div>
-         </div>
-         <div class="row">
-           <div class="input-field col-sm-6">
-             <input id="period" type="text" class="validate"
-             [(ngModel)]="group.period" name="periodName">
-             <label for="period">Period</label>
-           </div>
-         </div>
-         <a class="waves-effect waves-light btn" (click)="goBack()">Go Back</a>
-        <button type="submit" class="btn btn-default">Edit</button>
-      </form>
-    </div>
+              <label for="enrollments">Enrollments</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col-sm-6">
+              <input id="period" type="text" class="validate"
+                     [(ngModel)]="group.period" name="periodName">
+              <label for="period">Period</label>
+            </div>
+          </div>
+          <a class="waves-effect waves-light btn" (click)="goBack()">Go Back</a>
+          <button type="submit" class="btn btn-default">Edit</button>
+        </form>
+      </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-6">
-            <a (click)="onNewAssignment(group.id)" class="btn btn-sm btn-success">New Assignment</a>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <a (click)="onNewAssignment(group.id)" class="btn btn-sm btn-success">New Assignment</a>
+            </div>
+            <!--
+            <div class="two columns">
+              <i class="icon-ok-sign icon-2x icono-accept"></i>
+              Accepted
+            </div>
+            <div class="two columns">
+              <i class="icon-ok-sign icon-2x icono-timeout"></i>
+              Attempted
+            </div>
+            <div class="two columns end">
+              <i class="icon-remove-sign icon-2x icono-fail"></i>
+              Not Attempted
+            </div>
+            -->
           </div>
-          <!--
-          <div class="two columns">
-            <i class="icon-ok-sign icon-2x icono-accept"></i>
-            Accepted
-          </div>
-          <div class="two columns">
-            <i class="icon-ok-sign icon-2x icono-timeout"></i>
-            Attempted
-          </div>
-          <div class="two columns end">
-            <i class="icon-remove-sign icon-2x icono-fail"></i>
-            Not Attempted
-          </div>
-          -->
+
+          <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist"
+               aria-multiselectable="true">
+            <assignment [assignment]="assignment"></assignment>
+          </div> <!--Accordions-->
+
+
         </div>
-
-        <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <assignment [assignment]="assignment"></assignment>
-        </div> <!--Accordions-->
-
-
       </div>
     </div>
   </div>
+
 </div>

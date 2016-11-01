@@ -1,4 +1,4 @@
-<app-site-navbar [availableRoles]="userRoles" [actualRole]="selectedRole" (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
+<app-site-navbar [availableRoles]="" [hideDropdown]="true"  [actualRole]="" (callLogout)="logout()"></app-site-navbar>
 
 <div class="container">
   <div class="row" *ngIf="!editingProfile">
