@@ -42,3 +42,12 @@ student_submission = api.model('StudentSubmission', {
     'grade': fields.Integer(required=True, description='Submission grade'),
     'code': fields.String(required=True, description='Submission code')
 })
+
+student_assignment = api.model('StudentAssignment', {
+    'title': fields.String(required=True, description='Assignment title'),
+    'problem_name': fields.String(required=True, description='Problem name'),
+    'difficulty': fields.Integer(required=True, description='Problem difficulty'),
+    'course_name': fields.String(required=True, description='Course name'),
+    'due_date': fields.DateTime(required=True, description='Due date'),
+    'grade': fields.Integer(required=True, description='Grade')
+})

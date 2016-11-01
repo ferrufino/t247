@@ -5,7 +5,7 @@ from flask_restplus import Resource
 from api.assignments.serializers import (assignment as api_assignment,
                                          assignment_creation, simple_submission,
                                          assignment_submission_summary,
-                                         student_submission)
+                                         student_submission, student_assignment)
 from api.restplus import api
 from models import db, Assignment, Submission
 from sqlalchemy import and_
@@ -134,5 +134,17 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns code of attempts made by user to assignment
         """
         result = db.engine.execute("SELECT s.created as date, s.grade, s.code FROM submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.student_id AND s.student_id = %d AND e.group_id = a.group_id AND a.start_date <= s.created AND s.created <= a.due_date ORDER BY s.created;" % (assignment_id, student_id)).fetchall()
+
+        return result
+
+@ns.route('/bystudent/<int:student_id>')
+@api.response(404, 'Submission not found.')
+class AssignmentSubmissionCodeByStudent(Resource):
+    @api.marshal_list_with(student_assignment)
+    def get(self, student_id):
+        """
+         Returns current assignments of student
+        """
+        result = db.engine.execute("SELECT a.title, p.name as problem_name, p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade FROM problem p, course c, submission s, assignment a, \"group\" g, enrollment e WHERE p.id = a.problem_id AND p.id = s.problem_id AND a.group_id = g.id AND g.course_id = c.id AND a.start_date <= NOW() AND NOW() <= a.due_date AND e.group_id = a.group_id AND e.student_id = s.student_id AND s.student_id = %d GROUP BY a.title, p.name, p.difficulty, c.name, a.due_date ORDER BY a.due_date;" % (student_id)).fetchall()
 
         return result
