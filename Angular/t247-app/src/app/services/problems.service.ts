@@ -12,7 +12,7 @@ export class ProblemsService {
     }
     
     getProblems(){
-        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/list/';
         return this.http.get(serviceURL).map((response:Response) => response.json());
 
     }
