@@ -36,7 +36,7 @@ import {GroupsService} from "./services/groups.service";
 import {TopicsService} from "./services/topics.service";
 import {SubmitProblemService} from "./services/submit-problem.service";
 import {AssignmentsService} from "./services/assignments.service";
-
+import {ProblemsService} from "./services/problems.service";
 import {CacheService} from "ng2-cache/src/services/cache.service";
 
 
@@ -97,14 +97,15 @@ import {SiteNavbarComponent} from "./principal-components/site-navbar-component/
     ],
     bootstrap: [AppComponent],
     providers: [
-      CoursesService,
-      GroupsService,
-      TopicsService,
-      UsersService,
-      CacheService,
-      SubmitProblemService,
-      GroupResolve,
-      AssignmentsService
+        CoursesService,
+        GroupsService,
+        TopicsService,
+        UsersService,
+        CacheService,
+        SubmitProblemService,
+        GroupResolve,
+        AssignmentsService,
+        ProblemsService
     ]
 })
 export class AppModule {

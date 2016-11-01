@@ -10,7 +10,7 @@ import {AssignmentsService} from '../../services/assignments.service';
 import {environment} from '../../../environments/environment';
 import {UsersService} from '../../services/users.service';
 import {SubmitProblemService} from '../../services/submit-problem.service';
-
+import {ProblemsService} from '../../services/problems.service';
 @Component({
     selector: 'generic-table',
     templateUrl: './generic-table.component.html',
@@ -31,7 +31,8 @@ export class GenericTableComponent implements OnInit {
                 private router:Router,
                 private _cacheService:CacheService,
                 private usersService:UsersService,
-                private submissionOfProblems:SubmitProblemService) {
+                private submissionOfProblems:SubmitProblemService,
+                private problemsService: ProblemsService) {
     }
 
     @Input('typetable') typeOfTableName:string;
@@ -73,28 +74,14 @@ export class GenericTableComponent implements OnInit {
         switch (this.typeOfTableName) {
 
             case "problems":
-                this.problemsBool = true;
-                this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
-                this.content = [
-                    {
-                        "title": "dummyProblem 1",
-                        "difficulty": "easy",
-                        "active": true,
-                        "changeStatus": "deactivate?"
-                    },
-                    {
-                        "title": "dummyProblem 2",
-                        "difficulty": "hard",
-                        "active": true,
-                        "changeStatus": "deactivate?"
-                    },
-                    {
-                        "title": "dummyProblem 3",
-                        "difficulty": "hard",
-                        "active": false,
-                        "changeStatus": "deactivate?"
+                this.problemsService.getProblems().subscribe(
+                    submissions => {
+                        debugger;
+                        this.content = submissions;
+                        this.problemsBool = true;
+                        this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
                     }
-                ];
+                );
                 break;
 
             case "assignments":
