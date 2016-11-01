@@ -59,6 +59,7 @@ class User(Base, UserMixin):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     role = db.Column(db.String(20))
+    problems = db.relationship("Problem", back_populates="author")
 
     __mapper_args__ = {
         'polymorphic_on': role,
@@ -197,6 +198,8 @@ class Problem(Base):
     description_spanish = db.Column(db.Text)
     example_input = db.Column(db.Text)
     example_output = db.Column(db.Text)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship("User", back_populates="problems")
 
     cases = db.relationship("Case", back_populates="problem",
                             order_by="Case.id")

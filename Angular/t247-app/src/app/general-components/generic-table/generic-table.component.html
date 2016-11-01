@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>List of {{typeOfTableName}}</h1>
+            <h1>Table of {{typeOfTableName}}</h1>
         </div>
     </div>
 
@@ -138,7 +138,7 @@
     </thead>
     <tbody *ngIf="problemsBool">
     <tr *ngFor="let entry of content | filterProblems: filterInput.value">
-        <td>{{entry.value.title}}</td>
+        <td>{{entry.value.name}}</td>
         <td>{{entry.value.difficulty}}</td>
         <td>{{entry.value.active}}</td>
         <td>{{entry.value.changeStatus}}</td>
