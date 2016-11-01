@@ -1,4 +1,4 @@
-<app-site-navbar [availableRoles]="userRoles" [actualRole]="selectedRole" (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
+<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false"  [actualRole]="selectedRole" (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
 
 <div class="container" style="margin-top: 80px">
   <div class="content" [ngSwitch]="selectedRole">
