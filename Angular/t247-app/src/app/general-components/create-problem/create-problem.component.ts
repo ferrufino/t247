@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -18,7 +18,7 @@ import {TopicsService} from "../../services/topics.service";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem {
+export class CreateProblem implements OnInit{
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
   displayLoader: boolean; // Flag used to display the loader when the form is submitted

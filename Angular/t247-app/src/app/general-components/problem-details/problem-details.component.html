@@ -74,7 +74,7 @@
 
           <!-- Editor component here -->
 
-          <code-editor (codeToSubmit)="printCode($event)"></code-editor>
+          <code-editor [setSourceCode]="problemSource" (codeToSubmit)="printCode($event)"></code-editor>
 
           <!-- Editor component here -->
         </div>

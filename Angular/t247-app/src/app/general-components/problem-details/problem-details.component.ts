@@ -41,6 +41,7 @@ export class ProblemDetailsComponent implements OnInit {
         this.descriptionSpn = response["description_spanish"];
         this.timeLimit = 1; // TODO: Remove this value
         this.memoryLimit = 100; // TODO: Remove this value
+        this.problemSource = response["code"];
         this.problemLanguage = response["language"];
         this.problemDifficultyId = response["difficulty"];
         this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
