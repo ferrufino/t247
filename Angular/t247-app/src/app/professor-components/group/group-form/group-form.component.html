@@ -1,0 +1,38 @@
+<div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmit()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 *ngIf="action=='create'" class="modal-title">{{formTitle}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="idCourse">Course</label>
+              <select id="idCourse" class="form-control"
+                      [(ngModel)]="group.course.id" name="idCourse">
+                <option *ngFor="let course of courses" value={{course.id}} [selected]="course.id===group.course.id">
+                  {{course.name}}
+                </option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label for="period">Period</label>
+            <input class="form-control validate" id="period" type="text"
+                   [(ngModel)]="group.period" name="periodName">
+          </div>
+          <div class="form-group">
+            <label for="enrollments">Enrollments</label>
+            <textarea class="form-control validate" id="enrollments" rows="4"
+                      [(ngModel)]="group.enrollmentText" name="name">
+            </textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">{{submitText}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

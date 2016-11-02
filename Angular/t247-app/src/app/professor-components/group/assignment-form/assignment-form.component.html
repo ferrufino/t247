@@ -1,0 +1,47 @@
+<div class="modal fade" id="assignmentFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Assignment</h4>
+        </div>
+        <div class="modal-body">
+          <div [formGroup]="assignmentForm">
+            <div class="form-group" formGroupName="assignment">
+              <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <vaadin-date-picker id="start_date" name="start_date" label="Pick a date" formControlName="startDate"></vaadin-date-picker>
+              </div>
+              <div class="form-group">
+                <label for="due_date">Due Date</label>
+                <vaadin-date-picker id="due_date" name="due_date" label="Pick a date" formControlName="dueDate"></vaadin-date-picker>
+              </div>
+              <div class="form-group">
+                <label for="assignment_title">Title</label>
+                <input id="assignment_title" formControlName="title" type="text" class="form-control"
+                     aria-describedby="label_title">
+              </div>
+              <div class="form-group">
+                <input id="assignment_group_id" formControlName="groupId" type="hidden" class="form-control"
+                     aria-describedby="label_group">
+              </div>
+              <div class="form-group">
+                <label for="assignment_group_id">Problem Id</label>
+                <input id="assignment_problem_id" formControlName="problemId" type="text" class="form-control"
+                     aria-describedby="label_problem">
+                <!--<select class="form-control" id="assignment_problem_id" formControlName="groupId" aria-describedby="label_problem" required>
+                  <option *ngFor="let p of problems" [value]="p.id">{{p.name}}</option>
+                </select>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Create Assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

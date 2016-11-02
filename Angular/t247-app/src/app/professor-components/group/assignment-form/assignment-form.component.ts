@@ -4,23 +4,23 @@ import {
   Validators,
   FormBuilder,
 } from "@angular/forms";
-import { AssignmentsService } from '../../services/assignments.service';
-import { UsersService } from '../../services/users.service';
-import { Location } from '@angular/common';
+import { AssignmentsService } from '../../../services/assignments.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
-  selector: 'new-assignment',
-  templateUrl: 'new-assignment.component.html',
-  styleUrls: ['new-assignment.component.css']
+  selector: 'assignment-form',
+  templateUrl: 'assignment-form.component.html',
+  styleUrls: ['assignment-form.component.css']
 })
-export class NewAssignmentComponent implements OnInit {
+export class AssignmentFormComponent implements OnInit {
 
   private assignmentForm : FormGroup;
 
   @Input() groupId;
 
   constructor(private _service: AssignmentsService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private _authService: UsersService) {
 
   }
 
@@ -34,6 +34,7 @@ export class NewAssignmentComponent implements OnInit {
         'problemId': ['', Validators.required]
       })
     });
+    this._authService.checkCredentials();
   }
 
   onSubmit() {
@@ -44,8 +45,6 @@ export class NewAssignmentComponent implements OnInit {
       "group_id": this.assignmentForm.value.assignment.groupId,
       "problem_id": this.assignmentForm.value.assignment.problemId
     };
-
-    console.log(request);
 
     this._service.createAssignment(request)
       .subscribe(
