@@ -68,7 +68,7 @@ export class CreateProblem {
     this.problemSourceCode = "";
 
     // Get the values from services
-    this.difficulties = this._problemDifficulties.getDifficulties(); // This is not a service
+    this.difficulties = this._problemDifficulties.getDifficulties(); // Call the fake service
 
     this._supportedLanguages.getLanguages().subscribe(
       respose => {

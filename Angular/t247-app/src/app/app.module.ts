@@ -51,7 +51,9 @@ import {GroupComponent} from "./professor-components/group/group.component";
 import {AssignmentComponent} from "./professor-components/assignment/assignment.component";
 import {GroupResolve} from "./services/group-resolve.service";
 import {SiteNavbarComponent} from "./principal-components/site-navbar-component/site-navbar.component";
+
 import {AssignmentFormComponent} from "./professor-components/group/assignment-form/assignment-form.component";
+import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
 
@@ -95,6 +97,7 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         CoursesEditComponent,
         GroupComponent,
         AssignmentComponent,
+      ProblemDetailsComponent,
         UserEditComponent,
         SiteNavbarComponent,
         PolymerElement('vaadin-date-picker'),
