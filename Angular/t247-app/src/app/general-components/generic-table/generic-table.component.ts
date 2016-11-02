@@ -76,7 +76,6 @@ export class GenericTableComponent implements OnInit {
             case "problems":
                 this.problemsService.getProblems().subscribe(
                     submissions => {
-                        console.log(submissions);
                         this.content = submissions;
                         this.problemsBool = true;
                         this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
@@ -142,7 +141,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in courses) {
                                 myArray.push(courses[key]);
-                                console.log(courses[key]);
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.courses = this._cacheService.get('courses');
@@ -159,7 +157,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in groups) {
                                 myArray.push(groups[key]);
-                                console.log(groups[key]);
                             }
                             this._cacheService.set('groups', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('groups');
@@ -181,7 +178,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in courses) {
                                 myArray.push(courses[key]);
-                                console.log(courses[key]);
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('courses');
@@ -203,7 +199,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in topics) {
                                 myArray.push(topics[key]);
-                                console.log(topics[key]);
                             }
                             this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('topics');
@@ -227,9 +222,7 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in users) {
                                 myArray.push(users[key]);
-                                console.log(users[key]);
                             }
-                            console.log(myArray);
                             this._cacheService.set('users', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('users');
                         }

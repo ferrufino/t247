@@ -10,8 +10,8 @@ import {environment} from "../../environments/environment";
 export class ProblemsService {
 
   // API / URLs
-  private PROBLEM_LIST_URL = environment.apiURL + '/problems/list';
-  private GET_PROBLEM_DATA_URL = environment.apiURL + 'problems/';
+  private PROBLEM_LIST_URL = environment.apiURL + '/problems/list/';
+  private GET_PROBLEM_DATA_URL = environment.apiURL + '/problems/';
 
   constructor(private http: Http) {
   }
@@ -23,7 +23,7 @@ export class ProblemsService {
    * @returns {Observable<R>}
    */
   getProblemInformation(problemID: number) {
-    return this.http.get(this.PROBLEM_LIST_URL + problemID).map((response: Response) => response.json());
+    return this.http.get(this.GET_PROBLEM_DATA_URL + problemID).map((response: Response) => response.json());
   }
 
   getProblems() {
