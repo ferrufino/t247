@@ -60,7 +60,7 @@ class User(Base, UserMixin):
     last_name = db.Column(db.String(255))
     role = db.Column(db.String(20))
     problems = db.relationship("Problem", back_populates="author", cascade="save-update, merge, delete")
-    submissions = db.relationship("Submission", back_populates="student", cascade="save-update, merge, delete")
+    submissions = db.relationship("Submission", back_populates="user", cascade="save-update, merge, delete")
 
     __mapper_args__ = {
         'polymorphic_on': role,
@@ -79,9 +79,9 @@ class User(Base, UserMixin):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    def generate_auth_token(self, expiration=600):
+    def generate_auth_token(self, expiration=60*60*24*30):
         s = Serializer('this-really-needs-to-be-changed', expires_in=600)
-        return s.dumps({'id': self.id})
+        return s.dumps({'id': self.id, 'role': self.role})
 
     @staticmethod
     def verify_auth_token(token):
