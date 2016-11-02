@@ -164,10 +164,11 @@
 
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
-    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value">
-        <td>{{entry.value.student.name}}</td>
-        <td>{{entry.value.numberOfAttempts}}</td>
-        <td>{{entry.value.language}}</td>
+    <tr *ngFor="let entry of content">
+        <td>{{entry.enrollment}}</td>
+        <td>{{entry.date}}</td>
+        <td>{{entry.no_of_attempts}}</td>
+        <td>{{entry.grade}}</td>
         <!--<td>{{entry.value.solved}}</td>-->
     </tr>
     </tbody>

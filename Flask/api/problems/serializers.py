@@ -8,7 +8,9 @@ test_case = api.model('Case', {
                                  description='Test case time limit'),
     'memory_limit': fields.Integer(required=True,
                                   description='Test Case memory limit'),
-    'feedback': fields.String(required=True, description='Test case feedback')
+    'feedback': fields.String(required=True, description='Test case feedback'),
+    'input': fields.String(required=True, description='Test case input'),
+    'output': fields.String(required=True, description='Test case output')
   })
 
 problem = api.model('Problem', {

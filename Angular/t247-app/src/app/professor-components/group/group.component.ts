@@ -3,7 +3,6 @@ import { GroupsService } from '../../services/groups.service';
 import { UsersService } from '../../services/users.service';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location } from '@angular/common';
-import { AssignmentComponent } from "../assignment/assignment.component";
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 import { CoursesService } from '../../services/courses.service.ts';
 import { environment } from '../../../environments/environment';
