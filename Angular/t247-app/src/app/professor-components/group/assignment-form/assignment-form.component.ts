@@ -4,27 +4,41 @@ import {
   Validators,
   FormBuilder,
 } from "@angular/forms";
-import { AssignmentsService } from '../../services/assignments.service';
-import { UsersService } from '../../services/users.service';
-import { Location } from '@angular/common';
+import { AssignmentsService } from '../../../services/assignments.service';
+import { UsersService } from '../../../services/users.service';
+import { ProblemsService } from "../../../services/problems.service";
 
 @Component({
-  selector: 'new-assignment',
-  templateUrl: 'new-assignment.component.html',
-  styleUrls: ['new-assignment.component.css']
+  selector: 'assignment-form',
+  templateUrl: 'assignment-form.component.html',
+  styleUrls: ['assignment-form.component.css']
 })
-export class NewAssignmentComponent implements OnInit {
+export class AssignmentFormComponent implements OnInit {
 
   private assignmentForm : FormGroup;
+  private problems;
 
   @Input() groupId;
 
   constructor(private _service: AssignmentsService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private _authService: UsersService,
+              private _problemsService : ProblemsService) {
 
   }
 
   ngOnInit() {
+    this._authService.checkCredentials();
+    this._problemsService.getProblems().subscribe(
+      problems => {
+        console.log(problems);
+        this.problems = problems;
+
+      },
+      error => {
+        console.log("An error ocurred while retrieving the problems");
+      }
+    );
     this.assignmentForm = this._formBuilder.group({
       'assignment': this._formBuilder.group({
         'startDate': ['', Validators.required],
@@ -44,8 +58,6 @@ export class NewAssignmentComponent implements OnInit {
       "group_id": this.assignmentForm.value.assignment.groupId,
       "problem_id": this.assignmentForm.value.assignment.problemId
     };
-
-    console.log(request);
 
     this._service.createAssignment(request)
       .subscribe(

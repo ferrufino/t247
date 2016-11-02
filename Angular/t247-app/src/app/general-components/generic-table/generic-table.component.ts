@@ -22,7 +22,7 @@ export class GenericTableComponent implements OnInit {
     user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
     topicName:string = "";
     courseName:string = "";
-    group:any = {courseId: "", enrollmentText: "", period: ""};
+    group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
 
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
@@ -126,7 +126,6 @@ export class GenericTableComponent implements OnInit {
             case "assignmentSubmissions":
                 this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
                     submissions => {
-                        debugger;
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
                         this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
@@ -324,7 +323,7 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitGroup() {
+    /*onSubmitGroup() {
         var llenado = true;
         if (this.group.courseId === "") {
             window.alert("Please choose a course");
@@ -354,7 +353,7 @@ export class GenericTableComponent implements OnInit {
                 }
             });
         }
-    }
+    } */
 
     onDeleteGroup(group) {
         var r = confirm("Are you sure?");

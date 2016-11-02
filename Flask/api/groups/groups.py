@@ -28,7 +28,7 @@ class GroupCollection(Resource):
 class GroupCreation(Resource):
     @api.response(201, 'Group succesfully created')
     @api.expect(group_creation)
-    @api.marshal_list_with(group_with_students)
+    @api.marshal_with(group_with_students)
     def post(self):
         """
         Creates group
@@ -42,14 +42,7 @@ class GroupCreation(Resource):
                           course_id=course_id)
 
         enrollments = data.get('enrollments')
-        for i in range(len(enrollments)):
-            enrollment = enrollments[i].lower()
-            new_student = Student.query.filter_by(enrollment=enrollment).first()
-            if not new_student:
-                new_student = Student(email=enrollment + '@itesm.mx',
-                                      role='student', enrollment=enrollment)
-                new_student.hash_password(enrollment)
-            new_group.students.append(new_student)
+        new_group = add_enrollments(enrollments, new_group)
 
         db.session.add(new_group)
         db.session.commit()
@@ -70,15 +63,23 @@ class GroupItem(Resource):
 
     @api.expect(group_creation)
     @api.response(204, 'Group successfully updated.')
+    @api.marshal_with(group_with_students)
     def put(self, id):
         """
         Updates a group.
         Use this method to edit a group.
         """
         data = request.json
-        Group.query.filter(Group.id == id).update(data)
+        Group.query.filter(Group.id == id).update({'period': data.get('period'),
+                 'professor_id': data.get('professor_id'),
+                 'course_id': data.get('course_id')})
+        group = Group.query.filter(Group.id == id).one()
+        enrollments = data.get('enrollments')
+        group = add_enrollments(enrollments, group)
+
+
         db.session.commit()
-        return None, 204
+        return group, 204
 
     @api.response(204, 'Group successfully deleted.')
     def delete(self, id):
@@ -89,3 +90,15 @@ class GroupItem(Resource):
         db.session.delete(group)
         db.session.commit()
         return None, 204
+
+
+def add_enrollments(enrollments, group):
+    for i in range(len(enrollments)):
+        enrollment = enrollments[i].lower()
+        new_student = Student.query.filter_by(enrollment=enrollment).first()
+        if not new_student:
+            new_student = Student(email=enrollment + '@itesm.mx',
+                                  role='student', enrollment=enrollment)
+            new_student.hash_password(enrollment)
+        group.students.append(new_student)
+    return group

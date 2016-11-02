@@ -15,7 +15,6 @@ import { environment } from '../../../environments/environment';
 export class GroupComponent implements OnInit {
 
   public group;
-  public courses;
   constructor(private _service: GroupsService,
               private route: ActivatedRoute,
               private location: Location,
@@ -26,24 +25,7 @@ export class GroupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coursesService.getCourses().subscribe(
-      courses => {
-        if (!this._cacheService.exists('courses')) {
-          const myArray = [];
-          for (let key in courses) {
-            myArray.push(courses[key]);
-            console.log(courses[key]);
-          }
-          this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
-          this.courses = this._cacheService.get('courses');
-          //console.log("Se hizo get de courses");
-        }
-        else {
-          this.courses = this._cacheService.get('courses');
-        }
-      }
-    );
-    //this._authService.checkCredentials();
+    this._authService.checkCredentials();
     this.route.data.forEach((group : any) => {
       this.group = group.any;
       console.log(this.group);
@@ -57,41 +39,6 @@ export class GroupComponent implements OnInit {
 
   goBack() {
     this.location.back();
-  }
-
-  onSubmit() {
-    var llenado = true;
-    this.group.courseId = this.group.course.id;
-    if(this.group.courseId===""){
-      window.alert("Favor de escoger un curso");
-      llenado=false;
-    }
-    if(this.group.enrollmentText===""){
-      window.alert("Favor de dar de alta estudiantes");
-      llenado=false;
-    }
-    if(this.group.period===""){
-      window.alert("Favor de escribir un periodo");
-      llenado = false;
-    }
-    this.group.courseId = Number(this.group.courseId);
-    this.group.enrollments=this.group.enrollmentText.split(",");
-    this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
-    if(llenado){
-      console.log(this.group);
-      this._service.editGroup(this.group).subscribe((result) => {
-        if (!result) {
-          console.log("Fallo");
-        }
-        else{
-          console.log(result);
-        }
-      });
-    }
-  }
-
-  onNewAssignment() {
-
   }
 
 }

@@ -16,7 +16,9 @@ auth = HTTPBasicAuth()
 ns = api.namespace('users', description='Operations related to users')
 
 
+
 @ns.route('/')
+#@api.header('Authorization', 'Auth token', required=True)
 class UserCollection(Resource):
 
     @api.marshal_list_with(api_user)
@@ -89,22 +91,6 @@ class UserAuthentication(Resource):
         abort(401)
 
 
-@ns.route('/logout')
-class UserLogout(Resource):
-    @api.response(200, 'User succesfully logged out')
-    @api.expect(user_token)
-    def post(self):
-        """
-        Logs out user
-        """
-        print("Logging out user")
-        token = request.json.get('token')
-        if verify_password(token, None):
-            delete_user_token(g.user.id)
-            return {'message': 'User succesfully logged out'}, 200
-        abort(401)
-
-
 @ns.route('/role')
 class UserAuthorization(Resource):
     @api.response(200, 'User authorized')
@@ -118,6 +104,23 @@ class UserAuthorization(Resource):
             role = g.user.role
             return {'role': role}, 200
         abort(401)
+
+
+# @ns.route('/change_password/<int:id>')
+# class UserAuthorization(Resource):
+#     @api.response(200, 'Password changed succesfully')
+#     @api.expect(change_password)
+#     def post(self):
+#         """
+#         Changes a user's password
+#         """
+#         token = request.json.get('token')
+#         password = request.json.get('password')
+#         new_password = request.json.get('new_password')
+#         if verify_password(token, None):
+#             role = g.user.role
+#             return {'role': role}, 200
+#         abort(401)
 
 
 @ns.route('/<int:id>')
@@ -165,13 +168,3 @@ def verify_password(email_or_token, password):
             return False
     g.user = user
     return True
-
-
-def store_user_token(user_id, token):
-    redis_store = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_store.set(user_id, token)
-
-
-def delete_user_token(user_id):
-    redis_store = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_store.delete(user_id)

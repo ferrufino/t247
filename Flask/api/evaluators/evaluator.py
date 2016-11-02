@@ -116,10 +116,9 @@ class EvaluatorAttemptSubmission(Resource):
         language = data.get('language')
         problem_id = data.get('problem_id')
         user_id = data.get('user_id')
-        # user = User.query.filter(User.id == user_id).one()
         new_submission = Submission(code=code, language=language,
                                     problem_id=problem_id,
-                                    student_id=user_id,
+                                    user_id=user_id,
                                     state=SubmissionState.pending)
         db.session.add(new_submission)
         db.session.commit()
