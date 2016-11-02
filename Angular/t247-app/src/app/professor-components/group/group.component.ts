@@ -41,35 +41,4 @@ export class GroupComponent implements OnInit {
     this.location.back();
   }
 
-  /*onSubmit() {
-    var llenado = true;
-    this.group.courseId = this.group.course.id;
-    if(this.group.courseId===""){
-      window.alert("Favor de escoger un curso");
-      llenado=false;
-    }
-    if(this.group.enrollmentText===""){
-      window.alert("Favor de dar de alta estudiantes");
-      llenado=false;
-    }
-    if(this.group.period===""){
-      window.alert("Favor de escribir un periodo");
-      llenado = false;
-    }
-    this.group.courseId = Number(this.group.courseId);
-    this.group.enrollments=this.group.enrollmentText.split(",");
-    this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
-    if(llenado){
-      console.log(this.group);
-      this._service.editGroup(this.group).subscribe((result) => {
-        if (!result) {
-          console.log("Fallo");
-        }
-        else{
-          console.log(result);
-        }
-      });
-    }
-  }*/
-
 }

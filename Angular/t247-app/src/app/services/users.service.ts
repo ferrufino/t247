@@ -30,43 +30,12 @@ export class UsersService {
   }
 
   logout() {
-    this.request_logout().subscribe(
-      data => {
-        debugger;
-        console.log('Successfully logged out');
-        console.log(data);
-      },
-      err => {
-        debugger;
-        console.error(err);
-      }
-
-    );
     sessionStorage.removeItem("email_user");
     sessionStorage.removeItem("auth_token");
     sessionStorage.removeItem("userJson");
     localStorage.removeItem("email_user");
     localStorage.removeItem("auth_token");
     localStorage.removeItem("userJson");
-    this.loggedIn = false;
-    this._router.navigate(['/login']);
-  }
-
-  request_logout() : Observable<any> {
-    console.log('Logging out');
-    let body = {"token": sessionStorage.getItem("auth_token")};
-    let options = new RequestOptions({headers: this.headers});
-    return this.http.post(this.LOGOUT_URL, body, this.headers)
-      .map(res => res.json())
-      .map((res) => {
-        console.log(res);
-      })
-      .catch((error:any) => {
-        return Observable.throw(error.json().error || 'Server error');
-      });
-  }
-
-  complete_logout() {
     this.loggedIn = false;
     this._router.navigate(['/login']);
   }
