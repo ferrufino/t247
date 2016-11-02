@@ -15,7 +15,8 @@ submission = api.model('Submission', {
     'grade': fields.String(required=True, description='Submission grade'),
     'feedback_list': fields.List(fields.Nested(submission_feedback)),
     'problem': fields.Nested(problem),
-    'student': fields.Nested(user)
+    'created': fields.DateTime(required=True, description='Date of last submission'),
+    'user': fields.Nested(user)
   })
 
 simple_submission = api.model('SimpleSubmission', {
@@ -26,7 +27,7 @@ simple_submission = api.model('SimpleSubmission', {
     'feedback_list': fields.List(fields.Nested(submission_feedback)),
     'student_id': fields.Integer(required=True, description='Id of the submitting user'),
     'created': fields.DateTime(required=True, description='Date of last submission'),
-    'student': fields.Nested(user)
+    'user': fields.Nested(user)
   })
 
 last_submission = api.model('LastSubmission', {

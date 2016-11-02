@@ -59,7 +59,8 @@ class User(Base, UserMixin):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     role = db.Column(db.String(20))
-    problems = db.relationship("Problem", back_populates="author")
+    problems = db.relationship("Problem", back_populates="author", cascade="save-update, merge, delete")
+    submissions = db.relationship("Submission", back_populates="student", cascade="save-update, merge, delete")
 
     __mapper_args__ = {
         'polymorphic_on': role,
@@ -106,24 +107,15 @@ class Student(User):
     """docstring for Student"""
     groups = db.relationship("Group", secondary="enrollment",
                              back_populates="students")
-    submissions = db.relationship("Submission", back_populates="student")
 
     __mapper_args__ = {
         'polymorphic_identity': 'student'
     }
 
-    def last_submission_between_dates(self, problem_id, start_date, due_date):
-        submission = Submission.query.filter(
-            and_(Submission.student_id == self.id,
-                 Submission.problem_id == problem_id,
-                 Submission.created >= start_date,
-                 Submission.created <= due_date)).order_by(Submission.created.desc()).first()
-        return submission
-
 
 class Professor(User):
     """docstring for Professor"""
-    managed_groups = db.relationship("Group", back_populates="professor")
+    managed_groups = db.relationship("Group", back_populates="professor", cascade="save-update, merge, delete")
 
     __mapper_args__ = {
         'polymorphic_identity': 'professor'
@@ -134,7 +126,7 @@ class Course(Base):
     """docstring for Course"""
     __tablename__ = 'course'
     name = db.Column(db.String(255), nullable=False)
-    groups = db.relationship("Group", back_populates="course")
+    groups = db.relationship("Group", back_populates="course", cascade="save-update, merge, delete")
     topics = db.relationship("Topic", secondary="relevanttopic",
                              back_populates="courses")
 
@@ -160,12 +152,12 @@ class RelevantTopic(Base):
 class Group(Base):
     """docstring for Group"""
     __tablename__ = 'group'
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     course = db.relationship("Course", back_populates="groups")
     period = db.Column(db.String(255), nullable=False)
     students = db.relationship("Student", secondary="enrollment",
                                back_populates="groups")
-    professor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    professor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     professor = db.relationship("Professor", back_populates="managed_groups")
     assignments = db.relationship("Assignment", back_populates="group")
 
@@ -194,17 +186,17 @@ class Problem(Base):
     language = db.Column(db.String(255), nullable=False)
     code = db.Column(db.Text, nullable=False)
     template = db.Column(db.Text)
-    description_english = db.Column(db.Text)
+    description_english = db.Column(db.Text, nullable=False)
     description_spanish = db.Column(db.Text)
     example_input = db.Column(db.Text)
     example_output = db.Column(db.Text)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     author = db.relationship("User", back_populates="problems")
 
     cases = db.relationship("Case", back_populates="problem",
-                            order_by="Case.id")
-    assignments = db.relationship("Assignment", back_populates="problem")
-    submissions = db.relationship("Submission", back_populates="problem")
+                            order_by="Case.id", cascade="save-update, merge, delete, delete-orphan")
+    assignments = db.relationship("Assignment", back_populates="problem", cascade="save-update, merge, delete")
+    submissions = db.relationship("Submission", back_populates="problem", cascade="save-update, merge, delete")
     topics = db.relationship("Topic", secondary="problemtopic",
                              back_populates="problems")
 
@@ -218,7 +210,7 @@ class Case(Base):
     feedback = db.Column(db.Text)
     output = db.Column(db.Text)
 
-    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
+    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'), nullable=False)
     problem = db.relationship("Problem", back_populates="cases")
 
 
@@ -232,8 +224,8 @@ class Submission(Base):
     state = db.Column(db.Enum(SubmissionState))
     result = db.Column(db.Enum(SubmissionResult))
 
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    student = db.relationship("Student", back_populates="submissions")
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship("User", back_populates="submissions")
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
     problem = db.relationship("Problem", back_populates="submissions")
 
@@ -245,21 +237,10 @@ class Assignment(Base):
     start_date = db.Column(db.DateTime, nullable=False)
     due_date = db.Column(db.DateTime, nullable=False)
 
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
     group = db.relationship("Group", back_populates="assignments")
-    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
+    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'), nullable=False)
     problem = db.relationship("Problem", back_populates="assignments")
-
-    def last_submissions(self):
-        problem = self.problem
-        students = self.group.students
-        submissions = []
-        for student in students:
-            submission = student.last_submission_between_dates(self.problem_id,
-                                                               self.start_date,
-                                                               self.due_date)
-            submissions.append(submission)
-        return submissions
 
 
 class Language(Base):
