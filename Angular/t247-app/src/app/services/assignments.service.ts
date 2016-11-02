@@ -20,7 +20,7 @@ export class AssignmentsService {
   getSubmissions(id) {
     return this.http
       .get(
-        this.baseURL + 'submissions/' + id
+        this.baseURL + id  + '/submissions'
       )
       .map((response: Response) => response.json());
   }
