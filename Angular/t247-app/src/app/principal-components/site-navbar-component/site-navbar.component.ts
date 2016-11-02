@@ -8,6 +8,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 export class SiteNavbarComponent implements OnInit {
 
   @Input() availableRoles: string[];
+  @Input() hideDropdown: boolean;
   @Input() actualRole: string;
   @Output() clickedRole = new EventEmitter();
   @Output() callLogout = new EventEmitter();

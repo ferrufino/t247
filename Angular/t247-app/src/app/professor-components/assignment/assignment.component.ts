@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./assignment.component.css']
 })
 export class AssignmentComponent implements OnInit {
-  private _isOpen:boolean = false;
+  private _isOpen:boolean = true;
 
   @Input() assignment;
 

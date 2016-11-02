@@ -30,6 +30,7 @@ export class CreateProblem {
   difficulties: string[] // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
   problemTopicID: number; // The id of the topic for this problem
+  problemSourceCode: string; // The source code of the problem
 
   problemTestCases: TestCase[]; // The array of test cases realted to the problem
   testCasesReady: boolean; // Flag that when is true means that all test cases passed the check
@@ -64,15 +65,24 @@ export class CreateProblem {
     this.testCasesReady = false;
     this.selectedTestCase = null;
     this.displayLoader = false;
+    this.problemSourceCode = "";
 
     // Get the values from services
-    this.supportedLanguages = this._supportedLanguages.getLanguages();
     this.difficulties = this._problemDifficulties.getDifficulties(); // This is not a service
+
+    this._supportedLanguages.getLanguages().subscribe(
+      respose => {
+        this.supportedLanguages = respose;
+        this.problemProgLang = this.supportedLanguages[0].value;
+      },
+      error => {
+        console.log("Error loading the supported languages!");
+      }
+    );
 
     this._topicsService.getTopics().subscribe(
       response => {
         this.problemTopics = response;
-        console.log(this.problemTopics);
       },
       error => {
         console.log("Error loading the topics!");
@@ -80,7 +90,6 @@ export class CreateProblem {
     );
 
     // Set the default values
-    this.problemProgLang = this.supportedLanguages[0].value;
     this.problemDifficulty = this.difficulties[0];
 
 
@@ -117,7 +126,7 @@ export class CreateProblem {
     let inputs: string[] = [];
 
     for (let i = 0; i < this.problemTestCases.length; i++) {
-      inputs.push(this.problemTestCases[i].content); // The content property = inputs
+      inputs.push(this.problemTestCases[i].content); // The input property = inputs
     }
 
     return inputs;
@@ -221,13 +230,13 @@ export class CreateProblem {
     this.problemDifficulty = selectedDifficulty;
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
-    let sourceCode: string = this.getSourceCodeString(); // string with the source code of the project
+    this.problemSourceCode = this.getSourceCodeString(); // string with the source code of the project
 
 
     // The object that will be sent to the evaluator
     let request = {
       "request_type": "creation",
-      "code": sourceCode,
+      "code": this.problemSourceCode,
       "language": this.problemProgLang,
       "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
@@ -294,6 +303,7 @@ export class CreateProblem {
 
     let problemObject = {
       "author_id": userID,
+      "code": this.problemSourceCode,
       "name": this.createProblemForm.value.problemDetails.problemName,
       "description_english": engDesc,
       "description_spanish": spnDesc,

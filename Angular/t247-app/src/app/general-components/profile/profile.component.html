@@ -1,15 +1,4 @@
-<nav>
-    <div class="nav-wrapper">
-        <a href="" class="brand-logo" id='logo'>T247</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            <li><a (click)="logout()" href="">Logout</a></li>
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-            <li><a (click)="logout()" href="">Logout</a></li>
-        </ul>
-    </div>
-</nav>
+<app-site-navbar [availableRoles]="" [hideDropdown]="true"  [actualRole]="" (callLogout)="logout()"></app-site-navbar>
 
 <div class="container">
   <div class="row" *ngIf="!editingProfile">

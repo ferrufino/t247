@@ -3,7 +3,9 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.assignments.serializers import (assignment as api_assignment,
-                                         assignment_creation, simple_submission)
+                                         assignment_creation, simple_submission,
+                                         assignment_submission_summary,
+                                         student_submission)
 from api.restplus import api
 from models import db, Assignment, Submission
 from sqlalchemy import and_
@@ -83,31 +85,60 @@ class AssignmentItem(Resource):
         return None, 204
 
 
-@ns.route('/submissions/<int:id>')
+@ns.route('/<int:assignment_id>/submissions')
 @api.response(404, 'Submission not found.')
-class AssignmentCollectionByGroup(Resource):
-    @api.marshal_list_with(simple_submission)
-    def get(self, id):
+class AssignmentSubmissionSummary(Resource):
+    @api.marshal_list_with(assignment_submission_summary)
+    def get(self, assignment_id):
         """
-        Returns a list of the last submission between the assignment dates for
-        the group students.
+        Returns number of attempts and status of a submission for an assignment
+        Returns the assignment status for each student of the assignment's
+        group. Telling the number of attempts, as well as the best grade for
+        the assignment so far
         """
-        assignment = Assignment.query.filter(Assignment.id == id).one()
-        problem = assignment.problem
-        start_date = assignment.start_date
-        due_date = assignment.due_date
-        students = assignment.group.students
+        # assignment = Assignment.query.filter(Assignment.id == id).one()
+        # problem = assignment.problem
+        # start_date = assignment.start_date
+        # due_date = assignment.due_date
+        # students = assignment.group.students
 
-        submissions = []
-        for student in students:
-            print(str(student.id))
-            submission = Submission.query.filter(
-                and_(Submission.problem_id == problem.id,
-                     Submission.student_id == student.id,
-                     Submission.created >= start_date,
-                     Submission.created <= due_date)).order_by(
-                Submission.created.desc()).first()
-            submissions.append(submission)
+        # submissions = []
+        # for student in students:
+        #     print(str(student.id))
+        #     submission = Submission.query.filter(
+        #         and_(Submission.problem_id == problem.id,
+        #              Submission.student_id == student.id,
+        #              Submission.created >= start_date,
+        #              Submission.created <= due_date)).order_by(
+        #         Submission.created.desc()).first()
+        #     submissions.append(submission)
 
-        return submissions
+        # return submissions
 
+        result = db.engine.execute("SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade FROM \"user\" u, submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.student_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date GROUP BY u.id, u.enrollment;" % (assignment_id)).fetchall()
+
+        return result
+
+# @ns.route('/submissionslist/<int:assignment_id>/')
+# @api.response(404, 'Submission not found.')
+# class AssignmentSubmissionSummary(Resource):
+#     @api.marshal_list_with(assignment_submission_summary)
+#     def get(self, assignment_id):
+#         """
+#         Returns number of attempts and status of a submission
+#         """
+#         result = db.engine.execute("SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade FROM \"user\" u, submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.student_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date GROUP BY u.id, u.enrollment;" % (assignment_id)).fetchall()
+
+#         return result
+
+@ns.route('/studentsubmissionscode/<int:assignment_id>/<int:student_id>')
+@api.response(404, 'Submission not found.')
+class AssignmentSubmissionCodeByStudent(Resource):
+    @api.marshal_list_with(student_submission)
+    def get(self, assignment_id, student_id):
+        """
+         Returns code of attempts made by user to assignment
+        """
+        result = db.engine.execute("SELECT s.created as date, s.grade, s.code FROM submission s, enrollment e, assignment a WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.student_id AND s.student_id = %d AND e.group_id = a.group_id AND a.start_date <= s.created AND s.created <= a.due_date ORDER BY s.created;" % (assignment_id, student_id)).fetchall()
+
+        return result
