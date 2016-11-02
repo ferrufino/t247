@@ -58,13 +58,14 @@ class EvaluatorProblemCreation(Resource):
         memory_limit = data.get('memory_limit')
         time_limit = data.get('time_limit')
         language = data.get('language')
-        #author_id = data.get('author_id')
+        author_id = data.get('author_id')
         difficulty = data.get('difficulty')
         code = data.get('code')
         test_cases = data['test_cases']
         topic_id = data['topic_id']
 
         new_problem = Problem(name=problem_name,
+                              author_id=author_id,
                               difficulty=difficulty, active=True,
                               language=language, code=code,
                               description_english=description_english,

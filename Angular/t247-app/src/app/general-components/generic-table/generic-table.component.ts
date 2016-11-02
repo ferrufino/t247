@@ -130,7 +130,7 @@ export class GenericTableComponent implements OnInit {
                         debugger;
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
-                        this.columns = ["Student", "Date of last submission", "Language", "Solved"];
+                        this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
                 break;

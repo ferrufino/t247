@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://107.170.255.106:5000/api',
+  //apiURL: 'http://107.170.255.106:5000/api',
+  apiURL: 'http://localhost:5000/api',
   lifeTimeCache: 600
 };

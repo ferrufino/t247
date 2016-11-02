@@ -1,4 +1,4 @@
-import {NgModule}      from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {routing} from "./app.routing";
@@ -51,6 +51,8 @@ import {GroupComponent} from "./professor-components/group/group.component";
 import {AssignmentComponent} from "./professor-components/assignment/assignment.component";
 import {GroupResolve} from "./services/group-resolve.service";
 import {SiteNavbarComponent} from "./principal-components/site-navbar-component/site-navbar.component";
+import {NewAssignmentComponent} from "./professor-components/new-assignment/new-assignment.component";
+import { PolymerElement } from '@vaadin/angular2-polymer';
 
 @NgModule({
     imports: [
@@ -93,20 +95,24 @@ import {SiteNavbarComponent} from "./principal-components/site-navbar-component/
         GroupComponent,
         AssignmentComponent,
         UserEditComponent,
-        SiteNavbarComponent
+        SiteNavbarComponent,
+        PolymerElement('vaadin-date-picker'),
+        NewAssignmentComponent
     ],
     bootstrap: [AppComponent],
     providers: [
-        CoursesService,
-        GroupsService,
-        TopicsService,
-        UsersService,
-        CacheService,
-        SubmitProblemService,
-        GroupResolve,
-        AssignmentsService,
-        ProblemsService
-    ]
+      CoursesService,
+      GroupsService,
+      TopicsService,
+      UsersService,
+      CacheService,
+      SubmitProblemService,
+      GroupResolve,
+      AssignmentsService,
+      ProblemsService
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class AppModule {
 }
