@@ -58,6 +58,7 @@ export class ProblemDetailsComponent implements OnInit {
         this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
         this.problemTestCases = response["cases"];
         this.selectedTestCase = this.problemTestCases[0];
+        console.log(this.selectedTestCase);
 
       },
       error => {
