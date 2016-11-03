@@ -69,7 +69,8 @@ class EvaluatorProblemCreation(Resource):
                               difficulty=difficulty, active=True,
                               language=language, code=code,
                               description_english=description_english,
-                              description_spanish=description_spanish)
+                              description_spanish=description_spanish,
+                              time_limit=time_limit, memory_limit=memory_limit,)
         db.session.add(new_problem)
         db.session.commit()
         problem_id = new_problem.id
@@ -82,10 +83,10 @@ class EvaluatorProblemCreation(Resource):
         
         # Create test cases
         for i in range(len(test_cases)):
-            new_case = Case(input=test_cases[i]['content'],
+            new_case = Case(is_sample=test_cases[i]['is_sample'],
+                            input=test_cases[i]['input'],
                             feedback=test_cases[i]['feedback'],
                             output=test_cases[i]['output'],
-                            time_limit=time_limit, memory_limit=memory_limit,
                             problem_id=problem_id)
             db.session.add(new_case)
             db.session.commit()
