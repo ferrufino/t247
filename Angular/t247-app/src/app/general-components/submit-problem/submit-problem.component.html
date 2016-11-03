@@ -14,12 +14,12 @@
                 <tabs>
                     <tab tabTitle="English">
                         <h4>Description:</h4>
-                        <p><strong>{{descriptionEnglish}}</strong></p>
+                        <p class="white-space"><strong>{{descriptionEnglish}}</strong></p>
                         <span *ngFor="let case of testCases">
                             <h4>Input:</h4>
-                            <p>{{case.input}}</p>
+                            <p class="white-space">{{case.input}}</p>
                             <h4>Output:</h4>
-                            <p>{{case.output}}</p>
+                            <p class="white-space">{{case.output}}</p>
                         </span>
 
                     </tab>
@@ -28,9 +28,9 @@
                         <p><strong>{{descriptionSpanish}}</strong></p>
                         <span *ngFor="let case of testCases">
                             <h4>Input:</h4>
-                            <p>{{case.input}}</p>
+                            <p class="white-space">{{case.input}}</p>
                             <h4>Output:</h4>
-                            <p>{{case.output}}</p>
+                            <p class="white-space">{{case.output}}</p>
                         </span>
                     </tab>
                 </tabs>
