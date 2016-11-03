@@ -133,11 +133,16 @@
     </tbody>
     <tbody *ngIf="assignmentsBool">
     <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
+        <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
         <td>{{entry.value.title}}</td>
-        <td>{{entry.value.class}}</td>
-        <td>{{entry.value.topic}}</td>
-        <td>{{entry.value.duedate}}</td>
-        <td>{{entry.value.completed}}</td>
+        <td>{{entry.value.problem_name}}</td>
+        <td>{{entry.value.course_name}}</td>
+        <td *ngIf=" entry.value.difficulty == 1">Easy</td>
+        <td *ngIf=" entry.value.difficulty == 2">Medium</td>
+        <td *ngIf=" entry.value.difficulty == 3">Hard</td>
+        <td>{{entry.value.due_date}}</td>
+        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
+        <td *ngIf="entry.value.max_grade != 100">Nop</td>
     </tr>
     </tbody>
     <tbody *ngIf="submissionsBool">
@@ -153,8 +158,8 @@
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date}}</td>
         <td>{{entry.no_of_attempts}}</td>
-        <td>{{entry.grade}}</td>
-        <!--<td>{{entry.value.solved}}</td>-->
+        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
+        <td *ngIf="entry.value.max_grade != 100">Nop</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">

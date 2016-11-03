@@ -1,3 +1,5 @@
+<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false" [actualRole]="selectedRole"
+                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
 <div class="submit-code">
     <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has been
         submitted successfully, give it a sec.
@@ -25,7 +27,7 @@
                     </tab>
                     <tab tabTitle="Español">
                         <h4>Description:</h4>
-                        <p><strong>{{descriptionSpanish}}</strong></p>
+                        <p class="white-space"><strong>{{descriptionSpanish}}</strong></p>
                         <span *ngFor="let case of testCases">
                             <h4>Input:</h4>
                             <p class="white-space">{{case.input}}</p>
@@ -48,7 +50,8 @@
                                                      [(ngModel)]="selectedOptions"
                                                      (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
                         </div>
-                        <code-editor (codeToSubmit)="codeToSubmitReceived($event)"></code-editor>
+                        <code-editor #codeEditor [setSourceCode]=""></code-editor>
+                        <button type="button" class="btn btn-success submit-code-btn" (click)="codeToSubmitReceived()">Submit</button>
                     </div>
                 </tab>
                 <tab *ngFor="let entry of attempts" tabTitle="Attempt">

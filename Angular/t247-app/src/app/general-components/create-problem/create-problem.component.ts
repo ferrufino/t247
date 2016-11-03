@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -10,6 +10,7 @@ import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 import {TopicsService} from "../../services/topics.service";
+import {EditorComponent} from "../code-editor/editor.component";
 
 @Component({
   selector: 'create-problem',
@@ -18,7 +19,13 @@ import {TopicsService} from "../../services/topics.service";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit{
+export class CreateProblem implements OnInit {
+
+  // Local variables to the 4 code editors
+  @ViewChild('fullCodeEditor') fullEditorComponent;
+  @ViewChild('headCodeEditor') headEditorComponent;
+  @ViewChild('functionCodeEditor') functionEditorComponent;
+  @ViewChild('footCodeEditor') footEditorComponent;
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
   displayLoader: boolean; // Flag used to display the loader when the form is submitted
@@ -156,12 +163,24 @@ export class CreateProblem implements OnInit{
   }
 
   /**
-   * TODO
+   * This function returns the complete source code of the problem into a string
+   * This functions handles if the source code is of a full problem or a function problem.
+   * @returns {string} the source code in a string
    */
-  getSourceCodeString($event) {
+  getSourceCodeString(): string {
 
-    this.problemSourceCode = $event;
+    var sourceCode: string;
 
+    switch (this.problemTypeFlag) {
+      case 0:
+        sourceCode = this.fullEditorComponent.getSourceCode();
+        break;
+      case 1:
+        sourceCode = this.headEditorComponent.getSourceCode() + this.functionEditorComponent.getSourceCode() + this.footEditorComponent.getSourceCode();
+        break;
+    }
+
+    return sourceCode;
   }
 
 
@@ -208,6 +227,7 @@ export class CreateProblem implements OnInit{
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
 
+    this.problemSourceCode = this.getSourceCodeString();
 
     // The object that will be sent to the evaluator
     let request = {
@@ -239,10 +259,13 @@ export class CreateProblem implements OnInit{
             this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
           }
 
+        },
+        error => {
+          this.displayLoader = false; // Turn off loader
+          console.log(error);
         }
       );
   }
-
 
 
   /**

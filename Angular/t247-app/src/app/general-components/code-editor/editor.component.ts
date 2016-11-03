@@ -8,27 +8,30 @@ import 'codemirror/mode/javascript/javascript';
   template: `
   <div class="code-editor">
     <codemirror [(ngModel)]="code" [config]="codeMirrorConfig"></codemirror>
-    <button type="button" class="btn btn-success submit-code-btn" (click)='onClick()'>Submit</button>
   </div>`,
 })
 export class EditorComponent implements OnInit {
 
   @Input() setSourceCode : string;
-  @Output() codeToSubmit = new EventEmitter();
 
   private code: string; // The current value of the Code Mirror editor
   private codeMirrorConfig : any;
 
   // A basic template to fill the code editor
-  private sampleCode: string = `// Write or Paste your code here...
-  if(youReallyThinkYouCanCode){
-    cout<<"I got this";
-  }
-`;
+  private sampleCode: string = `#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b;
+    return 0;
+}`;
 
 
   constructor() {
   }
+
 
   ngOnInit() {
 
@@ -52,11 +55,11 @@ export class EditorComponent implements OnInit {
   }
 
   /**
-   * This function is called when the submit button of the editor is clicked.
-   * The current value of the editor is emited as output.
+   * Returns the current code inside the editor
+   * @returns {string}
    */
-  onClick() {
-    this.codeToSubmit.emit(this.code);
+  getSourceCode() : string{
+    return this.code;
   }
 
 }
