@@ -44,7 +44,8 @@
     <div class="row" *ngSwitchCase="'student'">
       <tabs>
         <tab tabTitle="My Assignments">
-          <submit-problem></submit-problem>
+            <generic-table [typetable]="'assignments'"></generic-table>
+            <submit-problem></submit-problem>
         </tab>
         <tab tabTitle="Topics Dashboard">
           <app-topics-dashboard></app-topics-dashboard>
