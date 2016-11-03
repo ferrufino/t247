@@ -1,3 +1,5 @@
+<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false" [actualRole]="selectedRole"
+                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
 <div class="submit-code">
     <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has been
         submitted successfully, give it a sec.

@@ -10,6 +10,7 @@ import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit
 import {GroupComponent} from "./professor-components/group/group.component";
 import { GroupResolve }   from "./services/group-resolve.service";
 import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
+import {SubmitProblem} from "./general-components/submit-problem/submit-problem.component";
 
 
 const appRoutes: Routes = [
@@ -47,6 +48,10 @@ const appRoutes: Routes = [
     {
       path: 'editUser/:id',
       component: UserEditComponent
+    },
+    {
+        path: 'submitProblem/:id',
+        component: SubmitProblem
     }
 ];
 
