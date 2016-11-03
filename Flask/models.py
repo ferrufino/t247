@@ -188,8 +188,8 @@ class Problem(Base):
     template = db.Column(db.Text)
     description_english = db.Column(db.Text, nullable=False)
     description_spanish = db.Column(db.Text)
-    example_input = db.Column(db.Text)
-    example_output = db.Column(db.Text)
+    time_limit = db.Column(db.Integer)
+    memory_limit = db.Column(db.Integer)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     author = db.relationship("User", back_populates="problems")
 
@@ -205,8 +205,6 @@ class Case(Base):
     """docstring for Case"""
     __tablename__ = 'case'
     input = db.Column(db.Text, nullable=False)
-    time_limit = db.Column(db.Integer)
-    memory_limit = db.Column(db.Integer)
     feedback = db.Column(db.Text)
     output = db.Column(db.Text)
     is_sample = db.Column(db.Boolean)

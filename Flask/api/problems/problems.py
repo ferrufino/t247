@@ -3,7 +3,7 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
-from api.problems.serializers import problem_table 
+from api.problems.serializers import problem_table, problem_description
 from api.restplus import api
 from models import db, Problem, Topic, ProblemTopic
 
@@ -39,19 +39,23 @@ class ProblemItem(Resource):
 @api.response(404, 'Problem not found.')
 class ProblemDescription(Resource):
 
+
+    @api.marshal_with(problem_description)
     def get(self, id):
         """
         Returns the descriptions of a problem.
         """
         problem = Problem.query.filter(Problem.id == id).one()
-        
+        cases = db.engine.execute("""
+            SELECT c.input, c.output
+            FROM problem p, \"case\" c
+            WHERE c.problem_id = p.id AND p.id = %d AND c.is_sample = TRUE""" % (id)).fetchall()
+
         descriptions = {}
-        descriptions["english"] = problem.description_english
-        descriptions["spanish"] = problem.description_spanish
-        descriptions["title"]   = problem.name
-        descriptions["input"]   = problem.example_input
-        descriptions["output"]  = problem.example_output
-        
+        descriptions["english"]      = problem.description_english
+        descriptions["spanish"]      = problem.description_spanish
+        descriptions["title"]        = problem.name
+        descriptions["test_cases"]   = cases
         
         print(descriptions)
         
