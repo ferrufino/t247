@@ -87,7 +87,7 @@ export class GenericTableComponent implements OnInit {
                 this.assignmentsService.getAssignmentsByStudent().subscribe(
                     submissions => {
                         this.assignmentsBool = true;
-                        this.columns = ["Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
+                        this.columns = ["Try it","Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
                         this.content = submissions;
                     });
 
@@ -380,6 +380,10 @@ export class GenericTableComponent implements OnInit {
 
     onSelectUser(user) {
         this.router.navigate(['/editUser', user.id]);
+    }
+
+    onSelectAssignment(problem) {
+        this.router.navigate(['/submitProblem', problem.id]);
     }
 
 
