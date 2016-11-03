@@ -5,7 +5,7 @@ from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
 from api.problems.serializers import problem_table, problem_description
 from api.restplus import api
-from models import db, Problem, Topic, ProblemTopic, Case
+from models import db, Problem, Topic, ProblemTopic, Case, Language
 from sqlalchemy import join
 from sqlalchemy.orm import Load
 
@@ -22,7 +22,11 @@ class ProblemCollection(Resource):
         Returns list of problems.
         """
         problems = db.session.query(Problem).all()
-        print(problems)
+        
+        # Retrieve problem's language name
+        for problem in problems:
+            problem.language = Language.query.filter(Language.value == problem.language).one().name
+
         return problems
 
 
@@ -35,8 +39,11 @@ class ProblemItem(Resource):
         """
         Returns a problem.
         """
-        problem = db.session.query(Problem).filter(Problem.id == id).one()
-        print(problem)
+        problem = db.session.query(Problem).filter(Problem.id == id).first()
+        
+        if (problem is not None):
+            problem.language = Language.query.filter(Language.value == problem.language).one().name            
+
         return problem
         
 @ns.route('/description/<int:id>')
