@@ -174,7 +174,7 @@
 
                         <div class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                           <label>Source code</label>
-                          <code-editor [setSourceCode]="" (codeToSubmit)="getSourceCodeString($event)"></code-editor>
+                          <code-editor #fullCodeEditor [setSourceCode]=""></code-editor>
                         </div>
 
                       </div>
@@ -187,7 +187,7 @@
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                             <label>First half of source code</label>
-                            <code-editor [setSourceCode]="" (codeToSubmit)="printCode($event)"></code-editor>
+                            <code-editor #headCodeEditor [setSourceCode]="" ></code-editor>
                           </div>
                         </div>
 
@@ -195,7 +195,7 @@
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                             <label>Function code</label>
-                            <code-editor [setSourceCode]="" (codeToSubmit)="printCode($event)"></code-editor>
+                            <code-editor #functionCodeEditor [setSourceCode]="" ></code-editor>
                           </div>
                         </div>
 
@@ -203,7 +203,7 @@
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                             <label>Second half of source code</label>
-                            <code-editor [setSourceCode]="" (codeToSubmit)="printCode($event)"></code-editor>
+                            <code-editor #footCodeEditor [setSourceCode]="" ></code-editor>
                           </div>
                         </div>
 
