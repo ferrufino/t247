@@ -57,7 +57,7 @@
                 <li><strong>Time limit: </strong>{{timeLimit}}</li>
                 <li><strong>Language: </strong>{{problemLanguage}}</li>
                 <li><strong>Difficulty: </strong>{{problemDifficultyLabel}}</li>
-                <li><strong>Problem topic: </strong>Dynamic programming</li>
+                <li><strong>Problem topic: </strong>{{problemTopic}}</li>
               </ul>
             </div>
           </div>
@@ -77,7 +77,7 @@
 
           <!-- Editor component here -->
 
-          <code-editor [setSourceCode]="problemSource" (codeToSubmit)="printCode($event)"></code-editor>
+          <code-editor [setSourceCode]="problemSource" ></code-editor>
 
           <!-- Editor component here -->
 

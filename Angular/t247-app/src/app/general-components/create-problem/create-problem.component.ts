@@ -20,17 +20,12 @@ import {EditorComponent} from "../code-editor/editor.component";
 })
 
 export class CreateProblem implements OnInit {
+
+  // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
-  // private fullEditorComponent : EditorComponent;
-
   @ViewChild('headCodeEditor') headEditorComponent;
-  // private headEditorComponent : EditorComponent;
-
   @ViewChild('functionCodeEditor') functionEditorComponent;
-  // private functionEditorComponent : EditorComponent;
-
   @ViewChild('footCodeEditor') footEditorComponent;
-  // private footEditorComponent : EditorComponent;
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
   displayLoader: boolean; // Flag used to display the loader when the form is submitted

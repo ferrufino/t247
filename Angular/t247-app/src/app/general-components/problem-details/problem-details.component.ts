@@ -19,6 +19,7 @@ export class ProblemDetailsComponent implements OnInit {
   descriptionSpn: string;
   timeLimit: number;
   memoryLimit: number;
+  problemTopic: string;
   problemLanguage: string;
   problemSource: string;
   problemDifficultyLabel: string;
@@ -35,7 +36,7 @@ export class ProblemDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    var problemID = 25; //TODO: DELETE THIS LINE
+    var problemID = 32; //TODO: DELETE THIS LINE
     this.testCaseIndex = 0;
 
     this._problemService.getProblemInformation(problemID).subscribe(
@@ -50,14 +51,15 @@ export class ProblemDetailsComponent implements OnInit {
         this.problemName = response["name"];
         this.descriptionEng = response["description_english"];
         this.descriptionSpn = response["description_spanish"];
-        this.timeLimit = 1; // TODO: Remove this value
-        this.memoryLimit = 100; // TODO: Remove this value
+        this.timeLimit = 1; response["time_limit"];
+        this.memoryLimit = response["memory_limit"];
         this.problemSource = response["code"];
         this.problemLanguage = response["language"];
         this.problemDifficultyId = response["difficulty"];
         this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
         this.problemTestCases = response["cases"];
         this.selectedTestCase = this.problemTestCases[0];
+        this.problemTopic = response["topics"][0].name;
         console.log(this.selectedTestCase);
 
       },
