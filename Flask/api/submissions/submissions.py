@@ -46,11 +46,11 @@ class LastSubmissions(Resource):
         """
         if (all_submissions == 1):
             response = Submission.query.filter(
-                and_(Submission.student_id == student_id, Submission.problem_id == problem_id)).order_by(
+                and_(Submission.user_id == student_id, Submission.problem_id == problem_id)).order_by(
                 Submission.id.desc()).all()
         else:
             response = Submission.query.filter(
-                and_(Submission.student_id == student_id, Submission.problem_id == problem_id)).order_by(
+                and_(Submission.user_id == student_id, Submission.problem_id == problem_id)).order_by(
                 Submission.id.desc()).limit(3).all()
 
         return response
