@@ -24,8 +24,7 @@ export class SubmitProblem implements OnInit {
     private descriptionSpanish;
     private descriptionTitle;
     private attempts;
-    private input;
-    private output;
+    private testCases;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -135,8 +134,7 @@ export class SubmitProblem implements OnInit {
                 this.descriptionEnglish = content.english;
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
-                this.input = content.input;
-                this.output = content.output;
+                this.testCases = content.test_cases;
             }
         );
     }
