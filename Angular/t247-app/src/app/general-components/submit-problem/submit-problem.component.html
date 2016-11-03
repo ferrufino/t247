@@ -50,7 +50,8 @@
                                                      [(ngModel)]="selectedOptions"
                                                      (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
                         </div>
-                        <code-editor (codeToSubmit)="codeToSubmitReceived($event)"></code-editor>
+                        <code-editor #codeEditor [setSourceCode]=""></code-editor>
+                        <button type="button" class="btn btn-success submit-code-btn" (click)="codeToSubmitReceived()">Submit</button>
                     </div>
                 </tab>
                 <tab *ngFor="let entry of attempts" tabTitle="Attempt">
