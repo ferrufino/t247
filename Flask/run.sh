@@ -3,6 +3,9 @@
 #Activates virtual environment
 source env/bin/activate
 
+#Clears server log
+rm nohup.out
+
 #Runs server in background
 
 nohup python app.py &

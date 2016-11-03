@@ -1,6 +1,10 @@
 <div class="submit-code">
-    <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has been submitted successfully, give it a sec.</div>
-    <div id="error-feedback" class="alert alert-danger" role="alert"><strong>Error</strong> There has been an error with your submission.</div>
+    <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has been
+        submitted successfully, give it a sec.
+    </div>
+    <div id="error-feedback" class="alert alert-danger" role="alert"><strong>Error</strong> There has been an error with
+        your submission.
+    </div>
 </div>
 <div class="row">
     <div class="col-md-6">
@@ -10,19 +14,24 @@
                 <tabs>
                     <tab tabTitle="English">
                         <h4>Description:</h4>
-                        <p><strong>{{descriptionEnglish}}</strong></p>
-                        <h4>Input:</h4>
-                        <p>{{input}}</p>
-                        <h4>Output:</h4>
-                        <p>{{output}}</p>
+                        <p class="white-space"><strong>{{descriptionEnglish}}</strong></p>
+                        <span *ngFor="let case of testCases">
+                            <h4>Input:</h4>
+                            <p class="white-space">{{case.input}}</p>
+                            <h4>Output:</h4>
+                            <p class="white-space">{{case.output}}</p>
+                        </span>
+
                     </tab>
                     <tab tabTitle="Español">
                         <h4>Description:</h4>
-                        <p><strong>{{descriptionSpanish}}</strong></p>
-                        <h4>Input:</h4>
-                        <p>{{input}}</p>
-                        <h4>Output:</h4>
-                        <p>{{output}}</p>
+                        <p class="white-space"><strong>{{descriptionSpanish}}</strong></p>
+                        <span *ngFor="let case of testCases">
+                            <h4>Input:</h4>
+                            <p class="white-space">{{case.input}}</p>
+                            <h4>Output:</h4>
+                            <p class="white-space">{{case.output}}</p>
+                        </span>
                     </tab>
                 </tabs>
             </div>

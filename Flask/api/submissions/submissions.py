@@ -46,11 +46,11 @@ class LastSubmissions(Resource):
         """
         if (all_submissions == 1):
             response = Submission.query.filter(
-                and_(Submission.student_id == student_id, Submission.problem_id == problem_id)).order_by(
+                and_(Submission.user_id == student_id, Submission.problem_id == problem_id)).order_by(
                 Submission.id.desc()).all()
         else:
             response = Submission.query.filter(
-                and_(Submission.student_id == student_id, Submission.problem_id == problem_id)).order_by(
+                and_(Submission.user_id == student_id, Submission.problem_id == problem_id)).order_by(
                 Submission.id.desc()).limit(3).all()
 
         return response
@@ -64,6 +64,6 @@ class SubmissionAttempts(Resource):
         """
          Returns number of attempts and status of a submission
         """
-        result = db.engine.execute("SELECT p.name, COUNT(p.name) as no_of_attempts, MAX(s.grade) as max_grade FROM Problem p, Submission s, \"user\" u WHERE p.id = s.problem_id AND s.student_id = u.id AND u.id = %d GROUP BY p.name;" % (student_id)).fetchall()
+        result = db.engine.execute("SELECT p.name, COUNT(p.name) as no_of_attempts, MAX(s.grade) as max_grade FROM Problem p, Submission s, \"user\" u WHERE p.id = s.problem_id AND s.user_id = u.id AND u.id = %d GROUP BY p.name;" % (student_id)).fetchall()
 
         return result

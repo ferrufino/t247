@@ -11,17 +11,17 @@ export class SubmitProblemService{
 
 
     getDescriptions() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/description/26';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/description/25';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 
     getAttempts() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/last/5/13/0';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/last/4/25/0';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 
     getSubmissions() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/attempts/5';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/attempts/4';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 }

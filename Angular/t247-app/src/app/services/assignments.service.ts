@@ -13,8 +13,10 @@ export class AssignmentsService {
   constructor(private http: Http) {
   }
 
-  getAssignments() {
-    return this.http.get(this.baseURL).map((response: Response) => response.json());
+  getAssignmentsByStudent() {
+    return this.http.get(
+        this.baseURL + 'bystudent/'+ 26
+    ).map((response: Response) => response.json());
   }
 
   getSubmissions(id) {
