@@ -378,7 +378,7 @@ def upload_problem(data):
     for i in range(len(test_cases)):
         # Input
         with open(input_dir + str(i), "w+") as text_file:
-            print(test_cases[i]['content'], file=text_file)
+            print(test_cases[i]['input'], file=text_file)
 
         # Output
         with open(output_dir + str(i), "w+") as text_file:

@@ -11,6 +11,7 @@ evaluator_submission = api.model('SubmissionCreation', {
 })
 
 problem_evaluation = api.model('ProblemEvalution', {
+    'name': fields.String(required=True, description='Problem name, required to verify uniqueness'),
     'request_type': fields.String(required=True, description='Evaluation type, must be \'upload\' in this case'),
     'code': fields.String(required=True, description='Student\'s code to be executed'),
     'language': fields.String(required=True, description='Language of the code to be executed'),

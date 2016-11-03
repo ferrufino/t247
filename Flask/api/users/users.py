@@ -8,6 +8,8 @@ from flask_httpauth import HTTPBasicAuth
 from api.users.serializers import user as api_user, user_auth, user_token, user_creation
 from api.restplus import api
 from models import db, User
+from authorization import auth_required
+
 
 log = logging.getLogger(__name__)
 
@@ -16,12 +18,12 @@ auth = HTTPBasicAuth()
 ns = api.namespace('users', description='Operations related to users')
 
 
-
 @ns.route('/')
-#@api.header('Authorization', 'Auth token', required=True)
+@api.header('Authorization', 'Auth token', required=True)
 class UserCollection(Resource):
 
     @api.marshal_list_with(api_user)
+    @auth_required('admin')
     def get(self):
         """
         Returns list of users.
@@ -29,21 +31,13 @@ class UserCollection(Resource):
         users = User.query.all()
         return users
 
-    # @api.response(201, 'Category successfully created.')
-    # @api.expect(user)
-    # def post(self):
-    #     """
-    #     Creates a new blog category.
-    #     """
-    #     data = request.json
-    #     create_category(data)
-    #     return None, 201
-
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class UserCreation(Resource):
     @api.response(201, 'User succesfully created')
     @api.expect(user_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates user
@@ -124,10 +118,12 @@ class UserAuthorization(Resource):
 
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'User not found.')
 class UserItem(Resource):
 
     @api.marshal_with(api_user)
+    @auth_required('admin')
     def get(self, id):
         """
         Returns a user.
@@ -136,6 +132,7 @@ class UserItem(Resource):
 
     @api.expect(user_creation)
     @api.response(204, 'User successfully updated.')
+    @auth_required('admin')
     def put(self, id):
         """
         Updates a user.
@@ -147,6 +144,7 @@ class UserItem(Resource):
         return None, 204
 
     @api.response(204, 'User successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a user.
