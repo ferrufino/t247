@@ -124,7 +124,6 @@ class AssignmentSubmissionCodeByStudent(Resource):
 
         return result
 
-MAL
 @ns.route('/bystudent/<int:student_id>')
 @api.response(404, 'Submission not found.')
 class AssignmentSubmissionCodeByStudent(Resource):
