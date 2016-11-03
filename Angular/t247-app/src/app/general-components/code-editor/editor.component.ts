@@ -18,11 +18,15 @@ export class EditorComponent implements OnInit {
   private codeMirrorConfig : any;
 
   // A basic template to fill the code editor
-  private sampleCode: string = `// Write or Paste your code here...
-  if(youReallyThinkYouCanCode){
-    cout<<"I got this";
-  }
-`;
+  private sampleCode: string = `#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b;
+    return 0;
+}`;
 
 
   constructor() {
