@@ -39,7 +39,7 @@ export class CreateProblem implements OnInit{
 
 
   // This variable specifies the form type that will be displayed, in order to upload the problem
-  // 0 = default value, 1 = full problem, 2 = function
+  // 0 = full problem, 1 = function
   problemTypeFlag: number = 0;
 
   // This variable specifies if the problem will be uploaded as copy paste text or if it will be uploaded as a file
@@ -102,14 +102,6 @@ export class CreateProblem implements OnInit{
         'spnDescription': ['', Validators.required],
         'memoryLimit': ['', Validators.required],
         'timeLimit': ['', Validators.required]
-      }),
-      'problemSourceFull': this._formBuilder.group({
-        'code': ['']
-      }),
-      'problemSourceFunction': this._formBuilder.group({
-        'firstHalf': [''],
-        'functionCode': [''],
-        'secondHalf': ['']
       })
 
     });
@@ -126,7 +118,7 @@ export class CreateProblem implements OnInit{
     let inputs: string[] = [];
 
     for (let i = 0; i < this.problemTestCases.length; i++) {
-      inputs.push(this.problemTestCases[i].content); // The input property = inputs
+      inputs.push(this.problemTestCases[i].input); // The input property = inputs
     }
 
     return inputs;
@@ -164,26 +156,12 @@ export class CreateProblem implements OnInit{
   }
 
   /**
-   * This function returns the complete source code of the problem into a string
-   * This functions handles if the source code is of a full problem or a function problem.
-   * @returns {string} the source code in a string
+   * TODO
    */
-  getSourceCodeString(): string {
+  getSourceCodeString($event) {
 
-    var sourceCode: string;
+    this.problemSourceCode = $event;
 
-    switch (this.problemTypeFlag) {
-      case 1:
-        sourceCode = this.createProblemForm.value.problemSourceFull.code
-        break;
-      case 2:
-        sourceCode = this.createProblemForm.value.problemSourceFunction.firstHalf +
-          this.createProblemForm.value.problemSourceFunction.functionCode +
-          this.createProblemForm.value.problemSourceFunction.secondHalf;
-        break;
-    }
-
-    return sourceCode;
   }
 
 
@@ -221,7 +199,6 @@ export class CreateProblem implements OnInit{
    */
   evaluteTestCases(selectedLanguage: string, selectedDifficulty: string, selectedTopicId: number) {
 
-    console.log(selectedTopicId);
     this.problemTopicID = selectedTopicId;
 
     // Assign the correct values
@@ -230,12 +207,12 @@ export class CreateProblem implements OnInit{
     this.problemDifficulty = selectedDifficulty;
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
-    this.problemSourceCode = this.getSourceCodeString(); // string with the source code of the project
 
 
     // The object that will be sent to the evaluator
     let request = {
       "request_type": "creation",
+      "name": this.createProblemForm.value.problemDetails.problemName,
       "code": this.problemSourceCode,
       "language": this.problemProgLang,
       "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
@@ -267,24 +244,6 @@ export class CreateProblem implements OnInit{
   }
 
 
-  getAppendedTestCases(): string {
-    let result = "";
-
-    for (let testCase of this.problemTestCases) {
-
-      if (testCase.onDescription) {
-        let temp = "Input\n";
-        temp += (testCase.content + "\n");
-        temp += "Output\n"
-        temp += (testCase.output + "\n");
-
-        result += (temp + "\n");
-      }
-
-    }
-
-    return result;
-  }
 
   /**
    * This function sends the request to Flask in order to create a new problem and save it to the Data Base
@@ -295,9 +254,6 @@ export class CreateProblem implements OnInit{
 
     // Get the correct type of problem
     let pType = (this.problemTypeFlag == 1) ? "full" : "function";
-    let stringAppendedTests = this.getAppendedTestCases();
-    let engDesc = this.createProblemForm.value.problemDetails.engDescription + "\nTest cases:\n\n" + stringAppendedTests;
-    let spnDesc = this.createProblemForm.value.problemDetails.spnDescription + "\nCasos de prueba:\n\n" + stringAppendedTests;
 
     let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
 
@@ -305,8 +261,8 @@ export class CreateProblem implements OnInit{
       "author_id": userID,
       "code": this.problemSourceCode,
       "name": this.createProblemForm.value.problemDetails.problemName,
-      "description_english": engDesc,
-      "description_spanish": spnDesc,
+      "description_english": this.createProblemForm.value.problemDetails.engDescription,
+      "description_spanish": this.createProblemForm.value.problemDetails.spnDescription,
       "topic_id": this.problemTopicID,
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,

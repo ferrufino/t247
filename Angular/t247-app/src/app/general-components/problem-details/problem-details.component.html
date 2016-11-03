@@ -2,7 +2,10 @@
 
   <div class="row margin-bottom20">
     <div class="col-sm-12 col-md-12 col-lg-12">
-      <h1>{{problemName}}</h1>
+      <blockquote>
+        <h1>{{problemName}}</h1>
+        <footer>Problem created by: {{authorName}}</footer>
+      </blockquote>
     </div>
   </div>
 
@@ -77,9 +80,64 @@
           <code-editor [setSourceCode]="problemSource" (codeToSubmit)="printCode($event)"></code-editor>
 
           <!-- Editor component here -->
+
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="row">
+
+    <div class="row">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Test Case number: {{testCaseIndex}}</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="container">
+            <div class="row margin-top20">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <p>Input:</p>
+                <!--<p>{{selectedTestCase["input"]}}</p>-->
+                <p>Input here</p>
+              </div>
+            </div>
+
+            <div class="row margin-top20">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <p>Output:</p>
+                <!--<p>{{selectedTestCase["output"]}}</p>-->
+                <p>Output here</p>
+              </div>
+            </div>
+
+            <div class="row margin-top20">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <label>Feedback for this test case:</label>
+                <!--<div class="well">{{selectedTestCase["feedback"]}}</div>-->
+                <div class="well">Feedback here</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center margin-top20">
+
+      <button (click)="previousTestCase()" type="button" class="btn btn-info" aria-label="Left Align">
+        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span> Previous
+      </button>
+
+      <button (click)="nextTestCase()" type="button" class="btn btn-info" aria-label="Left Align">
+        <span class="glyphicon glyphicon-forward" aria-hidden="true"></span> Next
+      </button>
+
+
+    </div>
+
   </div>
 
 </div>

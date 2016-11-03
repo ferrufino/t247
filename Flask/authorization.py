@@ -42,5 +42,4 @@ def _auth_required(role):
 
 def _get_request_token():
     auth_header_value = request.headers.get('Authorization', None)
-    parts = auth_header_value.split()
-    return parts[0]
+    return auth_header_value
