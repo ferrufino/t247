@@ -1,6 +1,7 @@
 from flask_restplus import fields
 from api.restplus import api
 from api.users.serializers import user
+from api.topics.serializers import topic
 
 test_case = api.model('Case', {
     'id': fields.Integer(required=True, description='Test case id'),
@@ -26,8 +27,7 @@ problem = api.model('Problem', {
                                  description='Test case time limit'),
     'memory_limit': fields.Integer(required=True,
                                   description='Test Case memory limit'),
-    'topic_id': fields.Integer(required=True,
-                                  description='Problem topic id')
+    'topics': fields.List(fields.Nested(topic))
   })
 
 problem_table = api.model('Problem', {
