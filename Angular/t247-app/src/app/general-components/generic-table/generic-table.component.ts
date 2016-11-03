@@ -84,31 +84,13 @@ export class GenericTableComponent implements OnInit {
                 break;
 
             case "assignments":
-                this.assignmentsBool = true;
-                this.columns = ["Title", "Class", "Topic", "Due Date", "Completed"];
-                this.content = [
-                    {
-                        "title": "dummyProblem",
-                        "class": "Algorithms",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
-                    },
-                    {
-                        "title": "dummyProblem",
-                        "class": "Data Structure",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
-                    },
-                    {
-                        "title": "dummyProblem",
-                        "class": "Database",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
-                    }
-                ];
+                this.assignmentsService.getAssignmentsByStudent().subscribe(
+                    submissions => {
+                        this.assignmentsBool = true;
+                        this.columns = ["Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
+                        this.content = submissions;
+                    });
+
                 break;
 
             case "submissions":
