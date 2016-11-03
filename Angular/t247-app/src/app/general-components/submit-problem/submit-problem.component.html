@@ -26,10 +26,12 @@
                     <tab tabTitle="Español">
                         <h4>Description:</h4>
                         <p><strong>{{descriptionSpanish}}</strong></p>
-                        <h4>Input:</h4>
-                        <p>{{input}}</p>
-                        <h4>Output:</h4>
-                        <p>{{output}}</p>
+                        <span *ngFor="let case of testCases">
+                            <h4>Input:</h4>
+                            <p>{{case.input}}</p>
+                            <h4>Output:</h4>
+                            <p>{{case.output}}</p>
+                        </span>
                     </tab>
                 </tabs>
             </div>
