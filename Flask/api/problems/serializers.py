@@ -25,7 +25,9 @@ problem = api.model('Problem', {
     'time_limit': fields.Integer(required=True,
                                  description='Test case time limit'),
     'memory_limit': fields.Integer(required=True,
-                                  description='Test Case memory limit')
+                                  description='Test Case memory limit'),
+    'topic_id': fields.Integer(required=True,
+                                  description='Problem topic id')
   })
 
 problem_table = api.model('Problem', {
