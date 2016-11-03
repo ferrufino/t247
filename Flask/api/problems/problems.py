@@ -5,7 +5,9 @@ from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
 from api.problems.serializers import problem_table, problem_description
 from api.restplus import api
-from models import db, Problem, Topic, ProblemTopic
+from models import db, Problem, Topic, ProblemTopic, Case
+from sqlalchemy import join
+from sqlalchemy.orm import Load
 
 log = logging.getLogger(__name__)
 
@@ -19,12 +21,8 @@ class ProblemCollection(Resource):
         """
         Returns list of problems.
         """
-        problems = db.engine.execute("""
-            SELECT p.*, pt.topic_id
-            FROM problem p, problemtopic pt
-            WHERE p.id = pt.problem_id""").fetchall()
-
-
+        problems = db.session.query(Problem).all()
+        print(problems)
         return problems
 
 
@@ -37,12 +35,8 @@ class ProblemItem(Resource):
         """
         Returns a problem.
         """
-        problem = db.engine.execute("""
-            SELECT p.*, pt.topic_id
-            FROM problem p, problemtopic pt
-            WHERE p.id = pt.problem_id AND p.id = %d""" % (id)).fetchone()
-
-
+        problem = db.session.query(Problem).filter(Problem.id == id).one()
+        print(problem)
         return problem
         
 @ns.route('/description/<int:id>')
