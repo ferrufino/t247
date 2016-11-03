@@ -11,12 +11,12 @@ export class SubmitProblemService{
 
 
     getDescriptions() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/description/26';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/problems/description/27';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 
     getAttempts() {
-        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/last/5/13/0';
+        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/last/5/27/0';
         return this.http.get(serviceURL).map((response:Response) => response.json());
     }
 

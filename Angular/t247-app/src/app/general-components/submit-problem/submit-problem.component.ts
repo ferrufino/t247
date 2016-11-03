@@ -104,7 +104,7 @@ export class SubmitProblem implements OnInit {
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
-                "problem_id": 13,
+                "problem_id": 27,
                 "request_type": "submission",
                 "user_id": 5
             }
