@@ -11,7 +11,6 @@ log = logging.getLogger(__name__)
 
 ns = api.namespace('problems', description='Operations related to problems')
 
-
 @ns.route('/')
 class ProblemCollection(Resource):
 
@@ -20,7 +19,12 @@ class ProblemCollection(Resource):
         """
         Returns list of problems.
         """
-        problems = Problem.query.all()
+        problems = db.engine.execute("""
+            SELECT p.*, pt.topic_id
+            FROM problem p, problemtopic pt
+            WHERE p.id = pt.problem_id""").fetchall()
+
+
         return problems
 
 
@@ -33,7 +37,13 @@ class ProblemItem(Resource):
         """
         Returns a problem.
         """
-        return Problem.query.filter(Problem.id == id).one()
+        problem = db.engine.execute("""
+            SELECT p.*, pt.topic_id
+            FROM problem p, problemtopic pt
+            WHERE p.id = pt.problem_id AND p.id = %d""" % (id)).fetchone()
+
+
+        return problem
         
 @ns.route('/description/<int:id>')
 @api.response(404, 'Problem not found.')
