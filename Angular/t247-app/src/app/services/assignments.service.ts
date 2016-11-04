@@ -13,9 +13,9 @@ export class AssignmentsService {
   constructor(private http: Http) {
   }
 
-  getAssignmentsByStudent() {
+  getAssignmentsByStudent(id) {
     return this.http.get(
-        this.baseURL + 'bystudent/'+ 26
+        this.baseURL + 'bystudent/'+id
     ).map((response: Response) => response.json());
   }
 

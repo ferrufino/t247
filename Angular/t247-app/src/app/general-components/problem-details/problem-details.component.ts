@@ -26,8 +26,8 @@ export class ProblemDetailsComponent implements OnInit {
   problemDifficultyId: number;
   authorName: string;
   authorId: number;
-  problemTestCases: any[];
-  selectedTestCase: any;
+  problemTestCases: TestCase[];
+  selectedTestCase: TestCase;
   testCaseIndex: number;
 
   constructor(private _problemService: ProblemsService,
@@ -38,6 +38,7 @@ export class ProblemDetailsComponent implements OnInit {
 
     var problemID = 32; //TODO: DELETE THIS LINE
     this.testCaseIndex = 0;
+    this.problemTestCases = [];
 
     this._problemService.getProblemInformation(problemID).subscribe(
       response => {
@@ -45,28 +46,47 @@ export class ProblemDetailsComponent implements OnInit {
 
         let authorObject = response["author"];
 
-
+        // Author details
         this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
         this.authorId = authorObject["id"];
+
+        // Problem details
         this.problemName = response["name"];
         this.descriptionEng = response["description_english"];
         this.descriptionSpn = response["description_spanish"];
-        this.timeLimit = 1; response["time_limit"];
+
+
+        this.timeLimit = response["time_limit"];
         this.memoryLimit = response["memory_limit"];
-        this.problemSource = response["code"];
         this.problemLanguage = response["language"];
         this.problemDifficultyId = response["difficulty"];
         this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
-        this.problemTestCases = response["cases"];
-        this.selectedTestCase = this.problemTestCases[0];
         this.problemTopic = response["topics"][0].name;
-        console.log(this.selectedTestCase);
+
+        // Problem source code
+        this.problemSource = response["code"];
+
+        // Test cases
+        this.createTestCases(response["cases"]);
+        this.selectedTestCase = this.problemTestCases[0];
+
 
       },
       error => {
         console.log("Details not found of problem with ID: " + problemID);
       }
     );
+  }
+
+  createTestCases(data): void {
+
+    for (let i = 0; i < data.length; i++) {
+      let temp = data[i];
+      this.problemTestCases.push(new TestCase(temp["is_sample"], temp["input"], temp["output"], temp["feedback"]));
+    }
+
+    console.log(this.problemTestCases);
+
   }
 
 
@@ -102,7 +122,7 @@ export class ProblemDetailsComponent implements OnInit {
     this.updateSelectedTestCase();
   }
 
-  printCode($event){
+  printCode($event) {
     console.log($event);
   }
 
