@@ -110,6 +110,6 @@ class ProblemsList(Resource):
         Returns list of problems for table display
         """
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, p.difficulty, p.active FROM Problem p").fetchall()
+        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
         return result
 
