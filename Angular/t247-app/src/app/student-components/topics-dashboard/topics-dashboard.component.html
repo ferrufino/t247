@@ -1,8 +1,11 @@
-<h1 data-toggle="collapse" href="#collapse">
-  <a data-toggle="collapse" href="#collapse" (click)="showTopics()">Topics</a>
+<h1 *ngIf="problemsBool">
+  <a data-toggle="collapse" data-target="#topicrow" (click)="showTopics()">Topics</a>
 </h1>
-<div class="row" id="collapse">
-  <div class="col-xs-3 topic-box" data-toggle="collapse" data-target="#collapse" *ngFor="let entry of content" id="{{entry.id}}" (click)="displayProblems(entry)">{{entry.name}}</div>
+<h1 *ngIf="!problemsBool">
+  Topics
+</h1>
+<div class="row collapse in" id="topicrow" data-toggle="collapse" data-target="#topicrow" >
+  <div class="col-xs-3 topic-box" *ngFor="let entry of content" (click)="displayProblems(entry)">{{entry.name}}</div>
 </div>
 
 <h3 *ngIf="problemsBool">{{selectedTopicName}}</h3>
