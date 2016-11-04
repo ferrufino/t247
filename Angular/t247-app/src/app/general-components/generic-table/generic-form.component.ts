@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
@@ -11,12 +11,22 @@ import {UsersService} from '../../services/users.service';
 })
 export class GenericFormComponent implements OnInit  {
 
+  courses:Array<any>;
+  user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
+  topicName:string = "";
+  courseName:string = "";
+  group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
+
     @Input('typeForm') typeOfForm:string;
 
 
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
                 private usersService:UsersService) {
+    }
+
+    ngOnInit(){
+      console.log(this.typeOfForm);
     }
 
     onSubmitCourse() {
@@ -33,7 +43,7 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    this.renderTable();
+                    // this.renderTable();
                     this.courseName = '';
                 }
             });
@@ -73,7 +83,7 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    this.renderTable();
+                    // this.renderTable();
                     this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
                 }
             });
@@ -93,7 +103,7 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    this.renderTable();
+                    // this.renderTable();
                     this.topicName = '';
                 }
             });

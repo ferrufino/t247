@@ -5,18 +5,11 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="topicsBool">
-        <generic-form [typeForm]="'topics'"></generic-form>
-    </div>
-    <div class="row" *ngIf="coursesBool">
-        <generic-form [typeForm]="'courses'"></generic-form>
-    </div>
-    <div class="row" *ngIf="groupsBool">
-        <generic-form [typeForm]="'groups'"></generic-form>
-    </div>
-    <div class="row" *ngIf="usersBool">
-        <generic-form [typeForm]="'users'"></generic-form>
-    </div>
+
+    <generic-form *ngIf="topicsBool" [typeForm]="'topics'"></generic-form>
+    <generic-form *ngIf="coursesBool" [typeForm]="'courses'"></generic-form>
+    <generic-form *ngIf="groupsBool" [typeForm]="'groups'"></generic-form>
+    <generic-form *ngIf="usersBool" [typeForm]="'users'"></generic-form>
 
 
     <div class="center">
