@@ -133,7 +133,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns current assignments of student
         """
         result = db.engine.execute("""
-            SELECT a.title, p.name as problem_name, p.id as problem_id p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade
+            SELECT a.title, p.name as problem_name, p.id as problem_id, p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade
             FROM assignment a
             JOIN problem p ON p.id = a.problem_id
             JOIN "group" g ON g.id = a.group_id
