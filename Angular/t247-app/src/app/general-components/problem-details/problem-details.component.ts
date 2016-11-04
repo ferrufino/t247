@@ -46,7 +46,7 @@ export class ProblemDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    var problemID = 32; //TODO: DELETE THIS LINE
+    var problemID = 28; //TODO: DELETE THIS LINE
     this.testCaseIndex = 0;
     this.problemTestCases = [];
     this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
@@ -105,11 +105,11 @@ export class ProblemDetailsComponent implements OnInit {
   }
 
   /**
-   * This function checks if the current user is the same one that created the problem
-   * @returns {boolean} true if the user is also the author of the problem
+   * This function checks if the current user is the same one that created the problem OR the user is admin
+   * @returns {boolean} true if the user can edit this problem
    */
-  isAuthorOfProblem(){
-    return this.userInformationObject.id === this.authorId;
+  canEditProblem(){
+    return this.userInformationObject.id === this.authorId || this.userInformationObject.role === 'admin';
   }
 
   /**
