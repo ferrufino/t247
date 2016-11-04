@@ -141,7 +141,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
             JOIN enrollment e ON e.group_id = a.group_id AND e.student_id = %d
             LEFT JOIN submission s ON p.id = s.problem_id AND e.student_id = s.user_id
             WHERE a.start_date <= NOW() AND NOW() <= a.due_date
-            GROUP BY a.title, p.name, p.difficulty, c.name, a.due_date
+            GROUP BY a.title, p.name, p.id, p.difficulty, c.name, a.due_date
             ORDER BY a.due_date;
             """ % (student_id)).fetchall()
 
