@@ -11,6 +11,11 @@ test_case = api.model('Case', {
     'is_sample': fields.Boolean(required=True, description='Is test case sample?')
   })
 
+enable_test_case = api.model('Case', {
+    'id': fields.Integer(required=True, description='Test case id'),
+    'is_sample': fields.Boolean(required=True, description='Is test case sample?')
+  })
+
 problem = api.model('Problem', {
     'id': fields.Integer(required=True, description='Problem id'),
     'name': fields.String(required=True, description='Problem name'),
@@ -28,6 +33,14 @@ problem = api.model('Problem', {
     'memory_limit': fields.Integer(required=True,
                                   description='Test Case memory limit'),
     'topics': fields.List(fields.Nested(topic))
+  })
+
+problem_edition = api.model('Problem', {
+    'difficulty': fields.Integer(required=True, description='Problem difficulty'),
+    'description_english': fields.String(required=True, description='Problem description in English'),
+    'description_spanish': fields.String(required=True, description='Problem description in Spanish'),
+    'cases': fields.List(fields.Nested(enable_test_case)),
+    'topics' : fields.List(fields.Integer())
   })
 
 problem_table = api.model('Problem', {

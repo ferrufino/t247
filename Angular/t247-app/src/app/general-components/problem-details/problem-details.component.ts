@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProblemsService} from "../../services/problems.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {TestCase} from "../create-problem/TestCase";
@@ -11,21 +11,31 @@ import {TestCase} from "../create-problem/TestCase";
   styleUrls: ['./problem-details.component.css']
 })
 export class ProblemDetailsComponent implements OnInit {
+  @ViewChild('codeEditor') editorComponet
 
+  private userInformationObject: any; // Used to check if the user can edit the problem
 
-  // Problem details
+  // Author details
+  authorName: string;
+  authorId: number;
+
+  // Problem information
   problemName: string;
   descriptionEng: string;
   descriptionSpn: string;
+
+  // Problem details
   timeLimit: number;
   memoryLimit: number;
   problemTopic: string;
   problemLanguage: string;
-  problemSource: string;
   problemDifficultyLabel: string;
   problemDifficultyId: number;
-  authorName: string;
-  authorId: number;
+
+  // Problem source code
+  problemSource: string;
+
+  // Test cases
   problemTestCases: TestCase[];
   selectedTestCase: TestCase;
   testCaseIndex: number;
@@ -36,9 +46,11 @@ export class ProblemDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    var problemID = 32; //TODO: DELETE THIS LINE
+    var problemID = 28; //TODO: DELETE THIS LINE
     this.testCaseIndex = 0;
     this.problemTestCases = [];
+    this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
+    this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
 
     this._problemService.getProblemInformation(problemID).subscribe(
       response => {
@@ -50,12 +62,12 @@ export class ProblemDetailsComponent implements OnInit {
         this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
         this.authorId = authorObject["id"];
 
-        // Problem details
+        // Problem information
         this.problemName = response["name"];
         this.descriptionEng = response["description_english"];
         this.descriptionSpn = response["description_spanish"];
 
-
+        // Problem details
         this.timeLimit = response["time_limit"];
         this.memoryLimit = response["memory_limit"];
         this.problemLanguage = response["language"];
@@ -65,6 +77,7 @@ export class ProblemDetailsComponent implements OnInit {
 
         // Problem source code
         this.problemSource = response["code"];
+        this.editorComponet.setNewSourceCode(this.problemSource);
 
         // Test cases
         this.createTestCases(response["cases"]);
@@ -78,6 +91,10 @@ export class ProblemDetailsComponent implements OnInit {
     );
   }
 
+  /**
+   * This function recieves the data from the service and pushes TestCase objects to the array
+   * @param data
+   */
   createTestCases(data): void {
 
     for (let i = 0; i < data.length; i++) {
@@ -85,10 +102,15 @@ export class ProblemDetailsComponent implements OnInit {
       this.problemTestCases.push(new TestCase(temp["is_sample"], temp["input"], temp["output"], temp["feedback"]));
     }
 
-    console.log(this.problemTestCases);
-
   }
 
+  /**
+   * This function checks if the current user is the same one that created the problem OR the user is admin
+   * @returns {boolean} true if the user can edit this problem
+   */
+  canEditProblem(){
+    return this.userInformationObject.id === this.authorId || this.userInformationObject.role === 'admin';
+  }
 
   /**
    * Function used in the Carousel
@@ -122,8 +144,6 @@ export class ProblemDetailsComponent implements OnInit {
     this.updateSelectedTestCase();
   }
 
-  printCode($event) {
-    console.log($event);
-  }
+
 
 }
