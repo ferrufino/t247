@@ -15,8 +15,12 @@ export class TestCase {
   public feedback: string; // The feedback provided by the author of the problem
   public status: string; // This field contains the status of the evaluation for this test case
 
-  constructor(onDescription: boolean, status: string) {
+  constructor(onDescription: boolean, input?: string, output?: string, feedback?: string) {
     this.is_sample = onDescription;
     this.status = "successful run";
+    this.input = input;
+    this.output = output;
+    this.feedback = feedback;
   }
+
 }
