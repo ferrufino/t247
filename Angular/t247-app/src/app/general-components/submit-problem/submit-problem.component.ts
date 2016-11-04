@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
     IMultiSelectOption,
     IMultiSelectTexts,
@@ -30,6 +30,7 @@ export class SubmitProblem implements OnInit {
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
+    @ViewChild('codeEditor') codeEditor;
 
     private mySettings:IMultiSelectSettings = {
 
@@ -99,16 +100,15 @@ export class SubmitProblem implements OnInit {
         element.style.filter = 'alpha(opacity=1)';
 
     }
-
-
-    codeToSubmitReceived($event) {
-
+    
+    
+    codeToSubmitReceived() {
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
             this.hideFeedbackCard("error");
 
         }else{
-            var codeFromEditor = $event;
+            var codeFromEditor = this.codeEditor.getSourceCode();;
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,

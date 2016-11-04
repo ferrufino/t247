@@ -34,7 +34,8 @@ problem_table = api.model('Problem', {
     'id': fields.Integer(required=True, description='Problem id'),
     'name': fields.String(required=True, description='Problem name'),
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
-    'active': fields.Boolean(required=True, description='Problem active')
+    'active': fields.Boolean(required=True, description='Problem active'),
+    'topic': fields.String(required=True, description='Topic')
   })
 
 simple_test_case = api.model('Case', {
