@@ -13,6 +13,7 @@ import {ViewUsersComponent} from "./admin-components/view-users/view-users.compo
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
+import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
 import {Tab} from './general-components/tab/tab.component';
 import {Tabs} from './general-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
@@ -26,6 +27,7 @@ import {FilterSubmissionsPipe} from './pipes/filter-submissions.pipe';
 import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
 import {FilterCoursesPipe} from './pipes/filter-courses.pipe';
 import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
+import {FirstLoginComponent} from './student-components/first-login.component';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
@@ -82,6 +84,7 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
         ViewUsersComponent,
         StudentComponentsComponent,
         GenericTableComponent,
+        GenericFormComponent,
         Tab,
         Tabs,
         FilterPipe,
@@ -94,6 +97,7 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
         FilterGroupsPipe,
         FilterCoursesPipe,
         FilterTopicsPipe,
+        FirstLoginComponent,
         TopicsEditComponent,
         CoursesEditComponent,
         GroupComponent,

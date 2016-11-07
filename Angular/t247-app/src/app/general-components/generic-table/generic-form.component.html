@@ -1,0 +1,126 @@
+<div class="modal fade" id="courseFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'courses' ">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitCourse()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Course</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="period">Name</label>
+            <input class="form-control validate" id="nameCourse" type="text"
+                   [(ngModel)]="courseName" name="name">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="typeOfForm == 'courses' ">
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#courseFormModal">
+        New
+    </button>
+</div>
+
+<div class="modal fade" id="topicsFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'topics' ">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitTopic()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Topic</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nameTopic">Name</label>
+            <input id="nameTopic" type="text" class="validate"
+                   [(ngModel)]="topicName" name="name">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="typeOfForm == 'topics' ">
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#topicsFormModal">
+        New
+    </button>
+</div>
+
+
+<div class="row" *ngIf="typeOfForm == 'groups' ">
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#groupFormModal">
+        New
+    </button>
+</div>
+
+
+<div class="modal fade" id="usersFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'users' ">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmitUser()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New User</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="enrollmentUser">Enrollment</label>
+            <input id="enrollmentUser" type="text" class="validate"
+                   [(ngModel)]="user.enrollment" name="enrollmentUser">
+          </div>
+          <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input id="first_name" type="text" class="validate"
+                   [(ngModel)]="user.first_name" name="first_name">
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input id="last_name" type="text" class="validate"
+                   [(ngModel)]="user.last_name" name="last_name">
+          </div>
+          <div class="form-group">
+            <label for="userRole">Role</label>
+            <select id="userRole" class="form-control"
+                    [(ngModel)]="user.role" name="userRole">
+                <option value="admin">admin</option>
+                <option value="professor">professor</option>
+                <option value="admin">student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" class="validate"
+                   [(ngModel)]="user.email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="validate"
+                   [(ngModel)]="user.password" name="password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="typeOfForm == 'users' ">
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#usersFormModal">
+        New
+    </button>
+</div>

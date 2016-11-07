@@ -1,0 +1,32 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand">Tutoring 24/7</a>
+    </div>
+  </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<form (ngSubmit)="onSubmit(f)" #f="ngForm" class="jumbotron">
+  <h2>Please fill the missing information</h2>
+  <br>
+    <div class="form-group">
+      <label for="first_name">First name</label>
+      <input type="text" class="form-control" id="first_name" ngModel name="first_name" required>
+    </div>
+    <div class="form-group">
+      <label for="last_name">Last name</label>
+      <input type="text" class="form-control" id="last_name" ngModel name="last_name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" ngModel name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" ngModel name="password" required>
+    </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
