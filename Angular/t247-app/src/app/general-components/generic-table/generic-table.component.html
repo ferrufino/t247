@@ -6,10 +6,10 @@
     </div>
 
 
-    <generic-form *ngIf="topicsBool" [typeForm]="'topics'"></generic-form>
-    <generic-form *ngIf="coursesBool" [typeForm]="'courses'"></generic-form>
+    <generic-form *ngIf="coursesBool" [typeForm]="'courses'" (formChange)="renderTable();"></generic-form>
+    <generic-form *ngIf="topicsBool" [typeForm]="'topics'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="groupsBool" [typeForm]="'groups'"></generic-form>
-    <generic-form *ngIf="usersBool" [typeForm]="'users'"></generic-form>
+    <generic-form *ngIf="usersBool" [typeForm]="'users'" (formChange)="renderTable();"></generic-form>
 
 
     <div class="center">

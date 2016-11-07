@@ -62,14 +62,6 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-        this.problemsBool = false;
-        this.assignmentsBool = false;
-        this.submissionsBool = false;
-        this.assignmentSubmissionsBool = false;
-        this.groupsBool = false;
-        this.coursesBool = false;
-        this.topicsBool = false;
-        this.usersBool = false;
 
         switch (this.typeOfTableName) {
 
@@ -78,6 +70,13 @@ export class GenericTableComponent implements OnInit {
                     submissions => {
                         this.content = submissions;
                         this.problemsBool = true;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
                     }
                 );
@@ -88,6 +87,13 @@ export class GenericTableComponent implements OnInit {
                     submissions => {
                         this.content = submissions;
                         this.assignmentsBool = true;
+                        this.problemsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Title", "Class", "Topic", "Due Date", "Completed"];
                     }
                 );
@@ -97,6 +103,13 @@ export class GenericTableComponent implements OnInit {
                 this.submissionOfProblems.getSubmissions().subscribe(
                  submissions => {
                      this.submissionsBool = true;
+                     this.problemsBool = false;
+                     this.assignmentsBool = false;
+                     this.assignmentSubmissionsBool = false;
+                     this.groupsBool = false;
+                     this.coursesBool = false;
+                     this.topicsBool = false;
+                     this.usersBool = false;
                      this.columns = ["Name", "Number of Attempts", "Solved"];
                      this.content = submissions;
                  }
@@ -110,6 +123,13 @@ export class GenericTableComponent implements OnInit {
                     submissions => {
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
@@ -147,6 +167,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('groups');
                         }
                         this.groupsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
                     }
                 );
@@ -168,6 +195,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('courses');
                         }
                         this.coursesBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Title", "Edit", "Delete"];
                     }
                 );
@@ -191,11 +225,25 @@ export class GenericTableComponent implements OnInit {
                     this.content = this._cacheService.get('topics');
                 }
                 this.topicsBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.usersBool = false;
                 this.columns = ["Id", "Title", "Edit", "Delete"];
                 break;
 
             case "users":
                 this.usersBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.topicsBool = false;
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(
@@ -242,7 +290,7 @@ export class GenericTableComponent implements OnInit {
             });
         }
     }
-    
+
 
     onSelectCourse(course) {
         this.router.navigate(['/editCourse', course.id]);
@@ -281,7 +329,7 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
- 
+
     onDeleteUser(user) {
         var r = confirm("Are you sure?");
         if (r == true) {

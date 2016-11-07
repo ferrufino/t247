@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
@@ -18,7 +18,7 @@ export class GenericFormComponent implements OnInit  {
   group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
 
     @Input('typeForm') typeOfForm:string;
-
+    @Output() formChange = new EventEmitter();
 
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
@@ -43,8 +43,8 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    // this.renderTable();
                     this.courseName = '';
+                    this.formChange.emit();
                 }
             });
         }
@@ -83,8 +83,8 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    // this.renderTable();
                     this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
+                    this.formChange.emit();
                 }
             });
         }
@@ -103,8 +103,8 @@ export class GenericFormComponent implements OnInit  {
                 }
                 else {
                     console.log(result);
-                    // this.renderTable();
                     this.topicName = '';
+                    this.formChange.emit();
                 }
             });
         }
