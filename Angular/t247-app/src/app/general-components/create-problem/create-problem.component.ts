@@ -252,7 +252,7 @@ export class CreateProblem implements OnInit {
 
           // Check for server errors
           if (data['status'] == "error") {
-            console.log("ERROR!");
+            console.log("ERROR - at check problem's test cases");
           } else {
             // No errors, get the outputs of the test cases
             this.testCasesReady = this.setOutputForTestCases(data);
