@@ -12,6 +12,7 @@ export class ProblemsService {
   // API / URLs
   private PROBLEM_LIST_URL = environment.apiURL + '/problems/list/';
   private GET_PROBLEM_DATA_URL = environment.apiURL + '/problems/';
+  private PROBLEM_BY_TOPIC_URL = environment.apiURL + '/problems/listbytopic/';
 
   constructor(private http: Http) {
   }
@@ -24,6 +25,10 @@ export class ProblemsService {
    */
   getProblemInformation(problemID: number) {
     return this.http.get(this.GET_PROBLEM_DATA_URL + problemID).map((response: Response) => response.json());
+  }
+
+  getProblemsFromTopic(id_topic, id_user) {
+    return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic).map((response: Response) => response.json());
   }
 
   getProblems() {

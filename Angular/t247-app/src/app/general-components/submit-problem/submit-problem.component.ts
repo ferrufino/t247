@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
     IMultiSelectOption,
     IMultiSelectTexts,
@@ -6,6 +6,8 @@ import {
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
+import { ActivatedRoute, Params }   from '@angular/router';
+
 
 @Component({
     selector: 'submit-problem',
@@ -15,7 +17,7 @@ import {SubmitProblemService} from "../../services/submit-problem.service";
 })
 export class SubmitProblem implements OnInit {
 
-    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService) {
+    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route: ActivatedRoute) {
 
     }
     /*Main Variables Declaration*/
@@ -24,12 +26,15 @@ export class SubmitProblem implements OnInit {
     private descriptionSpanish;
     private descriptionTitle;
     private attempts;
-    private input;
-    private output;
+    private testCases;
+    private successMessage:string = "Success";
+    private errorMessage:string = "Error";
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
+    @ViewChild('codeEditor') codeEditor;
+    @ViewChild('feedbackCard') feedbackCard;
 
     private mySettings:IMultiSelectSettings = {
 
@@ -43,13 +48,22 @@ export class SubmitProblem implements OnInit {
     };
 
     ngOnInit() {
-        this.getContentDescription();
-        this.getContentAttempt();
+
+        this.route.params.forEach((params: Params) => {
+            let id = +params['id'];
+            this.getContentDescription(id);
+            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+            console.log(userInfo.id + " " + id);
+            this.getContentAttempt(userInfo.id, id);
+        });
+
         this.progLangToSubmit = "none";
         document.getElementById('success-feedback').style.display = "none";
         document.getElementById('error-feedback').style.display = "none";
 
+
     }
+
 
     onChange($event) {
         if ($event == 1) {
@@ -61,62 +75,30 @@ export class SubmitProblem implements OnInit {
         }
         console.log(this.progLangToSubmit);
     }
-
-    fade(element) {
-        var op = 1;  // initial opacity
-        var timer = setInterval(function () {
-            if (op <= 0.1){
-                clearInterval(timer);
-                element.style.display = 'none';
-            }
-            element.style.opacity = (op).toString();
-            console.log(op);
-            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-            op -= op * 0.1; // control how it disappears
-        }, 50); // time showed
-    }
-
-    hideFeedbackCard(type:string) {
-
-        if (type == "success") {
-            var element = document.getElementById('success-feedback');
-        } else {
-            var element = document.getElementById('error-feedback');
-        }
-        window.setTimeout(() =>{
-            this.fade(element);
-            console.log("despues de fade");
-        }, 5000);
-        element.style.opacity = "1";
-        element.style.filter = 'alpha(opacity=1)';
-
-    }
-
-
-    codeToSubmitReceived($event) {
-
+    
+    
+    codeToSubmitReceived() {
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
-            this.hideFeedbackCard("error");
+            this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
         }else{
-            var codeFromEditor = $event;
+            var codeFromEditor = this.codeEditor.getSourceCode();
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
-                "problem_id": 13,
+                "problem_id": 25,
                 "request_type": "submission",
-                "user_id": 5
+                "user_id": 4
             }
             console.log(codeObject);
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
-                        document.getElementById('success-feedback').style.display = "block";
-                        this.hideFeedbackCard("success");
+                        
+                        this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                     } else {
-                        document.getElementById('error-feedback').style.display = "block";
-                        this.hideFeedbackCard("error");
+                        this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
                     }
                 }
@@ -128,21 +110,20 @@ export class SubmitProblem implements OnInit {
 
     }
 
-    getContentDescription() {
+    getContentDescription(id) {
 
-        this._httpSubmitProblemService.getDescriptions().subscribe(
+        this._httpSubmitProblemService.getDescriptions(id).subscribe(
             content => {
                 this.descriptionEnglish = content.english;
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
-                this.input = content.input;
-                this.output = content.output;
+                this.testCases = content.test_cases;
             }
         );
     }
 
-    getContentAttempt() {
-        this._httpSubmitProblemService.getAttempts().subscribe(
+    getContentAttempt(s_id, id) {
+        this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
                this.attempts = content;
             }

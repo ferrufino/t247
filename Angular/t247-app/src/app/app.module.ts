@@ -27,6 +27,7 @@ import {FilterSubmissionsPipe} from './pipes/filter-submissions.pipe';
 import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
 import {FilterCoursesPipe} from './pipes/filter-courses.pipe';
 import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
+import {FirstLoginComponent} from './student-components/first-login.component';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
@@ -57,6 +58,7 @@ import {AssignmentFormComponent} from "./professor-components/group/assignment-f
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
+import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
 @NgModule({
     imports: [
@@ -95,6 +97,7 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         FilterGroupsPipe,
         FilterCoursesPipe,
         FilterTopicsPipe,
+        FirstLoginComponent,
         TopicsEditComponent,
         CoursesEditComponent,
         GroupComponent,
@@ -104,7 +107,8 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         SiteNavbarComponent,
         PolymerElement('vaadin-date-picker'),
         AssignmentFormComponent,
-        GroupFormComponent
+        GroupFormComponent,
+        FeedbackCardComponent
     ],
     bootstrap: [AppComponent],
     providers: [

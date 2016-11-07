@@ -97,10 +97,13 @@ class AssignmentSubmissionSummary(Resource):
         the assignment so far
         """
         result = db.engine.execute("""
-            SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(u.enrollment) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade
-            FROM \"user\" u, submission s, enrollment e, assignment a
-            WHERE s.problem_id = a.problem_id AND a.id = %d AND u.id = e.student_id AND e.group_id = a.group_id AND s.user_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date
-            GROUP BY u.id, u.enrollment;""" % (assignment_id)).fetchall()
+            SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(s.id) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade
+            from "user" u
+            join enrollment e on u.id = e.student_id
+            join assignment a ON a.id = %d AND e.group_id = a.group_id
+            left join submission s on s.problem_id = a.problem_id AND s.user_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date
+            group by u.id, student_name, u.enrollment
+            """ % (assignment_id)).fetchall()
 
         return result
 
@@ -130,10 +133,16 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns current assignments of student
         """
         result = db.engine.execute("""
-            SELECT a.title, p.name as problem_name, p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade
-            FROM problem p, course c, submission s, assignment a, \"group\" g, enrollment e
-            WHERE p.id = a.problem_id AND p.id = s.problem_id AND a.group_id = g.id AND g.course_id = c.id AND a.start_date <= NOW() AND NOW() <= a.due_date AND e.group_id = a.group_id AND e.student_id = s.user_id AND s.user_id = %d
-            GROUP BY a.title, p.name, p.difficulty, c.name, a.due_date
-            ORDER BY a.due_date;""" % (student_id)).fetchall()
+            SELECT a.title, p.name as problem_name, p.id as problem_id, p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade
+            FROM assignment a
+            JOIN problem p ON p.id = a.problem_id
+            JOIN "group" g ON g.id = a.group_id
+            JOIN course c ON c.id = g.course_id
+            JOIN enrollment e ON e.group_id = a.group_id AND e.student_id = %d
+            LEFT JOIN submission s ON p.id = s.problem_id AND e.student_id = s.user_id
+            WHERE a.start_date <= NOW() AND NOW() <= a.due_date
+            GROUP BY a.title, p.name, p.id, p.difficulty, c.name, a.due_date
+            ORDER BY a.due_date;
+            """ % (student_id)).fetchall()
 
         return result

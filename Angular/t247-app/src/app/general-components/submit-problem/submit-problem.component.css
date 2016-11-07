@@ -6,11 +6,21 @@
     margin-bottom: 50px;
 }
 .submit-code__feedback-card{
-
+    padding-top: 25px;
 }
 
 .block__title{
     text-align: center;
     padding-top: 15px;
     padding-bottom: 10px;
+}
+
+.submit-code-btn{
+    margin-top: 10px;
+    float: right;
+}
+
+.submit-code__component{
+
+    margin-top: 40px;
 }

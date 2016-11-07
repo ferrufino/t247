@@ -1,4 +1,27 @@
-<h3> Topics </h3>
-<div class="row">
-  <div class="col-xs-3 topic-box" *ngFor="let entry of content" id="{{entry.id}}">{{entry.name}}</div>
+<h1 *ngIf="problemsBool">
+  <a data-toggle="collapse" data-target="#topicrow" (click)="showTopics()">Topics</a>
+</h1>
+<h1 *ngIf="!problemsBool">
+  Topics
+</h1>
+<div class="row collapse in" id="topicrow" data-toggle="collapse" data-target="#topicrow" >
+  <div class="col-xs-3 topic-box" *ngFor="let entry of content" (click)="displayProblems(entry)">{{entry.name}}</div>
 </div>
+
+<h3 *ngIf="problemsBool">{{selectedTopicName}}</h3>
+<table class="table table-hover table-striped" *ngIf="problemsBool">
+  <thead>
+    <tr>
+      <th *ngFor="let colName of columns">{{colName}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let problem of contentTable">
+      <td>{{problem.name}}</td>
+      <td *ngIf=" problem.difficulty == 0">Easy</td>
+      <td *ngIf=" problem.difficulty == 1">Medium</td>
+      <td *ngIf=" problem.difficulty == 2">Hard</td>
+      <td>{{problem.status}}</td>
+    </tr>
+  </tbody>
+</table>
