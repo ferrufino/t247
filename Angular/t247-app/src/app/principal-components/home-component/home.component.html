@@ -19,6 +19,9 @@
         <tab tabTitle="Create Problem">
           <create-problem></create-problem>
         </tab>
+        <tab tabTitle="Problem information">
+          <app-problem-details></app-problem-details>
+        </tab>
       </tabs>
     </div>
     <div class="row" *ngSwitchCase="'professor'">
@@ -33,7 +36,7 @@
         <tab tabTitle="Topics">
           <generic-table [typetable]="'topics'"></generic-table>
         </tab>
-        <tab tabTitle="Problem">
+        <tab tabTitle="Problems">
           <generic-table [typetable]="'problems'"></generic-table>
         </tab>
       </tabs>
@@ -41,7 +44,8 @@
     <div class="row" *ngSwitchCase="'student'">
       <tabs>
         <tab tabTitle="My Assignments">
-          <submit-problem></submit-problem>
+            <generic-table [typetable]="'assignments'"></generic-table>
+            <submit-problem></submit-problem>
         </tab>
         <tab tabTitle="Topics Dashboard">
           <app-topics-dashboard></app-topics-dashboard>

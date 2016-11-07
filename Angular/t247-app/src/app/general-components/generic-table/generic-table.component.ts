@@ -22,7 +22,7 @@ export class GenericTableComponent implements OnInit {
     user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
     topicName:string = "";
     courseName:string = "";
-    group:any = {courseId: "", enrollmentText: "", period: ""};
+    group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
 
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
@@ -62,60 +62,54 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-        this.problemsBool = false;
-        this.assignmentsBool = false;
-        this.submissionsBool = false;
-        this.assignmentSubmissionsBool = false;
-        this.groupsBool = false;
-        this.coursesBool = false;
-        this.topicsBool = false;
-        this.usersBool = false;
 
         switch (this.typeOfTableName) {
 
             case "problems":
                 this.problemsService.getProblems().subscribe(
                     submissions => {
-                        console.log(submissions);
                         this.content = submissions;
                         this.problemsBool = true;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
                     }
                 );
                 break;
 
             case "assignments":
-                this.assignmentsBool = true;
-                this.columns = ["Title", "Class", "Topic", "Due Date", "Completed"];
-                this.content = [
-                    {
-                        "title": "dummyProblem",
-                        "class": "Algorithms",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
-                    },
-                    {
-                        "title": "dummyProblem",
-                        "class": "Data Structure",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
-                    },
-                    {
-                        "title": "dummyProblem",
-                        "class": "Database",
-                        "topic": "Hero 1",
-                        "duedate": '3/4/2016',
-                        "completed": false
+                this.assignmentsService.getAssignments().subscribe(
+                    submissions => {
+                        this.content = submissions;
+                        this.assignmentsBool = true;
+                        this.problemsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
+                        this.columns = ["Title", "Class", "Topic", "Due Date", "Completed"];
                     }
-                ];
+                );
                 break;
 
             case "submissions":
                 this.submissionOfProblems.getSubmissions().subscribe(
                  submissions => {
                      this.submissionsBool = true;
+                     this.problemsBool = false;
+                     this.assignmentsBool = false;
+                     this.assignmentSubmissionsBool = false;
+                     this.groupsBool = false;
+                     this.coursesBool = false;
+                     this.topicsBool = false;
+                     this.usersBool = false;
                      this.columns = ["Name", "Number of Attempts", "Solved"];
                      this.content = submissions;
                  }
@@ -127,9 +121,15 @@ export class GenericTableComponent implements OnInit {
             case "assignmentSubmissions":
                 this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
                     submissions => {
-                        debugger;
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
@@ -142,7 +142,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in courses) {
                                 myArray.push(courses[key]);
-                                console.log(courses[key]);
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.courses = this._cacheService.get('courses');
@@ -159,7 +158,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in groups) {
                                 myArray.push(groups[key]);
-                                console.log(groups[key]);
                             }
                             this._cacheService.set('groups', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('groups');
@@ -169,6 +167,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('groups');
                         }
                         this.groupsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
                     }
                 );
@@ -181,7 +186,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in courses) {
                                 myArray.push(courses[key]);
-                                console.log(courses[key]);
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('courses');
@@ -191,6 +195,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('courses');
                         }
                         this.coursesBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Title", "Edit", "Delete"];
                     }
                 );
@@ -203,7 +214,6 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in topics) {
                                 myArray.push(topics[key]);
-                                console.log(topics[key]);
                             }
                             this._cacheService.set('topics', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('topics');
@@ -215,11 +225,25 @@ export class GenericTableComponent implements OnInit {
                     this.content = this._cacheService.get('topics');
                 }
                 this.topicsBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.usersBool = false;
                 this.columns = ["Id", "Title", "Edit", "Delete"];
                 break;
 
             case "users":
                 this.usersBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.topicsBool = false;
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(
@@ -227,9 +251,7 @@ export class GenericTableComponent implements OnInit {
                             const myArray = [];
                             for (let key in users) {
                                 myArray.push(users[key]);
-                                console.log(users[key]);
                             }
-                            console.log(myArray);
                             this._cacheService.set('users', myArray, {maxAge: environment.lifeTimeCache});
                             this.content = this._cacheService.get('users');
                         }
@@ -269,26 +291,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitTopic() {
-        var llenado = true;
-        if (this.topicName === "") {
-            window.alert("Please type a topic name");
-            llenado = false;
-        }
-        console.log(this.topicName);
-        if (llenado) {
-            this.topicsService.createTopic(this.topicName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.topicName = '';
-                }
-            });
-        }
-    }
 
     onSelectCourse(course) {
         this.router.navigate(['/editCourse', course.id]);
@@ -310,58 +312,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitCourse() {
-        var llenado = true;
-        if (this.courseName === "") {
-            window.alert("Please type a course name");
-            llenado = false;
-        }
-        console.log(this.courseName);
-        if (llenado) {
-            this.coursesService.createCourse(this.courseName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.courseName = '';
-                }
-            });
-        }
-    }
-
-    onSubmitGroup() {
-        var llenado = true;
-        if (this.group.courseId === "") {
-            window.alert("Please choose a course");
-            llenado = false;
-        }
-        if (this.group.enrollmentText === "") {
-            window.alert("Please register students");
-            llenado = false;
-        }
-        if (this.group.period === "") {
-            window.alert("Please write a period");
-            llenado = false;
-        }
-        this.group.courseId = Number(this.group.courseId);
-        this.group.enrollments = this.group.enrollmentText.split(",");
-        this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
-        if (llenado) {
-            console.log(this.group);
-            this.groupsService.createGroup(this.group).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.group = {courseId: "", enrollmentText: "", period: ""};
-                }
-            });
-        }
-    }
 
     onDeleteGroup(group) {
         var r = confirm("Are you sure?");
@@ -379,46 +329,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitUser() {
-        var llenado = true;
-        if (this.user.enrollment === "") {
-            window.alert("Missing the enrollment");
-            llenado = false;
-        }
-        if (this.user.first_name === "") {
-            window.alert("Missing first name");
-            llenado = false;
-        }
-        if (this.user.last_name === "") {
-            window.alert("Missing last name");
-            llenado = false;
-        }
-        if (this.user.role === "") {
-            window.alert("Please choose a role");
-            llenado = false;
-        }
-        if (this.user.email === "") {
-            window.alert("Missing email");
-            llenado = false;
-        }
-        if (this.user.password === "") {
-            window.alert("Missing password");
-            llenado = false;
-        }
-        if (llenado) {
-            console.log(this.user);
-            this.usersService.createUser(this.user).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
-                }
-            });
-        }
-    }
 
     onDeleteUser(user) {
         var r = confirm("Are you sure?");
@@ -439,5 +349,6 @@ export class GenericTableComponent implements OnInit {
     onSelectUser(user) {
         this.router.navigate(['/editUser', user.id]);
     }
+
 
 }

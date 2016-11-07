@@ -56,24 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   logout() {
-    //this._service.logout();
-    this._service.request_logout().subscribe(
-      data => {
-        console.log('Successfully logged out');
-        console.log(data);
-        sessionStorage.removeItem("email_user");
-        sessionStorage.removeItem("auth_token");
-        sessionStorage.removeItem("userJson");
-        localStorage.removeItem("email_user");
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("userJson");
-        this._service.complete_logout();
-      },
-      err => {
-        console.error(err);
-      }
-    );
-
+    this._service.logout();
   }
 
   ngAfterViewInit() {

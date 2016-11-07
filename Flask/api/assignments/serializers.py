@@ -8,17 +8,9 @@ assignment = api.model('Assignment', {
     'title': fields.String(required=True, description='Assignment title'),
     'start_date': fields.DateTime(required=True, description='Assignment start date'),
     'due_date': fields.DateTime(required=True, description='Assignment due date'),
-    'group_id': fields.Integer(required=True, description='Id of the group where the assignment is due')
+    'group_id': fields.Integer(required=True, description='Id of the group where the assignment is due'),
+    'problem': fields.Nested(problem)
 })
-
-# assignment_with_group = api.model('AssignmentWithGroup', {
-#     'id': fields.Integer(required=True, description='Assignment id'),
-#     'title': fields.String(required=True, description='Assignment title'),
-#     'start_date': fields.DateTime(required=True, description='Assignment start date'),
-#     'due_date': fields.DateTime(required=True, description='Assignment due date'),
-#     'group': fields.Nested(group),
-#     'problem': fields.Nested(problem)
-# })
 
 assignment_creation = api.model('AssignmentCreation', {
     'title': fields.String(required=True, description='Assignment title'),
@@ -41,4 +33,13 @@ student_submission = api.model('StudentSubmission', {
     'date': fields.DateTime(required=True, description='Submission date'),
     'grade': fields.Integer(required=True, description='Submission grade'),
     'code': fields.String(required=True, description='Submission code')
+})
+
+student_assignment = api.model('StudentAssignment', {
+    'title': fields.String(required=True, description='Assignment title'),
+    'problem_name': fields.String(required=True, description='Problem name'),
+    'difficulty': fields.Integer(required=True, description='Problem difficulty'),
+    'course_name': fields.String(required=True, description='Course name'),
+    'due_date': fields.DateTime(required=True, description='Due date'),
+    'grade': fields.Integer(required=True, description='Grade')
 })
