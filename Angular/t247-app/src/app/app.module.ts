@@ -56,6 +56,7 @@ import {AssignmentFormComponent} from "./professor-components/group/assignment-f
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
+import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
 @NgModule({
     imports: [
@@ -102,7 +103,8 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         SiteNavbarComponent,
         PolymerElement('vaadin-date-picker'),
         AssignmentFormComponent,
-        GroupFormComponent
+        GroupFormComponent,
+        FeedbackCardComponent
     ],
     bootstrap: [AppComponent],
     providers: [
