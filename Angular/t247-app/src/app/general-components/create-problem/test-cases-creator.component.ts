@@ -15,7 +15,7 @@ export class TestCasesCreatorComponent {
    * after this function runs a new Materialize card is added to the DOM
    */
   addTestCase(){
-    let temp = new TestCase(false, "successful run");
+    let temp = new TestCase(false);
     this.testcaseslist.push(temp);
   }
 

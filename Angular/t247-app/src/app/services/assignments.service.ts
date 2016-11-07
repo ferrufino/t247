@@ -17,6 +17,11 @@ export class AssignmentsService {
     getAssignments() {
         return this.http.get(this.userURL).map((response:Response) => response.json());
     }
+  getAssignmentsByStudent(id) {
+    return this.http.get(
+        this.baseURL + 'bystudent/'+id
+    ).map((response: Response) => response.json());
+  }
 
     getSubmissions(id) {
         return this.http

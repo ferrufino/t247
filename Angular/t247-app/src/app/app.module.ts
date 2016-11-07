@@ -27,6 +27,7 @@ import {FilterSubmissionsPipe} from './pipes/filter-submissions.pipe';
 import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
 import {FilterCoursesPipe} from './pipes/filter-courses.pipe';
 import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
+import {FirstLoginComponent} from './student-components/first-login.component';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
@@ -95,6 +96,7 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         FilterGroupsPipe,
         FilterCoursesPipe,
         FilterTopicsPipe,
+        FirstLoginComponent,
         TopicsEditComponent,
         CoursesEditComponent,
         GroupComponent,

@@ -3,9 +3,9 @@ import logging
 from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
-from api.problems.serializers import problem_table, problem_description
+from api.problems.serializers import problem_table, problem_description, problem_edition
 from api.restplus import api
-from models import db, Problem, Topic, ProblemTopic, Case
+from models import db, Problem, Topic, ProblemTopic, Case, Language
 from sqlalchemy import join
 from sqlalchemy.orm import Load
 
@@ -22,7 +22,11 @@ class ProblemCollection(Resource):
         Returns list of problems.
         """
         problems = db.session.query(Problem).all()
-        print(problems)
+        
+        # Retrieve problem's language name
+        for problem in problems:
+            problem.language = Language.query.filter(Language.value == problem.language).one().name
+
         return problems
 
 
@@ -35,9 +39,48 @@ class ProblemItem(Resource):
         """
         Returns a problem.
         """
-        problem = db.session.query(Problem).filter(Problem.id == id).one()
-        print(problem)
+        problem = db.session.query(Problem).filter(Problem.id == id).first()
+        
+        if (problem is not None):
+            problem.language = Language.query.filter(Language.value == problem.language).one().name            
+
         return problem
+
+    @api.expect(problem_edition)
+    @api.response(204, 'Problem successfully updated.')
+    def put(self, id):
+        """
+        Updates a problem.
+        """
+        data = request.json
+        
+        topics = data['topics']
+        cases  = data['cases']
+
+        del data['topics']
+        del data['cases']
+
+        # Update problem's common fields
+        Problem.query.filter(Problem.id == id).update(data)
+        db.session.commit()
+
+        # Delete problem's topics
+        ProblemTopic.query.filter(ProblemTopic.problem_id == id).delete()
+        db.session.commit()
+
+        # Create new problem's topics
+        for topic_id in topics:
+            new_problemtopic = ProblemTopic(problem_id=id,
+                                        topic_id=topic_id)
+            db.session.add(new_problemtopic)
+            db.session.commit()
+
+        # Update test cases
+        for case in cases:
+            Case.query.filter(Case.id == case['id']).update({'is_sample' : case['is_sample']})
+            db.session.commit()
+
+        return None, 204
         
 @ns.route('/description/<int:id>')
 @api.response(404, 'Problem not found.')
@@ -103,6 +146,7 @@ class ProblemsList(Resource):
         Returns list of problems for table display
         """
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, p.difficulty, p.active FROM Problem p").fetchall()
+        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
         return result
+
 

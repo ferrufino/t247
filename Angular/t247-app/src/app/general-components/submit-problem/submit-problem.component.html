@@ -1,71 +1,92 @@
-<div class="submit-code">
-    <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has been submitted successfully, give it a sec.</div>
-    <div id="error-feedback" class="alert alert-danger" role="alert"><strong>Error</strong> There has been an error with your submission.</div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-block">
-            <h2 class="block__title">{{descriptionTitle}}</h2>
-            <div class="">
-                <tabs>
-                    <tab tabTitle="English">
-                        <h4>Description:</h4>
-                        <p><strong>{{descriptionEnglish}}</strong></p>
-                        <h4>Input:</h4>
-                        <p>{{input}}</p>
-                        <h4>Output:</h4>
-                        <p>{{output}}</p>
-                    </tab>
-                    <tab tabTitle="Español">
-                        <h4>Description:</h4>
-                        <p><strong>{{descriptionSpanish}}</strong></p>
-                        <h4>Input:</h4>
-                        <p>{{input}}</p>
-                        <h4>Output:</h4>
-                        <p>{{output}}</p>
-                    </tab>
-                </tabs>
+<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="true" [actualRole]="selectedRole"
+                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
+<div class="container submit-code__component">
+    <div class="content">
+
+        <div class="submit-code">
+            <div id="success-feedback" class="alert alert-success" role="alert"><strong>Good Job!</strong> Your problem has
+                been
+                submitted successfully, give it a sec.
+            </div>
+            <div id="error-feedback" class="alert alert-danger" role="alert"><strong>Error</strong> There has been an error
+                with
+                your submission.
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card card-block">
-            <h2 class="block__title">Problem Submission</h2>
-            <tabs>
-                <tab tabTitle="New Attempt">
-                    <div class="new-attempt">
-                        <div class="dropdown-position">
-                            <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
-                                                     [(ngModel)]="selectedOptions"
-                                                     (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
-                        </div>
-                        <code-editor (codeToSubmit)="codeToSubmitReceived($event)"></code-editor>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <h2 class="block__title">{{descriptionTitle}}</h2>
+                    <div class="">
+                        <tabs>
+                            <tab tabTitle="English">
+                                <h4>Description:</h4>
+                                <p class="white-space"><strong>{{descriptionEnglish}}</strong></p>
+                        <span *ngFor="let case of testCases">
+                            <h4>Input:</h4>
+                            <p class="white-space">{{case.input}}</p>
+                            <h4>Output:</h4>
+                            <p class="white-space">{{case.output}}</p>
+                        </span>
+
+                            </tab>
+                            <tab tabTitle="Español">
+                                <h4>Description:</h4>
+                                <p class="white-space"><strong>{{descriptionSpanish}}</strong></p>
+                        <span *ngFor="let case of testCases">
+                            <h4>Input:</h4>
+                            <p class="white-space">{{case.input}}</p>
+                            <h4>Output:</h4>
+                            <p class="white-space">{{case.output}}</p>
+                        </span>
+                            </tab>
+                        </tabs>
                     </div>
-                </tab>
-                <tab *ngFor="let entry of attempts" tabTitle="Attempt">
-                    <div *ngIf="entry.state == 'SubmissionState.evaluated'">
-                        <p>Grade: {{entry.grade?entry.grade:"0"}}</p> <br/>
-                        <p>Prog Language: {{entry.language?entry.language:"error"}}</p> <br/>
-                        <div *ngIf="entry.grade != 100">
-                            <div *ngFor="let fb of entry.feedback_list">
-                                <p>Feedback: {{fb.feedback?fb.feedback:"error"}}</p>
-                                <p>Status: {{fb.status?fb.status:"error"}} </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <h2 class="block__title">Problem Submission</h2>
+                    <tabs>
+                        <tab tabTitle="New Attempt">
+                            <div class="new-attempt">
+                                <div class="dropdown-position">
+                                    <ss-multiselect-dropdown [options]="myOptions" [settings]="mySettings" [texts]="myTexts"
+                                                             [(ngModel)]="selectedOptions"
+                                                             (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
+                                </div>
+                                <code-editor #codeEditor [setSourceCode]=""></code-editor>
+                                <button type="button" class="btn btn-success submit-code-btn"
+                                        (click)="codeToSubmitReceived()">Submit
+                                </button>
+                            </div>
+                        </tab>
+                        <tab *ngFor="let entry of attempts" tabTitle="Attempt">
+                            <div *ngIf="entry.state == 'SubmissionState.evaluated'">
+                                <p>Grade: {{entry.grade?entry.grade:"0"}}</p> <br/>
+                                <p>Prog Language: {{entry.language?entry.language:"error"}}</p> <br/>
+                                <div *ngIf="entry.grade != 100">
+                                    <div *ngFor="let fb of entry.feedback_list">
+                                        <p>Feedback: {{fb.feedback?fb.feedback:"error"}}</p>
+                                        <p>Status: {{fb.status?fb.status:"error"}} </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div *ngIf="entry.state == 'SubmissionState.pending'">
+                                <h4 class="block__title">Problem is being evaluated ;)</h4>
+                            </div>
+                            <div *ngIf="entry.state == 'SubmissionState.compilation_error'">
+                                <h4 class="block__title">Compilation error, maybe you missed something in your code :O</h4>
+                            </div>
+                            <div *ngIf="entry.state == 'SubmissionState.internal_server_error'">
+                                <h4 class="block__title">Internal Server Error :/</h4>
                             </div>
 
-                        </div>
-                    </div>
-                    <div *ngIf="entry.state == 'SubmissionState.pending'">
-                        <h4 class="block__title">Problem is being evaluated ;)</h4>
-                    </div>
-                    <div *ngIf="entry.state == 'SubmissionState.compilation_error'">
-                        <h4 class="block__title">Compilation error, maybe you missed something in your code :O</h4>
-                    </div>
-                    <div *ngIf="entry.state == 'SubmissionState.internal_server_error'">
-                        <h4 class="block__title">Internal Server Error :/</h4>
-                    </div>
-
-                </tab>
-            </tabs>
+                        </tab>
+                    </tabs>
+                </div>
+            </div>
         </div>
     </div>
 </div>

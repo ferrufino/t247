@@ -77,26 +77,19 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
-                        this.columns = ["Title", "Difficulty", "Active", "Change Status", "Edit", "Delete"];
+                        this.columns = ["Title", "Difficulty", "Topic", "Active", "Change Status", "Edit", "Delete"];
                     }
                 );
                 break;
 
             case "assignments":
-                this.assignmentsService.getAssignments().subscribe(
+                let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+                this.assignmentsService.getAssignmentsByStudent(userInfo.id).subscribe(
                     submissions => {
-                        this.content = submissions;
                         this.assignmentsBool = true;
-                        this.problemsBool = false;
-                        this.submissionsBool = false;
-                        this.assignmentSubmissionsBool = false;
-                        this.groupsBool = false;
-                        this.coursesBool = false;
-                        this.topicsBool = false;
-                        this.usersBool = false;
-                        this.columns = ["Title", "Class", "Topic", "Due Date", "Completed"];
-                    }
-                );
+                        this.columns = ["Try it","Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
+                        this.content = submissions;
+                    });
                 break;
 
             case "submissions":
@@ -348,6 +341,10 @@ export class GenericTableComponent implements OnInit {
 
     onSelectUser(user) {
         this.router.navigate(['/editUser', user.id]);
+    }
+
+    onSelectAssignment(problem) {
+        this.router.navigate(['/submitProblem', problem.problem_id]);
     }
 
 

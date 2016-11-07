@@ -73,7 +73,12 @@ export class UsersService {
           sessionStorage.setItem('roles', JSON.stringify(availableRoles));
 
           this.loggedIn = true; // Flag true since user is now logged in
-          this._router.navigate(['']);
+          if (res.name === null) {
+            this._router.navigate(['firstLogIn']);
+          }
+          else {
+            this._router.navigate(['']);
+          }
         }
         return res.token;
       }).catch((error:any) => {
@@ -97,6 +102,19 @@ export class UsersService {
       .put(
         this.EDIT_URL + user.id,
         {"first_name": user.first_name, "last_name": user.last_name, "enrollment": user.enrollment},
+        this.headers
+      )
+      .map(res => {
+        return res;
+      });
+  }
+
+  addUserInfoFirstTimeLogIn(user) {
+    this._cacheService.set('users', [], {expires: Date.now() - 1});
+    return this.http
+      .put(
+        this.EDIT_URL + user.id,
+        {"first_name": user.first_name, "last_name": user.last_name, "password": user.password, "email": user.email},
         this.headers
       )
       .map(res => {

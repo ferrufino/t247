@@ -37,6 +37,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.userRoles = JSON.parse(sessionStorage.getItem("roles"));
       this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
 
+      // if the user manually type the url to get in here without filling his information
+      // we must kick him out
+      if (this.userInformationObject.first_name === null) {
+        this._service.logout();
+      }
+
       // Check if a role view is stored in local storage
       if(sessionStorage.getItem("currentRoleView")){
 

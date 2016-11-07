@@ -214,3 +214,6 @@ Evaluator/compilation/judge_1/*
 Evaluator/compilation/judge_2/*
 Evaluator/compilation/judge_3/*
 Evaluator/compilation/judge_4/*
+
+# Server log
+nohup.out
