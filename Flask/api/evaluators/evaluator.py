@@ -67,13 +67,15 @@ class EvaluatorProblemCreation(Resource):
         author_id = data.get('author_id')
         difficulty = data.get('difficulty')
         code = data.get('code')
+        template = data.get('template')
+        signature = data.get('signature')
         test_cases = data['test_cases']
         topic_id = data['topic_id']
 
         new_problem = Problem(name=problem_name,
                               author_id=author_id,
                               difficulty=difficulty, active=True,
-                              language=language, code=code,
+                              language=language, code=code, template=template, signature=signature,
                               description_english=description_english,
                               description_spanish=description_spanish,
                               time_limit=time_limit, memory_limit=memory_limit,)
@@ -139,6 +141,22 @@ class EvaluatorAttemptSubmission(Resource):
         data['submission_id'] = submission_id
         data['time_limit'] = problem.time_limit
         data['memory_limit'] = problem.memory_limit
+
+
+        # Query if problem has template
+        problem = db.engine.execute("""
+            SELECT *
+            FROM problem
+            WHERE template IS NOT NULL AND id = %d;
+            """ % (problem_id)).fetchone()
+
+        # Check if result is not empty and insert student's code in template
+        if (problem is not None):
+            code = problem["template"]
+            function = data["code"]
+            code = code.replace("//&function", function + "\n")
+            data["code"] = code
+
         result = services.request_evaluation(data)
 
         return result
