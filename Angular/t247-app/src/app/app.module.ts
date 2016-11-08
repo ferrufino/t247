@@ -13,6 +13,7 @@ import {ViewUsersComponent} from "./admin-components/view-users/view-users.compo
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
+import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
 import {Tab} from './general-components/tab/tab.component';
 import {Tabs} from './general-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
@@ -57,6 +58,7 @@ import {AssignmentFormComponent} from "./professor-components/group/assignment-f
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
+import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
 @NgModule({
     imports: [
@@ -82,6 +84,7 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         ViewUsersComponent,
         StudentComponentsComponent,
         GenericTableComponent,
+        GenericFormComponent,
         Tab,
         Tabs,
         FilterPipe,
@@ -104,7 +107,8 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
         SiteNavbarComponent,
         PolymerElement('vaadin-date-picker'),
         AssignmentFormComponent,
-        GroupFormComponent
+        GroupFormComponent,
+        FeedbackCardComponent
     ],
     bootstrap: [AppComponent],
     providers: [

@@ -62,14 +62,6 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-        this.problemsBool = false;
-        this.assignmentsBool = false;
-        this.submissionsBool = false;
-        this.assignmentSubmissionsBool = false;
-        this.groupsBool = false;
-        this.coursesBool = false;
-        this.topicsBool = false;
-        this.usersBool = false;
 
         switch (this.typeOfTableName) {
 
@@ -78,6 +70,13 @@ export class GenericTableComponent implements OnInit {
                     submissions => {
                         this.content = submissions;
                         this.problemsBool = true;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Title", "Difficulty", "Topic", "Active", "Change Status", "Edit", "Delete"];
                     }
                 );
@@ -91,13 +90,19 @@ export class GenericTableComponent implements OnInit {
                         this.columns = ["Try it","Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
                         this.content = submissions;
                     });
-
                 break;
 
             case "submissions":
                 this.submissionOfProblems.getSubmissions().subscribe(
                  submissions => {
                      this.submissionsBool = true;
+                     this.problemsBool = false;
+                     this.assignmentsBool = false;
+                     this.assignmentSubmissionsBool = false;
+                     this.groupsBool = false;
+                     this.coursesBool = false;
+                     this.topicsBool = false;
+                     this.usersBool = false;
                      this.columns = ["Name", "Number of Attempts", "Solved"];
                      this.content = submissions;
                  }
@@ -111,6 +116,13 @@ export class GenericTableComponent implements OnInit {
                     submissions => {
                         this.content = submissions;
                         this.assignmentSubmissionsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
@@ -148,6 +160,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('groups');
                         }
                         this.groupsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
                     }
                 );
@@ -169,6 +188,13 @@ export class GenericTableComponent implements OnInit {
                             this.content = this._cacheService.get('courses');
                         }
                         this.coursesBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
                         this.columns = ["Id", "Title", "Edit", "Delete"];
                     }
                 );
@@ -192,11 +218,25 @@ export class GenericTableComponent implements OnInit {
                     this.content = this._cacheService.get('topics');
                 }
                 this.topicsBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.usersBool = false;
                 this.columns = ["Id", "Title", "Edit", "Delete"];
                 break;
 
             case "users":
                 this.usersBool = true;
+                this.problemsBool = false;
+                this.assignmentsBool = false;
+                this.submissionsBool = false;
+                this.assignmentSubmissionsBool = false;
+                this.groupsBool = false;
+                this.coursesBool = false;
+                this.topicsBool = false;
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(
@@ -244,26 +284,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitTopic() {
-        var llenado = true;
-        if (this.topicName === "") {
-            window.alert("Please type a topic name");
-            llenado = false;
-        }
-        console.log(this.topicName);
-        if (llenado) {
-            this.topicsService.createTopic(this.topicName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.topicName = '';
-                }
-            });
-        }
-    }
 
     onSelectCourse(course) {
         this.router.navigate(['/editCourse', course.id]);
@@ -285,26 +305,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitCourse() {
-        var llenado = true;
-        if (this.courseName === "") {
-            window.alert("Please type a course name");
-            llenado = false;
-        }
-        console.log(this.courseName);
-        if (llenado) {
-            this.coursesService.createCourse(this.courseName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.courseName = '';
-                }
-            });
-        }
-    }
 
     onDeleteGroup(group) {
         var r = confirm("Are you sure?");
@@ -322,46 +322,6 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    onSubmitUser() {
-        var llenado = true;
-        if (this.user.enrollment === "") {
-            window.alert("Missing the enrollment");
-            llenado = false;
-        }
-        if (this.user.first_name === "") {
-            window.alert("Missing first name");
-            llenado = false;
-        }
-        if (this.user.last_name === "") {
-            window.alert("Missing last name");
-            llenado = false;
-        }
-        if (this.user.role === "") {
-            window.alert("Please choose a role");
-            llenado = false;
-        }
-        if (this.user.email === "") {
-            window.alert("Missing email");
-            llenado = false;
-        }
-        if (this.user.password === "") {
-            window.alert("Missing password");
-            llenado = false;
-        }
-        if (llenado) {
-            console.log(this.user);
-            this.usersService.createUser(this.user).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.renderTable();
-                    this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
-                }
-            });
-        }
-    }
 
     onDeleteUser(user) {
         var r = confirm("Are you sure?");

@@ -62,4 +62,8 @@ int main() {
     return this.code;
   }
 
+  setNewSourceCode(code : string) : void{
+    this.code = code;
+  }
+
 }

@@ -8,6 +8,7 @@ import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import { ActivatedRoute, Params }   from '@angular/router';
 
+
 @Component({
     selector: 'submit-problem',
     templateUrl: './submit-problem.component.html',
@@ -26,11 +27,14 @@ export class SubmitProblem implements OnInit {
     private descriptionTitle;
     private attempts;
     private testCases;
+    private successMessage:string = "Success";
+    private errorMessage:string = "Error";
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
     @ViewChild('codeEditor') codeEditor;
+    @ViewChild('feedbackCard') feedbackCard;
 
     private mySettings:IMultiSelectSettings = {
 
@@ -49,6 +53,7 @@ export class SubmitProblem implements OnInit {
             let id = +params['id'];
             this.getContentDescription(id);
             let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+            console.log(userInfo.id + " " + id);
             this.getContentAttempt(userInfo.id, id);
         });
 
@@ -70,45 +75,15 @@ export class SubmitProblem implements OnInit {
         }
         console.log(this.progLangToSubmit);
     }
-
-    fade(element) {
-        var op = 1;  // initial opacity
-        var timer = setInterval(function () {
-            if (op <= 0.1){
-                clearInterval(timer);
-                element.style.display = 'none';
-            }
-            element.style.opacity = (op).toString();
-            console.log(op);
-            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-            op -= op * 0.1; // control how it disappears
-        }, 50); // time showed
-    }
-
-    hideFeedbackCard(type:string) {
-
-        if (type == "success") {
-            var element = document.getElementById('success-feedback');
-        } else {
-            var element = document.getElementById('error-feedback');
-        }
-        window.setTimeout(() =>{
-            this.fade(element);
-            console.log("despues de fade");
-        }, 5000);
-        element.style.opacity = "1";
-        element.style.filter = 'alpha(opacity=1)';
-
-    }
     
     
     codeToSubmitReceived() {
         if(this.progLangToSubmit == "none"){
             document.getElementById('error-feedback').style.display = "block";
-            this.hideFeedbackCard("error");
+            this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
         }else{
-            var codeFromEditor = this.codeEditor.getSourceCode();;
+            var codeFromEditor = this.codeEditor.getSourceCode();
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
@@ -120,11 +95,10 @@ export class SubmitProblem implements OnInit {
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
-                        document.getElementById('success-feedback').style.display = "block";
-                        this.hideFeedbackCard("success");
+                        
+                        this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                     } else {
-                        document.getElementById('error-feedback').style.display = "block";
-                        this.hideFeedbackCard("error");
+                        this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
                     }
                 }
