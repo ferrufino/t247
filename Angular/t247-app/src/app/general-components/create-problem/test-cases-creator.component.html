@@ -12,6 +12,7 @@
 
       <div class="jumbotron">
 
+        <!-- TODO: CHECK THAT THIS CSS CLASSES WORK -->
         <p *ngIf="testcase.status === 'successful run'" class="white-text">Test Case number: {{idx + 1}}</p>
         <p *ngIf="testcase.status !== 'successful run'" class="white-text">
           Test Case number: {{idx + 1}} - Error: {{testcase.status}}
