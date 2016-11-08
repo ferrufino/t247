@@ -77,7 +77,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
-                        this.columns = ["Title", "Difficulty", "Topic", "Active", "Change Status", "Edit", "Delete"];
+                        this.columns = ["Title", "Difficulty", "Topic", "Status", "Description", "Delete"];
                     }
                 );
                 break;
@@ -345,6 +345,10 @@ export class GenericTableComponent implements OnInit {
 
     onSelectAssignment(problem) {
         this.router.navigate(['/submitProblem', problem.problem_id]);
+    }
+    onSelectProblem(problem) {
+        console.log("oyoyoy: "+problem.id);
+        this.router.navigate(['/problem', problem.id]);
     }
 
 

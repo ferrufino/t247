@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProblemsService} from "../../services/problems.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {TestCase} from "../create-problem/TestCase";
+import {ActivatedRoute, Params}   from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class ProblemDetailsComponent implements OnInit {
   @ViewChild('codeEditor') editorComponet
 
   private userInformationObject: any; // Used to check if the user can edit the problem
-
+    private problemId;
   // Author details
   authorName: string;
   authorId: number;
@@ -41,54 +42,58 @@ export class ProblemDetailsComponent implements OnInit {
   testCaseIndex: number;
 
   constructor(private _problemService: ProblemsService,
-              private _difficultiesService: ProblemDifficulties) {
+              private _difficultiesService: ProblemDifficulties, private route:ActivatedRoute) {
   }
 
   ngOnInit() {
+      this.route.params.forEach((params:Params) => {
+          this.problemId = +params['id'];
+          this._problemService.getProblemInformation(this.problemId).subscribe(
+              response => {
+                  console.log(response);
 
-    var problemID = 28; //TODO: DELETE THIS LINE
+                  let authorObject = response["author"];
+
+                  // Author details
+                  this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
+                  this.authorId = authorObject["id"];
+
+                  // Problem information
+                  this.problemName = response["name"];
+                  this.descriptionEng = response["description_english"];
+                  this.descriptionSpn = response["description_spanish"];
+
+                  // Problem details
+                  this.timeLimit = response["time_limit"];
+                  this.memoryLimit = response["memory_limit"];
+                  this.problemLanguage = response["language"];
+                  this.problemDifficultyId = response["difficulty"];
+                  this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
+                  this.problemTopic = response["topics"][0].name;
+
+                  // Problem source code
+                  this.problemSource = response["code"];
+                  this.editorComponet.setNewSourceCode(this.problemSource);
+
+                  // Test cases
+                  this.createTestCases(response["cases"]);
+                  this.selectedTestCase = this.problemTestCases[0];
+
+
+              },
+              error => {
+                  console.log("Details not found of problem with ID: " + this.problemId);
+              }
+          );
+
+      });
+
     this.testCaseIndex = 0;
     this.problemTestCases = [];
     this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
     this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
+    console.log("Problem id in problem details "+this.problemId);
 
-    this._problemService.getProblemInformation(problemID).subscribe(
-      response => {
-        console.log(response);
-
-        let authorObject = response["author"];
-
-        // Author details
-        this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
-        this.authorId = authorObject["id"];
-
-        // Problem information
-        this.problemName = response["name"];
-        this.descriptionEng = response["description_english"];
-        this.descriptionSpn = response["description_spanish"];
-
-        // Problem details
-        this.timeLimit = response["time_limit"];
-        this.memoryLimit = response["memory_limit"];
-        this.problemLanguage = response["language"];
-        this.problemDifficultyId = response["difficulty"];
-        this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
-        this.problemTopic = response["topics"][0].name;
-
-        // Problem source code
-        this.problemSource = response["code"];
-        this.editorComponet.setNewSourceCode(this.problemSource);
-
-        // Test cases
-        this.createTestCases(response["cases"]);
-        this.selectedTestCase = this.problemTestCases[0];
-
-
-      },
-      error => {
-        console.log("Details not found of problem with ID: " + problemID);
-      }
-    );
   }
 
   /**

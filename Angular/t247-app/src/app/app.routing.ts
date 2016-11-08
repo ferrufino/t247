@@ -12,7 +12,7 @@ import { GroupResolve }   from "./services/group-resolve.service";
 import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
 import {SubmitProblem} from "./general-components/submit-problem/submit-problem.component";
 import {FirstLoginComponent} from "./student-components/first-login.component";
-
+import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 
 const appRoutes: Routes = [
     {
@@ -57,6 +57,10 @@ const appRoutes: Routes = [
     {
         path: 'submitProblem/:id',
         component: SubmitProblem
+    },
+    {
+        path: 'problem/:id',
+        component: ProblemDetailsComponent
     }
 ];
 
