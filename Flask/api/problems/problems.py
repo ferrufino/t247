@@ -103,6 +103,7 @@ class ProblemDescription(Resource):
         descriptions["spanish"]      = problem.description_spanish
         descriptions["title"]        = problem.name
         descriptions["test_cases"]   = cases
+        descriptions["template"]     = problem.template
         
         print(descriptions)
         
