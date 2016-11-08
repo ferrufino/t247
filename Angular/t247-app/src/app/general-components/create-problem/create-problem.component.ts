@@ -68,8 +68,6 @@ export class CreateProblem implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(){
-    this.successBlock.style.display = "none";
-    this.errorBlock.style.display = "none";
   }
 
   /**
