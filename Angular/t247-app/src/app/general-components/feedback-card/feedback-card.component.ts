@@ -13,6 +13,8 @@ export class FeedbackCardComponent implements OnInit {
     }
 
     ngOnInit() {
+        document.getElementById('success-feedback').style.display = "none";
+        document.getElementById('error-feedback').style.display = "none";
     }
 
     fade(element) {

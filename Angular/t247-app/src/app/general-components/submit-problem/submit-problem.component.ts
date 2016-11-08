@@ -46,20 +46,18 @@ export class SubmitProblem implements OnInit {
         checked: 'checked',
         defaultTitle: 'Programming Languages'
     };
-
+    private problemId;
     ngOnInit() {
 
         this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
-            this.getContentDescription(id);
+            this.problemId = +params['id'];
+            this.getContentDescription(this.problemId);
             let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
-            console.log(userInfo.id + " " + id);
-            this.getContentAttempt(userInfo.id, id);
+            console.log(userInfo.id + " " + this.problemId);
+            this.getContentAttempt(userInfo.id, this.problemId);
         });
 
         this.progLangToSubmit = "none";
-        document.getElementById('success-feedback').style.display = "none";
-        document.getElementById('error-feedback').style.display = "none";
 
 
     }
@@ -84,12 +82,14 @@ export class SubmitProblem implements OnInit {
 
         }else{
             var codeFromEditor = this.codeEditor.getSourceCode();
+            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
-                "problem_id": 25,
+                "problem_id": this.problemId,
                 "request_type": "submission",
-                "user_id": 4
+                "user_id": userInfo.id
             }
             console.log(codeObject);
             this._httpProblemsService.submitProblem(codeObject).subscribe(
