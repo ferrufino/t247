@@ -186,24 +186,24 @@
                         <div class="row">
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-                            <label>First half of source code</label>
-                            <code-editor #headCodeEditor [setSourceCode]="" ></code-editor>
+                            <label>The complete and correct function</label>
+                            <code-editor #functionCodeEditor [setSourceCode]=""></code-editor>
                           </div>
                         </div>
 
                         <div class="row">
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-                            <label>Function code</label>
-                            <code-editor #functionCodeEditor [setSourceCode]="" ></code-editor>
+                            <label>Template that will be shown to the student</label>
+                            <code-editor #templateCodeEditor [setSourceCode]=""></code-editor>
                           </div>
                         </div>
 
                         <div class="row">
                           <div
                             class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-                            <label>Second half of source code</label>
-                            <code-editor #footCodeEditor [setSourceCode]="" ></code-editor>
+                            <label>Signature of the function</label>
+                            <code-editor #signatureCodeEditor [setSourceCode]=""></code-editor>
                           </div>
                         </div>
 
@@ -228,6 +228,10 @@
       </div>
 
       <div class="text-center margin-top20">
+
+        <div class="submit-code__feedback-card">
+          <feedback-card #feedbackCard></feedback-card>
+        </div>
 
         <button [disabled]="!createProblemForm.valid || problemTestCases.length === 0"
                 [ngClass]="{'hidden': displayLoader}" type="submit" class="btn btn-warning btn-lg">

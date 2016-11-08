@@ -6,7 +6,7 @@ import {
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
-import { ActivatedRoute, Params }   from '@angular/router';
+import {ActivatedRoute, Params}   from '@angular/router';
 
 
 @Component({
@@ -17,9 +17,10 @@ import { ActivatedRoute, Params }   from '@angular/router';
 })
 export class SubmitProblem implements OnInit {
 
-    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route: ActivatedRoute) {
+    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route:ActivatedRoute) {
 
     }
+
     /*Main Variables Declaration*/
     private progLangToSubmit;
     private descriptionEnglish;
@@ -41,15 +42,17 @@ export class SubmitProblem implements OnInit {
         selectionLimit: 1,
         closeOnSelect: true,
         checkedStyle: 'checkboxes'
-    }
+    };
+
     private myTexts:IMultiSelectTexts = {
         checked: 'checked',
         defaultTitle: 'Programming Languages'
     };
     private problemId;
+
     ngOnInit() {
 
-        this.route.params.forEach((params: Params) => {
+        this.route.params.forEach((params:Params) => {
             this.problemId = +params['id'];
             this.getContentDescription(this.problemId);
             let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
@@ -66,21 +69,21 @@ export class SubmitProblem implements OnInit {
     onChange($event) {
         if ($event == 1) {
             this.progLangToSubmit = "cpp";
-        } else if($event == 2) {
+        } else if ($event == 2) {
             this.progLangToSubmit = "java";
-        } else{
+        } else {
             this.progLangToSubmit = "none";
         }
         console.log(this.progLangToSubmit);
     }
-    
-    
+
+
     codeToSubmitReceived() {
-        if(this.progLangToSubmit == "none"){
+        if (this.progLangToSubmit == "none") {
             document.getElementById('error-feedback').style.display = "block";
             this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
-        }else{
+        } else {
             var codeFromEditor = this.codeEditor.getSourceCode();
             let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
 
@@ -95,7 +98,7 @@ export class SubmitProblem implements OnInit {
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
-                        
+
                         this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                     } else {
                         this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
@@ -104,11 +107,11 @@ export class SubmitProblem implements OnInit {
                 }
             );
 
+
+            console.log(this.progLangToSubmit);
         }
-
-
-
     }
+
 
     getContentDescription(id) {
 
@@ -125,7 +128,7 @@ export class SubmitProblem implements OnInit {
     getContentAttempt(s_id, id) {
         this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
-               this.attempts = content;
+                this.attempts = content;
             }
         );
     }
