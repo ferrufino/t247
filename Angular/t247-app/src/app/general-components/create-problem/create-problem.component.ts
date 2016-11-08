@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ContentChild, AfterViewInit} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -19,13 +19,19 @@ import {EditorComponent} from "../code-editor/editor.component";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit {
+export class CreateProblem implements OnInit, AfterViewInit {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
-  @ViewChild('headCodeEditor') headEditorComponent;
   @ViewChild('functionCodeEditor') functionEditorComponent;
-  @ViewChild('footCodeEditor') footEditorComponent;
+  @ViewChild('templateCodeEditor') templateEditorComponent;
+  @ViewChild('signatureCodeEditor') signatureCodeEditor;
+
+  // TODO: FIX THIS!
+  // Feedback part
+  @ViewChild('feedbackCard') feedbackCard;
+  @ContentChild('successBlock') successBlock : HTMLElement;
+  @ContentChild('errorBlock') errorBlock : HTMLElement;
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
   displayLoader: boolean; // Flag used to display the loader when the form is submitted
@@ -61,6 +67,11 @@ export class CreateProblem implements OnInit {
   }
 
 
+  ngAfterViewInit(){
+    this.successBlock.style.display = "none";
+    this.errorBlock.style.display = "none";
+  }
+
   /**
    * This function runs when the component starts, here the problem form is created.
    * Here the problem difficulties and the supported languages are obtained from their services
@@ -73,6 +84,7 @@ export class CreateProblem implements OnInit {
     this.selectedTestCase = null;
     this.displayLoader = false;
     this.problemSourceCode = "";
+
 
     // Get the values from services
     this.difficulties = this._problemDifficulties.getDifficulties(); // Call the fake service
@@ -169,15 +181,24 @@ export class CreateProblem implements OnInit {
    */
   getSourceCodeString(): string {
 
-    var sourceCode: string;
+    debugger;
+    let sourceCode: string;
+    let functionCode: string;
+    let templateCode: string;
+    let controlComment = "//&function";
 
     switch (this.problemTypeFlag) {
       case 0:
         sourceCode = this.fullEditorComponent.getSourceCode();
         break;
       case 1:
-        sourceCode = this.headEditorComponent.getSourceCode() + this.functionEditorComponent.getSourceCode() + this.footEditorComponent.getSourceCode();
+        // Change the control Comment for the real function
+        functionCode = this.functionEditorComponent.getSourceCode();
+        templateCode = this.templateEditorComponent.getSourceCode();
+        sourceCode = templateCode.replace(controlComment, functionCode);
         break;
+      default:
+        sourceCode = "Error";
     }
 
     return sourceCode;
@@ -227,7 +248,7 @@ export class CreateProblem implements OnInit {
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
 
-    this.problemSourceCode = this.getSourceCodeString();
+    this.problemSourceCode = this.getSourceCodeString(); // Get the code, depending of the type of problem
 
     // The object that will be sent to the evaluator
     let request = {
@@ -243,28 +264,33 @@ export class CreateProblem implements OnInit {
 
     console.log(request);
 
+    // TODO: UNCOMMENT THIS AND DELETE
+    // TODO: FIX ERROR WITH FEEDBACK CARDS
+    this.displayLoader = false;
+    this.errorBlock.style.display = "block";
+    this.feedbackCard.hideFeedbackCard("error", "ploblem name incorrect!!");
     //Make the POST
-    this._httpProblemsService.checkProblemTestCases(request)
-      .subscribe(
-        data => {
-
-          this.displayLoader = false; // Turn off loader
-
-          // Check for server errors
-          if (data['status'] == "error") {
-            console.log("ERROR - at check problem's test cases");
-          } else {
-            // No errors, get the outputs of the test cases
-            this.testCasesReady = this.setOutputForTestCases(data);
-            this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
-          }
-
-        },
-        error => {
-          this.displayLoader = false; // Turn off loader
-          console.log(error);
-        }
-      );
+    // this._httpProblemsService.checkProblemTestCases(request)
+    //   .subscribe(
+    //     data => {
+    //
+    //       this.displayLoader = false; // Turn off loader
+    //
+    //       // Check for server errors
+    //       if (data['status'] == "error") {
+    //         console.log("ERROR - at check problem's test cases");
+    //       } else {
+    //         // No errors, get the outputs of the test cases
+    //         this.testCasesReady = this.setOutputForTestCases(data);
+    //         this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
+    //       }
+    //
+    //     },
+    //     error => {
+    //       this.displayLoader = false; // Turn off loader
+    //       console.log(error);
+    //     }
+    //   );
   }
 
 
@@ -276,13 +302,15 @@ export class CreateProblem implements OnInit {
     this.displayLoader = true; // display the loader
 
     // Get the correct type of problem
-    let pType = (this.problemTypeFlag == 1) ? "full" : "function";
+    let pType = (this.problemTypeFlag == 0) ? "full" : "function";
 
     let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
 
+    // TODO: CHECK THE TYPE OF PROBLEM TO ONLY SENT THOSE FIELDS
+
+
     let problemObject = {
       "author_id": userID,
-      "code": this.problemSourceCode,
       "name": this.createProblemForm.value.problemDetails.problemName,
       "description_english": this.createProblemForm.value.problemDetails.engDescription,
       "description_spanish": this.createProblemForm.value.problemDetails.spnDescription,
@@ -292,6 +320,16 @@ export class CreateProblem implements OnInit {
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
       "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
       "type": pType
+    }
+
+
+    if(this.problemTypeFlag == 0){
+      problemObject["code"] = this.problemSourceCode;
+
+    } else {
+      problemObject["code"] = this.functionEditorComponent.getSourceCode();
+      problemObject["template"] = this.templateEditorComponent.getSourceCode();
+      problemObject["signature"] = this.signatureCodeEditor.getSourceCode();
     }
 
     problemObject["test_cases"] = this.problemTestCases;
