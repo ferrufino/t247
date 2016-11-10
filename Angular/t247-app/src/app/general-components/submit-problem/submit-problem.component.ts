@@ -30,6 +30,7 @@ export class SubmitProblem implements OnInit {
     private testCases;
     private successMessage:string = "Success";
     private errorMessage:string = "Error";
+    private template:string;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -121,6 +122,8 @@ export class SubmitProblem implements OnInit {
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
+                this.codeEditor.setSourceCode = content.template;
+
             }
         );
     }

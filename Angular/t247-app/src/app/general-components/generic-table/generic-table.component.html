@@ -54,7 +54,7 @@
         <td>{{entry.value.topic}}</td>
         <td><button class="btn btn-default">{{entry.value.active}}</button></td>
         <td><button class="btn btn-default" (click)="onSelectProblem(entry.value)">Show</button></td>
-        <td>delete</td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="assignmentsBool">
@@ -81,11 +81,12 @@
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
     <tr *ngFor="let entry of content">
+        <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date}}</td>
         <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
-        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+       <!-- <td *ngIf="entry.value.grade == 100">Yeah</td>
+        <td *ngIf="entry.value.grade != 100">Nop</td>-->
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">

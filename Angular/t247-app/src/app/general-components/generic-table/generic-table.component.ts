@@ -123,7 +123,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
-                        this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
+                        this.columns = ["Student", "", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
                 break;
@@ -349,6 +349,15 @@ export class GenericTableComponent implements OnInit {
     onSelectProblem(problem) {
         console.log("oyoyoy: "+problem.id);
         this.router.navigate(['/problem', problem.id]);
+    }
+
+    onDeleteProblem(problem) {
+        var r = confirm("Are you sure?");
+        if (r == true) {
+            //Validate is user is author of problem then detele it
+
+            alert("service hasn't being developed yet!");
+        }
     }
 
 
