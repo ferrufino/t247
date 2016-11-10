@@ -29,6 +29,25 @@ class ProblemCollection(Resource):
 
         return problems
 
+@ns.route('/changestatus/<int:problem_id>/<int:status>')
+@api.response(404, 'Problem not found.')
+class ProblemStatus(Resource):
+
+    @api.response(204, 'Problem successfully updated.')
+    def put(self, problem_id, status):
+        """
+        Updates a problem's status.
+        """
+        if (status == 0):
+            active = False
+        else:
+            active = True
+
+        Problem.query.filter(Problem.id == problem_id).update({'active' : active})
+        
+        db.session.commit()
+
+        return None, 204
 
 @ns.route('/<int:id>')
 @api.response(404, 'Problem not found.')
@@ -45,6 +64,17 @@ class ProblemItem(Resource):
             problem.language = Language.query.filter(Language.value == problem.language).one().name            
 
         return problem
+
+    @api.response(204, 'Problem successfully deleted.')
+    def delete(self, id):
+        """
+        Deletes a problem.
+        """
+        problem = Problem.query.filter(Problem.id == id).one()
+        db.session.delete(problem)
+        db.session.commit()
+
+        return None, 204
 
     @api.expect(problem_edition)
     @api.response(204, 'Problem successfully updated.')

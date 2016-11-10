@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ContentChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ContentChild} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -19,19 +19,16 @@ import {EditorComponent} from "../code-editor/editor.component";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit, AfterViewInit {
+export class CreateProblem implements OnInit {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
   @ViewChild('functionCodeEditor') functionEditorComponent;
   @ViewChild('templateCodeEditor') templateEditorComponent;
-  @ViewChild('signatureCodeEditor') signatureCodeEditor;
+  @ViewChild('signatureCodeEditor') signatureEditorComponent;
 
-  // TODO: FIX THIS!
   // Feedback part
   @ViewChild('feedbackCard') feedbackCard;
-  @ContentChild('successBlock') successBlock : HTMLElement;
-  @ContentChild('errorBlock') errorBlock : HTMLElement;
 
   createProblemForm: FormGroup; // Form group to get the info of the problem
   displayLoader: boolean; // Flag used to display the loader when the form is submitted
@@ -43,7 +40,12 @@ export class CreateProblem implements OnInit, AfterViewInit {
   difficulties: string[] // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
   problemTopicID: number; // The id of the topic for this problem
-  problemSourceCode: string; // The source code of the problem
+
+
+  problemSourceCode: string; // The source code of the problem, used for complete and template type
+  problemFunctionCode: string; // This is the correct method
+  problemTemplateCode: string; // This is the skeleton of the whole program, it contains the control character
+  problemSignatureCode: string; // This is the method's skeleton that will be given to the student
 
   problemTestCases: TestCase[]; // The array of test cases realted to the problem
   testCasesReady: boolean; // Flag that when is true means that all test cases passed the check
@@ -67,9 +69,6 @@ export class CreateProblem implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(){
-  }
-
   /**
    * This function runs when the component starts, here the problem form is created.
    * Here the problem difficulties and the supported languages are obtained from their services
@@ -82,6 +81,9 @@ export class CreateProblem implements OnInit, AfterViewInit {
     this.selectedTestCase = null;
     this.displayLoader = false;
     this.problemSourceCode = "";
+    this.problemFunctionCode = "";
+    this.problemTemplateCode = "";
+    this.problemSignatureCode = "";
 
 
     // Get the values from services
@@ -179,10 +181,7 @@ export class CreateProblem implements OnInit, AfterViewInit {
    */
   getSourceCodeString(): string {
 
-    debugger;
     let sourceCode: string;
-    let functionCode: string;
-    let templateCode: string;
     let controlComment = "//&function";
 
     switch (this.problemTypeFlag) {
@@ -191,9 +190,11 @@ export class CreateProblem implements OnInit, AfterViewInit {
         break;
       case 1:
         // Change the control Comment for the real function
-        functionCode = this.functionEditorComponent.getSourceCode();
-        templateCode = this.templateEditorComponent.getSourceCode();
-        sourceCode = templateCode.replace(controlComment, functionCode);
+        this.problemFunctionCode = this.functionEditorComponent.getSourceCode();
+        this.problemTemplateCode = this.templateEditorComponent.getSourceCode();
+        this.problemSignatureCode = this.signatureEditorComponent.getSourceCode();
+
+        sourceCode = this.problemTemplateCode.replace(controlComment, this.problemFunctionCode);
         break;
       default:
         sourceCode = "Error";
@@ -262,33 +263,29 @@ export class CreateProblem implements OnInit, AfterViewInit {
 
     console.log(request);
 
-    // TODO: UNCOMMENT THIS AND DELETE
-    // TODO: FIX ERROR WITH FEEDBACK CARDS
-    this.displayLoader = false;
-    this.errorBlock.style.display = "block";
-    this.feedbackCard.hideFeedbackCard("error", "ploblem name incorrect!!");
     //Make the POST
-    // this._httpProblemsService.checkProblemTestCases(request)
-    //   .subscribe(
-    //     data => {
-    //
-    //       this.displayLoader = false; // Turn off loader
-    //
-    //       // Check for server errors
-    //       if (data['status'] == "error") {
-    //         console.log("ERROR - at check problem's test cases");
-    //       } else {
-    //         // No errors, get the outputs of the test cases
-    //         this.testCasesReady = this.setOutputForTestCases(data);
-    //         this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
-    //       }
-    //
-    //     },
-    //     error => {
-    //       this.displayLoader = false; // Turn off loader
-    //       console.log(error);
-    //     }
-    //   );
+    this._httpProblemsService.checkProblemTestCases(request)
+      .subscribe(
+        data => {
+
+          this.displayLoader = false; // Turn off loader
+
+          // Check for server errors
+          if (data['status'] == "error") {
+            console.log("ERROR - at check problem's test cases");
+          } else {
+            // No errors, get the outputs of the test cases
+            this.testCasesReady = this.setOutputForTestCases(data);
+            this.selectedTestCase = this.problemTestCases[0]; // First test case for the carousel
+          }
+
+        },
+        error => {
+          this.displayLoader = false; // Turn off loader
+          document.getElementById('error-feedback').style.display = "block";
+          this.feedbackCard.hideFeedbackCard("error", error);
+        }
+      );
   }
 
 
@@ -297,14 +294,10 @@ export class CreateProblem implements OnInit, AfterViewInit {
    */
   createProblemRequest() {
 
+    //TODO: IMPLEMENT THE LOADER
     this.displayLoader = true; // display the loader
 
-    // Get the correct type of problem
-    let pType = (this.problemTypeFlag == 0) ? "full" : "function";
-
     let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
-
-    // TODO: CHECK THE TYPE OF PROBLEM TO ONLY SENT THOSE FIELDS
 
 
     let problemObject = {
@@ -316,18 +309,17 @@ export class CreateProblem implements OnInit, AfterViewInit {
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
-      "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
-      "type": pType
+      "time_limit": this.createProblemForm.value.problemDetails.timeLimit
     }
 
 
-    if(this.problemTypeFlag == 0){
+    if (this.problemTypeFlag == 0) {
       problemObject["code"] = this.problemSourceCode;
 
     } else {
-      problemObject["code"] = this.functionEditorComponent.getSourceCode();
-      problemObject["template"] = this.templateEditorComponent.getSourceCode();
-      problemObject["signature"] = this.signatureCodeEditor.getSourceCode();
+      problemObject["code"] = this.problemFunctionCode;
+      problemObject["template"] = this.problemTemplateCode;
+      problemObject["signature"] = this.problemSignatureCode;
     }
 
     problemObject["test_cases"] = this.problemTestCases;
@@ -338,8 +330,14 @@ export class CreateProblem implements OnInit, AfterViewInit {
         data => {
 
           this.displayLoader = false;
-          alert("PROBLEM CREATED!");
+          document.getElementById('success-feedback').style.display = "block";
+          this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
 
+        },
+        error => {
+          this.displayLoader = false;
+          document.getElementById('error-feedback').style.display = "block";
+          this.feedbackCard.hideFeedbackCard("error", error);
         }
       );
 
