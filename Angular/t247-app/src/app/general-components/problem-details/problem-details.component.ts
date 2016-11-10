@@ -12,10 +12,12 @@ import {ActivatedRoute, Params}   from '@angular/router';
   styleUrls: ['./problem-details.component.css']
 })
 export class ProblemDetailsComponent implements OnInit {
-  @ViewChild('codeEditor') editorComponet
+  @ViewChild('codeEditor') editorComponet;
+  @ViewChild('signatureCodeEditor') signatureEditorComponet;
+  @ViewChild('templateCodeEditor') templateEditorComponet;
 
   private userInformationObject: any; // Used to check if the user can edit the problem
-    private problemId;
+  private problemId;
   // Author details
   authorName: string;
   authorId: number;
@@ -24,6 +26,7 @@ export class ProblemDetailsComponent implements OnInit {
   problemName: string;
   descriptionEng: string;
   descriptionSpn: string;
+  isTemplateProblem: boolean; // This flags indicates if a problem has a template
 
   // Problem details
   timeLimit: number;
@@ -35,6 +38,8 @@ export class ProblemDetailsComponent implements OnInit {
 
   // Problem source code
   problemSource: string;
+  problemSignature: string;
+  problemTemplate: string;
 
   // Test cases
   problemTestCases: TestCase[];
@@ -42,59 +47,82 @@ export class ProblemDetailsComponent implements OnInit {
   testCaseIndex: number;
 
   constructor(private _problemService: ProblemsService,
-              private _difficultiesService: ProblemDifficulties, private route:ActivatedRoute) {
+              private _difficultiesService: ProblemDifficulties, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-      this.route.params.forEach((params:Params) => {
-          this.problemId = +params['id'];
-          this._problemService.getProblemInformation(this.problemId).subscribe(
-              response => {
-                  console.log(response);
 
-                  let authorObject = response["author"];
+    this.isTemplateProblem = false;
+    this.problemSource = "";
+    this.problemSignature = "";
+    this.problemTemplate = "";
 
-                  // Author details
-                  this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
-                  this.authorId = authorObject["id"];
+    this.route.params.forEach((params: Params) => {
+      this.problemId = +params['id'];
+      this._problemService.getProblemInformation(this.problemId).subscribe(
+        response => {
+          console.log(response);
 
-                  // Problem information
-                  this.problemName = response["name"];
-                  this.descriptionEng = response["description_english"];
-                  this.descriptionSpn = response["description_spanish"];
+          let authorObject = response["author"];
 
-                  // Problem details
-                  this.timeLimit = response["time_limit"];
-                  this.memoryLimit = response["memory_limit"];
-                  this.problemLanguage = response["language"];
-                  this.problemDifficultyId = response["difficulty"];
-                  this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
-                  this.problemTopic = response["topics"][0].name;
+          // Author details
+          this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
+          this.authorId = authorObject["id"];
 
-                  // Problem source code
-                  this.problemSource = response["code"];
-                  this.editorComponet.setNewSourceCode(this.problemSource);
+          // Problem information
+          this.problemName = response["name"];
+          this.descriptionEng = response["description_english"];
+          this.descriptionSpn = response["description_spanish"];
 
-                  // Test cases
-                  this.createTestCases(response["cases"]);
-                  this.selectedTestCase = this.problemTestCases[0];
+          // Problem details
+          this.timeLimit = response["time_limit"];
+          this.memoryLimit = response["memory_limit"];
+          this.problemLanguage = response["language"];
+          this.problemDifficultyId = response["difficulty"];
+          this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
+          this.problemTopic = response["topics"][0].name;
 
 
-              },
-              error => {
-                  console.log("Details not found of problem with ID: " + this.problemId);
-              }
-          );
+          // Check if the problem has a template
+          if (response["template"] !== null) {
 
-      });
+            this.isTemplateProblem = true;
+            this.problemSignature = response["signature"];
+            this.problemTemplate = response["template"];
 
+            this.signatureEditorComponet.setNewSourceCode(this.problemSignature);
+            this.templateEditorComponet.setNewSourceCode(this.problemTemplate);
+
+          }
+
+          // Problem source code
+          this.problemSource = response["code"];
+          this.editorComponet.setNewSourceCode(this.problemSource);
+
+
+          // Test cases
+          this.createTestCases(response["cases"]);
+          this.selectedTestCase = this.problemTestCases[0];
+
+
+        },
+        error => {
+          console.log("Details not found of problem with ID: " + this.problemId);
+        }
+      );
+
+    });
+
+    // These declarations are here because the upper part us async, so these lines prevent
+    // a null pointer exception
     this.testCaseIndex = 0;
     this.problemTestCases = [];
     this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
     this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
-    console.log("Problem id in problem details "+this.problemId);
+    console.log("Problem id in problem details " + this.problemId);
 
   }
+
 
   /**
    * This function recieves the data from the service and pushes TestCase objects to the array
@@ -113,7 +141,7 @@ export class ProblemDetailsComponent implements OnInit {
    * This function checks if the current user is the same one that created the problem OR the user is admin
    * @returns {boolean} true if the user can edit this problem
    */
-  canEditProblem(){
+  canEditProblem() {
     return this.userInformationObject.id === this.authorId || this.userInformationObject.role === 'admin';
   }
 
@@ -148,7 +176,6 @@ export class ProblemDetailsComponent implements OnInit {
     this.testCaseIndex = (actual > this.problemTestCases.length - 1) ? 0 : actual;
     this.updateSelectedTestCase();
   }
-
 
 
 }

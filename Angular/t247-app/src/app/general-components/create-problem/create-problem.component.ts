@@ -297,9 +297,6 @@ export class CreateProblem implements OnInit {
     //TODO: IMPLEMENT THE LOADER
     this.displayLoader = true; // display the loader
 
-    // Get the correct type of problem
-    let pType = (this.problemTypeFlag == 0) ? "full" : "function";
-
     let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
 
 
@@ -312,8 +309,7 @@ export class CreateProblem implements OnInit {
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
-      "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
-      "type": pType
+      "time_limit": this.createProblemForm.value.problemDetails.timeLimit
     }
 
 
