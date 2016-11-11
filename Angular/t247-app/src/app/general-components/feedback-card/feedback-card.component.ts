@@ -8,7 +8,7 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
 export class FeedbackCardComponent implements OnInit {
 
     private content:string;
-    
+
     constructor() {
     }
 
@@ -25,7 +25,6 @@ export class FeedbackCardComponent implements OnInit {
                 element.style.display = 'none';
             }
             element.style.opacity = (op).toString();
-            console.log(op);
             element.style.filter = 'alpha(opacity=' + op * 100 + ")";
             op -= op * 0.1; // control how it disappears
         }, 50); // time showed
@@ -44,7 +43,6 @@ export class FeedbackCardComponent implements OnInit {
         }
         window.setTimeout(() =>{
             this.fade(element);
-            console.log("despues de fade");
         }, 5000);
         element.style.opacity = "1";
         element.style.filter = 'alpha(opacity=1)';
