@@ -16,7 +16,7 @@ export class ProblemDifficulties {
     if (id >= 0 && id < this.difficulties.length) {
       return this.difficulties[id];
     } else {
-      return "No difficulty";
+      return "undefined";
     }
 
   }

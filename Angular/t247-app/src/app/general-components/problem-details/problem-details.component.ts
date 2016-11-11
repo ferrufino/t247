@@ -3,6 +3,7 @@ import {ProblemsService} from "../../services/problems.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {TestCase} from "../create-problem/TestCase";
 import {ActivatedRoute, Params}   from '@angular/router';
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 
 @Component({
@@ -12,6 +13,10 @@ import {ActivatedRoute, Params}   from '@angular/router';
   styleUrls: ['./problem-details.component.css']
 })
 export class ProblemDetailsComponent implements OnInit {
+
+  // Feedback part
+  @ViewChild('feedbackCard') feedbackCard;
+
   @ViewChild('codeEditor') editorComponet;
   @ViewChild('signatureCodeEditor') signatureEditorComponet;
   @ViewChild('templateCodeEditor') templateEditorComponet;
@@ -46,8 +51,14 @@ export class ProblemDetailsComponent implements OnInit {
   selectedTestCase: TestCase;
   testCaseIndex: number;
 
+  // To Edit problem
+  editProblemForm: FormGroup; // Form group to get the info of the problem
+  difficulties: string[]; // filled from service
+
   constructor(private _problemService: ProblemsService,
-              private _difficultiesService: ProblemDifficulties, private route: ActivatedRoute) {
+              private _formBuilder: FormBuilder,
+              private _difficultiesService: ProblemDifficulties,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -56,6 +67,10 @@ export class ProblemDetailsComponent implements OnInit {
     this.problemSource = "";
     this.problemSignature = "";
     this.problemTemplate = "";
+    this.problemName = "";
+    this.descriptionEng = ""
+    this.descriptionSpn = ""
+    this.difficulties = this._difficultiesService.getDifficulties(); // Call the fake service
 
     this.route.params.forEach((params: Params) => {
       this.problemId = +params['id'];
@@ -113,6 +128,17 @@ export class ProblemDetailsComponent implements OnInit {
 
     });
 
+    // Create the problem form object
+    this.editProblemForm = this._formBuilder.group({
+
+      'problemDetails': this._formBuilder.group({
+        'problemName': ['', Validators.required],
+        'engDescription': ['', Validators.required],
+        'spnDescription': ['', Validators.required],
+      })
+
+    });
+
     // These declarations are here because the upper part us async, so these lines prevent
     // a null pointer exception
     this.testCaseIndex = 0;
@@ -120,6 +146,33 @@ export class ProblemDetailsComponent implements OnInit {
     this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
     this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
     console.log("Problem id in problem details " + this.problemId);
+
+  }
+
+
+  editProblemRequest(difficultyId: number): any {
+
+    let problemObject = {
+      "name": this.editProblemForm.value.problemDetails.problemName,
+      "description_english": this.editProblemForm.value.problemDetails.engDescription,
+      "description_spanish": this.editProblemForm.value.problemDetails.spnDescription,
+      "difficulty": difficultyId
+    }
+
+    this._problemService.updateProblem(this.problemId, problemObject)
+      .subscribe(
+        data => {
+
+          document.getElementById('success-feedback').style.display = "block";
+          this.feedbackCard.hideFeedbackCard("success", "Problem successfully edited!");
+
+        },
+        error => {
+
+          document.getElementById('error-feedback').style.display = "block";
+          this.feedbackCard.hideFeedbackCard("error", error);
+        }
+      );
 
   }
 
