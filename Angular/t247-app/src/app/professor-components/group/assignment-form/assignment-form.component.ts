@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -19,6 +19,7 @@ export class AssignmentFormComponent implements OnInit {
   private problems;
 
   @Input() groupId;
+  @Output() refreshParent = new EventEmitter();
 
   constructor(private _service: AssignmentsService,
               private _formBuilder: FormBuilder,
@@ -67,6 +68,8 @@ export class AssignmentFormComponent implements OnInit {
 
         }
       );
+
+    this.refreshParent.emit();
 
   }
 }

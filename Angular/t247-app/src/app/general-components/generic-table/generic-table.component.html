@@ -82,10 +82,10 @@
     <tbody *ngIf="assignmentSubmissionsBool">
     <tr *ngFor="let entry of content">
         <td>{{entry.enrollment}}</td>
-        <td>{{entry.date}}</td>
+        <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
         <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
-        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+        <td *ngIf="entry.grade == 100">Yeah</td>
+        <td *ngIf="entry.grade != 100">Nop</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">

@@ -20,7 +20,7 @@ export class GroupComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private _authService: UsersService,
-              private coursesService: CoursesService,
+              private groupsService: GroupsService,
               private _cacheService: CacheService) {
 
   }
@@ -28,6 +28,19 @@ export class GroupComponent implements OnInit {
   ngOnInit() {
     this._authService.checkCredentials();
     this.route.data.forEach((group : any) => {
+      this.group = group.any;
+      console.log(this.group);
+      var enrollmentText = "";
+      this.group.students.forEach(function(element){
+        enrollmentText+=element.enrollment+",";
+      });
+      this.group.enrollmentText = enrollmentText;
+    });
+  }
+
+  refresh() {
+    this.route.data.forEach((group : any) => {
+      debugger;
       this.group = group.any;
       console.log(this.group);
       var enrollmentText = "";
