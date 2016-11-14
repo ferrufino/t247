@@ -23,11 +23,9 @@
 </div>
 
 <div class="row " *ngIf="typeOfForm == 'courses' ">
-    <div class ="btn-new">
-        <button type="button" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#courseFormModal">
+        <button type="button" class="btn btn-primary btn-new pull-right" data-toggle="modal" data-target="#courseFormModal">
             New
         </button>
-    </div>
 </div>
 
 <div class="modal fade" id="topicsFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'topics' ">
@@ -55,14 +53,14 @@
 </div>
 
 <div class="row" *ngIf="typeOfForm == 'topics' ">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#topicsFormModal">
+    <button type="button" class="btn btn-primary btn-new pull-right" data-toggle="modal" data-target="#topicsFormModal">
         New
     </button>
 </div>
 
 
 <div class="row" *ngIf="typeOfForm == 'groups' ">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#groupFormModal">
+    <button type="button" class="btn btn-primary btn-new pull-right" data-toggle="modal" data-target="#groupFormModal">
         New
     </button>
 </div>
@@ -122,7 +120,7 @@
 </div>
 
 <div class="row" *ngIf="typeOfForm == 'users' ">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#usersFormModal">
+    <button type="button" class="btn btn-primary btn-new pull-right" data-toggle="modal" data-target="#usersFormModal">
         New
     </button>
 </div>
