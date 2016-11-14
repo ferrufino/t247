@@ -194,7 +194,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
-                        this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
+                        this.columns = [ "Name", "Period", "Edit", "Delete"];
                     }
                 );
                 break;
@@ -223,7 +223,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
-                        this.columns = ["Id", "Title", "Edit", "Delete"];
+                        this.columns = ["Title", "Edit", "Delete"];
                     }
                 );
                 break;
@@ -254,7 +254,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.usersBool = false;
                 this.problemsByTopicBool = false;
-                this.columns = ["Id", "Title", "Edit", "Delete"];
+                this.columns = ["Title", "Edit", "Delete"];
                 break;
 
             case "users":
