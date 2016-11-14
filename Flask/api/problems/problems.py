@@ -85,10 +85,10 @@ class ProblemItem(Resource):
         data = request.json
         
         topics = data['topics']
-        cases  = data['cases']
+        #cases  = data.get('cases')
 
         del data['topics']
-        del data['cases']
+        #del data['cases']
 
         # Update problem's common fields
         Problem.query.filter(Problem.id == id).update(data)
@@ -106,9 +106,9 @@ class ProblemItem(Resource):
             db.session.commit()
 
         # Update test cases
-        for case in cases:
-            Case.query.filter(Case.id == case['id']).update({'is_sample' : case['is_sample']})
-            db.session.commit()
+        #for case in cases:
+        #    Case.query.filter(Case.id == case['id']).update({'is_sample' : case['is_sample']})
+        #    db.session.commit()
 
         return None, 204
         
@@ -158,13 +158,13 @@ class ProblemsByTopic(Resource):
         for problem in result:
             # Problem not attempted
             if (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id)" % (problem[0])).fetchall()) > 0):
-                problems_list.append({'id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'not_attempted'})
+                problems_list.append({'problem_id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'not_attempted'})
             # Problem attempted but not solved
             elif (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id AND s.grade = 100)" % (problem[0])).fetchall()) > 0):
-                problems_list.append({'id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'wrong_answer'})
+                problems_list.append({'problem_id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'wrong_answer'})
             # Problem solved
             else:
-                problems_list.append({'id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'accepted'})
+                problems_list.append({'problem_id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'accepted'})
         
         return problems_list
 
