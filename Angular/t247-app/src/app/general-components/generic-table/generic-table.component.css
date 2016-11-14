@@ -1,3 +1,10 @@
 .btn-round-sm{
   border-radius: 15px;
 }
+
+.search-bar{
+    width: 450px;
+    height: 35px;
+    float: right;
+    margin-bottom: 50px;
+}

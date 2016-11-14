@@ -6,8 +6,8 @@ import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'generic-form',
-  templateUrl: './generic-form.component.html',
-  styleUrls: ['./generic-form.component.css']
+  templateUrl: "./generic-form.component.html",
+  styleUrls: ["./generic-form.component.css"]
 })
 export class GenericFormComponent implements OnInit  {
 

@@ -1,7 +1,7 @@
 <app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false" [actualRole]="selectedRole"
                  (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
 
-<div class="container" style="margin-top: 80px">
+<div class="container tabs-style" style="margin-top: 80px;">
     <div class="content" [ngSwitch]="selectedRole">
         <div class="row" *ngSwitchCase="'admin'">
             <tabs>
@@ -17,18 +17,12 @@
                 <tab tabTitle="Problems">
                     <generic-table [typetable]="'problems'"></generic-table>
                 </tab>
-                <tab tabTitle="Create Problem">
-                    <create-problem></create-problem>
-                </tab>
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'professor'">
             <tabs>
                 <tab tabTitle="My Groups">
                     <generic-table [typetable]="'groups'"></generic-table>
-                </tab>
-                <tab tabTitle="Create Problem">
-                    <create-problem></create-problem>
                 </tab>
                 <tab tabTitle="Topics">
                     <generic-table [typetable]="'topics'"></generic-table>
@@ -40,13 +34,13 @@
         </div>
         <div class="row" *ngSwitchCase="'student'">
             <tabs>
-                <tab tabTitle="My Assignments">
+                <tab *ngIf="typeOfUser == 'student'" tabTitle="My Assignments">
                     <generic-table [typetable]="'assignments'"></generic-table>
                 </tab>
                 <tab tabTitle="Topics Dashboard">
                     <app-topics-dashboard></app-topics-dashboard>
                 </tab>
-                <tab tabTitle="Submissions">
+                <tab *ngIf="typeOfUser == 'student'"  tabTitle="Submissions">
                     <generic-table [typetable]="'submissions'"></generic-table>
                 </tab>
             </tabs>

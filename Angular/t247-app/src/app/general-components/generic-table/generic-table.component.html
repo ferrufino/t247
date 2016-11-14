@@ -10,10 +10,12 @@
     <generic-form *ngIf="topicsBool" [typeForm]="'topics'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="groupsBool" [typeForm]="'groups'"></generic-form>
     <generic-form *ngIf="usersBool" [typeForm]="'users'" (formChange)="renderTable();"></generic-form>
+    <div *ngIf="problemsBool" class="row">
+        <a (click)="createNewProblem()" class="btn btn-primary btn-new pull-right"> Create Problem</a>
+    </div>
 
-
-    <div class="center">
-        <div id="custom-search-input">
+    <div class="search-bar">
+        <div class="custom-search-input">
             <div class="input-group col-md-12">
                 <input type="text" class="form-control input-lg" placeholder="Search" #filterInput (keyup)="0"/>
                     <span class="input-group-btn">
@@ -52,20 +54,30 @@
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
-        <td><button class="btn btn-default">{{entry.value.active}}</button></td>
-        <td><button class="btn btn-default" (click)="onSelectProblem(entry.value)">Show</button></td>
-        <td>delete</td>
+        <td><button class="btn btn-primary">{{entry.value.active}}</button></td>
+        <td><button class="btn btn-success" (click)="onSelectProblem(entry.value)">Show</button></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="problemsByTopicBool">
+    <tr *ngFor="let entry of content | filterProblems: filterInput.value">
+      <td>{{entry.value.name}}</td>
+      <td *ngIf=" entry.value.difficulty == 0">Easy</td>
+      <td *ngIf=" entry.value.difficulty == 1">Medium</td>
+      <td *ngIf=" entry.value.difficulty == 2">Hard</td>
+      <td>{{entry.value.status}}</td>
+      <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="assignmentsBool">
     <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
-        <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
+        <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.problem_name}}</td>
         <td>{{entry.value.course_name}}</td>
-        <td *ngIf=" entry.value.difficulty == 1">Easy</td>
-        <td *ngIf=" entry.value.difficulty == 2">Medium</td>
-        <td *ngIf=" entry.value.difficulty == 3">Hard</td>
+        <td *ngIf=" entry.value.difficulty == 0">Easy</td>
+        <td *ngIf=" entry.value.difficulty == 1">Medium</td>
+        <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.due_date}}</td>
         <td *ngIf="entry.value.max_grade == 100">Yeah</td>
         <td *ngIf="entry.value.max_grade != 100">Nop</td>
@@ -81,20 +93,20 @@
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
     <tr *ngFor="let entry of content">
+        <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date}}</td>
         <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
-        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+       <!-- <td *ngIf="entry.value.grade == 100">Yeah</td>
+        <td *ngIf="entry.value.grade != 100">Nop</td>-->
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td><a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default red" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-success" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
@@ -103,24 +115,22 @@
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td><a class="btn btn-default" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default red" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-success" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
+        <td><a class="btn  btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-default" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
     <tr *ngFor="let entry of content | filterTopics: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-default" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
 </table>

@@ -10,11 +10,11 @@
 
     <div style="margin-bottom: 50px;" *ngFor="let testcase of testcaseslist; let idx = index; let last = last;">
 
-      <div class="jumbotron">
+      <div class="jumbotron" [ngClass]="{'incorrect-test-box': testcase.status !== 'successful run'}">
 
         <!-- TODO: CHECK THAT THIS CSS CLASSES WORK -->
-        <p *ngIf="testcase.status === 'successful run'" class="white-text">Test Case number: {{idx + 1}}</p>
-        <p *ngIf="testcase.status !== 'successful run'" class="white-text">
+        <p *ngIf="testcase.status === 'successful run'">Test Case number: {{idx + 1}}</p>
+        <p *ngIf="testcase.status !== 'successful run'">
           Test Case number: {{idx + 1}} - Error: {{testcase.status}}
         </p>
 

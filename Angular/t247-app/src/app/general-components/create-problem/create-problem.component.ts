@@ -37,7 +37,7 @@ export class CreateProblem implements OnInit {
   problemTopics: any; // A list of all the topics available for a problem
   problemProgLang: string; // The selected language of the problem
 
-  difficulties: string[] // filled from service
+  difficulties: string[]; // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
   problemTopicID: number; // The id of the topic for this problem
 
@@ -261,8 +261,6 @@ export class CreateProblem implements OnInit {
     };
 
 
-    console.log(request);
-
     //Make the POST
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(
@@ -297,9 +295,6 @@ export class CreateProblem implements OnInit {
     //TODO: IMPLEMENT THE LOADER
     this.displayLoader = true; // display the loader
 
-    // Get the correct type of problem
-    let pType = (this.problemTypeFlag == 0) ? "full" : "function";
-
     let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
 
 
@@ -312,8 +307,7 @@ export class CreateProblem implements OnInit {
       "language": this.problemProgLang,
       "difficulty": this.problemDifficulty,
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
-      "time_limit": this.createProblemForm.value.problemDetails.timeLimit,
-      "type": pType
+      "time_limit": this.createProblemForm.value.problemDetails.timeLimit
     }
 
 
