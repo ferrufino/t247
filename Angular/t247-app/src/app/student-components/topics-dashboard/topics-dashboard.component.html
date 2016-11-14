@@ -9,19 +9,6 @@
 </div>
 
 <h3 *ngIf="problemsBool">{{selectedTopicName}}</h3>
-<table class="table table-hover table-striped" *ngIf="problemsBool">
-  <thead>
-    <tr>
-      <th *ngFor="let colName of columns">{{colName}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let problem of contentTable">
-      <td>{{problem.name}}</td>
-      <td *ngIf=" problem.difficulty == 0">Easy</td>
-      <td *ngIf=" problem.difficulty == 1">Medium</td>
-      <td *ngIf=" problem.difficulty == 2">Hard</td>
-      <td>{{problem.status}}</td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="problemsBool">
+  <generic-table [typetable]="'problemsByTopic'" [topicId]="this.selectedTopicId"></generic-table>
+</div>

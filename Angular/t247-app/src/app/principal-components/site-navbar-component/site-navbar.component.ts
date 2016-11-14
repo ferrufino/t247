@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {UsersService} from "../../services/users.service";
 
 @Component({
   selector: 'app-site-navbar',
@@ -11,9 +12,8 @@ export class SiteNavbarComponent implements OnInit {
   @Input() hideDropdown: boolean;
   @Input() actualRole: string;
   @Output() clickedRole = new EventEmitter();
-  @Output() callLogout = new EventEmitter();
 
-  constructor() {
+  constructor(private _authService: UsersService,) {
   }
 
   ngOnInit() {
@@ -24,7 +24,7 @@ export class SiteNavbarComponent implements OnInit {
    * on the Home Component
    */
   sendLogoutEvent(){
-    this.callLogout.emit();
+    this._authService.logout();
   }
 
   testFunc(role) {
