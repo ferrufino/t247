@@ -22,10 +22,12 @@
   </div>
 </div>
 
-<div class="row" *ngIf="typeOfForm == 'courses' ">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#courseFormModal">
-        New
-    </button>
+<div class="row " *ngIf="typeOfForm == 'courses' ">
+    <div class ="btn-new">
+        <button type="button" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#courseFormModal">
+            New
+        </button>
+    </div>
 </div>
 
 <div class="modal fade" id="topicsFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'topics' ">
