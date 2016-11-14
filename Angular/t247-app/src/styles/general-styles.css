@@ -36,3 +36,7 @@ footer {
     margin-right: 15px;
     margin-bottom: 40px;
 }
+
+.incorrect-test-box {
+  background-color: #de4949;
+}

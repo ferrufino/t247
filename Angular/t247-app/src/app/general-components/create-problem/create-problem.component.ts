@@ -259,9 +259,7 @@ export class CreateProblem implements OnInit {
       "memory_limit": this.createProblemForm.value.problemDetails.memoryLimit,
       "test_cases": inputs
     };
-
-
-    console.log(request);
+    
 
     //Make the POST
     this._httpProblemsService.checkProblemTestCases(request)
