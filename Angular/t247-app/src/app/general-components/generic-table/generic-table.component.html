@@ -12,8 +12,8 @@
     <generic-form *ngIf="usersBool" [typeForm]="'users'" (formChange)="renderTable();"></generic-form>
 
 
-    <div class="center">
-        <div id="custom-search-input">
+    <div class="search-bar">
+        <div class="custom-search-input">
             <div class="input-group col-md-12">
                 <input type="text" class="form-control input-lg" placeholder="Search" #filterInput (keyup)="0"/>
                     <span class="input-group-btn">
@@ -63,9 +63,9 @@
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.problem_name}}</td>
         <td>{{entry.value.course_name}}</td>
-        <td *ngIf=" entry.value.difficulty == 1">Easy</td>
-        <td *ngIf=" entry.value.difficulty == 2">Medium</td>
-        <td *ngIf=" entry.value.difficulty == 3">Hard</td>
+        <td *ngIf=" entry.value.difficulty == 0">Easy</td>
+        <td *ngIf=" entry.value.difficulty == 1">Medium</td>
+        <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.due_date}}</td>
         <td *ngIf="entry.value.max_grade == 100">Yeah</td>
         <td *ngIf="entry.value.max_grade != 100">Nop</td>

@@ -1,5 +1,6 @@
-<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="true" [actualRole]="selectedRole"
-                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
+<div class="navbar-container">
+    <app-site-navbar [availableRoles]="" [hideDropdown]="true"  [actualRole]="" (callLogout)="logout()"></app-site-navbar>
+</div>
 <div class="container problem-details">
 
   <div class="row margin-bottom20">

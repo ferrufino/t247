@@ -62,7 +62,7 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-
+        let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
         switch (this.typeOfTableName) {
 
             case "problems":
@@ -83,7 +83,7 @@ export class GenericTableComponent implements OnInit {
                 break;
 
             case "assignments":
-                let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+
                 this.assignmentsService.getAssignmentsByStudent(userInfo.id).subscribe(
                     submissions => {
                         this.assignmentsBool = true;
@@ -93,7 +93,7 @@ export class GenericTableComponent implements OnInit {
                 break;
 
             case "submissions":
-                this.submissionOfProblems.getSubmissions().subscribe(
+                this.submissionOfProblems.getSubmissions(userInfo.id).subscribe(
                  submissions => {
                      this.submissionsBool = true;
                      this.problemsBool = false;
