@@ -15,6 +15,7 @@ export class TopicsDashboardComponent implements OnInit {
   contentTable: any[] = [];
   private problemsBool;
   private selectedTopicName;
+  private selectedTopicId;
   columns:Array<string>;
 
   constructor(private topicsService: TopicsService, private problemsService: ProblemsService, private _cacheService: CacheService) {
@@ -44,17 +45,9 @@ export class TopicsDashboardComponent implements OnInit {
   }
 
   displayProblems(topic) {
-    let ID_topic = topic.id;
-    let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
-
-    this.problemsService.getProblemsFromTopic(ID_topic, userInfo.id).subscribe(
-      problems => {
-        this.contentTable = problems;
-        this.problemsBool = true;
-        this.selectedTopicName = "Problems for: " + topic.name;
-        this.columns = ["Title", "Difficulty", "Status"];
-      }
-    );
+    this.selectedTopicId = topic.id;
+    this.selectedTopicName = "Problems for: " + topic.name;
+    this.problemsBool = true;
   }
 
   showTopics() {

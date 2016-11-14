@@ -13,9 +13,9 @@ export class ProblemsService {
   private PROBLEM_LIST_URL = environment.apiURL + '/problems/list/';
   private GET_PROBLEM_DATA_URL = environment.apiURL + '/problems/';
   private PROBLEM_BY_TOPIC_URL = environment.apiURL + '/problems/listbytopic/';
+  private PROBLEM_UPDATE_URL = environment.apiURL + '/problems/';
 
-  constructor(private http: Http) {
-  }
+  constructor(private http: Http) {}
 
 
   /**
@@ -35,4 +35,14 @@ export class ProblemsService {
     return this.http.get(this.PROBLEM_LIST_URL).map((response: Response) => response.json());
   }
 
+  updateProblem(problemID: number, problem: any){
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'localhost:4200'
+    });
+    return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, headers ).map((response: Response) => response.json());
+  }
+
+
 }
+

@@ -37,9 +37,11 @@ export class GenericTableComponent implements OnInit {
 
     @Input('typetable') typeOfTableName:string;
     @Input('assignment') assignmentId:number;
+    @Input('topicId') topicId:number;
     //typeOfTableName: string = "courses";
     columns:Array<string>;
     private problemsBool;
+    private problemsByTopicBool;
     private assignmentsBool;
     private submissionsBool;
     private assignmentSubmissionsBool;
@@ -52,7 +54,6 @@ export class GenericTableComponent implements OnInit {
 
     ngOnInit() {
         this.renderTable();
-
     }
 
     ngAfterViewInit() {
@@ -77,8 +78,30 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+                        this.problemsByTopicBool = false;
                         this.columns = ["Title", "Difficulty", "Topic", "Status", "Description", "Delete"];
                     }
+                );
+                break;
+
+            case "problemsByTopic":
+                let ID_topic = this.topicId;
+                let userInformation = JSON.parse(sessionStorage.getItem("userJson"));
+
+                this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
+                  problems => {
+                    this.content = problems;
+                    this.problemsByTopicBool = true;
+                    this.problemsBool = false;
+                    this.assignmentsBool = false;
+                    this.submissionsBool = false;
+                    this.assignmentSubmissionsBool = false;
+                    this.groupsBool = false;
+                    this.coursesBool = false;
+                    this.topicsBool = false;
+                    this.usersBool = false;
+                    this.columns = ["Title", "Difficulty", "Status", "Try it"];
+                  }
                 );
                 break;
 
@@ -103,6 +126,7 @@ export class GenericTableComponent implements OnInit {
                      this.coursesBool = false;
                      this.topicsBool = false;
                      this.usersBool = false;
+                     this.problemsByTopicBool = false;
                      this.columns = ["Name", "Number of Attempts", "Solved"];
                      this.content = submissions;
                  }
@@ -124,6 +148,8 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.columns = ["Student", "", "Date of last submission", "Attempts", "Solved"];
+
+                        this.problemsByTopicBool = false;
                     }
                 );
                 break;
@@ -167,6 +193,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+                        this.problemsByTopicBool = false;
                         this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
                     }
                 );
@@ -195,6 +222,7 @@ export class GenericTableComponent implements OnInit {
                         this.groupsBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+                        this.problemsByTopicBool = false;
                         this.columns = ["Id", "Title", "Edit", "Delete"];
                     }
                 );
@@ -225,6 +253,7 @@ export class GenericTableComponent implements OnInit {
                 this.groupsBool = false;
                 this.coursesBool = false;
                 this.usersBool = false;
+                this.problemsByTopicBool = false;
                 this.columns = ["Id", "Title", "Edit", "Delete"];
                 break;
 
@@ -237,6 +266,7 @@ export class GenericTableComponent implements OnInit {
                 this.groupsBool = false;
                 this.coursesBool = false;
                 this.topicsBool = false;
+                this.problemsByTopicBool = false;
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(

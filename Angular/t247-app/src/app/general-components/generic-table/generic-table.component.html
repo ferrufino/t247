@@ -57,6 +57,16 @@
         <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
+    <tbody *ngIf="problemsByTopicBool">
+    <tr *ngFor="let entry of content | filterProblems: filterInput.value">
+      <td>{{entry.value.name}}</td>
+      <td *ngIf=" entry.value.difficulty == 0">Easy</td>
+      <td *ngIf=" entry.value.difficulty == 1">Medium</td>
+      <td *ngIf=" entry.value.difficulty == 2">Hard</td>
+      <td>{{entry.value.status}}</td>
+      <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
+    </tr>
+    </tbody>
     <tbody *ngIf="assignmentsBool">
     <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
         <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
@@ -95,7 +105,7 @@
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
         <td><a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default red" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
@@ -105,7 +115,7 @@
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
         <td><a class="btn btn-default" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default red" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">

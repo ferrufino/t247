@@ -37,7 +37,7 @@ export class CreateProblem implements OnInit {
   problemTopics: any; // A list of all the topics available for a problem
   problemProgLang: string; // The selected language of the problem
 
-  difficulties: string[] // filled from service
+  difficulties: string[]; // filled from service
   problemDifficulty: string; // The selected difficulty of the problem
   problemTopicID: number; // The id of the topic for this problem
 
