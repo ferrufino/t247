@@ -22,6 +22,7 @@ import {KeysPipe} from './pipes/keys.pipe';
 import {FilterPipe} from './pipes/filter.pipe';
 import {FilterUsersPipe} from './pipes/filter-users.pipe';
 import {FilterProblemsPipe} from './pipes/filter-problems.pipe';
+import {CapitalizePipe} from "./pipes/capitalize.pipe";
 import {FilterAssignmentsPipe} from './pipes/filter-assignments.pipe';
 import {FilterSubmissionsPipe} from './pipes/filter-submissions.pipe';
 import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
@@ -87,6 +88,7 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
         GenericFormComponent,
         Tab,
         Tabs,
+        CapitalizePipe,
         FilterPipe,
         TestCasesCreatorComponent,
         KeysPipe,
