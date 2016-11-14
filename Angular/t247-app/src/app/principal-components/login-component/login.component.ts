@@ -1,4 +1,3 @@
-
 import {Component, ElementRef} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {User} from "../../user";
