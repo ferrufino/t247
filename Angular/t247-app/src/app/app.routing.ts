@@ -13,6 +13,7 @@ import {UserEditComponent} from "./admin-components/users-edit/users-edit.compon
 import {SubmitProblem} from "./general-components/submit-problem/submit-problem.component";
 import {FirstLoginComponent} from "./student-components/first-login.component";
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
+import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 
 const appRoutes: Routes = [
     {
@@ -61,6 +62,10 @@ const appRoutes: Routes = [
     {
         path: 'problem/:id',
         component: ProblemDetailsComponent
+    },
+    {
+        path: 'createProblem',
+        component: CreateProblem
     }
 ];
 

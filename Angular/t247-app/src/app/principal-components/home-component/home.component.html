@@ -17,18 +17,12 @@
                 <tab tabTitle="Problems">
                     <generic-table [typetable]="'problems'"></generic-table>
                 </tab>
-                <tab tabTitle="Create Problem">
-                    <create-problem></create-problem>
-                </tab>
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'professor'">
             <tabs>
                 <tab tabTitle="My Groups">
                     <generic-table [typetable]="'groups'"></generic-table>
-                </tab>
-                <tab tabTitle="Create Problem">
-                    <create-problem></create-problem>
                 </tab>
                 <tab tabTitle="Topics">
                     <generic-table [typetable]="'topics'"></generic-table>

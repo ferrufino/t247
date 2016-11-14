@@ -11,6 +11,7 @@ import {environment} from '../../../environments/environment';
 import {UsersService} from '../../services/users.service';
 import {SubmitProblemService} from '../../services/submit-problem.service';
 import {ProblemsService} from '../../services/problems.service';
+
 @Component({
     selector: 'generic-table',
     templateUrl: './generic-table.component.html',
@@ -23,7 +24,7 @@ export class GenericTableComponent implements OnInit {
     topicName:string = "";
     courseName:string = "";
     group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
-
+    typeOfUser: string;
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
                 private groupsService:GroupsService,
@@ -64,6 +65,7 @@ export class GenericTableComponent implements OnInit {
 
     renderTable() {
         let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+        this.typeOfUser = userInfo.role;
         switch (this.typeOfTableName) {
 
             case "problems":
@@ -87,7 +89,6 @@ export class GenericTableComponent implements OnInit {
             case "problemsByTopic":
                 let ID_topic = this.topicId;
                 let userInformation = JSON.parse(sessionStorage.getItem("userJson"));
-
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
                   problems => {
                     this.content = problems;
@@ -388,6 +389,11 @@ export class GenericTableComponent implements OnInit {
 
             alert("service hasn't being developed yet!");
         }
+    }
+
+    createNewProblem(){
+
+        this.router.navigate(['/createProblem']);
     }
 
 
