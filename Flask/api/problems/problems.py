@@ -133,7 +133,7 @@ class ProblemDescription(Resource):
         descriptions["spanish"]      = problem.description_spanish
         descriptions["title"]        = problem.name
         descriptions["test_cases"]   = cases
-        descriptions["template"]     = problem.template
+        descriptions["signature"]    = problem.signature
         descriptions["language"]     = Language.query.filter(Language.value == problem.language).one().name
         
         print(descriptions)
