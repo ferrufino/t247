@@ -114,7 +114,7 @@ export class UsersService {
     return this.http
       .put(
         this.EDIT_URL + user.id,
-        {"first_name": user.first_name, "last_name": user.last_name, "password": user.password, "email": user.email},
+        {"first_name": user.first_name, "last_name": user.last_name, "password_hash": user.password, "email": user.email},
         this.headers
       )
       .map(res => {
