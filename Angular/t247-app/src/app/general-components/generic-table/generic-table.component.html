@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Table of {{typeOfTableName}}</h1>
+            <h1 *ngIf="!problemsByTopicBool">Table of {{typeOfTableName}}</h1>
         </div>
     </div>
 
@@ -65,7 +65,9 @@
       <td *ngIf=" entry.value.difficulty == 0">Easy</td>
       <td *ngIf=" entry.value.difficulty == 1">Medium</td>
       <td *ngIf=" entry.value.difficulty == 2">Hard</td>
-      <td>{{entry.value.status}}</td>
+      <td *ngIf=" entry.value.status == 'not_attempted'" class="notattempt">Not attempted</td>
+      <td *ngIf=" entry.value.status == 'accepted'" class="accept">Accepted</td>
+      <td *ngIf=" entry.value.status == 'wrong_answer'" class="wrong">Wrong Answer</td>
       <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
     </tr>
     </tbody>
