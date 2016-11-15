@@ -4,7 +4,6 @@ import {
     AfterViewInit
 } from '@angular/core';
 import {UsersService} from '../../services/users.service';
-import {User} from "../../user";
 
 @Component({
     selector: 'home',
