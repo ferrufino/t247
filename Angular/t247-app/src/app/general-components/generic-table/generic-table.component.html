@@ -55,7 +55,7 @@
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
         <td><button class="btn btn-primary">{{entry.value.active}}</button></td>
-        <td><button class="btn btn-success" (click)="onSelectProblem(entry.value)">Show</button></td>
+        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Edit</button></td>
         <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
@@ -105,7 +105,7 @@
     <tr *ngFor="let entry of content | filterGroups: filterInput.value">
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td><a class="btn btn-success" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
@@ -115,7 +115,7 @@
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td><a class="btn btn-success" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectUser(entry.value)" role="button">Edit</a></td>
         <td><a class="btn  btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>

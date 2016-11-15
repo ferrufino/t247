@@ -158,6 +158,7 @@ export class ProblemDetailsComponent implements OnInit {
   editProblemRequest(difficultyId: number): any {
 
     let problemTopicsIds : number[];
+    problemTopicsIds = [];
 
     // Get the IDs of the topics
     for(let topic of this.problemTopics){
@@ -172,6 +173,8 @@ export class ProblemDetailsComponent implements OnInit {
       "difficulty": difficultyId,
       "topics": problemTopicsIds
     };
+
+    console.log(problemObject)
 
     this._problemService.updateProblem(this.problemId, problemObject)
       .subscribe(

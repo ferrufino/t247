@@ -27,14 +27,30 @@ export class ProblemsService {
     return this.http.get(this.GET_PROBLEM_DATA_URL + problemID).map((response: Response) => response.json());
   }
 
+  /**
+   * This function returns a list of problems that have the same topic Id
+   * @param id_topic
+   * @param id_user
+   * @returns {Observable<R>}
+   */
   getProblemsFromTopic(id_topic, id_user) {
     return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic).map((response: Response) => response.json());
   }
 
+  /**
+   * Returns the full list of problems created
+   * @returns {Observable<R>}
+   */
   getProblems() {
     return this.http.get(this.PROBLEM_LIST_URL).map((response: Response) => response.json());
   }
 
+  /**
+   * This function returns a code 204 when the problem is successfully` updated
+   * @param problemID
+   * @param problem
+   * @returns {Observable<R>}
+   */
   updateProblem(problemID: number, problem: any){
     const headers = new Headers({
       'Content-Type': 'application/json',
@@ -42,7 +58,6 @@ export class ProblemsService {
     });
     return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, headers ).map((response: Response) => response.json());
   }
-
 
 }
 
