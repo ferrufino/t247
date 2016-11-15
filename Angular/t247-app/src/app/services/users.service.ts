@@ -73,7 +73,9 @@ export class UsersService {
           sessionStorage.setItem('roles', JSON.stringify(availableRoles));
 
           this.loggedIn = true; // Flag true since user is now logged in
-          if (res.name === null) {
+
+          // Checking if the user must fill missing information
+          if (res.name === null || res.name == "") {
             this._router.navigate(['firstLogIn']);
           }
           else {
@@ -114,7 +116,7 @@ export class UsersService {
     return this.http
       .put(
         this.EDIT_URL + user.id,
-        {"first_name": user.first_name, "last_name": user.last_name, "password": user.password, "email": user.email},
+        {"first_name": user.first_name, "last_name": user.last_name, "password_hash": user.password, "email": user.email},
         this.headers
       )
       .map(res => {

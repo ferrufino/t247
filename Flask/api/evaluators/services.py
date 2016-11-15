@@ -137,7 +137,7 @@ def evaluate(request):
     
     # 1.3) Compile source file
     if (language == 'cpp'):
-        process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'g++', '-o', 'a.out', 'a.cpp'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'g++', '-std=c++11', 'a.cpp', '-o', 'a.out'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     elif (language == 'java'):
         process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'javac', 'Main.java'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
@@ -229,7 +229,7 @@ def evaluate(request):
             
             # 5) Execute  
             process = subprocess.Popen(['sudo', 'docker', 'exec', ctr_name, 'python3', 'monitor.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
+
             try:
                 status, placeholder = process.communicate(timeout=10)
                 if (process.returncode != 0):

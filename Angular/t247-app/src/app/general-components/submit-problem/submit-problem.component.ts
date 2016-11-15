@@ -122,7 +122,8 @@ export class SubmitProblem implements OnInit {
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
-                this.codeEditor.setSourceCode = content.template;
+                this.codeEditor.setNewSourceCode(content.signature);
+                console.log(content.signature);
 
             }
         );
