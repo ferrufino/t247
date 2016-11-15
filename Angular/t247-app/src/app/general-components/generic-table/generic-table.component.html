@@ -30,13 +30,13 @@
     <div class="row">
         <div *ngIf="usersBool">
             Roles:
-            <button (click)="filterInput.value='student'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('student')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Student
             </button>
-            <button (click)="filterInput.value='professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('professor')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Professor
             </button>
-            <button (click)="filterInput.value='admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('admin')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Admin
             </button>
         </div>
@@ -110,7 +110,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
-    <tr *ngFor="let entry of content | filterUsers: filterInput.value">
+    <tr *ngFor="let entry of content | filterUsers: filterTag: true | filterUsers: filterInput.value: false">
         <td>{{entry.value.enrollment}}</td>
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
