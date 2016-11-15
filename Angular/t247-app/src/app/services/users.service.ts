@@ -73,7 +73,9 @@ export class UsersService {
           sessionStorage.setItem('roles', JSON.stringify(availableRoles));
 
           this.loggedIn = true; // Flag true since user is now logged in
-          if (res.name === null) {
+
+          // Checking if the user must fill missing information
+          if (res.name === null || res.name == "") {
             this._router.navigate(['firstLogIn']);
           }
           else {
