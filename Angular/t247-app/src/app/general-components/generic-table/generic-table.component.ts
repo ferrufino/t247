@@ -5,12 +5,15 @@ import {Router} from '@angular/router';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
-import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
+
 import {AssignmentsService} from '../../services/assignments.service';
 import {environment} from '../../../environments/environment';
 import {UsersService} from '../../services/users.service';
 import {SubmitProblemService} from '../../services/submit-problem.service';
 import {ProblemsService} from '../../services/problems.service';
+
+import {CacheStoragesEnum} from 'ng2-cache/src/enums/cache-storages.enum';
+import {CacheService} from 'ng2-cache/src/services/cache.service';
 
 @Component({
     selector: 'generic-table',

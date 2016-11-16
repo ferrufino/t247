@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from "@angular/http";
 import {environment} from '../../environments/environment';
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+
+import {CacheService} from 'ng2-cache/src/services/cache.service';
 
 @Injectable()
 export class GroupsService {

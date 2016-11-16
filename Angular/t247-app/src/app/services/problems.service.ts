@@ -56,7 +56,7 @@ export class ProblemsService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'localhost:4200'
     });
-    return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, headers ).map((response: Response) => response.json());
+    return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, headers );
   }
 
 }

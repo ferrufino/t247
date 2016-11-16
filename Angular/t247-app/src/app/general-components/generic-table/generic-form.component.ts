@@ -1,7 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
-import {GroupsService} from "../../services/groups.service";
 import {UsersService} from '../../services/users.service';
 
 @Component({
