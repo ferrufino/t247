@@ -26,6 +26,7 @@ export class GenericTableComponent implements OnInit {
     user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
     topicName:string = "";
     courseName:string = "";
+    filterTag:string = "";
     group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
     typeOfUser: string;
     constructor(private topicsService:TopicsService,
@@ -397,6 +398,15 @@ export class GenericTableComponent implements OnInit {
     createNewProblem(){
 
         this.router.navigate(['/createProblem']);
+    }
+
+    toggleFilterTag(filterString) {
+      if (this.filterTag == "" || this.filterTag != filterString) {
+        this.filterTag = filterString;
+      }
+      else {
+        this.filterTag = "";
+      }
     }
 
 
