@@ -8,7 +8,7 @@
 
     <generic-form *ngIf="coursesBool" [typeForm]="'courses'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="topicsBool" [typeForm]="'topics'" (formChange)="renderTable();"></generic-form>
-    <generic-form *ngIf="groupsBool" [typeForm]="'groups'"></generic-form>
+    <generic-form *ngIf="groupsBool" [typeForm]="'groups'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="usersBool" [typeForm]="'users'" (formChange)="renderTable();"></generic-form>
     <div *ngIf="problemsBool" class="row">
         <a (click)="createNewProblem()" class="btn btn-primary btn-new pull-right"> Create Problem</a>

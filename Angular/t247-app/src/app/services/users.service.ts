@@ -24,7 +24,7 @@ export class UsersService {
   private CREATE_URL = this.GET_URL+"/create";
   private DELETE_URL = this.GET_URL;
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
+  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': sessionStorage.getItem('auth_token')});
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
     this.loggedIn = !!sessionStorage.getItem('auth_token');
