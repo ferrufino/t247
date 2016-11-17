@@ -1,60 +1,108 @@
-<app-site-navbar [availableRoles]="" [hideDropdown]="true"  [actualRole]="" (callLogout)="logout()"></app-site-navbar>
+<app-site-navbar [hideDropdown]="true" ></app-site-navbar>
 
 <div class="container">
-  <div class="row" *ngIf="!editingProfile">
-    <div class="col s12">
-      <div class="row">
-        <div class="col s2 offset-s10">
-          <a class="waves-effect waves-light btn" (click)="editProfile()"><i class="material-icons">edit</i></a>
+    <div class="row" *ngIf="!editingProfile">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s2 offset-s10">
+                    <a class="waves-effect waves-light btn" (click)="editProfile()"><i
+                            class="material-icons">edit</i></a>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="">
+
+                        <div class="card hovercard">
+                            <div class="cardheader">
+
+                            </div>
+                            <div class="avatar">
+                                <img alt="" src="http://tips.grazh.com/wp-content/uploads/2015/12/bash-icon-rounded.png">
+                            </div>
+                            <div class="info">
+                                <div class="title">
+                                    {{user.first_name}}
+                                </div>
+                                <div class="desc"><strong>Last Name:</strong> {{user.last_name}}</div>
+                                <div class="desc"><strong>Enrollment ID:</strong> {{user.enrollment}}</div>
+                                <div class="desc"><strong>Email:</strong> {{user.email}}</div>
+                                <div class="desc"><strong>Tech Geek</strong></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <button class="waves-effect waves-light btn btn-primary pull-right" data-toggle="modal" data-target="#usersFormModal">Edit Profile</button>
+            <button class="waves-effect waves-light btn btn-primary pull-right" (click)="goBack()">Go Back</button>
         </div>
-      </div>
-      <div class="row">
-        <div class="col s6">
-          <label>Nombre</label>
-          <h4>{{user.first_name}}</h4>
-        </div>
-        <div class="col s6">
-          <label>Apellido</label>
-          <h4>{{user.last_name}}</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6">
-          <label>Email</label>
-          <h4>{{user.email}}</h4>
+    </div>
+
+</div>
+    <!-- <div class="row" *ngIf="editingProfile">
+        <form class="col s12" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="first_name" type="text" class="validate"
+                           [(ngModel)]="user.first_name" name="first_name">
+                    <label for="first_name">First Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="last_name" type="text" class="validate"
+                           [(ngModel)]="user.last_name" name="last_name">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="enrollment" type="text" class="validate"
+                           [(ngModel)]="user.enrollment" name="enrollment">
+                    <label for="enrollment">Enrollment</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="email" type="email" class="validate"
+                           [(ngModel)]="user.email" name="email">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <a class="waves-effect waves-light btn" (click)="cancelEdit()">Cancel</a>
+            <button type="submit" class="btn btn-default">Edit</button>
+        </form>
+    </div> -->
+    <div class="modal fade" id="usersFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Edit User</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input id="first_name" type="text" class="validate"
+                       [(ngModel)]="user.first_name" name="first_name">
+              </div>
+              <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input id="last_name" type="text" class="validate"
+                       [(ngModel)]="user.last_name" name="last_name">
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" class="validate"
+                       [(ngModel)]="user.email" name="email">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmit()">Create</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    <a class="waves-effect waves-light btn" (click)="goBack()">Go Back</a>
-  </div>
-  <div class="row" *ngIf="editingProfile">
-    <form class="col s12" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate"
-          [(ngModel)]="user.first_name" name="first_name">
-          <label for="first_name">First Name</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="last_name" type="text" class="validate"
-          [(ngModel)]="user.last_name" name="last_name">
-          <label for="last_name">Last Name</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s6">
-          <input id="enrollment" type="text" class="validate"
-          [(ngModel)]="user.enrollment" name="enrollment">
-          <label for="enrollment">Enrollment</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="email" type="email" class="validate"
-          [(ngModel)]="user.email" name="email">
-          <label for="email">Email</label>
-        </div>
-      </div>
-      <a class="waves-effect waves-light btn" (click)="cancelEdit()">Cancel</a>
-      <button type="submit" class="btn btn-default">Edit</button>
-    </form>
-  </div>
-</div>

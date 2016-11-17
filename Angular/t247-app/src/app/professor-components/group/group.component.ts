@@ -3,7 +3,8 @@ import { GroupsService } from '../../services/groups.service';
 import { UsersService } from '../../services/users.service';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location } from '@angular/common';
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import { CacheService } from 'ng2-cache/src/services/cache.service';
+import { CacheStoragesEnum } from 'ng2-cache/src/enums/cache-storages.enum';
 import { CoursesService } from '../../services/courses.service.ts';
 import { environment } from '../../../environments/environment';
 
@@ -39,6 +40,10 @@ export class GroupComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  logout() {
+    this._authService.logout();
   }
 
 }

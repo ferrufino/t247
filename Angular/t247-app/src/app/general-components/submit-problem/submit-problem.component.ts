@@ -6,7 +6,7 @@ import {
 } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
-import { ActivatedRoute, Params }   from '@angular/router';
+import {ActivatedRoute, Params}   from '@angular/router';
 
 
 @Component({
@@ -17,9 +17,10 @@ import { ActivatedRoute, Params }   from '@angular/router';
 })
 export class SubmitProblem implements OnInit {
 
-    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route: ActivatedRoute) {
+    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route:ActivatedRoute) {
 
     }
+
     /*Main Variables Declaration*/
     private progLangToSubmit;
     private descriptionEnglish;
@@ -29,6 +30,7 @@ export class SubmitProblem implements OnInit {
     private testCases;
     private successMessage:string = "Success";
     private errorMessage:string = "Error";
+    private template:string;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
@@ -41,25 +43,25 @@ export class SubmitProblem implements OnInit {
         selectionLimit: 1,
         closeOnSelect: true,
         checkedStyle: 'checkboxes'
-    }
+    };
+
     private myTexts:IMultiSelectTexts = {
         checked: 'checked',
         defaultTitle: 'Programming Languages'
     };
+    private problemId;
 
     ngOnInit() {
 
-        this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
-            this.getContentDescription(id);
+        this.route.params.forEach((params:Params) => {
+            this.problemId = +params['id'];
+            this.getContentDescription(this.problemId);
             let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
-            console.log(userInfo.id + " " + id);
-            this.getContentAttempt(userInfo.id, id);
+            console.log(userInfo.id + " " + this.problemId);
+            this.getContentAttempt(userInfo.id, this.problemId);
         });
 
         this.progLangToSubmit = "none";
-        document.getElementById('success-feedback').style.display = "none";
-        document.getElementById('error-feedback').style.display = "none";
 
 
     }
@@ -68,34 +70,36 @@ export class SubmitProblem implements OnInit {
     onChange($event) {
         if ($event == 1) {
             this.progLangToSubmit = "cpp";
-        } else if($event == 2) {
+        } else if ($event == 2) {
             this.progLangToSubmit = "java";
-        } else{
+        } else {
             this.progLangToSubmit = "none";
         }
         console.log(this.progLangToSubmit);
     }
-    
-    
+
+
     codeToSubmitReceived() {
-        if(this.progLangToSubmit == "none"){
+        if (this.progLangToSubmit == "none") {
             document.getElementById('error-feedback').style.display = "block";
             this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
-        }else{
+        } else {
             var codeFromEditor = this.codeEditor.getSourceCode();
+            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+
             let codeObject = {
                 "code": codeFromEditor,
                 "language": this.progLangToSubmit,
-                "problem_id": 25,
+                "problem_id": this.problemId,
                 "request_type": "submission",
-                "user_id": 4
+                "user_id": userInfo.id
             }
             console.log(codeObject);
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
-                        
+
                         this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                     } else {
                         this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
@@ -104,11 +108,11 @@ export class SubmitProblem implements OnInit {
                 }
             );
 
+
+            console.log(this.progLangToSubmit);
         }
-
-
-
     }
+
 
     getContentDescription(id) {
 
@@ -118,6 +122,9 @@ export class SubmitProblem implements OnInit {
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
+                this.codeEditor.setNewSourceCode(content.signature);
+                console.log(content.signature);
+
             }
         );
     }
@@ -125,7 +132,7 @@ export class SubmitProblem implements OnInit {
     getContentAttempt(s_id, id) {
         this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
-               this.attempts = content;
+                this.attempts = content;
             }
         );
     }

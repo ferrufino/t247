@@ -1,3 +1,7 @@
+.create-problem__component{
+    margin-top: 90px;
+}
+
 .mainTitle {
   text-align: center;
 }
@@ -49,4 +53,150 @@
 .mainWrapper {
   margin-top: 60px;
   padding-bottom: 60px;
+}
+
+/*Loader*/
+
+@import url(http://fonts.googleapis.com/css?family=Lato:300);
+
+
+.containerLoader{
+	text-align: center;
+	background-color: #f0ad4e;
+	overflow: hidden;
+  width: 100px;
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  border-color: #eea236;
+}
+
+.box:nth-child(2n-1){
+	background-color: rgba(0,0,0,0.05);
+}
+
+.box{
+	display: inline-block;
+	height: 50px;
+	width: 100%;
+	float:center;
+	position: relative;
+	/*margin:0 -4px -5px -2px;*/
+	transition: all .2s ease;
+}
+
+
+
+/* MEDIA QUERIES */
+@media (max-width: 700px){
+	.box{
+		width: 100%;
+	}
+
+	.box:nth-child(2n-1){
+		background-color: inherit;
+	}
+
+	.box:nth-child(4n),.box:nth-child(4n-3) {
+		background-color: rgba(0,0,0,0.05);
+	}
+
+}
+
+@media (max-width: 420px){
+	.box{
+		width: 100%;
+	}
+
+	.box:nth-child(4n),.box:nth-child(4n-3){
+		background-color: inherit;
+	}
+
+	.box:nth-child(2n-1){
+		background-color:rgba(0,0,0,0.05);
+	}
+
+}
+
+/* -------------- loader10 -------------- */
+
+.loader10:before{
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: -25px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
+	-webkit-animation: loader10g 3s ease-in-out infinite;
+			animation: loader10g 3s ease-in-out infinite;
+}
+
+.loader10{
+	position: relative;
+	width: 12px;
+	height: 12px;
+	top: 46%;
+	left: 46%;
+	border-radius: 12px;
+	-webkit-animation: loader10m 3s ease-in-out infinite;
+			animation: loader10m 3s ease-in-out infinite;
+}
+
+
+.loader10:after{
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: 25px;
+	height: 10px;
+	width: 10px;
+	border-radius: 10px;
+	-webkit-animation: loader10d 3s ease-in-out infinite;
+			animation: loader10d 3s ease-in-out infinite;
+}
+
+@-webkit-keyframes loader10g{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, 1);}
+	50%{background-color: rgba(255, 255, 255, .2);}
+	75%{background-color: rgba(255, 255, 255, .2);}
+	100%{background-color: rgba(255, 255, 255, .2);}
+}
+@keyframes loader10g{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, 1);}
+	50%{background-color: rgba(255, 255, 255, .2);}
+	75%{background-color: rgba(255, 255, 255, .2);}
+	100%{background-color: rgba(255, 255, 255, .2);}
+}
+
+@-webkit-keyframes loader10m{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, .2);}
+	50%{background-color: rgba(255, 255, 255, 1);}
+	75%{background-color: rgba(255, 255, 255, .2);}
+	100%{background-color: rgba(255, 255, 255, .2);}
+}
+@keyframes loader10m{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, .2);}
+	50%{background-color: rgba(255, 255, 255, 1);}
+	75%{background-color: rgba(255, 255, 255, .2);}
+	100%{background-color: rgba(255, 255, 255, .2);}
+}
+
+@-webkit-keyframes loader10d{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, .2);}
+	50%{background-color: rgba(255, 255, 255, .2);}
+	75%{background-color: rgba(255, 255, 255, 1);}
+	100%{background-color: rgba(255, 255, 255, .2);}
+}
+@keyframes loader10d{
+	0%{background-color: rgba(255, 255, 255, .2);}
+	25%{background-color: rgba(255, 255, 255, .2);}
+	50%{background-color: rgba(255, 255, 255, .2);}
+	75%{background-color: rgba(255, 255, 255, 1);}
+	100%{background-color: rgba(255, 255, 255, .2);}
 }

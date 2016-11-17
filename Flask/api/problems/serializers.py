@@ -21,7 +21,8 @@ problem = api.model('Problem', {
     'name': fields.String(required=True, description='Problem name'),
     'language': fields.String(required=True, description='Problem lang'),
     'code': fields.String(required=True, description='Problem code'),
-    'template': fields.String(required=True, description='Problem template'),
+    'template': fields.String(required=False, description='Problem template'),
+    'signature': fields.String(required=False, description='Problem signature'),
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
     'active': fields.Boolean(required=True, description='Problem active'),
     'author': fields.Nested(user),
@@ -60,5 +61,7 @@ problem_description = api.model('Problem', {
     'english': fields.String(required=True, description='Description in English'),
     'spanish': fields.String(required=True, description='Description in Spanish'),
     'title': fields.String(required=True, description='Problem title'),
+    'signature': fields.String(required=True, description='Problem signature'),
+    'language': fields.String(required=True, description='Problem language'),
     'test_cases': fields.List(fields.Nested(simple_test_case))
   })

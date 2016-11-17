@@ -186,6 +186,7 @@ class Problem(Base):
     language = db.Column(db.String(255), nullable=False)
     code = db.Column(db.Text, nullable=False)
     template = db.Column(db.Text)
+    signature = db.Column(db.Text)
     description_english = db.Column(db.Text, nullable=False)
     description_spanish = db.Column(db.Text)
     time_limit = db.Column(db.Integer)
