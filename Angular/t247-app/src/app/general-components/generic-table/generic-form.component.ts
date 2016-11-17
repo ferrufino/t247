@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {UsersService} from '../../services/users.service';
+import {GroupsService} from '../../services/groups.service';
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 import { environment } from '../../../environments/environment';
 
