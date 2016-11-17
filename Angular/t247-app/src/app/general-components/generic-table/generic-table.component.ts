@@ -321,7 +321,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteCourse(course) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure? All associated groups will be deleted");
         if (r == true) {
             console.log(course);
             this.coursesService.deleteCourse(course).subscribe((result) => {

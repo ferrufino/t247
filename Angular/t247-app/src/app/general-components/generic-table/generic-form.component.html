@@ -1,7 +1,7 @@
 <div class="modal fade" id="courseFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'courses' ">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form (ngSubmit)="onSubmitCourse()">
+      <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">New Course</h4>
@@ -15,7 +15,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-default">Create</button>
+          <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmitCourse()">Create</button>
         </div>
       </form>
     </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-default">Create</button>
+          <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmitTopic()">Create</button>
         </div>
       </form>
     </div>
@@ -90,7 +90,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="onSubmitGroup()">Create</button>
         </div>
       </form>
     </div>
@@ -107,7 +107,7 @@
 <div class="modal fade" id="usersFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" *ngIf="typeOfForm == 'users' ">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form (ngSubmit)="onSubmitUser()">
+      <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">New User</h4>
@@ -150,7 +150,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-default">Create</button>
+          <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmitUser()">Create</button>
         </div>
       </form>
     </div>
