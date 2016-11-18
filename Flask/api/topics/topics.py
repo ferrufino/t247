@@ -5,6 +5,7 @@ from flask_restplus import Resource
 from api.topics.serializers import (topic as api_course, topic_creation)
 from api.restplus import api
 from models import db, Topic
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 

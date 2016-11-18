@@ -13,6 +13,7 @@ import api.evaluators.services as services
 
 from models import db, Problem, Case, Submission, Student, User, ProblemTopic
 from enums import SubmissionState, SubmissionResult
+from authorization import auth_required
 
 gevent.monkey.patch_all()
 

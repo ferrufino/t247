@@ -8,6 +8,7 @@ from api.restplus import api
 from models import db, Problem, Topic, ProblemTopic, Case, Language
 from sqlalchemy import join
 from sqlalchemy.orm import Load
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 

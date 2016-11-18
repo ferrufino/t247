@@ -9,6 +9,7 @@ from api.assignments.serializers import (assignment as api_assignment,
 from api.restplus import api
 from models import db, Assignment, Submission
 from sqlalchemy import and_
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 

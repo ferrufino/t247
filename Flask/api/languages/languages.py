@@ -6,6 +6,7 @@ from api.languages.serializers import (language as api_language,
                                        language_creation)
 from api.restplus import api
 from models import db, Language
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 
