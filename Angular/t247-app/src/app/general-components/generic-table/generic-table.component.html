@@ -117,7 +117,8 @@
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectUser(entry.value)" role="button">Edit</a></td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#userEdit" (click)="onSelectUser(entry.value)">Edit</button></td>
         <td><a class="btn  btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
@@ -137,6 +138,11 @@
     </tbody>
 </table>
 
+
 <div *ngIf="groupsBool">
     <group-form [group]="group" [action]="'create'"></group-form>
 </div>
+
+  <div *ngIf="usersBool">
+    <users-edit #userModal (refresh)="renderTable()"></users-edit>
+  </div>

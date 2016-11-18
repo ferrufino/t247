@@ -52,10 +52,6 @@ const appRoutes: Routes = [
       }
     },
     {
-      path: 'editUser/:id',
-      component: UserEditComponent
-    },
-    {
         path: 'submitProblem/:id',
         component: SubmitProblem
     },
