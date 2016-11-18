@@ -9,7 +9,7 @@ import { Location }                 from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
 
-  user = JSON.parse(sessionStorage.getItem('userJson'));
+  user = JSON.parse(localStorage.getItem('userJson'));
 
   editingProfile = false;
   constructor(private _authService: UsersService, private _editUserService:UsersService,
@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit {
         }
         else{
           console.log(this.user);
-          sessionStorage.setItem("userJson",JSON.stringify(this.user));
+          localStorage.setItem("userJson",JSON.stringify(this.user));
         }
       });
     }

@@ -295,7 +295,7 @@ export class CreateProblem implements OnInit {
     //TODO: IMPLEMENT THE LOADER
     this.displayLoader = true; // display the loader
 
-    let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
+    let userID = JSON.parse(localStorage.getItem("userJson"))["id"];
 
 
     let problemObject = {

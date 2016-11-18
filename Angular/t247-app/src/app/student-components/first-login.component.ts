@@ -18,7 +18,7 @@ export class FirstLoginComponent implements OnInit {
   ngOnInit() {
     this._authService.checkCredentials();
     // Getting data of the current user
-    let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+    let userInfo = JSON.parse(localStorage.getItem("userJson"));
     this._authService.getUser(userInfo.id)
       .subscribe(
         user => {

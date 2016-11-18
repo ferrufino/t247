@@ -55,7 +55,7 @@ export class ProblemsService {
     const headers = new Headers({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'localhost:4200',
-      'Authorization': sessionStorage.getItem('auth_token')
+      'Authorization': localStorage.getItem('auth_token')
     });
     return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, headers );
   }

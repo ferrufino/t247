@@ -72,7 +72,7 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-        let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+        let userInfo = JSON.parse(localStorage.getItem("userJson"));
         this.typeOfUser = userInfo.role;
         switch (this.typeOfTableName) {
 
@@ -96,7 +96,7 @@ export class GenericTableComponent implements OnInit {
 
             case "problemsByTopic":
                 let ID_topic = this.topicId;
-                let userInformation = JSON.parse(sessionStorage.getItem("userJson"));
+                let userInformation = JSON.parse(localStorage.getItem("userJson"));
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
                   problems => {
                     this.content = problems;

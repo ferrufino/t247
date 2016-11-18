@@ -24,19 +24,17 @@ export class UsersService {
   private CREATE_URL = this.GET_URL+"/create";
   private DELETE_URL = this.GET_URL;
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': sessionStorage.getItem('auth_token')});
+  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
-    this.loggedIn = !!sessionStorage.getItem('auth_token');
+    this.loggedIn = !!localStorage.getItem('auth_token');
   }
 
   logout() {
-    sessionStorage.removeItem("email_user");
-    sessionStorage.removeItem("auth_token");
-    sessionStorage.removeItem("userJson");
     localStorage.removeItem("email_user");
     localStorage.removeItem("auth_token");
     localStorage.removeItem("userJson");
+    localStorage.removeItem('roles');
     this.loggedIn = false;
     this._router.navigate(['/login']);
   }
@@ -61,8 +59,8 @@ export class UsersService {
           console.log(res.token); //TODO: KILL THIS LINE
 
           // Store the user info in local storage
-          sessionStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
-          sessionStorage.setItem('auth_token', res.token);
+          localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
+          localStorage.setItem('auth_token', res.token);
 
           let availableRoles = ['student', 'professor', 'admin'];
 
@@ -71,7 +69,7 @@ export class UsersService {
             availableRoles.pop(); // Demote this rank - role
           }
 
-          sessionStorage.setItem('roles', JSON.stringify(availableRoles));
+          localStorage.setItem('roles', JSON.stringify(availableRoles));
 
           this.loggedIn = true; // Flag true since user is now logged in
 

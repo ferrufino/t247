@@ -9,7 +9,7 @@ export class AssignmentsService {
     private userURL:string = environment.apiURL + '/assignments/bystudent';
     private createURL:string = environment.apiURL + '/assignments/create';
 
-    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': sessionStorage.getItem('auth_token')});
+    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
 
     constructor(private http:Http) {
     }

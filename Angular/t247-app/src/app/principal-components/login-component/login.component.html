@@ -18,13 +18,13 @@
         <h3>Welcome to Tutoring 24/7 </h3>
         <h4>Ready to learn some code?</h4>
         <br><br>
-
+        <!--<form class="col-md-6">-->
         <div class="row">
           <div class="input-group">
             <span class="input-group-addon" id="user-email-input"><span class="glyphicon glyphicon-user"
                                                                         aria-hidden="true"></span></span>
-            <input [(ngModel)]="user.email" class="form-control" id="email" placeholder="Email"
-                   aria-describedby="user-email-input" type="email" class="validate">
+            <input [(ngModel)]="user.email" class="form-control validate" id="email" placeholder="Email"
+                   aria-describedby="user-email-input" type="email">
           </div>
         </div>
 
@@ -32,8 +32,8 @@
           <div class="input-group">
             <span class="input-group-addon" id="user-pass-input"><span class="glyphicon glyphicon-lock"
                                                                        aria-hidden="true"></span></span>
-            <input [(ngModel)]="user.password" class="form-control" id="password" placeholder="Password"
-                   aria-describedby="user-pass-input" type="password" class="validate">
+            <input [(ngModel)]="user.password" class="form-control validate" id="password" placeholder="Password"
+                   aria-describedby="user-pass-input" type="password">
           </div>
         </div>
 
@@ -43,6 +43,7 @@
         <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
                 type="submit" name="action">Login
         </button>
+        <!--</form>-->
       </div>
     </div>
   </div>

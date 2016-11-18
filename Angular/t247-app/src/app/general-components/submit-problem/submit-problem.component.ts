@@ -46,7 +46,7 @@ export class SubmitProblem implements OnInit {
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('feedbackCard') feedbackCard;
     codeFromAttempt:string;
-    
+
 
     supportedLanguages: ProgLanguage[]; // filled from service
     problemProgLang: string; // The selected language of the problem
@@ -71,7 +71,7 @@ export class SubmitProblem implements OnInit {
         this.route.params.forEach((params:Params) => {
             this.problemId = +params['id'];
             this.getContentDescription(this.problemId);
-            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+            let userInfo = JSON.parse(localStorage.getItem("userJson"));
             console.log(userInfo.id + " " + this.problemId);
             this.getContentAttempt(userInfo.id, this.problemId);
         });
@@ -97,7 +97,7 @@ export class SubmitProblem implements OnInit {
 
     codeToSubmitReceived(progLang) {
         var codeFromEditor = this.codeEditor.getSourceCode();
-            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+            let userInfo = JSON.parse(localStorage.getItem("userJson"));
             let codeObject = {
                 "code": codeFromEditor,
                 "language": progLang,

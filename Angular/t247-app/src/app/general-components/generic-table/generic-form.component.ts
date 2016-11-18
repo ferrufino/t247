@@ -148,7 +148,7 @@ export class GenericFormComponent implements OnInit  {
       }
       this.group.courseId = Number(this.group.courseId);
       this.group.enrollments=this.group.enrollmentText.split(",");
-      this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
+      this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
       if(llenado){
           console.log(this.group);
           this.groupsService.createGroup(this.group).subscribe((result) => {

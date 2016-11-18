@@ -38,12 +38,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
 
-        if (sessionStorage.getItem("auth_token")) {
-            this.userRoles = JSON.parse(sessionStorage.getItem("roles"));
-            this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
+        if (localStorage.getItem("auth_token")) {
+            this.userRoles = JSON.parse(localStorage.getItem("roles"));
+            this.userInformationObject = JSON.parse(localStorage.getItem("userJson"));
             this.typeOfUser = this.userInformationObject.role
 
-            this.selectedRole = JSON.parse(sessionStorage.getItem("currentRoleView"));
+            this.selectedRole = JSON.parse(localStorage.getItem("currentRoleView"));
 
             this.tabsLoadedFunction(); // Load the correct tabs for the user
         }
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     changeSelectedRole(role) {
 
         this.selectedRole = role;
-        sessionStorage.setItem('currentRoleView', JSON.stringify(role));
+        localStorage.setItem('currentRoleView', JSON.stringify(role));
         this.adminTabsLoaded = false;
         this.professorTabsLoaded = false;
         this.studentTabsLoaded = false;
