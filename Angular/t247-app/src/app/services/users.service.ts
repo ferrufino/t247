@@ -35,6 +35,7 @@ export class UsersService {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("userJson");
     localStorage.removeItem('roles');
+    localStorage.removeItem('currentRoleView');
     this.loggedIn = false;
     this._router.navigate(['/login']);
   }
@@ -71,6 +72,9 @@ export class UsersService {
 
           localStorage.setItem('roles', JSON.stringify(availableRoles));
 
+          // Store current role-view
+          localStorage.setItem('currentRoleView', JSON.stringify(res['role']));
+
           this.loggedIn = true; // Flag true since user is now logged in
 
           // Checking if the user must fill missing information
@@ -78,6 +82,7 @@ export class UsersService {
             this._router.navigate(['firstLogIn']);
           }
           else {
+            location.reload();
             this._router.navigate(['']);
           }
         }
