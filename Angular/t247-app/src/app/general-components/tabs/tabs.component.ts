@@ -4,7 +4,7 @@ import {Tab} from "../tab/tab.component";
 @Component({
     selector: 'tabs',
     template:`
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs cards-component">
       <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
         <a>{{tab.title}}</a>
       </li>
@@ -15,6 +15,7 @@ import {Tab} from "../tab/tab.component";
 export class Tabs implements AfterContentInit {
 
     @ContentChildren(Tab) tabs: QueryList<Tab>;
+    @Output() notify = new EventEmitter();
     tabSelected: number;
     // contentChildren are set
     ngAfterContentInit() {
@@ -36,6 +37,7 @@ export class Tabs implements AfterContentInit {
             arrTabs[i].active = false;
             if(arrTabs[i] == tab) {
                 this.tabSelected = i;
+                this.notify.emit(i);
             }
         }
         // activate the tab the user has clicked on.

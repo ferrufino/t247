@@ -32,21 +32,20 @@ export class SubmitProblem implements OnInit {
     private descriptionTitle;
    
     private testCases;
-    private successMessage:string = "Success";
-    private errorMessage:string = "Error";
+    private successMessage:string = "Problem has been submitted, please refresh the site.";
+    private errorMessage:string = "There has been a problem with your submission.";
     private template:string;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
 
-    private codeAttempts: Array<any> = [1, 2, 3];;
+    private codeAttempts: Array<any> = [1, 2, 3];
     private posTabActive: number = 0;
     @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
-    @ViewChild('codeAttempt') codeAttempt;
     @ViewChild('feedbackCard') feedbackCard;
-
+    codeFromAttempt:string;
     
     supportedLanguages: ProgLanguage[]; // filled from service
     problemProgLang: string; // The selected language of the problem
@@ -88,6 +87,9 @@ export class SubmitProblem implements OnInit {
                 console.log("Error loading the supported languages!");
             }
         );
+        this.codeFromAttempt = this.codeAttempts[0];
+        document.getElementById('btn-modal').style.visibility = 'hidden';
+
     }
 
     
@@ -118,7 +120,7 @@ export class SubmitProblem implements OnInit {
     }
 
     loadCode(){
-        this.codeAttempt.setNewSourceCode(this.codeAttempts[this.tabsVariable.tabSelected-1]);
+        this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected-1];
     }
 
     getContentDescription(id) {
@@ -156,6 +158,13 @@ export class SubmitProblem implements OnInit {
     }
     assignActiveTab(pos: number){
         this.posTabActive = pos;
-        console.log("from submit-problem: " + pos);
+    }
+
+    onNotify(index:number):void {
+        if (index == 0){
+            document.getElementById('btn-modal').style.visibility = 'hidden';
+        }else{
+            document.getElementById('btn-modal').style.visibility = 'visible';
+        }
     }
 }
