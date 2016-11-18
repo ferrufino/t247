@@ -48,7 +48,6 @@ export class  AppComponent implements OnInit {
                 this.currentRole = JSON.parse(localStorage.getItem("currentRoleView"));
 
             } else {
-
                 this.currentRole = this.userInformationObject["role"];
                 // Store current role-view
                 localStorage.setItem('currentRoleView', JSON.stringify(this.currentRole));
