@@ -19,7 +19,7 @@ export class CoursesService {
 
   private createUrl = 'http://107.170.255.106:5000/api/courses/create';
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({'Content-Type': 'application/json', 'Authorization': sessionStorage.getItem('auth_token')});
 
     editCourse(course){
       this._cacheService.set('courses', [], {expires: Date.now() - 1});
