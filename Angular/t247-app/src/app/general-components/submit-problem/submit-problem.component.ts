@@ -30,7 +30,7 @@ export class SubmitProblem implements OnInit {
     private descriptionEnglish;
     private descriptionSpanish;
     private descriptionTitle;
-   
+
     private testCases;
     private successMessage:string = "Problem has been submitted, please refresh the site.";
     private errorMessage:string = "There has been a problem with your submission.";
@@ -47,6 +47,7 @@ export class SubmitProblem implements OnInit {
     @ViewChild('feedbackCard') feedbackCard;
     codeFromAttempt:string;
     
+
     supportedLanguages: ProgLanguage[]; // filled from service
     problemProgLang: string; // The selected language of the problem
     attempts;
@@ -92,7 +93,7 @@ export class SubmitProblem implements OnInit {
 
     }
 
-    
+
 
     codeToSubmitReceived(progLang) {
         var codeFromEditor = this.codeEditor.getSourceCode();

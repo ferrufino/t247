@@ -37,23 +37,11 @@ const appRoutes: Routes = [
       component: ProfileComponent
     },
     {
-      path: 'editTopic/:id',
-      component: TopicsEditComponent
-    },
-    {
-      path: 'editCourse/:id',
-      component: CoursesEditComponent
-    },
-    {
       path: 'groups/:id',
       component: GroupComponent,
       resolve : {
         any: GroupResolve
       }
-    },
-    {
-      path: 'editUser/:id',
-      component: UserEditComponent
     },
     {
         path: 'submitProblem/:id',

@@ -1,7 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Response } from "@angular/http";
-import { ActivatedRoute, Params }   from '@angular/router';
-import { Location }                 from '@angular/common';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {UsersService} from '../../services/users.service';
 
 @Component({
@@ -11,29 +8,24 @@ import {UsersService} from '../../services/users.service';
 })
 export class UserEditComponent implements OnInit{
 
-    constructor(private route: ActivatedRoute,
-                private location: Location,
-                private _authService: UsersService) {}
+    constructor(private _authService: UsersService) {}
 
 
     public userEdit;
+    @Output() refresh = new EventEmitter();
 
     ngOnInit () {
-      this.route.params.forEach((params: Params) => {
-          let id = +params['id'];
-          this._authService.getUser(id)
-          .subscribe(
-            user => {
-              console.log(user);
-              this.userEdit = user;
-            }
-          );
-        });
-
     }
+
     ngAfterViewInit() {
+    }
 
-
+    setUser(userId) {
+      this._authService.getUser(userId)
+        .subscribe(user => {
+          console.log(user);
+          this.userEdit = user;
+        });
     }
 
     onSubmit() {
@@ -62,18 +54,9 @@ export class UserEditComponent implements OnInit{
           }
           else{
             console.log(this.userEdit);
+            this.refresh.emit();
           }
         });
       }
     }
-
-    goBack() {
-      this.location.back();
-    }
-
-    logout() {
-        this._authService.logout();
-    }
-
-
 }

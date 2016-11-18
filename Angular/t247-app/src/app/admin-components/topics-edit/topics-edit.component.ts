@@ -1,10 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Response } from "@angular/http";
-import { ActivatedRoute, Params }   from '@angular/router';
-import { Location }                 from '@angular/common';
-
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TopicsService } from '../../services/topics.service.ts';
-import {UsersService} from '../../services/users.service';
 
 @Component({
   selector: 'topics-edit',
@@ -13,29 +8,23 @@ import {UsersService} from '../../services/users.service';
 })
 export class TopicsEditComponent implements OnInit{
 
-    constructor(private topicsService : TopicsService,
-                private route: ActivatedRoute,
-                private location: Location,
-                private _authService: UsersService) {}
+    constructor(private topicsService : TopicsService) {}
 
 
-    topic;
+    private topic;
+    @Output() refresh = new EventEmitter();
 
     ngOnInit () {
-      this.route.params.forEach((params: Params) => {
-          let id = +params['id'];
-          this.topicsService.getTopic(id)
-          .subscribe(
-            topic => {
-              this.topic = topic;
-            }
-          );
-        });
-
     }
+
     ngAfterViewInit() {
+    }
 
-
+    setTopic(topicId) {
+      this.topicsService.getTopic(topicId)
+        .subscribe(topic => {
+          this.topic = topic;
+        });
     }
 
     onSubmit() {
@@ -52,19 +41,10 @@ export class TopicsEditComponent implements OnInit{
           }
           else{
             console.log(result);
-
+            this.refresh.emit();
           }
         });
       }
     }
-
-    logout() {
-        this._authService.logout();
-    }
-
-    goBack() {
-      this.location.back();
-    }
-
 
 }
