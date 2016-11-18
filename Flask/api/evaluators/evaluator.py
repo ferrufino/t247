@@ -26,6 +26,7 @@ nse = api.namespace('evaluator', description='Operations related to Evaluator')
 class EvaluatorProblemEvaluation(Resource):
     @api.response(201, 'Problem successfully evaluated.')
     @api.expect(problem_evaluation)
+    @auth_required('professor')
     def post(self):
         """
         Returns evaluation results of problem to be created
@@ -47,6 +48,7 @@ class EvaluatorProblemEvaluation(Resource):
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
     @api.expect(problem_creation)
+    @auth_required('professor')
     def post(self):
         """
         Creates a problem
@@ -113,6 +115,7 @@ class EvaluatorProblemCreation(Resource):
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
     @api.expect(evaluator_submission)
+    @auth_required('student')
     def post(self):
         """
         Puts student submitted code in an Evaluation queue

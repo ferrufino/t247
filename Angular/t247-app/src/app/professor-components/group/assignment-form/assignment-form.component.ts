@@ -65,11 +65,8 @@ export class AssignmentFormComponent implements OnInit {
         data => {
           // Check for server errors
           console.log(data);
-
+          this.refreshParent.emit();
         }
       );
-
-    this.refreshParent.emit();
-
   }
 }

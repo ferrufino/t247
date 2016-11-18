@@ -20,6 +20,7 @@ ns = api.namespace('assignments',
 class AssignmentCollection(Resource):
 
     @api.marshal_list_with(api_assignment)
+    @auth_required('admin')
     def get(self):
         """
         Returns list of assignments.
@@ -33,6 +34,7 @@ class AssignmentCreation(Resource):
     @api.response(201, 'Assignment succesfully created')
     @api.expect(assignment_creation)
     @api.marshal_list_with(api_assignment)
+    @auth_required('professor')
     def post(self):
         """
         Creates an assignment
@@ -57,6 +59,7 @@ class AssignmentCreation(Resource):
 class AssignmentItem(Resource):
 
     @api.marshal_with(api_assignment)
+    @auth_required('professor')
     def get(self, id):
         """
         Returns an assignment.
@@ -65,6 +68,7 @@ class AssignmentItem(Resource):
 
     @api.expect(assignment_creation)
     @api.response(204, 'Assignment successfully updated.')
+    @auth_required('professor')
     def put(self, id):
         """
         Updates an assignment.
@@ -75,6 +79,7 @@ class AssignmentItem(Resource):
         return None, 204
 
     @api.response(204, 'Assignment successfully deleted.')
+    @auth_required('professor')
     def delete(self, id):
         """
         Deletes an assignment.
@@ -89,6 +94,7 @@ class AssignmentItem(Resource):
 @api.response(404, 'Submission not found.')
 class AssignmentSubmissionSummary(Resource):
     @api.marshal_list_with(assignment_submission_summary)
+    @auth_required('professor')
     def get(self, assignment_id):
         """
         Returns number of attempts and status of a submission for an assignment
@@ -112,6 +118,7 @@ class AssignmentSubmissionSummary(Resource):
 @api.response(404, 'Submission not found.')
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_submission)
+    @auth_required('student')
     def get(self, assignment_id, student_id):
         """
          Returns code of attempts made by user to assignment
@@ -128,6 +135,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
 @api.response(404, 'Submission not found.')
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_assignment)
+    @auth_required('student')
     def get(self, student_id):
         """
          Returns current assignments of student

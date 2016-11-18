@@ -15,6 +15,7 @@ ns = api.namespace('courses', description='Operations related to courses')
 class CourseCollection(Resource):
 
     @api.marshal_list_with(api_course)
+    @auth_required('professor')
     def get(self):
         """
         Returns list of courses.
@@ -27,6 +28,7 @@ class CourseCollection(Resource):
 class CourseCreation(Resource):
     @api.response(201, 'User succesfully created')
     @api.expect(course_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates course
@@ -43,6 +45,7 @@ class CourseCreation(Resource):
 class CourseItem(Resource):
 
     @api.marshal_with(api_course)
+    @auth_required('professor')
     def get(self, id):
         """
         Returns a course.
@@ -51,6 +54,7 @@ class CourseItem(Resource):
 
     @api.expect(course_creation)
     @api.response(204, 'Group successfully updated.')
+    @auth_required('admin')
     def put(self, id):
         """
         Updates a course.
@@ -61,6 +65,7 @@ class CourseItem(Resource):
         return None, 204
 
     @api.response(204, 'Group successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a user.

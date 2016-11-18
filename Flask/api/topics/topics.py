@@ -15,6 +15,7 @@ ns = api.namespace('topics', description='Operations related to topics')
 class TopicCollection(Resource):
 
     @api.marshal_list_with(api_course)
+    @auth_required('student')
     def get(self):
         """
         Returns list of courses.
@@ -27,6 +28,7 @@ class TopicCollection(Resource):
 class TopicCreation(Resource):
     @api.response(201, 'Topic succesfully created')
     @api.expect(topic_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates topic
@@ -43,6 +45,7 @@ class TopicCreation(Resource):
 class TopicItem(Resource):
 
     @api.marshal_with(api_course)
+    @auth_required('student')
     def get(self, id):
         """
         Returns a topic.
@@ -51,6 +54,7 @@ class TopicItem(Resource):
 
     @api.expect(topic_creation)
     @api.response(204, 'Topic successfully updated.')
+    @auth_required('admin')
     def put(self, id):
         """
         Updates a topic.
@@ -61,6 +65,7 @@ class TopicItem(Resource):
         return None, 204
 
     @api.response(204, 'Topic successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a topic.

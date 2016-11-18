@@ -39,15 +39,10 @@ export class GroupComponent implements OnInit {
   }
 
   refresh() {
-    this.route.data.forEach((group : any) => {
-      debugger;
-      this.group = group.any;
-      console.log(this.group);
-      var enrollmentText = "";
-      this.group.students.forEach(function(element){
-        enrollmentText+=element.enrollment+",";
-      });
-      this.group.enrollmentText = enrollmentText;
+    this.groupsService.getGroup(this.group.id).subscribe(group => {
+      if (group) {
+        this.group = group;
+      }
     });
   }
 
