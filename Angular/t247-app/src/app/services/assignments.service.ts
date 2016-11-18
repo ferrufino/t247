@@ -9,7 +9,7 @@ export class AssignmentsService {
     private userURL:string = environment.apiURL + '/assignments/bystudent';
     private createURL:string = environment.apiURL + '/assignments/create';
 
-    private headers = new Headers({'Content-Type': 'application/json'});
+    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': sessionStorage.getItem('auth_token')});
 
     constructor(private http:Http) {
     }
@@ -19,14 +19,16 @@ export class AssignmentsService {
     }
   getAssignmentsByStudent(id) {
     return this.http.get(
-        this.baseURL + 'bystudent/'+id
+        this.baseURL + 'bystudent/'+id,
+        this.headers
     ).map((response: Response) => response.json());
   }
 
     getSubmissions(id) {
         return this.http
             .get(
-                this.baseURL + id + '/submissions'
+                this.baseURL + id + '/submissions',
+                this.headers
             )
             .map((response:Response) => response.json());
     }
@@ -42,4 +44,5 @@ export class AssignmentsService {
                 return res;
             });
     }
+
 }

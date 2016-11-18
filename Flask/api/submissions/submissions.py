@@ -8,6 +8,7 @@ from api.submissions.serializers import submission_to_a_problem
 from api.restplus import api
 from models import db, Submission, Problem
 from sqlalchemy import and_
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 

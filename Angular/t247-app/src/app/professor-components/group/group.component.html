@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <assignment-form [groupId]="group.id"></assignment-form>
+    <assignment-form [groupId]="group.id" (refreshParent)="refresh()"></assignment-form>
     <group-form [group]="group" [action]="'edit'"></group-form>
 
   </div>

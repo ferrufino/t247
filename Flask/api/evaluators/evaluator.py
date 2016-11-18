@@ -13,6 +13,7 @@ import api.evaluators.services as services
 
 from models import db, Problem, Case, Submission, Student, User, ProblemTopic
 from enums import SubmissionState, SubmissionResult
+from authorization import auth_required
 
 gevent.monkey.patch_all()
 
@@ -26,6 +27,7 @@ nse = api.namespace('evaluator', description='Operations related to Evaluator')
 class EvaluatorProblemEvaluation(Resource):
     @api.response(201, 'Problem successfully evaluated.')
     @api.expect(problem_evaluation)
+    @auth_required('professor')
     def post(self):
         """
         Returns evaluation results of problem to be created
@@ -47,6 +49,7 @@ class EvaluatorProblemEvaluation(Resource):
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
     @api.expect(problem_creation)
+    @auth_required('professor')
     def post(self):
         """
         Creates a problem
@@ -113,6 +116,7 @@ class EvaluatorProblemCreation(Resource):
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
     @api.expect(evaluator_submission)
+    @auth_required('student')
     def post(self):
         """
         Puts student submitted code in an Evaluation queue

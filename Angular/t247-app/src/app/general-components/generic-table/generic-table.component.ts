@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import {Response} from "@angular/http";
 import {Router} from '@angular/router';
@@ -56,6 +56,10 @@ export class GenericTableComponent implements OnInit {
     private usersBool;
 
     content:any[] = [];
+
+    @ViewChild('userModal') userModal;
+    @ViewChild('topicModal') topicModal;
+    @ViewChild('courseModal') courseModal;
 
     ngOnInit() {
         this.renderTable();
@@ -296,11 +300,11 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectGroup(group) {
-        this.router.navigate(['/groups', group.id]);
+      this.router.navigate(['/groups', group.id]);
     }
 
     onSelectTopic(topic) {
-        this.router.navigate(['/editTopic', topic.id]);
+      this.topicModal.setTopic(topic.id);
     }
 
     onDeleteTopic(topic) {
@@ -321,7 +325,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onSelectCourse(course) {
-        this.router.navigate(['/editCourse', course.id]);
+      this.courseModal.setCourse(course.id);
     }
 
     onDeleteCourse(course) {
@@ -375,7 +379,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectUser(user) {
-        this.router.navigate(['/editUser', user.id]);
+      this.userModal.setUser(user.id);
     }
 
     onSelectAssignment(problem) {
@@ -396,7 +400,6 @@ export class GenericTableComponent implements OnInit {
     }
 
     createNewProblem(){
-
         this.router.navigate(['/createProblem']);
     }
 

@@ -24,3 +24,24 @@
 
     margin-top: 40px;
 }
+
+.select-prog-lang{
+    width: 150px !important;
+}
+
+.attempt-content__title{
+    font-family: inherit;
+    font-size: large;
+}
+.attempt-content__subtitle{
+    font-family: inherit;
+    font-size: medium;
+}
+
+.attempt-content__status{
+    font-family: inherit;
+    font-size: small;
+}
+.btn-modal{
+    margin-left: 40%;
+}
