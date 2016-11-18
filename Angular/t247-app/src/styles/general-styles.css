@@ -3,7 +3,7 @@
     padding-left: 50%;
 }
 .center {
-    padding-left: 50%;
+    margin-left: 50%;
 }
 
 
@@ -39,4 +39,8 @@ footer {
 
 .incorrect-test-box {
   background-color: #de4949;
+}
+
+a{
+    cursor: pointer;
 }
