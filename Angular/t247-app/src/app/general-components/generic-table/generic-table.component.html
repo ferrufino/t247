@@ -1,19 +1,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Table of {{typeOfTableName}}</h1>
+            <h1 *ngIf="!problemsByTopicBool">Table of {{typeOfTableName}}</h1>
         </div>
     </div>
 
 
     <generic-form *ngIf="coursesBool" [typeForm]="'courses'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="topicsBool" [typeForm]="'topics'" (formChange)="renderTable();"></generic-form>
-    <generic-form *ngIf="groupsBool" [typeForm]="'groups'"></generic-form>
+    <generic-form *ngIf="groupsBool" [typeForm]="'groups'" (formChange)="renderTable();"></generic-form>
     <generic-form *ngIf="usersBool" [typeForm]="'users'" (formChange)="renderTable();"></generic-form>
+    <div *ngIf="problemsBool" class="row">
+        <a (click)="createNewProblem()" class="btn btn-primary btn-new pull-right"> Create Problem</a>
+    </div>
 
-
-    <div class="center">
-        <div id="custom-search-input">
+    <div class="search-bar">
+        <div class="custom-search-input">
             <div class="input-group col-md-12">
                 <input type="text" class="form-control input-lg" placeholder="Search" #filterInput (keyup)="0"/>
                     <span class="input-group-btn">
@@ -28,13 +30,13 @@
     <div class="row">
         <div *ngIf="usersBool">
             Roles:
-            <button (click)="filterInput.value='student'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('student')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Student
             </button>
-            <button (click)="filterInput.value='professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('professor')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Professor
             </button>
-            <button (click)="filterInput.value='admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('admin')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Admin
             </button>
         </div>
@@ -52,9 +54,9 @@
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
-        <td><button class="btn btn-default">{{entry.value.active}}</button></td>
-        <td><button class="btn btn-default" (click)="onSelectProblem(entry.value)">Show</button></td>
-        <td>delete</td>
+        <td><button class="btn btn-primary">{{entry.value.active}}</button></td>
+        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Edit</button></td>
+        <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="problemsByTopicBool">
@@ -63,19 +65,21 @@
       <td *ngIf=" entry.value.difficulty == 0">Easy</td>
       <td *ngIf=" entry.value.difficulty == 1">Medium</td>
       <td *ngIf=" entry.value.difficulty == 2">Hard</td>
-      <td>{{entry.value.status}}</td>
-      <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
+      <td *ngIf=" entry.value.status == 'not_attempted'" class="notattempt">Not attempted</td>
+      <td *ngIf=" entry.value.status == 'accepted'" class="accept">Accepted</td>
+      <td *ngIf=" entry.value.status == 'wrong_answer'" class="wrong">Wrong Answer</td>
+      <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="assignmentsBool">
     <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
-        <td><a class="btn btn-default" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
+        <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.problem_name}}</td>
         <td>{{entry.value.course_name}}</td>
-        <td *ngIf=" entry.value.difficulty == 1">Easy</td>
-        <td *ngIf=" entry.value.difficulty == 2">Medium</td>
-        <td *ngIf=" entry.value.difficulty == 3">Hard</td>
+        <td *ngIf=" entry.value.difficulty == 0">Easy</td>
+        <td *ngIf=" entry.value.difficulty == 1">Medium</td>
+        <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.due_date}}</td>
         <td *ngIf="entry.value.max_grade == 100">Yeah</td>
         <td *ngIf="entry.value.max_grade != 100">Nop</td>
@@ -91,46 +95,44 @@
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
     <tr *ngFor="let entry of content">
+        <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
         <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.grade == 100">Yeah</td>
-        <td *ngIf="entry.grade != 100">Nop</td>
+        <td *ngIf="entry.grade == 100">Solved</td>
+        <td *ngIf="entry.grade != 100">Not solved</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td><a class="btn btn-default" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
-    <tr *ngFor="let entry of content | filterUsers: filterInput.value">
+    <tr *ngFor="let entry of content | filterUsers: filterTag: true | filterUsers: filterInput.value: false">
         <td>{{entry.value.enrollment}}</td>
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td><a class="btn btn-default" (click)="onSelectUser(entry.value)" role="button">Show</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectUser(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn  btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-default" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
     <tr *ngFor="let entry of content | filterTopics: filterInput.value">
-        <td>{{entry.value.id}}</td>
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-default" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
 </table>

@@ -34,7 +34,7 @@ export class FirstLoginComponent implements OnInit {
     this.userEdit.last_name = form.value.last_name
     this.userEdit.email = form.value.email
     this.userEdit.password = form.value.password
-    this._authService.editUser(this.userEdit).subscribe((result) => {
+    this._authService.addUserInfoFirstTimeLogIn(this.userEdit).subscribe((result) => {
       if (!result) {
         console.log("Fallo");
       }

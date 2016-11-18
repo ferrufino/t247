@@ -5,12 +5,16 @@ import {Router} from '@angular/router';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {GroupsService} from "../../services/groups.service";
-import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
+
 import {AssignmentsService} from '../../services/assignments.service';
 import {environment} from '../../../environments/environment';
 import {UsersService} from '../../services/users.service';
 import {SubmitProblemService} from '../../services/submit-problem.service';
 import {ProblemsService} from '../../services/problems.service';
+
+import {CacheStoragesEnum} from 'ng2-cache/src/enums/cache-storages.enum';
+import {CacheService} from 'ng2-cache/src/services/cache.service';
+
 @Component({
     selector: 'generic-table',
     templateUrl: './generic-table.component.html',
@@ -22,8 +26,9 @@ export class GenericTableComponent implements OnInit {
     user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
     topicName:string = "";
     courseName:string = "";
+    filterTag:string = "";
     group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
-
+    typeOfUser: string;
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
                 private groupsService:GroupsService,
@@ -63,7 +68,8 @@ export class GenericTableComponent implements OnInit {
 
 
     renderTable() {
-
+        let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+        this.typeOfUser = userInfo.role;
         switch (this.typeOfTableName) {
 
             case "problems":
@@ -87,7 +93,6 @@ export class GenericTableComponent implements OnInit {
             case "problemsByTopic":
                 let ID_topic = this.topicId;
                 let userInformation = JSON.parse(sessionStorage.getItem("userJson"));
-
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
                   problems => {
                     this.content = problems;
@@ -106,7 +111,7 @@ export class GenericTableComponent implements OnInit {
                 break;
 
             case "assignments":
-                let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+
                 this.assignmentsService.getAssignmentsByStudent(userInfo.id).subscribe(
                     submissions => {
                         this.assignmentsBool = true;
@@ -116,7 +121,7 @@ export class GenericTableComponent implements OnInit {
                 break;
 
             case "submissions":
-                this.submissionOfProblems.getSubmissions().subscribe(
+                this.submissionOfProblems.getSubmissions(userInfo.id).subscribe(
                  submissions => {
                      this.submissionsBool = true;
                      this.problemsBool = false;
@@ -147,8 +152,9 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+                        this.columns = ["Student", "", "Date of last submission", "Attempts", "Solved"];
+
                         this.problemsByTopicBool = false;
-                        this.columns = ["Student", "Date of last submission", "Attempts", "Solved"];
                     }
                 );
                 break;
@@ -193,7 +199,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
-                        this.columns = ["Id", "Name", "Period", "Edit", "Delete"];
+                        this.columns = [ "Name", "Period", "Edit", "Delete"];
                     }
                 );
                 break;
@@ -222,7 +228,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
-                        this.columns = ["Id", "Title", "Edit", "Delete"];
+                        this.columns = ["Title", "Edit", "Delete"];
                     }
                 );
                 break;
@@ -253,7 +259,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.usersBool = false;
                 this.problemsByTopicBool = false;
-                this.columns = ["Id", "Title", "Edit", "Delete"];
+                this.columns = ["Title", "Edit", "Delete"];
                 break;
 
             case "users":
@@ -319,7 +325,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteCourse(course) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure? All associated groups will be deleted");
         if (r == true) {
             console.log(course);
             this.coursesService.deleteCourse(course).subscribe((result) => {
@@ -378,6 +384,29 @@ export class GenericTableComponent implements OnInit {
     onSelectProblem(problem) {
         console.log("oyoyoy: "+problem.id);
         this.router.navigate(['/problem', problem.id]);
+    }
+
+    onDeleteProblem(problem) {
+        var r = confirm("Are you sure?");
+        if (r == true) {
+            //Validate is user is author of problem then detele it
+
+            alert("service hasn't being developed yet!");
+        }
+    }
+
+    createNewProblem(){
+
+        this.router.navigate(['/createProblem']);
+    }
+
+    toggleFilterTag(filterString) {
+      if (this.filterTag == "" || this.filterTag != filterString) {
+        this.filterTag = filterString;
+      }
+      else {
+        this.filterTag = "";
+      }
     }
 
 

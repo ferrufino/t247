@@ -2,7 +2,9 @@ import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
-import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
+
+import {CacheService} from 'ng2-cache/src/services/cache.service';
+
 // import { Observable }     from 'rxjs/Observable';
 @Injectable()
 export class TopicsService {

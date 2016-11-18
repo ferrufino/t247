@@ -40,6 +40,7 @@ export class ProblemDetailsComponent implements OnInit {
   problemLanguage: string;
   problemDifficultyLabel: string;
   problemDifficultyId: number;
+  problemTopics: any;
 
   // Problem source code
   problemSource: string;
@@ -95,7 +96,8 @@ export class ProblemDetailsComponent implements OnInit {
           this.problemLanguage = response["language"];
           this.problemDifficultyId = response["difficulty"];
           this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(this.problemDifficultyId);
-          this.problemTopic = response["topics"][0].name;
+          this.problemTopics = response["topics"];
+          this.problemTopic = this.problemTopics[0].name;
 
 
           // Check if the problem has a template
@@ -132,7 +134,6 @@ export class ProblemDetailsComponent implements OnInit {
     this.editProblemForm = this._formBuilder.group({
 
       'problemDetails': this._formBuilder.group({
-        'problemName': ['', Validators.required],
         'engDescription': ['', Validators.required],
         'spnDescription': ['', Validators.required],
       })
@@ -150,14 +151,30 @@ export class ProblemDetailsComponent implements OnInit {
   }
 
 
+  /**
+   * This function makes the request to edit the problem, sending the corresponding object
+   * @param difficultyId
+   */
   editProblemRequest(difficultyId: number): any {
 
+    let problemTopicsIds : number[];
+    problemTopicsIds = [];
+
+    // Get the IDs of the topics
+    for(let topic of this.problemTopics){
+      problemTopicsIds.push(topic["id"]);
+    }
+
+
+
     let problemObject = {
-      "name": this.editProblemForm.value.problemDetails.problemName,
       "description_english": this.editProblemForm.value.problemDetails.engDescription,
       "description_spanish": this.editProblemForm.value.problemDetails.spnDescription,
-      "difficulty": difficultyId
-    }
+      "difficulty": difficultyId,
+      "topics": problemTopicsIds
+    };
+
+    console.log(problemObject)
 
     this._problemService.updateProblem(this.problemId, problemObject)
       .subscribe(

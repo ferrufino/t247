@@ -261,8 +261,6 @@ export class CreateProblem implements OnInit {
     };
 
 
-    console.log(request);
-
     //Make the POST
     this._httpProblemsService.checkProblemTestCases(request)
       .subscribe(

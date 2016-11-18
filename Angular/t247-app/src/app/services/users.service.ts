@@ -7,7 +7,8 @@ import {User} from '../user';
 import { environment } from '../../environments/environment';
 import { Observable } from "rxjs/Rx";
 import "rxjs/Rx";
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+
+import {CacheService} from 'ng2-cache/src/services/cache.service';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +24,7 @@ export class UsersService {
   private CREATE_URL = this.GET_URL+"/create";
   private DELETE_URL = this.GET_URL;
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200'});
+  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': sessionStorage.getItem('auth_token')});
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
     this.loggedIn = !!sessionStorage.getItem('auth_token');
@@ -60,7 +61,7 @@ export class UsersService {
           console.log(res.token); //TODO: KILL THIS LINE
 
           // Store the user info in local storage
-          sessionStorage.setItem('userJson', JSON.stringify(new User(user.email, res.id, res.name, res.lastName, res.enrollment, res.role)));
+          sessionStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
           sessionStorage.setItem('auth_token', res.token);
 
           let availableRoles = ['student', 'professor', 'admin'];
@@ -73,7 +74,9 @@ export class UsersService {
           sessionStorage.setItem('roles', JSON.stringify(availableRoles));
 
           this.loggedIn = true; // Flag true since user is now logged in
-          if (res.name === null) {
+
+          // Checking if the user must fill missing information
+          if (res.name === null || res.name == "") {
             this._router.navigate(['firstLogIn']);
           }
           else {
@@ -114,7 +117,7 @@ export class UsersService {
     return this.http
       .put(
         this.EDIT_URL + user.id,
-        {"first_name": user.first_name, "last_name": user.last_name, "password": user.password, "email": user.email},
+        {"first_name": user.first_name, "last_name": user.last_name, "password_hash": user.password, "email": user.email},
         this.headers
       )
       .map(res => {
