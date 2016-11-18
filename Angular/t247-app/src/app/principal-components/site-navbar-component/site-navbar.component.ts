@@ -9,11 +9,11 @@ import {UsersService} from "../../services/users.service";
 export class SiteNavbarComponent implements OnInit {
 
   @Input() availableRoles: string[];
-  @Input() hideDropdown: boolean;
+  @Input() showDropdown: boolean;
   @Input() actualRole: string;
   @Output() clickedRole = new EventEmitter();
 
-  constructor(private _authService: UsersService,) {
+  constructor(private _authService: UsersService) {
   }
 
   ngOnInit() {
