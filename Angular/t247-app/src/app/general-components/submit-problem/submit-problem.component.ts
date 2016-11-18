@@ -30,7 +30,7 @@ export class SubmitProblem implements OnInit {
     private descriptionEnglish;
     private descriptionSpanish;
     private descriptionTitle;
-   
+
     private testCases;
     private successMessage:string = "Success";
     private errorMessage:string = "Error";
@@ -40,14 +40,14 @@ export class SubmitProblem implements OnInit {
         {id: 2, name: 'Java'},
     ];
 
-    private codeAttempts: Array<any> = [1, 2, 3];;
+    private codeAttempts: Array<any> = [1, 2, 3];
     private posTabActive: number = 0;
     @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('codeAttempt') codeAttempt;
     @ViewChild('feedbackCard') feedbackCard;
 
-    
+
     supportedLanguages: ProgLanguage[]; // filled from service
     problemProgLang: string; // The selected language of the problem
     attempts;
@@ -90,7 +90,7 @@ export class SubmitProblem implements OnInit {
         );
     }
 
-    
+
 
     codeToSubmitReceived(progLang) {
         var codeFromEditor = this.codeEditor.getSourceCode();

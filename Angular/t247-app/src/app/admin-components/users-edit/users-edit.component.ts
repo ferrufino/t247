@@ -1,7 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Response } from "@angular/http";
-import { ActivatedRoute, Params }   from '@angular/router';
-import { Location }                 from '@angular/common';
 import {UsersService} from '../../services/users.service';
 
 @Component({
@@ -11,31 +8,20 @@ import {UsersService} from '../../services/users.service';
 })
 export class UserEditComponent implements OnInit{
 
-    constructor(private route: ActivatedRoute,
-                private location: Location,
-                private _authService: UsersService) {}
+    constructor(private _authService: UsersService) {}
 
 
     public userEdit;
     @Output() refresh = new EventEmitter();
+
     ngOnInit () {
-      /*let id = this.userId;
-      this._authService.getUser(id)
-      .subscribe(
-        user => {
-          console.log(user);
-          this.userEdit = user;
-        }
-      );*/
     }
 
     ngAfterViewInit() {
-
-
     }
 
-    setUser(userID) {
-      this._authService.getUser(userID)
+    setUser(userId) {
+      this._authService.getUser(userId)
         .subscribe(user => {
           console.log(user);
           this.userEdit = user;
@@ -73,18 +59,4 @@ export class UserEditComponent implements OnInit{
         });
       }
     }
-
-    goBack() {
-      this.location.back();
-    }
-
-    logout() {
-        this._authService.logout();
-    }
-
-    editUser(){
-
-
-    }
-
 }

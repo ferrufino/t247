@@ -37,14 +37,6 @@ const appRoutes: Routes = [
       component: ProfileComponent
     },
     {
-      path: 'editTopic/:id',
-      component: TopicsEditComponent
-    },
-    {
-      path: 'editCourse/:id',
-      component: CoursesEditComponent
-    },
-    {
       path: 'groups/:id',
       component: GroupComponent,
       resolve : {

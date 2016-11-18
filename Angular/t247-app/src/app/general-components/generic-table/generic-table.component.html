@@ -125,14 +125,16 @@
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" data-toggle="modal"
+               data-target="#courseEdit"  (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
     <tr *ngFor="let entry of content | filterTopics: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" data-toggle="modal"
+               data-target="#topicEdit" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
@@ -145,4 +147,12 @@
 
   <div *ngIf="usersBool">
     <users-edit #userModal (refresh)="renderTable()"></users-edit>
+  </div>
+
+  <div *ngIf="topicsBool">
+    <topics-edit #topicModal (refresh)="renderTable()"></topics-edit>
+  </div>
+
+  <div *ngIf="coursesBool">
+    <courses-edit #courseModal (refresh)="renderTable()"></courses-edit>
   </div>

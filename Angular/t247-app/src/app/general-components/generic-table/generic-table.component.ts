@@ -58,6 +58,8 @@ export class GenericTableComponent implements OnInit {
     content:any[] = [];
 
     @ViewChild('userModal') userModal;
+    @ViewChild('topicModal') topicModal;
+    @ViewChild('courseModal') courseModal;
 
     ngOnInit() {
         this.renderTable();
@@ -298,11 +300,11 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectGroup(group) {
-        this.router.navigate(['/groups', group.id]);
+      this.router.navigate(['/groups', group.id]);
     }
 
     onSelectTopic(topic) {
-        this.router.navigate(['/editTopic', topic.id]);
+      this.topicModal.setTopic(topic.id);
     }
 
     onDeleteTopic(topic) {
@@ -323,7 +325,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onSelectCourse(course) {
-        this.router.navigate(['/editCourse', course.id]);
+      this.courseModal.setCourse(course.id);
     }
 
     onDeleteCourse(course) {
