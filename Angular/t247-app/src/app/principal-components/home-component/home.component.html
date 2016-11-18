@@ -1,6 +1,3 @@
-<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false" [actualRole]="selectedRole"
-                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
-
 <div class="container tabs-style" style="margin-top: 80px;">
     <div class="content" [ngSwitch]="selectedRole">
         <div class="row" *ngSwitchCase="'admin'">

@@ -61,6 +61,8 @@ import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
 import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
+import {RoleChangeService} from './services/role-change.service';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -122,7 +124,8 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
       SubmitProblemService,
       GroupResolve,
       AssignmentsService,
-      ProblemsService
+      ProblemsService,
+      RoleChangeService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

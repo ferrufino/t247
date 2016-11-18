@@ -3,7 +3,9 @@ import {
     OnInit,
     AfterViewInit
 } from '@angular/core';
+import {RoleChangeService} from '../../services/role-change.service';
 import {UsersService} from '../../services/users.service';
+import { Subscription }   from 'rxjs/Subscription';
 
 @Component({
     selector: 'home',
@@ -21,49 +23,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
     professorTabsLoaded:boolean;
     studentTabsLoaded:boolean;
     typeOfUser:string;
+    subscription: Subscription;
 
-    constructor(private _service:UsersService) {
+    constructor(private _service:UsersService, private _roleChange:RoleChangeService) {
         this.adminTabsLoaded = false;
         this.professorTabsLoaded = false;
         this.studentTabsLoaded = false;
         this.userInformationObject = null;
+        this.subscription = _roleChange.role$.subscribe(
+          role => {
+            this.changeSelectedRole(role);
+        });
     }
 
     ngOnInit() {
-
-        this._service.checkCredentials(); // Check if the user is logged in
 
         if (sessionStorage.getItem("auth_token")) {
             this.userRoles = JSON.parse(sessionStorage.getItem("roles"));
             this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
             this.typeOfUser = this.userInformationObject.role
 
-            // if the user manually type the url to get in here without filling his information
-            // we must kick him out
-            if (this.userInformationObject.first_name === null) {
-                this._service.logout();
-            }
-
-            // Check if a role view is stored in local storage
-            if (sessionStorage.getItem("currentRoleView")) {
-
-                this.selectedRole = JSON.parse(sessionStorage.getItem("currentRoleView"));
-
-            } else {
-
-                this.selectedRole = this.userInformationObject["role"];
-                // Store current role-view
-                sessionStorage.setItem('currentRoleView', JSON.stringify(this.selectedRole));
-            }
-
+            this.selectedRole = JSON.parse(sessionStorage.getItem("currentRoleView"));
 
             this.tabsLoadedFunction(); // Load the correct tabs for the user
         }
 
-    }
-
-    logout() {
-        this._service.logout();
     }
 
     ngAfterViewInit() {
@@ -74,6 +58,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
      * @param role
      */
     changeSelectedRole(role) {
+
         this.selectedRole = role;
         sessionStorage.setItem('currentRoleView', JSON.stringify(role));
         this.adminTabsLoaded = false;
