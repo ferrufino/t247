@@ -27,8 +27,9 @@ export class GenericTableComponent implements OnInit {
     topicName:string = "";
     courseName:string = "";
     filterTag:string = "";
-    group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
-    typeOfUser: string;
+    group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+    typeOfUser:string;
+
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
                 private groupsService:GroupsService,
@@ -37,7 +38,7 @@ export class GenericTableComponent implements OnInit {
                 private _cacheService:CacheService,
                 private usersService:UsersService,
                 private submissionOfProblems:SubmitProblemService,
-                private problemsService: ProblemsService) {
+                private problemsService:ProblemsService) {
     }
 
     @Input('typetable') typeOfTableName:string;
@@ -98,19 +99,19 @@ export class GenericTableComponent implements OnInit {
                 let ID_topic = this.topicId;
                 let userInformation = JSON.parse(sessionStorage.getItem("userJson"));
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
-                  problems => {
-                    this.content = problems;
-                    this.problemsByTopicBool = true;
-                    this.problemsBool = false;
-                    this.assignmentsBool = false;
-                    this.submissionsBool = false;
-                    this.assignmentSubmissionsBool = false;
-                    this.groupsBool = false;
-                    this.coursesBool = false;
-                    this.topicsBool = false;
-                    this.usersBool = false;
-                    this.columns = ["Title", "Difficulty", "Status", "Try it"];
-                  }
+                    problems => {
+                        this.content = problems;
+                        this.problemsByTopicBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.submissionsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
+                        this.columns = ["Title", "Difficulty", "Status", "Try it"];
+                    }
                 );
                 break;
 
@@ -119,26 +120,26 @@ export class GenericTableComponent implements OnInit {
                 this.assignmentsService.getAssignmentsByStudent(userInfo.id).subscribe(
                     submissions => {
                         this.assignmentsBool = true;
-                        this.columns = ["Try it","Name of Assignment","Problem", "Class", "Difficulty", "Due Date", "Completed"];
+                        this.columns = ["Try it", "Name of Assignment", "Problem", "Class", "Difficulty", "Due Date", "Completed"];
                         this.content = submissions;
                     });
                 break;
 
             case "submissions":
                 this.submissionOfProblems.getSubmissions(userInfo.id).subscribe(
-                 submissions => {
-                     this.submissionsBool = true;
-                     this.problemsBool = false;
-                     this.assignmentsBool = false;
-                     this.assignmentSubmissionsBool = false;
-                     this.groupsBool = false;
-                     this.coursesBool = false;
-                     this.topicsBool = false;
-                     this.usersBool = false;
-                     this.problemsByTopicBool = false;
-                     this.columns = ["Name", "Number of Attempts", "Solved"];
-                     this.content = submissions;
-                 }
+                    submissions => {
+                        this.submissionsBool = true;
+                        this.problemsBool = false;
+                        this.assignmentsBool = false;
+                        this.assignmentSubmissionsBool = false;
+                        this.groupsBool = false;
+                        this.coursesBool = false;
+                        this.topicsBool = false;
+                        this.usersBool = false;
+                        this.problemsByTopicBool = false;
+                        this.columns = ["Name", "Number of Attempts", "Solved"];
+                        this.content = submissions;
+                    }
                 );
 
 
@@ -203,7 +204,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
-                        this.columns = [ "Name", "Period", "Edit", "Delete"];
+                        this.columns = ["Name", "Period", "Edit", "Delete"];
                     }
                 );
                 break;
@@ -300,11 +301,11 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectGroup(group) {
-      this.router.navigate(['/groups', group.id]);
+        this.router.navigate(['/groups', group.id]);
     }
 
     onSelectTopic(topic) {
-      this.topicModal.setTopic(topic.id);
+        this.topicModal.setTopic(topic.id);
     }
 
     onDeleteTopic(topic) {
@@ -325,7 +326,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onSelectCourse(course) {
-      this.courseModal.setCourse(course.id);
+        this.courseModal.setCourse(course.id);
     }
 
     onDeleteCourse(course) {
@@ -379,14 +380,14 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectUser(user) {
-      this.userModal.setUser(user.id);
+        this.userModal.setUser(user.id);
     }
 
     onSelectAssignment(problem) {
         this.router.navigate(['/submitProblem', problem.problem_id]);
     }
+
     onSelectProblem(problem) {
-        console.log("oyoyoy: "+problem.id);
         this.router.navigate(['/problem', problem.id]);
     }
 
@@ -399,17 +400,35 @@ export class GenericTableComponent implements OnInit {
         }
     }
 
-    createNewProblem(){
+    createNewProblem() {
         this.router.navigate(['/createProblem']);
     }
 
     toggleFilterTag(filterString) {
-      if (this.filterTag == "" || this.filterTag != filterString) {
-        this.filterTag = filterString;
-      }
-      else {
-        this.filterTag = "";
-      }
+        if (this.filterTag == "" || this.filterTag != filterString) {
+            this.filterTag = filterString;
+        }
+        else {
+            this.filterTag = "";
+        }
+    }
+
+    onChangeStatus(problem) {
+        var newStatus;
+        if (problem.active == true) {
+            newStatus = 0;
+        } else {
+            newStatus = 1;
+        }
+        this.problemsService.changeStatusOfProblem(problem.id, newStatus).subscribe((result) => {
+            if (!result) {
+                console.log("Fallo");
+            }
+            else {
+                console.log(result);
+                this.renderTable();
+            }
+        });
     }
 
 
