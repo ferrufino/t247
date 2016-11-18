@@ -8,7 +8,7 @@ import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
-
+import {Tabs} from "../tabs/tabs.component";
 
 @Component({
     selector: 'submit-problem',
@@ -30,7 +30,7 @@ export class SubmitProblem implements OnInit {
     private descriptionEnglish;
     private descriptionSpanish;
     private descriptionTitle;
-    private attempts;
+   
     private testCases;
     private successMessage:string = "Success";
     private errorMessage:string = "Error";
@@ -39,6 +39,10 @@ export class SubmitProblem implements OnInit {
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
+
+    private codeAttempts: Array<any> = [1, 2, 3];;
+    private posTabActive: number = 0;
+    @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('codeAttempt') codeAttempt;
     @ViewChild('feedbackCard') feedbackCard;
@@ -46,7 +50,7 @@ export class SubmitProblem implements OnInit {
     
     supportedLanguages: ProgLanguage[]; // filled from service
     problemProgLang: string; // The selected language of the problem
-
+    attempts;
 
 
     private mySettings:IMultiSelectSettings = {
@@ -97,8 +101,7 @@ export class SubmitProblem implements OnInit {
                 "problem_id": this.problemId,
                 "request_type": "submission",
                 "user_id": userInfo.id
-            }
-            console.log(codeObject);
+            };
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
@@ -114,8 +117,8 @@ export class SubmitProblem implements OnInit {
 
     }
 
-    loadCode(code){
-        this.codeAttempt.setNewSourceCode(code);
+    loadCode(){
+        this.codeAttempt.setNewSourceCode(this.codeAttempts[this.tabsVariable.tabSelected-1]);
     }
 
     getContentDescription(id) {
@@ -136,11 +139,23 @@ export class SubmitProblem implements OnInit {
     }
 
     getContentAttempt(s_id, id) {
+
         this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
                 this.attempts = content;
-                console.log(this.attempts);
+
+                for(var i = 0; i<content.length; i++){
+
+                    this.codeAttempts[i] = content[i].code;
+                }
+
+
+                console.log(this.codeAttempts);
             }
         );
+    }
+    assignActiveTab(pos: number){
+        this.posTabActive = pos;
+        console.log("from submit-problem: " + pos);
     }
 }

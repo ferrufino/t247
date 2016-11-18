@@ -19,14 +19,16 @@ export class AssignmentsService {
     }
   getAssignmentsByStudent(id) {
     return this.http.get(
-        this.baseURL + 'bystudent/'+id
+        this.baseURL + 'bystudent/'+id,
+        this.headers
     ).map((response: Response) => response.json());
   }
 
     getSubmissions(id) {
         return this.http
             .get(
-                this.baseURL + id + '/submissions'
+                this.baseURL + id + '/submissions',
+                this.headers
             )
             .map((response:Response) => response.json());
     }
