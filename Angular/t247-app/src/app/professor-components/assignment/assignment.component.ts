@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AssignmentsService } from '../../services/assignments.service.ts';
 
 @Component({
   selector: 'assignment',
@@ -6,16 +7,15 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./assignment.component.css']
 })
 export class AssignmentComponent implements OnInit {
-  private _isOpen:boolean = true;
+  private _isOpen:boolean = false;
 
   @Input() assignment;
 
-  constructor() {
+  constructor(private assignmentsService: AssignmentsService) {
 
   }
 
   ngOnInit() {
-
   }
 
   get isOpen() {

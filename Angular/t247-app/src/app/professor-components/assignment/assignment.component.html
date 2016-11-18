@@ -8,7 +8,9 @@
   </div>
   <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" [hidden]="!isOpen">
     <div class="panel-body">
-      <generic-table [typetable]="'assignmentSubmissions'" [assignment]="assignment.id"></generic-table>
+      <div class="table-responsive">
+        <generic-table [typetable]="'assignmentSubmissions'" [assignment]="assignment.id"></generic-table>
+      </div>
     </div>
   </div>
 </div>
