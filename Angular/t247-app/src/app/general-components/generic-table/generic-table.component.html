@@ -54,8 +54,12 @@
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
-        <td><button class="btn btn-primary">{{entry.value.active}}</button></td>
-        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Edit</button></td>
+        <td>
+            <button *ngIf=" entry.value.active == true" class="btn btn-success" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+            <button *ngIf=" entry.value.active == false" class="btn btn-danger" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+
+        </td>
+        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Show</button></td>
         <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>

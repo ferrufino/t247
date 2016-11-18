@@ -42,6 +42,7 @@ export class SubmitProblem implements OnInit {
 
     private codeAttempts: Array<any> = [1, 2, 3];
     private posTabActive: number = 0;
+    private signaturePresent: string = "";
     @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('feedbackCard') feedbackCard;
@@ -134,6 +135,7 @@ export class SubmitProblem implements OnInit {
                 this.testCases = content.test_cases;
                 if(content.signature){
                     this.codeEditor.setNewSourceCode(content.signature);
+                    this.signaturePresent = content.language;
                 }
                 console.log(content.signature);
 

@@ -1,7 +1,7 @@
 <div class="container tabs-style" style="margin-top: 80px;">
     <div class="content" [ngSwitch]="selectedRole">
         <div class="row" *ngSwitchCase="'admin'">
-            <tabs class="card-shadow">
+            <tabs>
                 <tab tabTitle="Users">
                     <generic-table [typetable]="'users'"></generic-table>
                 </tab>
@@ -17,7 +17,7 @@
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'professor'">
-            <tabs class="card-shadow">
+            <tabs >
                 <tab tabTitle="My Groups">
                     <generic-table [typetable]="'groups'"></generic-table>
                 </tab>
@@ -30,7 +30,7 @@
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'student'">
-            <tabs class="card-shadow" >
+            <tabs >
                 <tab *ngIf="typeOfUser == 'student'" tabTitle="My Assignments">
                     <generic-table [typetable]="'assignments'"></generic-table>
                 </tab>
