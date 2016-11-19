@@ -53,7 +53,7 @@ export class  AppComponent implements OnInit {
                 localStorage.setItem('currentRoleView', JSON.stringify(this.currentRole));
             }
 
-            alert(this.currentRole);
+            //alert(this.currentRole);
 
             this.showDropdown = true;
 
