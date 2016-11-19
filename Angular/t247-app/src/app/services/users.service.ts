@@ -59,32 +59,34 @@ export class UsersService {
         if (res.token) {
           console.log(res.token); //TODO: KILL THIS LINE
 
-          // Store the user info in local storage
-          localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
-          localStorage.setItem('auth_token', res.token);
+          /*if (res.token == 'first_time') { 
+            document.getElementById('firstLoginModal').style.display = "block"; 
+            document.getElementById('firstLoginModal').style.paddingLeft = "0px"; 
+            console.log("esto deberia desplegar el modal"); 
+          }*/
+          //else {
 
-          let availableRoles = ['student', 'professor', 'admin'];
+            // Store the user info in local storage
+            localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
+            localStorage.setItem('auth_token', res.token);
 
-          // Get the corresponding roles for this user
-          while(res.role != availableRoles[availableRoles.length - 1]){
-            availableRoles.pop(); // Demote this rank - role
-          }
+            let availableRoles = ['student', 'professor', 'admin'];
 
-          localStorage.setItem('roles', JSON.stringify(availableRoles));
+            // Get the corresponding roles for this user
+            while (res.role != availableRoles[availableRoles.length - 1]) {
+              availableRoles.pop(); // Demote this rank - role
+            }
 
-          // Store current role-view
-          localStorage.setItem('currentRoleView', JSON.stringify(res['role']));
+            localStorage.setItem('roles', JSON.stringify(availableRoles));
 
-          this.loggedIn = true; // Flag true since user is now logged in
+            // Store current role-view
+            localStorage.setItem('currentRoleView', JSON.stringify(res['role']));
 
-          // Checking if the user must fill missing information
-          if (res.name === null || res.name == "") {
-            this._router.navigate(['firstLogIn']);
-          }
-          else {
+            this.loggedIn = true; // Flag true since user is now logged in
+
             location.reload();
             this._router.navigate(['']);
-          }
+          //}
         }
         return res.token;
       }).catch((error:any) => {
