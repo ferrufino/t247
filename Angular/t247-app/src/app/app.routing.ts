@@ -14,11 +14,33 @@ import {SubmitProblem} from "./general-components/submit-problem/submit-problem.
 import {FirstLoginComponent} from "./student-components/first-login.component";
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
+import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
+import {ProfessorHomeComponent} from "./professor-components-2/professor-home/professor-home.component";
+import {AdminGuard} from "./services/admin.guard";
+import {ProfessorGuard} from "./services/professor.guard";
 
 const appRoutes: Routes = [
     {
         path: '',
         component: HomeComponent
+    },
+    {
+        path: 'admin/:tab',
+        component: AdminHomeComponent,
+        canActivate: [AdminGuard]
+    },
+    {
+        path: 'admin',
+        component: AdminHomeComponent
+    },
+    {
+        path: 'professor/:tab',
+        component: ProfessorHomeComponent,
+        canActivate: [ProfessorGuard]
+    },
+    {
+        path: 'professor',
+        component: ProfessorHomeComponent
     },
     {
         path: 'home',

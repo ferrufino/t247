@@ -1,6 +1,7 @@
 import {Component, ElementRef} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {User} from "../../user";
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'login-form',
@@ -13,8 +14,18 @@ export class LoginComponent {
   public user = new User();
   public errorMsg = '';
 
-  constructor(
-      private _service:UsersService) {}
+  constructor(private _service:UsersService, private _router : Router) {
+
+  }
+
+  ngOnInit() {
+
+    // TODO: instead of checking 
+    //if (localStorage.getItem("auth_token")) {
+    //  this._router.navigate(['admin']);
+    //}
+
+  }
 
   login() {
     this._service.login(this.user).subscribe(

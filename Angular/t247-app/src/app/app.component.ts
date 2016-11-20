@@ -35,7 +35,7 @@ export class  AppComponent implements OnInit {
     }
 
     ngOnInit() {
-
+    	alert("token: " + localStorage.getItem("auth_token"));
         if (localStorage.getItem("auth_token")) {
             this.userInformationObject = JSON.parse(localStorage.getItem("userJson"));
             this.userRoles = JSON.parse(localStorage.getItem("roles"));
@@ -57,7 +57,7 @@ export class  AppComponent implements OnInit {
 
             this.showDropdown = true;
 
-        }
+        } 
 
     }
 

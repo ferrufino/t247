@@ -6,6 +6,7 @@ import {
 import {RoleChangeService} from '../../services/role-change.service';
 import {UsersService} from '../../services/users.service';
 import { Subscription }   from 'rxjs/Subscription';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'home',
@@ -25,7 +26,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     typeOfUser:string;
     subscription: Subscription;
 
-    constructor(private _service:UsersService, private _roleChange:RoleChangeService) {
+    constructor(private _service:UsersService, private _roleChange:RoleChangeService, private _router : Router) {
         this.adminTabsLoaded = false;
         this.professorTabsLoaded = false;
         this.studentTabsLoaded = false;
@@ -46,6 +47,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.selectedRole = JSON.parse(localStorage.getItem("currentRoleView"));
 
             this.tabsLoadedFunction(); // Load the correct tabs for the user
+        } else {
+            this._router.navigate(["login"]);
         }
 
     }

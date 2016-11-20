@@ -14,8 +14,8 @@ import {CreateProblem} from "./general-components/create-problem/create-problem.
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
 import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
-import {Tab} from './general-components/tab/tab.component';
-import {Tabs} from './general-components/tabs/tabs.component';
+import {Tab} from './common-components/tab/tab.component';
+import {Tabs} from './common-components/tabs/tabs.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
 import {SubmitProblem}  from './general-components/submit-problem/submit-problem.component';
 import {KeysPipe} from './pipes/keys.pipe';
@@ -62,6 +62,13 @@ import {GroupFormComponent} from "./professor-components/group/group-form/group-
 import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
 import {RoleChangeService} from './services/role-change.service';
+import {AuthService} from "./services/auth.service";
+
+import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
+import {AdminGuard} from "./services/admin.guard";
+
+import {ProfessorHomeComponent} from "./professor-components-2/professor-home/professor-home.component";
+import {ProfessorGuard} from "./services/professor.guard";
 
 @NgModule({
     imports: [
@@ -112,7 +119,9 @@ import {RoleChangeService} from './services/role-change.service';
         PolymerElement('vaadin-date-picker'),
         AssignmentFormComponent,
         GroupFormComponent,
-        FeedbackCardComponent
+        FeedbackCardComponent,
+        AdminHomeComponent,
+        ProfessorHomeComponent
     ],
     bootstrap: [AppComponent],
     providers: [
@@ -125,7 +134,10 @@ import {RoleChangeService} from './services/role-change.service';
       GroupResolve,
       AssignmentsService,
       ProblemsService,
-      RoleChangeService
+      RoleChangeService,
+      AuthService,
+      AdminGuard,
+      ProfessorGuard
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

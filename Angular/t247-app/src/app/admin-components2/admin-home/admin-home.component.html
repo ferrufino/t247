@@ -1,0 +1,20 @@
+<div class="container tabs-style">
+    <div class="content">
+        <div class="row">
+            <tabs [baseRoute]="'admin'" [selectedTab]="selectedTab">
+                <tab tabTitle="Users" tabName="users">
+                    <generic-table [typetable]="'users'"></generic-table>
+                </tab>
+                <tab tabTitle="Topics" tabName="topics">
+                    <generic-table [typetable]="'topics'"></generic-table>
+                </tab>
+                <tab tabTitle="Courses" tabName="courses">
+                    <generic-table [typetable]="'courses'"></generic-table>
+                </tab>
+                <tab tabTitle="Problems" tabName="problems">
+                    <generic-table [typetable]="'problems'"></generic-table>
+                </tab>
+            </tabs>
+        </div>
+    </div>
+</div>

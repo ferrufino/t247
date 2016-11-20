@@ -82,8 +82,8 @@ export class UsersService {
             this._router.navigate(['firstLogIn']);
           }
           else {
-            location.reload();
             this._router.navigate(['']);
+            location.reload();
           }
         }
         return res.token;
