@@ -25,6 +25,7 @@ export class UsersService {
   private DELETE_URL = this.GET_URL;
 
   private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+  private options = new RequestOptions({headers: this.headers});
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
     this.loggedIn = !!localStorage.getItem('auth_token');
@@ -131,13 +132,13 @@ export class UsersService {
   }
 
   getUsers(){
-    return this.http.get(this.GET_URL).map((response: Response) => response.json());
+    return this.http.get(this.GET_URL, this.options).map((response: Response) => response.json());
   }
 
   getUser(id){
     return this.http
     .get(
-      this.GET_URL+id
+      this.GET_URL+id, this.options
     )
     .map((response: Response) => response.json());
   }

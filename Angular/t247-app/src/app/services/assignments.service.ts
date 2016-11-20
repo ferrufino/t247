@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import {environment} from '../../environments/environment';
 
 @Injectable()
@@ -11,16 +11,18 @@ export class AssignmentsService {
 
     private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
 
+    private options = new RequestOptions({headers: this.headers});
+
     constructor(private http:Http) {
     }
 
     getAssignments() {
-        return this.http.get(this.userURL).map((response:Response) => response.json());
+        return this.http.get(this.userURL, this.options).map((response:Response) => response.json());
     }
   getAssignmentsByStudent(id) {
     return this.http.get(
         this.baseURL + 'bystudent/'+id,
-        this.headers
+        this.options
     ).map((response: Response) => response.json());
   }
 
@@ -28,7 +30,7 @@ export class AssignmentsService {
         return this.http
             .get(
                 this.baseURL + id + '/submissions',
-                this.headers
+                this.options
             )
             .map((response:Response) => response.json());
     }

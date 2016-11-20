@@ -21,6 +21,8 @@ export class CoursesService {
 
   private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
 
+  private options = new RequestOptions({headers: this.headers});
+
     editCourse(course){
       this._cacheService.set('courses', [], {expires: Date.now() - 1});
       return this.http
@@ -69,7 +71,7 @@ export class CoursesService {
 
   getCourses() {
     const serviceURL : string = 'http://107.170.255.106:5000/api/courses/';
-    return this.http.get(serviceURL).map((response: Response) => response.json());
+    return this.http.get(serviceURL, this.options).map((response: Response) => response.json());
   }
 
 }
