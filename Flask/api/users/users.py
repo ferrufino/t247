@@ -92,15 +92,16 @@ class UserAuthentication(Resource):
 @api.header('Authorization', 'Auth token', required=True)
 class UserAuthorization(Resource):
     @api.response(200, 'User authorized')
-    @api.expect(user_token)
-    def post(self):
+    def get(self):
         """
         Verifies that token is valid and returns user role if true
         """
-        token = request.json.get('token')
+        token = request.headers.get('Authorization', None)
         if verify_password(token, None):
+            print(token)
             role = g.user.role
             return {'role': role}, 200
+        print('not found')
         abort(401)
 
 
