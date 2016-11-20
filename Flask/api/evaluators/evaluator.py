@@ -24,6 +24,7 @@ nse = api.namespace('evaluator', description='Operations related to Evaluator')
 # Route for problem evaluation, which returns the test cases' output
 # of a problem to be created
 @nse.route('/problem_evaluation')
+@api.header('Authorization', 'Auth token', required=True)
 class EvaluatorProblemEvaluation(Resource):
     @api.response(201, 'Problem successfully evaluated.')
     @api.expect(problem_evaluation)
@@ -46,6 +47,7 @@ class EvaluatorProblemEvaluation(Resource):
 # Route for problem creation, which uploads a problem to DB and
 # creates the input/output files in the server's filesystem
 @nse.route('/problem_creation')
+@api.header('Authorization', 'Auth token', required=True)
 class EvaluatorProblemCreation(Resource):
     @api.response(201, 'Problem successfully created.')
     @api.expect(problem_creation)
@@ -113,6 +115,7 @@ class EvaluatorProblemCreation(Resource):
 
 # Route for submitting student code to the Evaluator
 @nse.route('/problem_submission')
+@api.header('Authorization', 'Auth token', required=True)
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
     @api.expect(evaluator_submission)

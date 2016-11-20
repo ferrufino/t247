@@ -25,6 +25,7 @@ export class UsersService {
   private DELETE_URL = this.GET_URL;
 
   private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+  private options = new RequestOptions({headers: this.headers});
 
   constructor(private _router: Router, private http: Http, private _cacheService: CacheService) {
     this.loggedIn = !!localStorage.getItem('auth_token');
@@ -59,23 +60,30 @@ export class UsersService {
         if (res.token) {
           console.log(res.token); //TODO: KILL THIS LINE
 
-          // Store the user info in local storage
-          localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
-          localStorage.setItem('auth_token', res.token);
+          /*if (res.token == 'first_time') { 
+            document.getElementById('firstLoginModal').style.display = "block"; 
+            document.getElementById('firstLoginModal').style.paddingLeft = "0px"; 
+            console.log("esto deberia desplegar el modal"); 
+          }*/
+          //else {
 
-          let availableRoles = ['student', 'professor', 'admin'];
+            // Store the user info in local storage
+            localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
+            localStorage.setItem('auth_token', res.token);
 
-          // Get the corresponding roles for this user
-          while(res.role != availableRoles[availableRoles.length - 1]){
-            availableRoles.pop(); // Demote this rank - role
-          }
+            let availableRoles = ['student', 'professor', 'admin'];
 
-          localStorage.setItem('roles', JSON.stringify(availableRoles));
+            // Get the corresponding roles for this user
+            while (res.role != availableRoles[availableRoles.length - 1]) {
+              availableRoles.pop(); // Demote this rank - role
+            }
 
-          // Store current role-view
-          localStorage.setItem('currentRoleView', JSON.stringify(res['role']));
+            localStorage.setItem('roles', JSON.stringify(availableRoles));
 
-          this.loggedIn = true; // Flag true since user is now logged in
+            // Store current role-view
+            localStorage.setItem('currentRoleView', JSON.stringify(res['role']));
+
+            this.loggedIn = true; // Flag true since user is now logged in
 
           // Checking if the user must fill missing information
           if (res.name === null || res.name == "") {
@@ -85,6 +93,7 @@ export class UsersService {
             this._router.navigate(['']);
             location.reload();
           }
+
         }
         return res.token;
       }).catch((error:any) => {
@@ -129,13 +138,13 @@ export class UsersService {
   }
 
   getUsers(){
-    return this.http.get(this.GET_URL).map((response: Response) => response.json());
+    return this.http.get(this.GET_URL, this.options).map((response: Response) => response.json());
   }
 
   getUser(id){
     return this.http
     .get(
-      this.GET_URL+id
+      this.GET_URL+id, this.options
     )
     .map((response: Response) => response.json());
   }

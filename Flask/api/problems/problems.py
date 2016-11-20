@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 ns = api.namespace('problems', description='Operations related to problems')
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class ProblemCollection(Resource):
 
     @api.marshal_list_with(api_problem)
@@ -32,6 +33,7 @@ class ProblemCollection(Resource):
         return problems
 
 @ns.route('/changestatus/<int:problem_id>/<int:status>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemStatus(Resource):
 
@@ -53,6 +55,7 @@ class ProblemStatus(Resource):
         return None, 204
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemItem(Resource):
 
@@ -119,6 +122,7 @@ class ProblemItem(Resource):
         return None, 204
         
 @ns.route('/description/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemDescription(Resource):
 
@@ -148,6 +152,7 @@ class ProblemDescription(Resource):
         return descriptions
 
 @ns.route('/listbytopic/<int:user_id>/<int:topic_id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemsByTopic(Resource):
 
@@ -178,6 +183,7 @@ class ProblemsByTopic(Resource):
 
 
 @ns.route('/list/')
+@api.header('Authorization', 'Auth token', required=True)
 class ProblemsList(Resource):
 
     @api.marshal_list_with(problem_table)

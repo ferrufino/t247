@@ -18,6 +18,7 @@ export class TopicsService {
   private createUrl = 'http://107.170.255.106:5000/api/topics/create';
 
   private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
+  private options = new RequestOptions({headers: this.headers});
 
   constructor(private http: Http, private _cacheService: CacheService) {
   }
@@ -64,13 +65,13 @@ export class TopicsService {
   getTopic(id) {
     return this.http
       .get(
-        this.getUrl + id
+        this.getUrl + id, this.options
       )
       .map((response: Response) => response.json());
   }
 
   getTopics() {
     const serviceURL: string = 'http://107.170.255.106:5000/api/topics/';
-    return this.http.get(serviceURL).map((response: Response) => response.json());
+    return this.http.get(serviceURL, this.options).map((response: Response) => response.json());
   }
 }

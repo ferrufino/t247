@@ -24,7 +24,7 @@ def _auth_required(role):
     """
     token = _get_request_token()
     if token is None:
-        return {'message': 'Token is invalid'}, 400
+        abort(400, {'error': 'No auth token provided'})
 
     print(token)
     user = User.verify_auth_token(token)
