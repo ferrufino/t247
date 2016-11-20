@@ -18,6 +18,7 @@ ns = api.namespace('assignments',
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentCollection(Resource):
 
     @api.marshal_list_with(api_assignment)
@@ -31,6 +32,7 @@ class AssignmentCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentCreation(Resource):
     @api.response(201, 'Assignment succesfully created')
     @api.expect(assignment_creation)
@@ -57,6 +59,7 @@ class AssignmentCreation(Resource):
 
 @ns.route('/<int:id>')
 @api.response(404, 'Assignment not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentItem(Resource):
 
     @api.marshal_with(api_assignment)
@@ -93,6 +96,7 @@ class AssignmentItem(Resource):
 
 @ns.route('/<int:assignment_id>/submissions')
 @api.response(404, 'Submission not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionSummary(Resource):
     @api.marshal_list_with(assignment_submission_summary)
     @auth_required('professor')
@@ -117,6 +121,7 @@ class AssignmentSubmissionSummary(Resource):
 
 @ns.route('/studentsubmissionscode/<int:assignment_id>/<int:student_id>')
 @api.response(404, 'Submission not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_submission)
     @auth_required('student')
@@ -134,6 +139,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
 
 @ns.route('/bystudent/<int:student_id>')
 @api.response(404, 'Submission not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_assignment)
     @auth_required('student')

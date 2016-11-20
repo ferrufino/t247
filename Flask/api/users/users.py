@@ -89,6 +89,7 @@ class UserAuthentication(Resource):
 
 
 @ns.route('/role')
+@api.header('Authorization', 'Auth token', required=True)
 class UserAuthorization(Resource):
     @api.response(200, 'User authorized')
     @api.expect(user_token)

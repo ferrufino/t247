@@ -13,6 +13,7 @@ ns = api.namespace('topics', description='Operations related to topics')
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class TopicCollection(Resource):
 
     @api.marshal_list_with(api_course)
@@ -26,6 +27,7 @@ class TopicCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class TopicCreation(Resource):
     @api.response(201, 'Topic succesfully created')
     @api.expect(topic_creation)
@@ -42,6 +44,7 @@ class TopicCreation(Resource):
 
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Topic not found.')
 class TopicItem(Resource):
 

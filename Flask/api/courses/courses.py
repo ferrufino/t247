@@ -13,6 +13,7 @@ ns = api.namespace('courses', description='Operations related to courses')
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseCollection(Resource):
 
     @api.marshal_list_with(api_course)
@@ -26,6 +27,7 @@ class CourseCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseCreation(Resource):
     @api.response(201, 'User succesfully created')
     @api.expect(course_creation)
@@ -43,6 +45,7 @@ class CourseCreation(Resource):
 
 @ns.route('/<int:id>')
 @api.response(404, 'Group not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseItem(Resource):
 
     @api.marshal_with(api_course)
