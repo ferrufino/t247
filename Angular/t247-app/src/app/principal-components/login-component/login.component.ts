@@ -35,7 +35,6 @@ export class LoginComponent {
         } else {
           console.log("LOGIN");
           console.log(result);
-          this._router.navigate(['/' + result]);
         }
       },
       err => {

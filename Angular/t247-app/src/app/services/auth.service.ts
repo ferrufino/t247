@@ -13,7 +13,8 @@ export class AuthService {
     }
 
     isAdmin(): Observable<boolean> {       
-
+        console.log("VER TOKEN");
+        console.log(this.headers);
         return this.http
           .get(
             environment.apiURL + '/users/role',
