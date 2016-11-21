@@ -6,7 +6,7 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 @Injectable()
 export class SubmitProblemService{
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
+  private headers = new Headers({'Content-Type': 'application/json','Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
   private options = new RequestOptions({headers: this.headers});
 
     constructor(private http:Http) {

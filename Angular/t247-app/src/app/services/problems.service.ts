@@ -16,7 +16,7 @@ export class ProblemsService {
     private PROBLEM_UPDATE_URL = environment.apiURL + '/problems/';
     private PROBLEM_CHANGE_STATUS_URL = environment.apiURL + '/problems/changestatus/';
 
-    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
+    private headers = new Headers({'Content-Type': 'application/json','Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
     private options = new RequestOptions({headers: this.headers});
 
     constructor(private http:Http) {
