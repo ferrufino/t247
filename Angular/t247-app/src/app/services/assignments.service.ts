@@ -53,4 +53,8 @@ export class AssignmentsService {
             });
     }
 
+    deleteAssignment(id) {
+      return this.http.delete(this.baseURL + id, this.options).map(res => res);
+    }
+
 }
