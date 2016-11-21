@@ -111,7 +111,7 @@
     <tr *ngFor="let entry of content | filterGroups: filterInput.value">
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
