@@ -22,7 +22,7 @@ class TopicCollection(Resource):
         """
         Returns list of courses.
         """
-        topics = Topic.query.all()
+        topics = Topic.query.order_by(Topic.id).all()
         return topics
 
 

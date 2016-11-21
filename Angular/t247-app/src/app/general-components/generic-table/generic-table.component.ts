@@ -313,7 +313,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteTopic(topic) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this topic?");
         if (r == true) {
             console.log(topic);
             this.topicsService.deleteTopic(topic).subscribe((result) => {
@@ -334,7 +334,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteCourse(course) {
-        var r = confirm("Are you sure? All associated groups will be deleted");
+        var r = confirm("Are you sure you want to delete this course? All associated groups will be deleted");
         if (r == true) {
             console.log(course);
             this.coursesService.deleteCourse(course).subscribe((result) => {
@@ -351,7 +351,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onDeleteGroup(group) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this group?");
         if (r == true) {
             console.log(group);
             this.groupsService.deleteGroup(group).subscribe((result) => {
@@ -368,7 +368,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onDeleteUser(user) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this user?");
         if (r == true) {
             console.log(user);
             this.usersService.deleteUser(user).subscribe((result) => {
@@ -396,7 +396,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteProblem(problem) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this problem?");
         if (r == true) {
             //Validate is user is author of problem then detele it
 

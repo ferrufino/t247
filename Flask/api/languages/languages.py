@@ -23,7 +23,7 @@ class LanguageCollection(Resource):
         """
         Returns list of languages.
         """
-        languages = Language.query.all()
+        languages = Language.query.order_by(Language.id).all()
         return languages
 
 

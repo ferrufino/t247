@@ -5,7 +5,8 @@ from flask import request, abort, jsonify, g
 from flask_restplus import Resource
 from flask_security import auth_token_required, utils
 from flask_httpauth import HTTPBasicAuth
-from api.users.serializers import user as api_user, user_auth, user_token, user_creation
+from api.users.serializers import (user as api_user, user_auth, user_token,
+                                   user_creation, user_edit)
 from api.restplus import api
 from models import db, User
 from authorization import auth_required
@@ -28,7 +29,7 @@ class UserCollection(Resource):
         """
         Returns list of users.
         """
-        users = User.query.all()
+        users = User.query.order_by(User.id).all()
         return users
 
 
@@ -78,10 +79,15 @@ class UserAuthentication(Resource):
             name = g.user.first_name
             last_name = g.user.last_name
             enrollment = g.user.enrollment
+            if name == '' or last_name == '':
+                first_login = True
+            else:
+                first_login = False
+
             print("User logged with token: " + token.decode('ascii'))
             return {'token': token.decode('ascii'), 'id': g.user.id,
                     'role': role, 'name': name, 'lastName': last_name,
-                    'enrollment': enrollment}, 200
+                    'enrollment': enrollment, 'first_login': first_login}, 200
         abort(401)
 
 
@@ -98,6 +104,34 @@ class UserAuthorization(Resource):
             print(token)
             role = g.user.role
             return {'role': role}, 200
+        print('not found')
+        abort(401)
+
+
+@ns.route('/edit')
+@api.header('Authorization', 'Auth token', required=True)
+class UserAuthorization(Resource):
+    @api.expect(user_edit)
+    @api.marshal_with(api_user)
+    @api.response(204, 'User updated successfully')
+    @auth_required('student')
+    def put(self):
+        """
+        Verifies that token is valid and returns user role if true
+        """
+        token = request.headers.get('Authorization', None)
+
+        email = request.json.get('email')
+        first_name = request.json.get('first_name')
+        last_name = request.json.get('last_name')
+        password = request.json.get('password')
+        data = {'email': email, 'first_name': first_name, 'last_name': last_name}
+        if verify_password(token, None):
+            user = g.user
+            User.query.filter(User.id == user.id).update(data)
+            user.hash_password(password)
+            db.session.commit()
+            return User.query.filter(User.id == user.id).one()
         print('not found')
         abort(401)
 

@@ -23,7 +23,7 @@ class GroupCollection(Resource):
         """
         Returns list of groups.
         """
-        groups = Group.query.all()
+        groups = Group.query.order_by(Group.id).all()
         return groups
 
 
