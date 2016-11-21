@@ -80,7 +80,7 @@ class User(Base, UserMixin):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=60*60*24*30):
-        s = Serializer('this-really-needs-to-be-changed', expires_in=600)
+        s = Serializer('this-really-needs-to-be-changed', expires_in=7200)
         return s.dumps({'id': self.id, 'role': self.role})
 
     @staticmethod
