@@ -70,6 +70,12 @@ import {AdminGuard} from "./services/admin.guard";
 import {ProfessorHomeComponent} from "./professor-components-2/professor-home/professor-home.component";
 import {ProfessorGuard} from "./services/professor.guard";
 
+import {StudentHomeComponent} from "./student-components-2/student-home/student-home.component";
+import {StudentGuard} from "./services/student.guard";
+
+import {LoginGuard} from "./services/login.guard";
+import {RootGuard} from "./services/root.guard";
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -121,7 +127,8 @@ import {ProfessorGuard} from "./services/professor.guard";
         GroupFormComponent,
         FeedbackCardComponent,
         AdminHomeComponent,
-        ProfessorHomeComponent
+        ProfessorHomeComponent,
+        StudentHomeComponent
     ],
     bootstrap: [AppComponent],
     providers: [
@@ -137,7 +144,10 @@ import {ProfessorGuard} from "./services/professor.guard";
       RoleChangeService,
       AuthService,
       AdminGuard,
-      ProfessorGuard
+      ProfessorGuard,
+      StudentGuard,
+      LoginGuard,
+      RootGuard
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

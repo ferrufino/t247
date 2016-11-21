@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, Subject } from "rxjs/Rx";
+import { Observable, Subject, BehaviorSubject } from "rxjs/Rx";
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import { environment } from '../../environments/environment';
 
@@ -32,10 +32,10 @@ export class AuthService {
             }
           })
           .catch((error) => {
-            alert("ERROR");
             console.log(error);
-            //this.router.navigate(['/login']);
-            return Observable.throw(false);
+            this.router.navigate(['/login']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
            });
     }
 
@@ -48,8 +48,7 @@ export class AuthService {
           .map(res => res.json())
           .map((res) => {
             if (res.role == 'admin') {
-              this.router.navigate(['/admin']);
-              return false;
+              return true;
             } else if (res.role == 'professor') {
               return true;
             } else if (res.role == 'student') {
@@ -58,9 +57,85 @@ export class AuthService {
             }
           })
           .catch((error) => {
-            alert("ERROR");
-            //this.router.navigate(['/login']);
-            return Observable.throw(false);
+            console.log(error);
+            this.router.navigate(['/login']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
+           });
+    }
+
+    isStudent(): Observable<boolean> {
+        return this.http
+          .get(
+            environment.apiURL + '/users/role',
+            this.options
+          )
+          .map(res => res.json())
+          .map((res) => {
+            if (res.role == 'admin') {
+              return true;
+            } else if (res.role == 'professor') {
+              return true;
+            } else if (res.role == 'student') {
+              return true;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.router.navigate(['/login']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
+           });
+    }
+
+    isOutsider(): Observable<boolean> {
+        
+        return this.http
+          .get(
+            environment.apiURL + '/users/role',
+            this.options
+          )
+          .map(res => res.json())
+          .map((res) => {
+            if (res.role == 'admin') {
+              this.router.navigate(['/admin']);
+            } else if (res.role == 'professor') {
+              this.router.navigate(['/professor']);
+            } else if (res.role == 'student') {
+              this.router.navigate(['/student']);
+            }
+            alert(res.role);
+            return false;
+          })
+          .catch((error) => {
+            const state = new BehaviorSubject<boolean>(true);
+            return state.asObservable();
+           });
+    }
+
+    isLoggedIn(): Observable<boolean> {
+        
+        return this.http
+          .get(
+            environment.apiURL + '/users/role',
+            this.options
+          )
+          .map(res => res.json())
+          .map((res) => {
+            if (res.role == 'admin') {
+              this.router.navigate(['/admin']);
+            } else if (res.role == 'professor') {
+              this.router.navigate(['/professor']);
+            } else if (res.role == 'student') {
+              this.router.navigate(['/student']);
+            }
+            alert(res.role);
+            return false;
+          })
+          .catch((error) => {
+            this.router.navigate(['/login']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
            });
     }
 
