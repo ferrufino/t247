@@ -63,7 +63,7 @@ class LastSubmissions(Resource):
         return response
 
 
-@ns.route('/attempts/<int:student_id>/')
+@ns.route('/attempts/bystudent/<int:student_id>/')
 @api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Submission not found.')
 class SubmissionAttempts(Resource):
