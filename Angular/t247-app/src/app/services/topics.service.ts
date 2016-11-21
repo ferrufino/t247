@@ -17,7 +17,7 @@ export class TopicsService {
 
   private createUrl = 'http://107.170.255.106:5000/api/topics/create';
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
+  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
   private options = new RequestOptions({headers: this.headers});
 
   constructor(private http: Http, private _cacheService: CacheService) {

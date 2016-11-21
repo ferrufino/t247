@@ -10,12 +10,16 @@ import {ActivatedRoute} from '@angular/router';
 export class StudentHomeComponent implements OnInit {
 
     @Output() selectedTab : string;
+    isStudent : boolean;
 
     constructor(private _route : ActivatedRoute) {
 
     }
 
     ngOnInit() {
+        this.isStudent = (JSON.parse(localStorage['userJson'])['role'] == 'student');
+        console.log("isSTudent: " + this.isStudent);
+
         this._route.params.subscribe(event => {
             // Get tab parameter
             let tab = event['tab'];

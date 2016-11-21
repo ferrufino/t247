@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Rx";
 import {environment} from "../../environments/environment";
@@ -26,7 +26,10 @@ export class SupportedLanguages {
    * @returns {Observable<R>}
    */
   getLanguages() {
-    return this.http.get(this.GET_LANGUAGES_URL)
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
+    return this.http.get(this.GET_LANGUAGES_URL, options)
       .map((response: Response) => response.json());
   }
 

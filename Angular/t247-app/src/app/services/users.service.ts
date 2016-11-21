@@ -131,13 +131,19 @@ export class UsersService {
   }
 
   getUsers(){
-    return this.http.get(this.GET_URL, this.options).map((response: Response) => response.json());
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
+    return this.http.get(this.GET_URL, options).map((response: Response) => response.json());
   }
 
   getUser(id){
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
     .get(
-      this.GET_URL+id, this.options
+      this.GET_URL+id, options
     )
     .map((response: Response) => response.json());
   }
