@@ -27,15 +27,18 @@ import {StudentGuard} from "./services/student.guard";
 import {LoginGuard} from "./services/login.guard";
 import {RootGuard} from "./services/root.guard";
 
+import {AdminProfileWrapperComponent} from "./general-components/admin-profile-wrapper/admin-profile-wrapper.component";
+import {ProfessorProfileWrapperComponent} from "./general-components/professor-profile-wrapper/professor-profile-wrapper.component";
+import {StudentProfileWrapperComponent} from "./general-components/student-profile-wrapper/student-profile-wrapper.component";
+
 const appRoutes: Routes = [
-    // TODO sendtoHome
     {
         path: '',
         component: AppComponent,
         canActivate: [RootGuard]
     },
     {
-        path: 'admin/:tab',
+        path: 'admin/tab/:tab',
         component: AdminHomeComponent,
         canActivate: [AdminGuard]
     },
@@ -45,7 +48,7 @@ const appRoutes: Routes = [
         canActivate: [AdminGuard]
     },
     {
-        path: 'professor/:tab',
+        path: 'professor/tab/:tab',
         component: ProfessorHomeComponent,
         canActivate: [ProfessorGuard]
     },
@@ -55,38 +58,28 @@ const appRoutes: Routes = [
         canActivate: [ProfessorGuard]
     },
     {
-        path: 'student/:tab',
-        component: StudentHomeComponent,
-        canActivate: [StudentGuard]
-    },
-    {
         path: 'student',
         component: StudentHomeComponent,
         canActivate: [StudentGuard]
     },
     {
+        path: 'student/tab/:tab',
+        component: StudentHomeComponent,
+        canActivate: [StudentGuard]
+    },
+    
+    {
         path: 'login',
         component: LoginComponent,
         canActivate: [LoginGuard]
     },
+    // UNO PARA CADA USUARIO
+    
+    
     {
       path: 'profile',
       component: ProfileComponent,
       canActivate: [StudentGuard]
-    },
-    // TODO  groupsGuard
-    {
-      path: 'groups/:id',
-      component: GroupComponent,
-      resolve : {
-        any: GroupResolve
-      },
-
-    },
-    {
-        path: 'submitProblem/:id',
-        component: SubmitProblem,
-        canActivate: [StudentGuard]
     },
     {
         path: 'problem/:id',
@@ -97,6 +90,27 @@ const appRoutes: Routes = [
         path: 'createProblem',
         component: CreateProblem,
         canActivate: [ProfessorGuard]
+    }, 
+
+
+    // TODO  groupsGuard
+    {
+      path: 'professor/groups/:id',
+      component: GroupComponent,
+      resolve : {
+        any: GroupResolve
+      },
+      canActivate: [ProfessorGuard]
+    },
+    {
+        path: 'student/submitProblem/:id',
+        component: SubmitProblem,
+        canActivate: [StudentGuard]
+    },
+    {
+        path: '**',
+        component: AppComponent,
+        canActivate: [RootGuard]
     }
 ];
 

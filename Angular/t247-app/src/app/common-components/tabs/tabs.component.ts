@@ -76,7 +76,7 @@ export class Tabs implements OnChanges {
 
     selectTab(tab: Tab){
         console.log("PIQUE LA TAB: " + tab.tabName);
-        this._router.navigate([this.baseRoute + '/' + tab.tabName]);        
+        this._router.navigate([this.baseRoute + '/tab/' + tab.tabName]);        
     }
 
 }

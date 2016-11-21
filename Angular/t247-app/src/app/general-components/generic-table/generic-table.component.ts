@@ -128,6 +128,10 @@ export class GenericTableComponent implements OnInit {
             case "submissions":
                 this.submissionOfProblems.getSubmissions(userInfo.id).subscribe(
                     submissions => {
+
+                        console.log("TODAS LAS SUBMISSIONS");
+                        console.log(submissions);
+
                         this.submissionsBool = true;
                         this.problemsBool = false;
                         this.assignmentsBool = false;
@@ -301,7 +305,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectGroup(group) {
-        this.router.navigate(['/groups', group.id]);
+        this.router.navigate(['/professor/groups', group.id]);
     }
 
     onSelectTopic(topic) {
@@ -384,11 +388,11 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectAssignment(problem) {
-        this.router.navigate(['/submitProblem', problem.problem_id]);
+        this.router.navigate(['student/submitProblem', problem.problem_id]);
     }
 
     onSelectProblem(problem) {
-        this.router.navigate(['/problem', problem.id]);
+        this.router.navigate(['problem', problem.id]);
     }
 
     onDeleteProblem(problem) {
@@ -401,7 +405,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     createNewProblem() {
-        this.router.navigate(['/createProblem']);
+        this.router.navigate(['createProblem']);
     }
 
     toggleFilterTag(filterString) {
