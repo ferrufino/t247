@@ -71,7 +71,7 @@
                                 <p class="attempt-content__title block__title">Grade:
                                     {{entry.grade?entry.grade:"0"}}%</p>
                                 <p class="attempt-content__subtitle ">Programming Language:
-                                    {{entry.language?entry.language:"error"}}</p> <br/>
+                                    <span class="label label-primary">{{entry.language?entry.language:"error"}}</span></p> <br/>
                                 <div *ngIf="entry.grade != 100">
                                     <div *ngFor="let fb of entry.feedback_list" class="card-shadow">
                                         <p class="attempt-content__subtitle">Feedback</p>

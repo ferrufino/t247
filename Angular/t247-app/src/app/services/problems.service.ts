@@ -39,7 +39,7 @@ export class ProblemsService {
      * @returns {Observable<R>}
      */
     getProblemsFromTopic(id_topic, id_user) {
-        return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic+ '/' , this.options).map((response:Response) => response.json());
+        return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic , this.options).map((response:Response) => response.json());
     }
 
     /**
