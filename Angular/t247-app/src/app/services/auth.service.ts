@@ -6,19 +6,19 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
-    private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
-    private options = new RequestOptions({headers: this.headers});
-
+    
     constructor(private router: Router, private http: Http) {
     }
 
     isAdmin(): Observable<boolean> {       
-        console.log("VER TOKEN");
-        console.log(this.headers);
+        
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
         return this.http
           .get(
             environment.apiURL + '/users/role',
-            this.options
+            options
           )
           .map(res => res.json())
           .map((res) => {
@@ -41,10 +41,13 @@ export class AuthService {
     }
 
     isProfessor(): Observable<boolean> {
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
         return this.http
           .get(
             environment.apiURL + '/users/role',
-            this.options
+            options
           )
           .map(res => res.json())
           .map((res) => {
@@ -66,10 +69,14 @@ export class AuthService {
     }
 
     isStudent(): Observable<boolean> {
+
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
         return this.http
           .get(
             environment.apiURL + '/users/role',
-            this.options
+            options
           )
           .map(res => res.json())
           .map((res) => {
@@ -90,11 +97,14 @@ export class AuthService {
     }
 
     isOutsider(): Observable<boolean> {
+
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
         
         return this.http
           .get(
             environment.apiURL + '/users/role',
-            this.options
+            options
           )
           .map(res => res.json())
           .map((res) => {
@@ -115,11 +125,14 @@ export class AuthService {
     }
 
     isLoggedIn(): Observable<boolean> {
+
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
         
         return this.http
           .get(
             environment.apiURL + '/users/role',
-            this.options
+            options
           )
           .map(res => res.json())
           .map((res) => {
