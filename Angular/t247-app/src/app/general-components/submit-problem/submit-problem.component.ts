@@ -21,7 +21,7 @@ export class SubmitProblem implements OnInit {
     constructor(private _httpProblemsService:EvaluatorService,
                 private _httpSubmitProblemService:SubmitProblemService,
                 private route:ActivatedRoute,
-                private _supportedLanguages: SupportedLanguages) {
+                private _supportedLanguages:SupportedLanguages) {
 
     }
 
@@ -40,17 +40,17 @@ export class SubmitProblem implements OnInit {
         {id: 2, name: 'Java'},
     ];
 
-    private codeAttempts: Array<any> = [1, 2, 3];
-    private posTabActive: number = 0;
-    private signaturePresent: string = "";
+    private codeAttempts:Array<any> = [1, 2, 3];
+    private posTabActive:number = 0;
+    private signaturePresent:string = "";
     @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('feedbackCard') feedbackCard;
     codeFromAttempt:string;
 
 
-    supportedLanguages: ProgLanguage[]; // filled from service
-    problemProgLang: string; // The selected language of the problem
+    supportedLanguages:ProgLanguage[]; // filled from service
+    problemProgLang:string; // The selected language of the problem
     attempts;
 
 
@@ -80,8 +80,8 @@ export class SubmitProblem implements OnInit {
         this.progLangToSubmit = "none";
 
         this._supportedLanguages.getLanguages().subscribe(
-            respose => {
-                this.supportedLanguages = respose;
+            response => {
+                this.supportedLanguages = response;
                 this.problemProgLang = this.supportedLanguages[0].value;
 
             },
@@ -95,34 +95,37 @@ export class SubmitProblem implements OnInit {
     }
 
 
-
-    codeToSubmitReceived(progLang) {
+    codeToSubmitReceived() {
+        var progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
         var codeFromEditor = this.codeEditor.getSourceCode();
-            let userInfo = JSON.parse(localStorage.getItem("userJson"));
-            let codeObject = {
-                "code": codeFromEditor,
-                "language": progLang,
-                "problem_id": this.problemId,
-                "request_type": "submission",
-                "user_id": userInfo.id
-            };
-            this._httpProblemsService.submitProblem(codeObject).subscribe(
-                data => {
-                    if (data["status"] == "ok") {
+        let userInfo = JSON.parse(localStorage.getItem("userJson"));
 
-                        this.feedbackCard.hideFeedbackCard("success", this.successMessage);
-                    } else {
-                        this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
+        let codeObject = {
+            "code": codeFromEditor,
+            "language": progLanguage,
+            "problem_id": this.problemId,
+            "request_type": "submission",
+            "user_id": userInfo.id
+        };
+        console.log("Codigo a mandar: " + codeObject);
 
-                    }
+        this._httpProblemsService.submitProblem(codeObject).subscribe(
+            data => {
+                if (data["status"] == "ok") {
+
+                    this.feedbackCard.hideFeedbackCard("success", this.successMessage);
+                } else {
+                    this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
+
                 }
-            );
+            }
+        );
 
 
     }
 
-    loadCode(){
-        this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected-1];
+    loadCode() {
+        this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected - 1];
     }
 
     getContentDescription(id) {
@@ -133,7 +136,7 @@ export class SubmitProblem implements OnInit {
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
-                if(content.signature){
+                if (content.signature) {
                     this.codeEditor.setNewSourceCode(content.signature);
                     this.signaturePresent = content.language;
                 }
@@ -149,7 +152,7 @@ export class SubmitProblem implements OnInit {
             content => {
                 this.attempts = content;
 
-                for(var i = 0; i<content.length; i++){
+                for (var i = 0; i < content.length; i++) {
 
                     this.codeAttempts[i] = content[i].code;
                 }
@@ -159,14 +162,15 @@ export class SubmitProblem implements OnInit {
             }
         );
     }
-    assignActiveTab(pos: number){
+
+    assignActiveTab(pos:number) {
         this.posTabActive = pos;
     }
 
     onNotify(index:number):void {
-        if (index == 0){
+        if (index == 0) {
             document.getElementById('btn-modal').style.visibility = 'hidden';
-        }else{
+        } else {
             document.getElementById('btn-modal').style.visibility = 'visible';
         }
     }
