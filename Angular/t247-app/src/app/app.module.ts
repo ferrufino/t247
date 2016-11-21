@@ -16,6 +16,8 @@ import {GenericTableComponent} from './general-components/generic-table/generic-
 import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
 import {Tab} from './common-components/tab/tab.component';
 import {Tabs} from './common-components/tabs/tabs.component';
+import {TabStatic} from './general-components/tab-static/tab-static.component';
+import {TabsStatic} from './general-components/tabs-static/tabs-static.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
 import {SubmitProblem}  from './general-components/submit-problem/submit-problem.component';
 import {KeysPipe} from './pipes/keys.pipe';
@@ -103,6 +105,8 @@ import {RootGuard} from "./services/root.guard";
         GenericFormComponent,
         Tab,
         Tabs,
+        TabStatic,
+        TabsStatic,
         CapitalizePipe,
         FilterPipe,
         TestCasesCreatorComponent,

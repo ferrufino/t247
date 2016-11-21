@@ -9,8 +9,8 @@
                 <div class="card card-block card-shadow">
                     <h2 class="block__title">{{descriptionTitle}}</h2>
                     <div class="">
-                        <tabs (tabSelected)="assignActiveTab($event);">
-                            <tab tabTitle="English">
+                        <tabs-static (tabSelected)="assignActiveTab($event);">
+                            <tab-static tabTitle="English">
                                 <h4>Description:</h4>
                                 <p class="white-space">{{descriptionEnglish}}</p>
                         <span *ngFor="let case of testCases">
@@ -20,8 +20,8 @@
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
 
-                            </tab>
-                            <tab tabTitle="Español">
+                            </tab-static>
+                            <tab-static tabTitle="Español">
                                 <h4>Description:</h4>
                                 <p class="white-space">{{descriptionSpanish}}</p>
                         <span *ngFor="let case of testCases">
@@ -30,16 +30,16 @@
                             <h4>Output:</h4>
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
-                            </tab>
-                        </tabs>
+                            </tab-static>
+                        </tabs-static>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 ">
                 <div class="card card-block card-shadow">
                     <h2 class="block__title">Problem Submission</h2>
-                    <tabs #tabsVariable (notify)="onNotify($event)">
-                        <tab tabTitle="New Attempt">
+                    <tabs-static #tabsVariable (notify)="onNotify($event)">
+                        <tab-static tabTitle="New Attempt">
                             <div class="new-attempt">
                                 <div class="dropdown-position">
 
@@ -63,8 +63,8 @@
                                         (click)="codeToSubmitReceived(selectedLanguage.value)">Submit
                                 </button>
                             </div>
-                        </tab>
-                        <tab *ngFor="let entry of attempts; let myIndex = index" tabTitle="Attempt {{3-myIndex}}">
+                        </tab-static>
+                        <tab-static *ngFor="let entry of attempts; let myIndex = index" tabTitle="Attempt {{3-myIndex}}">
                             <div *ngIf="entry.state == 'SubmissionState.evaluated'">
                                 <p class="attempt-content__title block__title">Grade:
                                     {{entry.grade?entry.grade:"0"}}%</p>
@@ -92,7 +92,7 @@
                                 <div class="alert alert-warning" role="alert"><h4 class="block__title">Internal Server
                                     Error. Please report to Admin</h4></div>
                             </div>
-                        </tab>
+                        </tab-static>
                         <button type="button" class="btn btn-primary btn-lg btn-modal " id="btn-modal"
                                 data-toggle="modal"
                                 data-target="#myModal" (click)='loadCode()'>
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                         </div>
-                    </tabs>
+                    </tabs-static>
                 </div>
             </div>
         </div>
