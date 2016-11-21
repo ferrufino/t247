@@ -19,6 +19,7 @@ export class AssignmentsService {
     getAssignments() {
         return this.http.get(this.userURL, this.options).map((response:Response) => response.json());
     }
+
   getAssignmentsByStudent(id) {
 
     console.log("HEADER-ASSIGNMENTS");
@@ -29,6 +30,7 @@ export class AssignmentsService {
         this.options
     ).map((response: Response) => response.json());
   }
+
 
     getSubmissions(id) {
         return this.http

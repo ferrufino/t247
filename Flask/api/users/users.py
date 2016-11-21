@@ -73,9 +73,6 @@ class UserAuthentication(Resource):
         email = request.json.get('email')
         password = request.json.get('password')
         if verify_password(email, password):
-            if ((g.user.first_name == None and g.user.last_name == None) or (g.user.first_name == "" and g.user.last_name == "")):
-                print("First time logged in")
-                return {'token': 'first_time'}, 200
             token = g.user.generate_auth_token()
             role = g.user.role
             name = g.user.first_name

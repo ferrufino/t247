@@ -38,6 +38,8 @@ class SubmissionItem(Resource):
         """
         Returns a submission.
         """
+        result = Submission.query.filter(Submission.id == id).one()
+        print("result from query: "+result);
         return Submission.query.filter(Submission.id == id).one()
 
 

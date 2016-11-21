@@ -11,7 +11,11 @@ export class GroupsService {
 
   private createUrl = this.baseURL+'create';
 
+<<<<<<< HEAD
   private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+=======
+  private headers = new Headers({'Content-Type': 'application/json','Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+>>>>>>> 4e4198e69d7312d2e3a10cf402208566607fb3ec
 
   private options = new RequestOptions({headers: this.headers});
 
