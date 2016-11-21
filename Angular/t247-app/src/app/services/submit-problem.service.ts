@@ -36,7 +36,7 @@ export class SubmitProblemService{
         console.log("HEADER-SUBMISSIONS");
         console.log(options);
 
-        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/attempts/bystudent/'+id;
+        const serviceURL:string = 'http://107.170.255.106:5000/api/submissions/attempts/'+id;
         return this.http.get(serviceURL, options).map((response:Response) => response.json());
     }
 }

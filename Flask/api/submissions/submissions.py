@@ -38,8 +38,6 @@ class SubmissionItem(Resource):
         """
         Returns a submission.
         """
-        result = Submission.query.filter(Submission.id == id).one()
-        print("result from query: "+result);
         return Submission.query.filter(Submission.id == id).one()
 
 
@@ -65,7 +63,7 @@ class LastSubmissions(Resource):
         return response
 
 
-@ns.route('/attempts/bystudent/<int:student_id>/')
+@ns.route('/attempts/<int:student_id>/')
 @api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Submission not found.')
 class SubmissionAttempts(Resource):
