@@ -53,7 +53,7 @@ export class UsersService {
       .post(
         this.LOGIN_URL,
         {"email": user.email, "password": user.password},
-        this.headers
+        this.options
       )
       .map(res => res.json())
       .map((res) => {
@@ -106,11 +106,15 @@ export class UsersService {
 
   editUser(user) {
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
       .put(
         this.EDIT_URL + user.id,
         {"first_name": user.first_name, "last_name": user.last_name, "enrollment": user.enrollment},
-        this.headers
+        options
       )
       .map(res => {
         return res;
@@ -119,11 +123,15 @@ export class UsersService {
 
   addUserInfoFirstTimeLogIn(user) {
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
       .put(
         this.EDIT_URL + user.id,
         {"first_name": user.first_name, "last_name": user.last_name, "password_hash": user.password, "email": user.email},
-        this.headers
+        options
       )
       .map(res => {
         return res;
@@ -151,11 +159,15 @@ export class UsersService {
   createUser(user){
     console.log(this.CREATE_URL);
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
     .post(
       this.CREATE_URL,
       {"email":user.email,"enrollment":user.enrollment,"first_name":user.first_name,"last_name":user.last_name,"password":user.password,"role":user.role},
-      this.headers
+      options
     )
     .map(res => {
       return res;
@@ -164,10 +176,14 @@ export class UsersService {
 
   deleteUser(user){
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
     .delete(
       this.DELETE_URL+user.id,
-      this.headers
+      options
     )
     .map(res => {
       return res;
