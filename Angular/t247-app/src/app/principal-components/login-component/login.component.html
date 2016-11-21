@@ -16,7 +16,7 @@
             <span class="input-group-addon" id="user-email-input"><span class="glyphicon glyphicon-user"
                                                                         aria-hidden="true"></span></span>
             <input [(ngModel)]="user.email" class="form-control validate" id="email" placeholder="Email"
-                   aria-describedby="user-email-input" type="email">
+                   aria-describedby="user-email-input" type="email" (keypress)="eventHandler($event.keyCode)">
           </div>
         </div>
 
@@ -25,20 +25,14 @@
             <span class="input-group-addon" id="user-pass-input"><span class="glyphicon glyphicon-lock"
                                                                        aria-hidden="true"></span></span>
             <input [(ngModel)]="user.password" class="form-control validate" id="password" placeholder="Password"
-                   aria-describedby="user-pass-input" type="password">
+                   aria-describedby="user-pass-input" type="password" (keypress)="eventHandler($event.keyCode)">
           </div>
         </div>
-
-        <a href=""><h6>Forgot your password?</h6></a>
-        <br><br>
+          <br><br>
         <span>{{errorMsg}}</span>
-        <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
-                type="submit" name="action">Login
+        <button (click)="login()" id="login" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
+                type="submit" name="action" >Login
         </button>
-        <!--<button class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
-                type="submit" name="action" data-toggle="modal" data-target="#firstLoginModal">Login
-        </button> -->
-        <!--</form>-->
       </div>
     </div>
   </div>

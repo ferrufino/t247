@@ -1,4 +1,4 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, EventEmitter} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {User} from "../../user";
 import {Router} from '@angular/router';
@@ -28,7 +28,7 @@ export class LoginComponent {
   }
 
   login() {
-    this._service.login(this.user).subscribe(
+      this._service.login(this.user).subscribe(
       (result) => {
         if (!result) {
           this.errorMsg = 'Failed to login';
@@ -43,4 +43,10 @@ export class LoginComponent {
       }
     );
   }
+    eventHandler(keyCode) {
+        if(keyCode == "13"){
+            this.login();
+        }
+    }
+    
 }
