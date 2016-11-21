@@ -57,15 +57,14 @@ export class UsersService {
       )
       .map(res => res.json())
       .map((res) => {
-        if (res.token) {
-          console.log(res.token); //TODO: KILL THIS LINE
 
-          /*if (res.token == 'first_time') { 
-            document.getElementById('firstLoginModal').style.display = "block"; 
-            document.getElementById('firstLoginModal').style.paddingLeft = "0px"; 
-            console.log("esto deberia desplegar el modal"); 
-          }*/
-          //else {
+        if (res.token) {
+          console.log("token: "+res.token); //TODO: KILL THIS LINE
+
+          if (res.token == 'first_time') {
+              document.getElementById("openModalButton").click();
+          }
+          else {
 
             // Store the user info in local storage
             localStorage.setItem('userJson', JSON.stringify(new User(user['email'], res['id'], res['name'], res['lastName'], res['enrollment'], res['role'])));
@@ -85,9 +84,8 @@ export class UsersService {
 
             this.loggedIn = true; // Flag true since user is now logged in
 
-            location.reload();
             this._router.navigate(['']);
-          //}
+          }
         }
         return res.token;
       }).catch((error:any) => {
