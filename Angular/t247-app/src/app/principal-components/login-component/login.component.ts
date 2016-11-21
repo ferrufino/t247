@@ -32,6 +32,10 @@ export class LoginComponent {
       (result) => {
         if (!result) {
           this.errorMsg = 'Failed to login';
+        } else {
+          console.log("LOGIN");
+          console.log(result);
+          this._router.navigate(['/' + result]);
         }
       },
       err => {
