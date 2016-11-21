@@ -16,7 +16,7 @@ export class ProblemsService {
     private PROBLEM_UPDATE_URL = environment.apiURL + '/problems/';
     private PROBLEM_CHANGE_STATUS_URL = environment.apiURL + '/problems/changestatus/';
 
-    private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
     private options = new RequestOptions({headers: this.headers});
 
     constructor(private http:Http) {
@@ -39,7 +39,7 @@ export class ProblemsService {
      * @returns {Observable<R>}
      */
     getProblemsFromTopic(id_topic, id_user) {
-        return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic , this.options).map((response:Response) => response.json());
+        return this.http.get(this.PROBLEM_BY_TOPIC_URL + id_user + '/' + id_topic, this.options).map((response:Response) => response.json());
     }
 
     /**
@@ -57,12 +57,12 @@ export class ProblemsService {
      * @returns {Observable<R>}
      */
     updateProblem(problemID: number, problem: any){
-      return this.http.put(this.PROBLEM_UPDATE_URL + problemID+ '/' , problem, this.headers );
+      return this.http.put(this.PROBLEM_UPDATE_URL + problemID, problem, this.headers );
     }
 
 
     changeStatusOfProblem(problemId:number, status:number){
-        return this.http.put(this.PROBLEM_CHANGE_STATUS_URL + problemId + '/'+status+ '/' , this.headers);
+        return this.http.put(this.PROBLEM_CHANGE_STATUS_URL + problemId + '/'+status, this.headers);
     }
 
 }
