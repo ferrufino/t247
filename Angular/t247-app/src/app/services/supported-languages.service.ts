@@ -3,7 +3,6 @@ import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Rx";
 import {environment} from "../../environments/environment";
-// TODO: DEPRECATED DELETE THIS SERVICE
 
 export class ProgLanguage {
     constructor(public name:string,
