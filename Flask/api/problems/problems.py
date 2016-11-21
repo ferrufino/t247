@@ -24,7 +24,7 @@ class ProblemCollection(Resource):
         """
         Returns list of problems.
         """
-        problems = db.session.query(Problem).all()
+        problems = db.session.query(Problem).order_by(Problem.id).all()
         
         # Retrieve problem's language name
         for problem in problems:
@@ -163,7 +163,7 @@ class ProblemsByTopic(Resource):
         """
         
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, p.difficulty FROM Problem p, ProblemTopic pt WHERE p.id = pt.problem_id AND pt.topic_id = %d" % (topic_id))
+        result = db.engine.execute("SELECT p.id, p.name, p.difficulty FROM Problem p, ProblemTopic pt WHERE p.active=true AND p.id = pt.problem_id AND pt.topic_id = %d" % (topic_id))
         
         problems_list = []
         

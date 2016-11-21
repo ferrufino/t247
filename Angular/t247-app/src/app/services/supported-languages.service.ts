@@ -19,12 +19,6 @@ export class SupportedLanguages {
     }
 
     private GET_LANGUAGES_URL:string = environment.apiURL + "/languages/";
-    private headers = new Headers({
-        'Content-Type':'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': 'localhost:4200',
-        'Authorization': localStorage.getItem('auth_token')
-    });
-    private options = new RequestOptions({headers: this.headers});
 
     /**
      * This function returns an array of objects of type Language
@@ -32,7 +26,10 @@ export class SupportedLanguages {
      * @returns {Observable<R>}
      */
     getLanguages() {
-        return this.http.get(this.GET_LANGUAGES_URL, this.options)
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http.get(this.GET_LANGUAGES_URL, options)
             .map((response:Response) => response.json());
     }
 

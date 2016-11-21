@@ -29,7 +29,7 @@ class UserCollection(Resource):
         """
         Returns list of users.
         """
-        users = User.query.all()
+        users = User.query.order_by(User.id).all()
         return users
 
 
