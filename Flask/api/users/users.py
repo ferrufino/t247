@@ -64,8 +64,7 @@ class UserCreation(Resource):
 
 @ns.route('/login')
 class UserAuthentication(Resource):
-    @api.response(200, 'User succesfully logged')
-    @api.response(104, 'User first time logged')
+    @api.response(200, 'Valid User')
     @api.expect(user_auth)
     def post(self):
         """
