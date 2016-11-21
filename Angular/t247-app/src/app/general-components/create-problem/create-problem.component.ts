@@ -11,6 +11,7 @@ import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 import {TopicsService} from "../../services/topics.service";
 import {EditorComponent} from "../code-editor/editor.component";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'create-problem',
@@ -65,7 +66,8 @@ export class CreateProblem implements OnInit {
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _topicsService: TopicsService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private _router : Router) {
   }
 
 
@@ -295,7 +297,7 @@ export class CreateProblem implements OnInit {
     //TODO: IMPLEMENT THE LOADER
     this.displayLoader = true; // display the loader
 
-    let userID = JSON.parse(sessionStorage.getItem("userJson"))["id"];
+    let userID = JSON.parse(localStorage.getItem("userJson"))["id"];
 
 
     let problemObject = {
@@ -330,6 +332,8 @@ export class CreateProblem implements OnInit {
           this.displayLoader = false;
           document.getElementById('success-feedback').style.display = "block";
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
+
+          setTimeout(() => { this._router.navigate(['']); }, 2500);
 
         },
         error => {

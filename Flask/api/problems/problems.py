@@ -8,15 +8,18 @@ from api.restplus import api
 from models import db, Problem, Topic, ProblemTopic, Case, Language
 from sqlalchemy import join
 from sqlalchemy.orm import Load
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 
 ns = api.namespace('problems', description='Operations related to problems')
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class ProblemCollection(Resource):
 
     @api.marshal_list_with(api_problem)
+    @auth_required('student')
     def get(self):
         """
         Returns list of problems.
@@ -30,10 +33,12 @@ class ProblemCollection(Resource):
         return problems
 
 @ns.route('/changestatus/<int:problem_id>/<int:status>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemStatus(Resource):
 
     @api.response(204, 'Problem successfully updated.')
+    @auth_required('professor')
     def put(self, problem_id, status):
         """
         Updates a problem's status.
@@ -50,10 +55,12 @@ class ProblemStatus(Resource):
         return None, 204
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemItem(Resource):
 
     @api.marshal_with(api_problem)
+    @auth_required('student')
     def get(self, id):
         """
         Returns a problem.
@@ -66,6 +73,7 @@ class ProblemItem(Resource):
         return problem
 
     @api.response(204, 'Problem successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a problem.
@@ -78,6 +86,7 @@ class ProblemItem(Resource):
 
     @api.expect(problem_edition)
     @api.response(204, 'Problem successfully updated.')
+    @auth_required('professor')
     def put(self, id):
         """
         Updates a problem.
@@ -113,11 +122,13 @@ class ProblemItem(Resource):
         return None, 204
         
 @ns.route('/description/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemDescription(Resource):
 
 
     @api.marshal_with(problem_description)
+    @auth_required('student')
     def get(self, id):
         """
         Returns the descriptions of a problem.
@@ -141,9 +152,11 @@ class ProblemDescription(Resource):
         return descriptions
 
 @ns.route('/listbytopic/<int:user_id>/<int:topic_id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Problem not found.')
 class ProblemsByTopic(Resource):
 
+    @auth_required('student')
     def get(self, user_id, topic_id):
         """
         Returns list of problems by topic, indicating if the problem has been solved by user
@@ -170,9 +183,11 @@ class ProblemsByTopic(Resource):
 
 
 @ns.route('/list/')
+@api.header('Authorization', 'Auth token', required=True)
 class ProblemsList(Resource):
 
     @api.marshal_list_with(problem_table)
+    @auth_required('admin')
     def get(self):
         """
         Returns list of problems for table display

@@ -145,7 +145,7 @@ export class ProblemDetailsComponent implements OnInit {
     this.testCaseIndex = 0;
     this.problemTestCases = [];
     this.selectedTestCase = new TestCase(false, "Loading..", "Loading..", "Loading..");
-    this.userInformationObject = JSON.parse(sessionStorage.getItem("userJson"));
+    this.userInformationObject = JSON.parse(localStorage.getItem("userJson"));
     console.log("Problem id in problem details " + this.problemId);
 
   }

@@ -18,7 +18,9 @@ export class FirstLoginComponent implements OnInit {
   ngOnInit() {
     this._authService.checkCredentials();
     // Getting data of the current user
-    let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+    // Currently there is no user logged in
+    /*
+    let userInfo = JSON.parse(localStorage.getItem("userJson"));
     this._authService.getUser(userInfo.id)
       .subscribe(
         user => {
@@ -27,6 +29,7 @@ export class FirstLoginComponent implements OnInit {
           this.userEdit = user;
         }
       );
+      */
   }
 
   onSubmit(form: NgForm) {

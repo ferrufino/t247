@@ -1,11 +1,3 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Bit by Bit</a>
-    </div>
-  </div>
-</nav>
-
 <div class="container main">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -18,13 +10,13 @@
         <h3>Welcome to Tutoring 24/7 </h3>
         <h4>Ready to learn some code?</h4>
         <br><br>
-
+        <!--<form class="col-md-6">-->
         <div class="row">
           <div class="input-group">
             <span class="input-group-addon" id="user-email-input"><span class="glyphicon glyphicon-user"
                                                                         aria-hidden="true"></span></span>
-            <input [(ngModel)]="user.email" class="form-control" id="email" placeholder="Email"
-                   aria-describedby="user-email-input" type="email" class="validate">
+            <input [(ngModel)]="user.email" class="form-control validate" id="email" placeholder="Email"
+                   aria-describedby="user-email-input" type="email" (keypress)="eventHandler($event.keyCode)">
           </div>
         </div>
 
@@ -32,20 +24,37 @@
           <div class="input-group">
             <span class="input-group-addon" id="user-pass-input"><span class="glyphicon glyphicon-lock"
                                                                        aria-hidden="true"></span></span>
-            <input [(ngModel)]="user.password" class="form-control" id="password" placeholder="Password"
-                   aria-describedby="user-pass-input" type="password" class="validate">
+            <input [(ngModel)]="user.password" class="form-control validate" id="password" placeholder="Password"
+                   aria-describedby="user-pass-input" type="password" (keypress)="eventHandler($event.keyCode)">
           </div>
         </div>
-
-        <a href=""><h6>Forgot your password?</h6></a>
-        <br><br>
+          <br><br>
         <span>{{errorMsg}}</span>
-        <button (click)="login()" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
-                type="submit" name="action">Login
+        <button (click)="login()" id="login" class="btn waves-effect waves-light btn #4a148c purple darken-4 right"
+                type="submit" name="action" >Login
         </button>
       </div>
     </div>
   </div>
+    <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#firstLoginModal">Open Modal</button>
+
+  <!-- first time log in modal -->
+  <div class="modal fade" id="firstLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Please fill the missing information</h4>
+        </div>
+        <div class="modal-body">
+          hola
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 
 <!-- TODO: Implement the footer -->

@@ -6,6 +6,7 @@ from api.languages.serializers import (language as api_language,
                                        language_creation)
 from api.restplus import api
 from models import db, Language
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 
@@ -13,9 +14,11 @@ ns = api.namespace('languages', description='Operations related to languages')
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class LanguageCollection(Resource):
 
     @api.marshal_list_with(api_language)
+    @auth_required('student')
     def get(self):
         """
         Returns list of languages.
@@ -25,9 +28,11 @@ class LanguageCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class LanguageCreation(Resource):
     @api.response(201, 'Language succesfully created')
     @api.expect(language_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates language
@@ -44,10 +49,12 @@ class LanguageCreation(Resource):
 
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Language not found.')
 class LanguageItem(Resource):
 
     @api.marshal_with(api_language)
+    @auth_required('student')
     def get(self, id):
         """
         Returns a language.
@@ -55,6 +62,7 @@ class LanguageItem(Resource):
         return Language.query.filter(Language.id == id).one()
 
     @api.response(204, 'Language successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a language.

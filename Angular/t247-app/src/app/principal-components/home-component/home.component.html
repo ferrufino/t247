@@ -1,6 +1,3 @@
-<app-site-navbar [availableRoles]="userRoles" [hideDropdown]="false" [actualRole]="selectedRole"
-                 (clickedRole)="changeSelectedRole($event)" (callLogout)="logout()"></app-site-navbar>
-
 <div class="container tabs-style" style="margin-top: 80px;">
     <div class="content" [ngSwitch]="selectedRole">
         <div class="row" *ngSwitchCase="'admin'">
@@ -20,7 +17,7 @@
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'professor'">
-            <tabs>
+            <tabs >
                 <tab tabTitle="My Groups">
                     <generic-table [typetable]="'groups'"></generic-table>
                 </tab>
@@ -33,7 +30,7 @@
             </tabs>
         </div>
         <div class="row" *ngSwitchCase="'student'">
-            <tabs>
+            <tabs >
                 <tab *ngIf="typeOfUser == 'student'" tabTitle="My Assignments">
                     <generic-table [typetable]="'assignments'"></generic-table>
                 </tab>

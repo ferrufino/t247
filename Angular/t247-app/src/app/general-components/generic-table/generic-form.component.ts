@@ -1,8 +1,8 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
-import {GroupsService} from "../../services/groups.service";
 import {UsersService} from '../../services/users.service';
+import {GroupsService} from '../../services/groups.service';
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 import { environment } from '../../../environments/environment';
 
@@ -148,7 +148,7 @@ export class GenericFormComponent implements OnInit  {
       }
       this.group.courseId = Number(this.group.courseId);
       this.group.enrollments=this.group.enrollmentText.split(",");
-      this.group.professor = JSON.parse(sessionStorage.getItem('userJson')).id;
+      this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
       if(llenado){
           console.log(this.group);
           this.groupsService.createGroup(this.group).subscribe((result) => {

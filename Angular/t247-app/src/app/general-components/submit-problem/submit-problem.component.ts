@@ -7,17 +7,21 @@ import {
 import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
-
+import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
+import {Tabs} from "../../common-components/tabs/tabs.component";
 
 @Component({
     selector: 'submit-problem',
     templateUrl: './submit-problem.component.html',
     styleUrls: ['./submit-problem.component.css'],
-    providers: [EvaluatorService, SubmitProblemService]
+    providers: [SupportedLanguages, EvaluatorService, SubmitProblemService]
 })
 export class SubmitProblem implements OnInit {
 
-    constructor(private _httpProblemsService:EvaluatorService, private _httpSubmitProblemService:SubmitProblemService, private route:ActivatedRoute) {
+    constructor(private _httpProblemsService:EvaluatorService,
+                private _httpSubmitProblemService:SubmitProblemService,
+                private route:ActivatedRoute,
+                private _supportedLanguages: SupportedLanguages) {
 
     }
 
@@ -26,17 +30,29 @@ export class SubmitProblem implements OnInit {
     private descriptionEnglish;
     private descriptionSpanish;
     private descriptionTitle;
-    private attempts;
+
     private testCases;
-    private successMessage:string = "Success";
-    private errorMessage:string = "Error";
+    private successMessage:string = "Problem has been submitted, please refresh the site.";
+    private errorMessage:string = "There has been a problem with your submission.";
     private template:string;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
         {id: 2, name: 'Java'},
     ];
+
+    private codeAttempts: Array<any> = [1, 2, 3];
+    private posTabActive: number = 0;
+    private signaturePresent: string = "";
+    @ViewChild('tabsVariable') tabsVariable;
     @ViewChild('codeEditor') codeEditor;
     @ViewChild('feedbackCard') feedbackCard;
+    codeFromAttempt:string;
+
+
+    supportedLanguages: ProgLanguage[]; // filled from service
+    problemProgLang: string; // The selected language of the problem
+    attempts;
+
 
     private mySettings:IMultiSelectSettings = {
 
@@ -56,46 +72,40 @@ export class SubmitProblem implements OnInit {
         this.route.params.forEach((params:Params) => {
             this.problemId = +params['id'];
             this.getContentDescription(this.problemId);
-            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
+            let userInfo = JSON.parse(localStorage.getItem("userJson"));
             console.log(userInfo.id + " " + this.problemId);
             this.getContentAttempt(userInfo.id, this.problemId);
         });
 
         this.progLangToSubmit = "none";
 
+        this._supportedLanguages.getLanguages().subscribe(
+            respose => {
+                this.supportedLanguages = respose;
+                this.problemProgLang = this.supportedLanguages[0].value;
+
+            },
+            error => {
+                console.log("Error loading the supported languages!");
+            }
+        );
+        this.codeFromAttempt = this.codeAttempts[0];
+        document.getElementById('btn-modal').style.visibility = 'hidden';
 
     }
 
 
-    onChange($event) {
-        if ($event == 1) {
-            this.progLangToSubmit = "cpp";
-        } else if ($event == 2) {
-            this.progLangToSubmit = "java";
-        } else {
-            this.progLangToSubmit = "none";
-        }
-        console.log(this.progLangToSubmit);
-    }
 
-
-    codeToSubmitReceived() {
-        if (this.progLangToSubmit == "none") {
-            document.getElementById('error-feedback').style.display = "block";
-            this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
-
-        } else {
-            var codeFromEditor = this.codeEditor.getSourceCode();
-            let userInfo = JSON.parse(sessionStorage.getItem("userJson"));
-
+    codeToSubmitReceived(progLang) {
+        var codeFromEditor = this.codeEditor.getSourceCode();
+            let userInfo = JSON.parse(localStorage.getItem("userJson"));
             let codeObject = {
                 "code": codeFromEditor,
-                "language": this.progLangToSubmit,
+                "language": progLang,
                 "problem_id": this.problemId,
                 "request_type": "submission",
                 "user_id": userInfo.id
-            }
-            console.log(codeObject);
+            };
             this._httpProblemsService.submitProblem(codeObject).subscribe(
                 data => {
                     if (data["status"] == "ok") {
@@ -109,10 +119,11 @@ export class SubmitProblem implements OnInit {
             );
 
 
-            console.log(this.progLangToSubmit);
-        }
     }
 
+    loadCode(){
+        this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected-1];
+    }
 
     getContentDescription(id) {
 
@@ -122,7 +133,10 @@ export class SubmitProblem implements OnInit {
                 this.descriptionSpanish = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
-                this.codeEditor.setNewSourceCode(content.signature);
+                if(content.signature){
+                    this.codeEditor.setNewSourceCode(content.signature);
+                    this.signaturePresent = content.language;
+                }
                 console.log(content.signature);
 
             }
@@ -130,10 +144,30 @@ export class SubmitProblem implements OnInit {
     }
 
     getContentAttempt(s_id, id) {
+
         this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
                 this.attempts = content;
+
+                for(var i = 0; i<content.length; i++){
+
+                    this.codeAttempts[i] = content[i].code;
+                }
+
+
+                console.log(this.codeAttempts);
             }
         );
+    }
+    assignActiveTab(pos: number){
+        this.posTabActive = pos;
+    }
+
+    onNotify(index:number):void {
+        if (index == 0){
+            document.getElementById('btn-modal').style.visibility = 'hidden';
+        }else{
+            document.getElementById('btn-modal').style.visibility = 'visible';
+        }
     }
 }

@@ -1,0 +1,17 @@
+<div class="container tabs-style">
+    <div class="content">
+        <div class="row">
+            <tabs [baseRoute]="'professor'" [selectedTab]="selectedTab">
+                <tab tabTitle="My Groups" tabName="groups">
+                    <generic-table [typetable]="'groups'"></generic-table>
+                </tab>
+                <tab tabTitle="Topics" tabName="topics">
+                    <generic-table [typetable]="'topics'"></generic-table>
+                </tab>
+                <tab tabTitle="Problems" tabName="problems">
+                    <generic-table [typetable]="'problems'"></generic-table>
+                </tab>
+            </tabs>
+        </div>
+    </div>
+</div>

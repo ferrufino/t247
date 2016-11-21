@@ -20,7 +20,7 @@ export class GroupComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private _authService: UsersService,
-              private coursesService: CoursesService,
+              private groupsService: GroupsService,
               private _cacheService: CacheService) {
 
   }
@@ -35,6 +35,14 @@ export class GroupComponent implements OnInit {
         enrollmentText+=element.enrollment+",";
       });
       this.group.enrollmentText = enrollmentText;
+    });
+  }
+
+  refresh() {
+    this.groupsService.getGroup(this.group.id).subscribe(group => {
+      if (group) {
+        this.group = group;
+      }
     });
   }
 

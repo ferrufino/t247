@@ -30,13 +30,13 @@
     <div class="row">
         <div *ngIf="usersBool">
             Roles:
-            <button (click)="filterInput.value='student'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('student')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Student
             </button>
-            <button (click)="filterInput.value='professor'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('professor')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Professor
             </button>
-            <button (click)="filterInput.value='admin'" type="button" class="btn btn-primary btn-round-sm btn-sm">
+            <button (click)="toggleFilterTag('admin')" type="button" class="btn btn-primary btn-round-sm btn-sm">
                 Admin
             </button>
         </div>
@@ -54,8 +54,12 @@
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
-        <td><button class="btn btn-primary">{{entry.value.active}}</button></td>
-        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Edit</button></td>
+        <td>
+            <button *ngIf=" entry.value.active == true" class="btn btn-success" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+            <button *ngIf=" entry.value.active == false" class="btn btn-danger" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+
+        </td>
+        <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Show</button></td>
         <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
@@ -97,46 +101,62 @@
     <tr *ngFor="let entry of content">
         <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
-        <td>{{entry.date}}</td>
-        <td>{{entry.no_of_attempts}}</td>
-       <!-- <td *ngIf="entry.value.grade == 100">Yeah</td>
-        <td *ngIf="entry.value.grade != 100">Nop</td>-->
+        <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
+        <td>{{entry.no_of_attempts}}</td>w
+        <td *ngIf="entry.grade == 100">Solved</td>
+        <td *ngIf="entry.grade != 100">Not solved</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
     <tr *ngFor="let entry of content | filterGroups: filterInput.value">
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteGroup(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
-    <tr *ngFor="let entry of content | filterUsers: filterInput.value">
+    <tr *ngFor="let entry of content | filterUsers: filterTag: true | filterUsers: filterInput.value: false">
         <td>{{entry.value.enrollment}}</td>
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
         <td>{{entry.value.role}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectUser(entry.value)" role="button">Edit</a></td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#userEdit" (click)="onSelectUser(entry.value)">Edit</button></td>
         <td><a class="btn  btn-danger" (click)="onDeleteUser(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
     <tr *ngFor="let entry of content | filterCourses: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" data-toggle="modal"
+               data-target="#courseEdit"  (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteCourse(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
     <tr *ngFor="let entry of content | filterTopics: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td><a class="btn btn-primary" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
+        <td><a class="btn btn-primary" data-toggle="modal"
+               data-target="#topicEdit" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>
         <td><a class="btn btn-danger" (click)="onDeleteTopic(entry.value)" role="button">Delete</a></td>
     </tr>
     </tbody>
 </table>
 
+
 <div *ngIf="groupsBool">
     <group-form [group]="group" [action]="'create'"></group-form>
 </div>
+
+  <div *ngIf="usersBool">
+    <users-edit #userModal (refresh)="renderTable()"></users-edit>
+  </div>
+
+  <div *ngIf="topicsBool">
+    <topics-edit #topicModal (refresh)="renderTable()"></topics-edit>
+  </div>
+
+  <div *ngIf="coursesBool">
+    <courses-edit #courseModal (refresh)="renderTable()"></courses-edit>
+  </div>

@@ -15,57 +15,88 @@ import {FirstLoginComponent} from "./student-components/first-login.component";
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
 
+import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
+import {AdminGuard} from "./services/admin.guard";
+
+import {ProfessorHomeComponent} from "./professor-components-2/professor-home/professor-home.component";
+import {ProfessorGuard} from "./services/professor.guard";
+
+import {StudentHomeComponent} from "./student-components-2/student-home/student-home.component";
+import {StudentGuard} from "./services/student.guard";
+
+import {LoginGuard} from "./services/login.guard";
+import {RootGuard} from "./services/root.guard";
+
 const appRoutes: Routes = [
+    // TODO sendtoHome
     {
         path: '',
-        component: HomeComponent
+        component: AppComponent,
+        canActivate: [RootGuard]
     },
     {
-        path: 'home',
-        component: HomeComponent
+        path: 'admin/:tab',
+        component: AdminHomeComponent,
+        canActivate: [AdminGuard]
+    },
+    {
+        path: 'admin',
+        component: AdminHomeComponent,
+        canActivate: [AdminGuard]
+    },
+    {
+        path: 'professor/:tab',
+        component: ProfessorHomeComponent,
+        canActivate: [ProfessorGuard]
+    },
+    {
+        path: 'professor',
+        component: ProfessorHomeComponent,
+        canActivate: [ProfessorGuard]
+    },
+    {
+        path: 'student/:tab',
+        component: StudentHomeComponent,
+        canActivate: [StudentGuard]
+    },
+    {
+        path: 'student',
+        component: StudentHomeComponent,
+        canActivate: [StudentGuard]
     },
     {
         path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'firstLogIn',
-        component: FirstLoginComponent
+        component: LoginComponent,
+        canActivate: [LoginGuard]
     },
     {
       path: 'profile',
-      component: ProfileComponent
+      component: ProfileComponent,
+      canActivate: [StudentGuard]
     },
-    {
-      path: 'editTopic/:id',
-      component: TopicsEditComponent
-    },
-    {
-      path: 'editCourse/:id',
-      component: CoursesEditComponent
-    },
+    // TODO  groupsGuard
     {
       path: 'groups/:id',
       component: GroupComponent,
       resolve : {
         any: GroupResolve
-      }
-    },
-    {
-      path: 'editUser/:id',
-      component: UserEditComponent
+      },
+
     },
     {
         path: 'submitProblem/:id',
-        component: SubmitProblem
+        component: SubmitProblem,
+        canActivate: [StudentGuard]
     },
     {
         path: 'problem/:id',
-        component: ProblemDetailsComponent
+        component: ProblemDetailsComponent,
+        canActivate: [ProfessorGuard]
     },
     {
         path: 'createProblem',
-        component: CreateProblem
+        component: CreateProblem,
+        canActivate: [ProfessorGuard]
     }
 ];
 

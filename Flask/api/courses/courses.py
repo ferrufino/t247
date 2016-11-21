@@ -5,6 +5,7 @@ from flask_restplus import Resource
 from api.courses.serializers import (course as api_course, course_creation)
 from api.restplus import api
 from models import db, Course
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 
@@ -12,9 +13,11 @@ ns = api.namespace('courses', description='Operations related to courses')
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseCollection(Resource):
 
     @api.marshal_list_with(api_course)
+    @auth_required('professor')
     def get(self):
         """
         Returns list of courses.
@@ -24,9 +27,11 @@ class CourseCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseCreation(Resource):
     @api.response(201, 'User succesfully created')
     @api.expect(course_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates course
@@ -40,9 +45,11 @@ class CourseCreation(Resource):
 
 @ns.route('/<int:id>')
 @api.response(404, 'Group not found.')
+@api.header('Authorization', 'Auth token', required=True)
 class CourseItem(Resource):
 
     @api.marshal_with(api_course)
+    @auth_required('professor')
     def get(self, id):
         """
         Returns a course.
@@ -51,6 +58,7 @@ class CourseItem(Resource):
 
     @api.expect(course_creation)
     @api.response(204, 'Group successfully updated.')
+    @auth_required('admin')
     def put(self, id):
         """
         Updates a course.
@@ -61,6 +69,7 @@ class CourseItem(Resource):
         return None, 204
 
     @api.response(204, 'Group successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a user.

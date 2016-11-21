@@ -19,7 +19,8 @@ export class EvaluatorService {
   checkProblemTestCases(problem: any) {
     const headers = new Headers({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'localhost:4200'
+      'Access-Control-Allow-Origin': 'localhost:4200',
+      'Authorization': localStorage.getItem('auth_token')
     });
     const serviceURL: string = 'http://107.170.255.106:5000/api/evaluator/problem_evaluation';
 
@@ -30,7 +31,8 @@ export class EvaluatorService {
   createNewProblem(problem: any) {
     const headers = new Headers({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'localhost:4200'
+      'Access-Control-Allow-Origin': 'localhost:4200',
+      'Authorization': localStorage.getItem('auth_token')
     });
 
     const PROBLEM_CREATION_URL : string = 'http://107.170.255.106:5000/api/evaluator/problem_creation';
@@ -42,7 +44,8 @@ export class EvaluatorService {
   submitProblem(problem: any) {
     const headers = new Headers({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'localhost:4200'
+      'Access-Control-Allow-Origin': 'localhost:4200',
+      'Authorization': localStorage.getItem('auth_token')
     });
     const submitProblemURL: string = 'http://107.170.255.106:5000/api/evaluator/problem_submission';
     return this.http.post(submitProblemURL, problem, headers)

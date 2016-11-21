@@ -5,6 +5,7 @@ from flask_restplus import Resource
 from api.topics.serializers import (topic as api_course, topic_creation)
 from api.restplus import api
 from models import db, Topic
+from authorization import auth_required
 
 log = logging.getLogger(__name__)
 
@@ -12,9 +13,11 @@ ns = api.namespace('topics', description='Operations related to topics')
 
 
 @ns.route('/')
+@api.header('Authorization', 'Auth token', required=True)
 class TopicCollection(Resource):
 
     @api.marshal_list_with(api_course)
+    @auth_required('student')
     def get(self):
         """
         Returns list of courses.
@@ -24,9 +27,11 @@ class TopicCollection(Resource):
 
 
 @ns.route('/create')
+@api.header('Authorization', 'Auth token', required=True)
 class TopicCreation(Resource):
     @api.response(201, 'Topic succesfully created')
     @api.expect(topic_creation)
+    @auth_required('admin')
     def post(self):
         """
         Creates topic
@@ -39,10 +44,12 @@ class TopicCreation(Resource):
 
 
 @ns.route('/<int:id>')
+@api.header('Authorization', 'Auth token', required=True)
 @api.response(404, 'Topic not found.')
 class TopicItem(Resource):
 
     @api.marshal_with(api_course)
+    @auth_required('student')
     def get(self, id):
         """
         Returns a topic.
@@ -51,6 +58,7 @@ class TopicItem(Resource):
 
     @api.expect(topic_creation)
     @api.response(204, 'Topic successfully updated.')
+    @auth_required('admin')
     def put(self, id):
         """
         Updates a topic.
@@ -61,6 +69,7 @@ class TopicItem(Resource):
         return None, 204
 
     @api.response(204, 'Topic successfully deleted.')
+    @auth_required('admin')
     def delete(self, id):
         """
         Deletes a topic.
