@@ -27,7 +27,7 @@ class AssignmentCollection(Resource):
         """
         Returns list of assignments.
         """
-        assignments = Assignment.query.all()
+        assignments = Assignment.query.order_by(Assignment.id).all()
         return assignments
 
 

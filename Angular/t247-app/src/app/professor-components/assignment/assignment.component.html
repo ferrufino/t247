@@ -8,6 +8,8 @@
   </div>
   <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" [hidden]="!isOpen">
     <div class="panel-body">
+      <button type="submit" class="btn btn-danger" (click)="onDelete()">Delete Assignment</button>
+      <button type="submit" class="btn btn-default" (click)="onEdit()">Edit</button>
       <div class="table-responsive">
         <generic-table [typetable]="'assignmentSubmissions'" [assignment]="assignment.id"></generic-table>
       </div>

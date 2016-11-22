@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ContentChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ContentChild, AfterContentInit, AfterContentChecked} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -12,6 +12,7 @@ import {TestCase} from "./TestCase";
 import {TopicsService} from "../../services/topics.service";
 import {EditorComponent} from "../code-editor/editor.component";
 import {Router} from '@angular/router';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'create-problem',
@@ -20,7 +21,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit {
+export class CreateProblem implements OnInit, AfterContentChecked {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
@@ -62,12 +63,16 @@ export class CreateProblem implements OnInit {
   // 0 = copy and paste, 1 = upload file
   uploadType: number = 0;
 
+  // Values stored for goBackFunction
+  problemDifficultyIndex: number;
+  pendingCodeRestore: boolean;
+
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _topicsService: TopicsService,
               private _formBuilder: FormBuilder,
-              private _router : Router) {
+              private _router: Router) {
   }
 
 
@@ -86,6 +91,8 @@ export class CreateProblem implements OnInit {
     this.problemFunctionCode = "";
     this.problemTemplateCode = "";
     this.problemSignatureCode = "";
+    this.problemDifficultyIndex = 0;
+    this.pendingCodeRestore = false;
 
 
     // Get the values from services
@@ -113,7 +120,6 @@ export class CreateProblem implements OnInit {
     // Set the default values
     this.problemDifficulty = this.difficulties[0];
 
-
     // Create the problem form object
     this.createProblemForm = this._formBuilder.group({
 
@@ -129,6 +135,33 @@ export class CreateProblem implements OnInit {
 
   }
 
+
+  // Check on this cycle if the code should be restored
+  ngAfterContentChecked() {
+
+    if (this.pendingCodeRestore) {
+
+      debugger;
+
+      if (this.problemTypeFlag == 0 && this.fullEditorComponent != undefined) {
+
+        // Reset the full component problem editor
+        this.fullEditorComponent.setNewSourceCode(this.problemSourceCode);
+
+      } else if (this.problemTypeFlag == 1 && this.functionEditorComponent != undefined &&
+        this.templateEditorComponent != undefined &&
+        this.signatureEditorComponent != undefined) {
+
+        // Reset the three editors
+        this.functionEditorComponent.setNewSourceCode(this.problemFunctionCode);
+        this.templateEditorComponent.setNewSourceCode(this.problemTemplateCode);
+        this.signatureEditorComponent.setNewSourceCode(this.problemSignatureCode);
+
+      }
+    }
+
+    this.pendingCodeRestore = false;
+  }
 
   /**
    * This function obtains the input for all the test cases and returns them as a string array.
@@ -246,6 +279,8 @@ export class CreateProblem implements OnInit {
     this.displayLoader = true; // display the loader
     this.problemProgLang = selectedLanguage;
     this.problemDifficulty = selectedDifficulty;
+    this.problemDifficultyIndex = Number(selectedDifficulty);
+
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
 
@@ -272,7 +307,8 @@ export class CreateProblem implements OnInit {
 
           // Check for server errors
           if (data['status'] == "error") {
-            console.log("ERROR - at check problem's test cases");
+            document.getElementById('error-feedback').style.display = "block";
+            this.feedbackCard.hideFeedbackCard("error", data["error"]);
           } else {
             // No errors, get the outputs of the test cases
             this.testCasesReady = this.setOutputForTestCases(data);
@@ -288,6 +324,14 @@ export class CreateProblem implements OnInit {
       );
   }
 
+
+  /**
+   * This function returns the view to the form to create a problem with the values already sent
+   */
+  goBackToForm(): void {
+    this.testCasesReady = false;
+    this.pendingCodeRestore = true;
+  }
 
   /**
    * This function sends the request to Flask in order to create a new problem and save it to the Data Base
@@ -333,7 +377,9 @@ export class CreateProblem implements OnInit {
           document.getElementById('success-feedback').style.display = "block";
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
 
-          setTimeout(() => { this._router.navigate(['']); }, 2500);
+          setTimeout(() => {
+            this._router.navigate(['']);
+          }, 2500);
 
         },
         error => {

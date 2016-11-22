@@ -24,7 +24,7 @@ class SubmissionCollection(Resource):
         """
         Returns list of submissions.
         """
-        submissions = Submission.query.all()
+        submissions = Submission.query.order_by(Submission.id).all()
         return submissions
 
 

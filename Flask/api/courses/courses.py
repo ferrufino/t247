@@ -22,7 +22,7 @@ class CourseCollection(Resource):
         """
         Returns list of courses.
         """
-        courses = Course.query.all()
+        courses = Course.query.order_by(Course.id).all()
         return courses
 
 
