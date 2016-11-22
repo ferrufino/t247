@@ -159,7 +159,7 @@ class Group(Base):
                                back_populates="groups")
     professor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     professor = db.relationship("Professor", back_populates="managed_groups")
-    assignments = db.relationship("Assignment", back_populates="group")
+    assignments = db.relationship("Assignment", back_populates="group", cascade="save-update, merge, delete")
 
 
 class Enrollment(Base):
