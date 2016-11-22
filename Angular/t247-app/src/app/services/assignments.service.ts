@@ -74,9 +74,10 @@ export class AssignmentsService {
   }
 
     deleteAssignment(id) {
-      const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
-      const options = new RequestOptions({headers: headers});
-      return this.http.delete(this.baseURL + id, options).map(res => res);
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http.delete(this.baseURL + id, options).map(res => res);
     }
 
 }

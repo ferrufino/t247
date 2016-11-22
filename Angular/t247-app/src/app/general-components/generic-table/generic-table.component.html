@@ -48,7 +48,7 @@
     </tr>
     </thead>
     <tbody *ngIf="problemsBool">
-    <tr *ngFor="let entry of content | filterProblems: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterProblems: filterInput.value">
         <td>{{entry.value.name}}</td>
         <td *ngIf=" entry.value.difficulty == 0">Easy</td>
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
@@ -64,7 +64,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="problemsByTopicBool">
-    <tr *ngFor="let entry of content | filterProblems: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterProblems: filterInput.value">
       <td>{{entry.value.name}}</td>
       <td *ngIf=" entry.value.difficulty == 0">Easy</td>
       <td *ngIf=" entry.value.difficulty == 1">Medium</td>
@@ -76,7 +76,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="assignmentsBool">
-    <tr *ngFor="let entry of content | filterAssignments: filterInput.value ">
+    <tr *ngFor="let entry of (content | sort) | filterAssignments: filterInput.value ">
         <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
         <td>{{entry.value.title}}</td>
         <td>{{entry.value.problem_name}}</td>
@@ -90,7 +90,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="submissionsBool">
-    <tr *ngFor="let entry of content | filterSubmissions: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterSubmissions: filterInput.value">
         <td>{{entry.value.name}}</td>
         <td>{{entry.value.no_of_attempts}}</td>
         <td *ngIf="entry.value.max_grade == 100">Yeah</td>
@@ -98,7 +98,7 @@
 
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
-    <tr *ngFor="let entry of content">
+    <tr *ngFor="let entry of (content | sort)">
         <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
@@ -108,7 +108,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
-    <tr *ngFor="let entry of content | filterGroups: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterGroups: filterInput.value">
         <td>{{entry.value.course.name}}</td>
         <td>{{entry.value.period}}</td>
         <td><a class="btn btn-primary" (click)="onSelectGroup(entry.value)" role="button">Show</a></td>
@@ -116,7 +116,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="usersBool">
-    <tr *ngFor="let entry of content | filterUsers: filterTag: true | filterUsers: filterInput.value: false">
+    <tr *ngFor="let entry of (content | sort) | filterUsers: filterTag: true | filterUsers: filterInput.value: false">
         <td>{{entry.value.enrollment}}</td>
         <td>{{entry.value.first_name}}</td>
         <td>{{entry.value.last_name}}</td>
@@ -127,7 +127,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="coursesBool">
-    <tr *ngFor="let entry of content | filterCourses: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterCourses: filterInput.value">
         <td>{{entry.value.name}}</td>
         <td><a class="btn btn-primary" data-toggle="modal"
                data-target="#courseEdit"  (click)="onSelectCourse(entry.value)" role="button">Edit</a></td>
@@ -135,7 +135,7 @@
     </tr>
     </tbody>
     <tbody *ngIf="topicsBool">
-    <tr *ngFor="let entry of content | filterTopics: filterInput.value">
+    <tr *ngFor="let entry of (content | sort) | filterTopics: filterInput.value">
         <td>{{entry.value.name}}</td>
         <td><a class="btn btn-primary" data-toggle="modal"
                data-target="#topicEdit" (click)="onSelectTopic(entry.value)" role="button">Edit</a></td>

@@ -141,26 +141,24 @@ export class CreateProblem implements OnInit, AfterContentChecked {
 
     if (this.pendingCodeRestore) {
 
-      debugger;
+      // if (this.problemTypeFlag == 0 && this.fullEditorComponent != undefined) {
+      //
+      //   // Reset the full component problem editor
+      //   this.fullEditorComponent.setNewSourceCode(this.problemSourceCode);
+      //
+      // } else if (this.problemTypeFlag == 1 && this.functionEditorComponent != undefined &&
+      //   this.templateEditorComponent != undefined &&
+      //   this.signatureEditorComponent != undefined) {
+      //
+      //   // Reset the three editors
+      //   this.functionEditorComponent.setNewSourceCode(this.problemFunctionCode);
+      //   this.templateEditorComponent.setNewSourceCode(this.problemTemplateCode);
+      //   this.signatureEditorComponent.setNewSourceCode(this.problemSignatureCode);
+      //
+      // }
 
-      if (this.problemTypeFlag == 0 && this.fullEditorComponent != undefined) {
-
-        // Reset the full component problem editor
-        this.fullEditorComponent.setNewSourceCode(this.problemSourceCode);
-
-      } else if (this.problemTypeFlag == 1 && this.functionEditorComponent != undefined &&
-        this.templateEditorComponent != undefined &&
-        this.signatureEditorComponent != undefined) {
-
-        // Reset the three editors
-        this.functionEditorComponent.setNewSourceCode(this.problemFunctionCode);
-        this.templateEditorComponent.setNewSourceCode(this.problemTemplateCode);
-        this.signatureEditorComponent.setNewSourceCode(this.problemSignatureCode);
-
-      }
+      this.pendingCodeRestore = false;
     }
-
-    this.pendingCodeRestore = false;
   }
 
   /**
@@ -238,6 +236,37 @@ export class CreateProblem implements OnInit, AfterContentChecked {
     return sourceCode;
   }
 
+
+  /**
+   * This functions returns true if one test case feedback is empty
+   * @returns {boolean}
+   */
+  emptyTestCasesFeedback() {
+
+    for (let test of this.problemTestCases) {
+      if (test["feedback"] === "" || test["feedback"] === undefined) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  /**
+   * This functions returns true if one test case input is empty
+   * @returns {boolean}
+   */
+  emptyTestCasesInput() {
+
+    for (let test of this.problemTestCases) {
+      if (test["input"] === "" || test["input"] === undefined) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   /**
    * This function reads the outputs from the evaluator response to complete the test cases.
