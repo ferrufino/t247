@@ -115,7 +115,7 @@ export class AuthService {
             } else if (res.role == 'student') {
               this.router.navigate(['/student']);
             }
-            alert(res.role);
+            
             return false;
           })
           .catch((error) => {
@@ -143,7 +143,7 @@ export class AuthService {
             } else if (res.role == 'student') {
               this.router.navigate(['/student']);
             }
-            alert(res.role);
+
             return false;
           })
           .catch((error) => {
