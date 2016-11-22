@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupsService } from '../../services/groups.service';
 import { UsersService } from '../../services/users.service';
 import { ActivatedRoute, Params }   from '@angular/router';
@@ -16,6 +16,8 @@ import { environment } from '../../../environments/environment';
 export class GroupComponent implements OnInit {
 
   public group;
+  @ViewChild('assignmentModal') assignmentModal;
+
   constructor(private _service: GroupsService,
               private route: ActivatedRoute,
               private location: Location,
@@ -52,6 +54,10 @@ export class GroupComponent implements OnInit {
 
   logout() {
     this._authService.logout();
+  }
+
+  loadEditForm(assignment) {
+    this.assignmentModal.setAssignment(assignment);
   }
 
 }

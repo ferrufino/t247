@@ -1,6 +1,6 @@
 <app-site-navbar [showDropdown]="true" [currentRole]="'professor'"></app-site-navbar>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-12 group-component">
       <h3>Group: {{group.period}}</h3>
@@ -35,7 +35,7 @@
 
           <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist"
                aria-multiselectable="true">
-            <assignment [assignment]="assignment" (deleted)="refresh()"></assignment>
+            <assignment [assignment]="assignment" (deleted)="refresh()" (edit)="loadEditForm($event)"></assignment>
           </div> <!--Accordions-->
 
 
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <assignment-form [groupId]="group.id" (refreshParent)="refresh()"></assignment-form>
+    <assignment-form #assignmentModal [groupId]="group.id" [action]="'new'" (refreshParent)="refresh()"></assignment-form>
     <group-form [group]="group" [action]="'edit'"></group-form>
 
   </div>
