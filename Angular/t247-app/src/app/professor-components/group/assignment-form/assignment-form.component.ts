@@ -17,8 +17,13 @@ export class AssignmentFormComponent implements OnInit {
 
   private assignmentForm : FormGroup;
   private problems;
+  private start_value;
+  private due_value;
+  private submitText = 'Create Assignment';
+  private formTitle = 'New Assignment';
 
   @Input() groupId;
+  @Input() action;
   @Output() refreshParent = new EventEmitter();
 
   constructor(private _service: AssignmentsService,
@@ -42,12 +47,30 @@ export class AssignmentFormComponent implements OnInit {
     );
     this.assignmentForm = this._formBuilder.group({
       'assignment': this._formBuilder.group({
+        'id': '',
         'startDate': ['', Validators.required],
         'dueDate': ['', Validators.required],
         'title': ['', Validators.required],
         'groupId': [this.groupId, Validators.required],
         'problemId': ['', Validators.required]
       })
+    });
+  }
+
+  setAssignment(assignment) {
+    this.start_value = assignment.start_date;
+    this.due_value = assignment.due_date;
+    this.action = 'edit';
+    this.formTitle = 'Edit Assignment';
+    this.submitText = 'Update Assignment';
+    this.assignmentForm.setValue({assignment: {
+      id: assignment.id,
+      startDate: assignment.start_date,
+      dueDate: assignment.due_date,
+      title: assignment.title,
+      groupId: assignment.group_id,
+      problemId: assignment.problem.id
+      },
     });
   }
 
@@ -59,14 +82,27 @@ export class AssignmentFormComponent implements OnInit {
       "group_id": this.assignmentForm.value.assignment.groupId,
       "problem_id": this.assignmentForm.value.assignment.problemId
     };
-
-    this._service.createAssignment(request)
-      .subscribe(
-        data => {
-          // Check for server errors
-          console.log(data);
-          this.refreshParent.emit();
-        }
-      );
+    if (this.action == 'new') {
+      this._service.createAssignment(request)
+        .subscribe(
+          data => {
+            // Check for server errors
+            console.log(data);
+            this.refreshParent.emit();
+            this.assignmentForm.reset();
+          }
+        );
+    } else {
+      request['id'] = this.assignmentForm.value.assignment.id;
+      this._service.editAssignment(request)
+        .subscribe(
+          data => {
+            // Check for server errors
+            console.log(data);
+            this.refreshParent.emit();
+            this.assignmentForm.reset();
+          }
+        );
+    }
   }
 }

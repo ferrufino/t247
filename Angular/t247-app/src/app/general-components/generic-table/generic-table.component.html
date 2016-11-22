@@ -102,7 +102,7 @@
         <td>{{entry.student_name}}</td>
         <td>{{entry.enrollment}}</td>
         <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
-        <td>{{entry.no_of_attempts}}</td>w
+        <td>{{entry.no_of_attempts}}</td>
         <td *ngIf="entry.grade == 100">Solved</td>
         <td *ngIf="entry.grade != 100">Not solved</td>
     </tr>
