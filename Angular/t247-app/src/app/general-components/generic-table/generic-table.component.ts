@@ -400,7 +400,7 @@ export class GenericTableComponent implements OnInit {
         if (r == true) {
             //Validate is user is author of problem then detele it
 
-            alert("service hasn't being developed yet!");
+            alert("You are not authorized to delete this problem.");
         }
     }
 

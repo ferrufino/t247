@@ -73,14 +73,12 @@ const appRoutes: Routes = [
         component: LoginComponent,
         canActivate: [LoginGuard]
     },
-    // UNO PARA CADA USUARIO
-    
-    
     {
       path: 'profile',
       component: ProfileComponent,
       canActivate: [StudentGuard]
     },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE
     {
         path: 'problem/:id',
         component: ProblemDetailsComponent,
@@ -90,10 +88,8 @@ const appRoutes: Routes = [
         path: 'createProblem',
         component: CreateProblem,
         canActivate: [ProfessorGuard]
-    }, 
-
-
-    // TODO  groupsGuard
+    },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN GRUPO INEXISTENTE O QUE NO LE PERTENECE
     {
       path: 'professor/groups/:id',
       component: GroupComponent,
@@ -102,6 +98,7 @@ const appRoutes: Routes = [
       },
       canActivate: [ProfessorGuard]
     },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE O INACTIVO
     {
         path: 'student/submitProblem/:id',
         component: SubmitProblem,
