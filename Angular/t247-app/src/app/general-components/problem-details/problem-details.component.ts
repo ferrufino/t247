@@ -2,8 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProblemsService} from "../../services/problems.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {TestCase} from "../create-problem/TestCase";
-import {ActivatedRoute, Params}   from '@angular/router';
+import {ActivatedRoute, Params, Router}   from '@angular/router';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+declare var jQuery:any;
 
 
 @Component({
@@ -174,7 +175,6 @@ export class ProblemDetailsComponent implements OnInit {
       "topics": problemTopicsIds
     };
 
-    console.log(problemObject)
 
     this._problemService.updateProblem(this.problemId, problemObject)
       .subscribe(
@@ -182,6 +182,12 @@ export class ProblemDetailsComponent implements OnInit {
 
           document.getElementById('success-feedback').style.display = "block";
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully edited!");
+
+          // Update the Descriptions and the difficulty
+
+          this.descriptionEng = this.editProblemForm.value.problemDetails.engDescription;
+          this.descriptionSpn = this.editProblemForm.value.problemDetails.spnDescription;
+          this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(difficultyId);
 
         },
         error => {
