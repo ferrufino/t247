@@ -187,7 +187,7 @@ class ProblemsByTopic(Resource):
 class ProblemsList(Resource):
 
     @api.marshal_list_with(problem_table)
-    @auth_required('admin')
+    @auth_required('professor')
     def get(self):
         """
         Returns list of problems for table display
