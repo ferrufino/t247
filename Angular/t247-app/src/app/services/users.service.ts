@@ -92,7 +92,6 @@ export class UsersService {
 
                         this.loggedIn = true; // Flag true since user is now logged in
 
-                        alert("VAMO A NAVEGAR: " + res.role);
                         this._router.navigate(['/' + res.role]);
                     }
                 }

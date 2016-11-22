@@ -10,7 +10,8 @@ export class AssignmentComponent implements OnInit {
   private _isOpen:boolean = false;
 
   @Input() assignment;
-  @Output() deleted = new EventEmitter;
+  @Output() deleted = new EventEmitter();
+  @Output() edit = new EventEmitter<any>();
 
   constructor(private assignmentsService: AssignmentsService) {
 
@@ -34,6 +35,10 @@ export class AssignmentComponent implements OnInit {
         this.deleted.emit();
       }
     );
+  }
+
+  onEdit() {
+    this.edit.emit(this.assignment);
   }
 
 }
