@@ -19,6 +19,7 @@ export class UsersService {
     private LOGIN_URL = environment.apiURL + '/users/login';
     private LOGOUT_URL = environment.apiURL + '/users/logout';
     private EDIT_URL = environment.apiURL + '/users/';
+    private EDIT_FIRST_LOGIN_URL = environment.apiURL + '/users/edit'
     private ROLES_URL = environment.apiURL + '/users/role';
     private GET_URL = this.EDIT_URL;
     private CREATE_URL = this.GET_URL + "create";
@@ -61,12 +62,15 @@ export class UsersService {
             )
             .map(res => res.json())
             .map((res) => {
-
+                console.log(res);
                 if (res.token) {
                     console.log("token: " + res.token); //TODO: KILL THIS LINE
 
-                    if (res.token == 'first_time') {
-                        document.getElementById("openModalButton").click();
+                    if (res.first_login) {
+                      document.getElementById("openModalButton").click();
+                      (<HTMLInputElement>document.getElementById("id")).value = res.id;
+                      localStorage.setItem('auth_token', res.token);
+                      console.log("first log in for user");
                     }
                     else {
 
@@ -139,15 +143,14 @@ export class UsersService {
             'Authorization': localStorage.getItem('auth_token')
         });
         const options = new RequestOptions({headers: headers});
-
         return this.http
             .put(
-                this.EDIT_URL + user.id,
+                this.EDIT_FIRST_LOGIN_URL,
                 {
+                    "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
-                    "password_hash": user.password,
-                    "email": user.email
+                    "password": user.password
                 },
                 options
             )
