@@ -61,7 +61,7 @@ export class AssignmentsService {
     editAssignment(assignment) {
       const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
       const options = new RequestOptions({headers: headers});
-      let id = assignment.id
+      let id = assignment.id;
       return this.http
         .put(
           this.baseURL + id,

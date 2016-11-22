@@ -89,7 +89,7 @@ class GroupItem(Resource):
         return group, 204
 
     @api.response(204, 'Group successfully deleted.')
-    @auth_required('admin')
+    @auth_required('professor')
     def delete(self, id):
         """
         Deletes a group.

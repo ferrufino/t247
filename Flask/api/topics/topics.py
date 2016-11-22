@@ -31,7 +31,7 @@ class TopicCollection(Resource):
 class TopicCreation(Resource):
     @api.response(201, 'Topic succesfully created')
     @api.expect(topic_creation)
-    @auth_required('admin')
+    @auth_required('professor')
     def post(self):
         """
         Creates topic
@@ -58,7 +58,7 @@ class TopicItem(Resource):
 
     @api.expect(topic_creation)
     @api.response(204, 'Topic successfully updated.')
-    @auth_required('admin')
+    @auth_required('professor')
     def put(self, id):
         """
         Updates a topic.
@@ -69,7 +69,7 @@ class TopicItem(Resource):
         return None, 204
 
     @api.response(204, 'Topic successfully deleted.')
-    @auth_required('admin')
+    @auth_required('professor')
     def delete(self, id):
         """
         Deletes a topic.
