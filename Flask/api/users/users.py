@@ -79,7 +79,7 @@ class UserAuthentication(Resource):
             name = g.user.first_name
             last_name = g.user.last_name
             enrollment = g.user.enrollment
-            if name == '' or last_name == '':
+            if not name or not last_name:
                 first_login = True
             else:
                 first_login = False
