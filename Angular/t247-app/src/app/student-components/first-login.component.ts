@@ -26,12 +26,12 @@ export class FirstLoginComponent {
         console.log("Fallo");
       }
       else{
-        document.getElementById("openModalButton").click();
         this._service.login(this.userEdit).subscribe(
           (result) => {
             if (!result) {
               alert("Failed to login");
             }
+            document.getElementById("openModalButton").click();
           },
           err => {
             console.error(err);
