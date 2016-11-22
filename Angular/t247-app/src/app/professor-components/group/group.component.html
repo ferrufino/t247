@@ -35,7 +35,7 @@
 
           <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist"
                aria-multiselectable="true">
-            <assignment [assignment]="assignment"></assignment>
+            <assignment [assignment]="assignment" (deleted)="refresh()"></assignment>
           </div> <!--Accordions-->
 
 
