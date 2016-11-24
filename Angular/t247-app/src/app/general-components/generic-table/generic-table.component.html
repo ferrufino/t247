@@ -84,9 +84,9 @@
         <td *ngIf=" entry.value.difficulty == 0">Easy</td>
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
-        <td>{{entry.value.due_date}}</td>
-        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
-        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+        <td>{{entry.value.due_date | date: 'dd/MM/yyyy'}}</td>
+        <td *ngIf="entry.value.grade == 100">Yeah</td>
+        <td *ngIf="entry.value.grade != 100">Nop</td>
     </tr>
     </tbody>
     <tbody *ngIf="submissionsBool">
