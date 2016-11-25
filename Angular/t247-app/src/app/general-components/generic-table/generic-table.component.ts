@@ -80,6 +80,9 @@ export class GenericTableComponent implements OnInit {
             case "problems":
                 this.problemsService.getProblems().subscribe(
                     submissions => {
+                        console.log("PROBLEMAS");
+                        console.log(submissions);
+
                         this.content = submissions;
                         this.problemsBool = true;
                         this.assignmentsBool = false;
@@ -100,6 +103,7 @@ export class GenericTableComponent implements OnInit {
                 let userInformation = JSON.parse(localStorage.getItem("userJson"));
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
                     problems => {
+
                         this.content = problems;
                         this.problemsByTopicBool = true;
                         this.problemsBool = false;

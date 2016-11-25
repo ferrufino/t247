@@ -235,15 +235,19 @@ class ProblemsList(Resource):
         token = request.headers.get('Authorization', None)
         user = User.verify_auth_token(token)
         
+        problems = []
+
         # Retrieve problem's language name
-        for problem in result:
+        for row in result:
+            problem = dict(row.items())
             if (user.role == 'admin'):
                 problem["can_edit"] = True
-            elif (user.role == 'professor' and problem["author_id"] == user.id):
+            elif (user.role == 'professor' and row.author_id == user.id):
                 problem["can_edit"] = True
             else:
                 problem["can_edit"] = False
+            problems.append(problem.copy())
 
-        return result
+        return problems
 
 

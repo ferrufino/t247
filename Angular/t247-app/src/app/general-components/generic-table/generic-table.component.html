@@ -60,7 +60,10 @@
 
         </td>
         <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Show</button></td>
-        <td><a class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a></td>
+        <td>
+            <a *ngIf=" entry.value.can_edit == true" class="btn btn-default btn-danger" (click)="onDeleteProblem(entry.value)" role="button">Delete</a>
+            <a *ngIf=" entry.value.can_edit == false">-</a>
+        </td>
     </tr>
     </tbody>
     <tbody *ngIf="problemsByTopicBool">
