@@ -50,7 +50,8 @@ problem_table = api.model('Problem', {
     'name': fields.String(required=True, description='Problem name'),
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
     'active': fields.Boolean(required=True, description='Problem active'),
-    'topic': fields.String(required=True, description='Topic')
+    'topic': fields.String(required=True, description='Topic'),
+    'can_edit': fields.Boolean(required=True, description='Can current user edit this problem?')
   })
 
 simple_test_case = api.model('Case', {

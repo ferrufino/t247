@@ -227,8 +227,23 @@ class ProblemsList(Resource):
         """
         Returns list of problems for table display
         """
+
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
+        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active, p.author_id FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
+        
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        
+        # Retrieve problem's language name
+        for problem in result:
+            if (user.role == 'admin'):
+                problem["can_edit"] = True
+            elif (user.role == 'professor' and problem["author_id"] == user.id):
+                problem["can_edit"] = True
+            else:
+                problem["can_edit"] = False
+
         return result
 
 
