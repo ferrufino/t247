@@ -82,7 +82,7 @@ export class SubmitProblem implements OnInit {
         this._supportedLanguages.getLanguages().subscribe(
             response => {
                 this.supportedLanguages = response;
-                this.problemProgLang = this.supportedLanguages[0].value;
+                this.problemProgLang = "cpp";
 
             },
             error => {
@@ -96,7 +96,20 @@ export class SubmitProblem implements OnInit {
 
 
     codeToSubmitReceived() {
-        var progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
+
+        var progLanguage;
+        if(this.signaturePresent != ''){
+
+            if(this.signaturePresent == 'C++'){
+                progLanguage = "cpp";
+            }else if(this.signaturePresent == 'Java'){
+                progLanguage = "java";
+            }
+
+        }else{
+
+            progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
+        }
         var codeFromEditor = this.codeEditor.getSourceCode();
         let userInfo = JSON.parse(localStorage.getItem("userJson"));
 
