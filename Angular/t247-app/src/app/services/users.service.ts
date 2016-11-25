@@ -186,7 +186,6 @@ export class UsersService {
 
     createUser(user) {
 
-        console.log(this.CREATE_URL);
         this._cacheService.set('users', [], {expires: Date.now() - 1});
 
         const headers = new Headers({
