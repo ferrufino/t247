@@ -5,7 +5,7 @@ from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
 from api.problems.serializers import problem_table, problem_description, problem_edition
 from api.restplus import api
-from models import db, Problem, Topic, ProblemTopic, Case, Language
+from models import db, Problem, Topic, ProblemTopic, Case, Language, User
 from sqlalchemy import join
 from sqlalchemy.orm import Load
 from authorization import auth_required
