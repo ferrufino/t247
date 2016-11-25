@@ -175,12 +175,13 @@ class ProblemDescription(Resource):
             WHERE c.problem_id = p.id AND p.id = %d AND c.is_sample = TRUE""" % (id)).fetchall()
 
         descriptions = {}
-        descriptions["english"]      = problem.description_english
-        descriptions["spanish"]      = problem.description_spanish
-        descriptions["title"]        = problem.name
-        descriptions["test_cases"]   = cases
-        descriptions["signature"]    = problem.signature
-        descriptions["language"]     = Language.query.filter(Language.value == problem.language).one().name
+        descriptions["english"]       = problem.description_english
+        descriptions["spanish"]       = problem.description_spanish
+        descriptions["title"]         = problem.name
+        descriptions["test_cases"]    = cases
+        descriptions["signature"]     = problem.signature
+        descriptions["language_name"] = Language.query.filter(Language.value == problem.language).one().name
+        descriptions["language_code"] = problem.language
         
         print(descriptions)
         
