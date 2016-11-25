@@ -23,7 +23,14 @@ class GroupCollection(Resource):
         """
         Returns list of groups.
         """
-        groups = Group.query.order_by(Group.id).all()
+
+        # If user is professor, retrieve just groups of professor
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        if (user.role == 'professor'):
+            groups = Group.query.filter(Group.professor_id == user.id).order_by(Group.id).all()
+        else:
+            groups = Group.query.order_by(Group.id).all()
         return groups
 
 
@@ -66,7 +73,22 @@ class GroupItem(Resource):
         """
         Returns a group.
         """
-        return Group.query.filter(Group.id == id).one()
+        # Check if id is valid
+        try:
+            id = int(id)
+        except ValueError:
+            return None, 404
+
+        group = Group.query.filter(Group.id == id).first()
+
+        # If user is professor, check that professor belongs to group
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        if (user.role == 'professor' and group is not None and group.professor_id != user.id):
+            return None, 404
+
+        return group
 
     @api.expect(group_creation)
     @api.response(204, 'Group successfully updated.')
