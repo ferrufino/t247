@@ -64,6 +64,7 @@ problem_description = api.model('Problem', {
     'spanish': fields.String(required=True, description='Description in Spanish'),
     'title': fields.String(required=True, description='Problem title'),
     'signature': fields.String(required=True, description='Problem signature'),
-    'language': fields.String(required=True, description='Problem language'),
+    'language_name': fields.String(required=True, description='Problem language name'),
+    'language_code': fields.String(required=True, description='Problem language code'),
     'test_cases': fields.List(fields.Nested(simple_test_case))
   })
