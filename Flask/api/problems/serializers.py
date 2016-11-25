@@ -33,7 +33,8 @@ problem = api.model('Problem', {
                                  description='Test case time limit'),
     'memory_limit': fields.Integer(required=True,
                                   description='Test Case memory limit'),
-    'topics': fields.List(fields.Nested(topic))
+    'topics': fields.List(fields.Nested(topic)),
+    'can_edit': fields.Boolean(required=True, description='Can current user edit this problem?')
   })
 
 problem_edition = api.model('Problem', {
@@ -49,7 +50,8 @@ problem_table = api.model('Problem', {
     'name': fields.String(required=True, description='Problem name'),
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
     'active': fields.Boolean(required=True, description='Problem active'),
-    'topic': fields.String(required=True, description='Topic')
+    'topic': fields.String(required=True, description='Topic'),
+    'can_edit': fields.Boolean(required=True, description='Can current user edit this problem?')
   })
 
 simple_test_case = api.model('Case', {
