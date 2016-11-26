@@ -67,10 +67,10 @@ export class UsersService {
                     console.log("token: " + res.token); //TODO: KILL THIS LINE
 
                     if (res.first_login) {
-                      document.getElementById("openModalButton").click();
-                      (<HTMLInputElement>document.getElementById("id")).value = res.id;
-                      localStorage.setItem('auth_token', res.token);
-                      console.log("first log in for user");
+                        document.getElementById("openModalButton").click();
+                        (<HTMLInputElement>document.getElementById("id")).value = res.id;
+                        localStorage.setItem('auth_token', res.token);
+                        console.log("first log in for user");
                     }
                     else {
 
@@ -194,7 +194,6 @@ export class UsersService {
             'Authorization': localStorage.getItem('auth_token')
         });
         const options = new RequestOptions({headers: headers});
-
         return this.http
             .post(
                 this.CREATE_URL,
