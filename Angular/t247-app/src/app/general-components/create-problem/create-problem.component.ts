@@ -1,4 +1,7 @@
-import {Component, OnInit, ViewChild, ContentChild, AfterContentInit, AfterContentChecked} from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ContentChild, AfterContentInit, AfterContentChecked,
+  AfterViewChecked, AfterViewInit, OnChanges, DoCheck
+} from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -21,7 +24,7 @@ import {isNullOrUndefined} from "util";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit, AfterContentChecked {
+export class CreateProblem implements OnInit {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
@@ -65,7 +68,8 @@ export class CreateProblem implements OnInit, AfterContentChecked {
 
   // Values stored for goBackFunction
   problemDifficultyIndex: number;
-  pendingCodeRestore: boolean;
+  problemTopicIndex: number;
+
 
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
@@ -87,12 +91,11 @@ export class CreateProblem implements OnInit, AfterContentChecked {
     this.testCasesReady = false;
     this.selectedTestCase = null;
     this.displayLoader = false;
-    this.problemSourceCode = "";
-    this.problemFunctionCode = "";
-    this.problemTemplateCode = "";
-    this.problemSignatureCode = "";
+    this.problemSourceCode = null;
+    this.problemFunctionCode = null;
+    this.problemTemplateCode = null;
+    this.problemSignatureCode = null;
     this.problemDifficultyIndex = 0;
-    this.pendingCodeRestore = false;
 
 
     // Get the values from services
@@ -135,31 +138,6 @@ export class CreateProblem implements OnInit, AfterContentChecked {
 
   }
 
-
-  // Check on this cycle if the code should be restored
-  ngAfterContentChecked() {
-
-    if (this.pendingCodeRestore) {
-
-      // if (this.problemTypeFlag == 0 && this.fullEditorComponent != undefined) {
-      //
-      //   // Reset the full component problem editor
-      //   this.fullEditorComponent.setNewSourceCode(this.problemSourceCode);
-      //
-      // } else if (this.problemTypeFlag == 1 && this.functionEditorComponent != undefined &&
-      //   this.templateEditorComponent != undefined &&
-      //   this.signatureEditorComponent != undefined) {
-      //
-      //   // Reset the three editors
-      //   this.functionEditorComponent.setNewSourceCode(this.problemFunctionCode);
-      //   this.templateEditorComponent.setNewSourceCode(this.problemTemplateCode);
-      //   this.signatureEditorComponent.setNewSourceCode(this.problemSignatureCode);
-      //
-      // }
-
-      this.pendingCodeRestore = false;
-    }
-  }
 
   /**
    * This function obtains the input for all the test cases and returns them as a string array.
@@ -359,7 +337,6 @@ export class CreateProblem implements OnInit, AfterContentChecked {
    */
   goBackToForm(): void {
     this.testCasesReady = false;
-    this.pendingCodeRestore = true;
   }
 
   /**
