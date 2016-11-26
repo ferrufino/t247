@@ -400,11 +400,19 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteProblem(problem) {
-        var r = confirm("Are you sure you want to delete this problem?");
+        var r = confirm("Are you sure you want to delete this problem? \n" +
+            "All submissions and assignments related to this problem shall be deleted.");
         if (r == true) {
-            //Validate is user is author of problem then detele it
-
-            alert("You are not authorized to delete this problem.");
+            this.problemsService.deleteProblem(problem.id).subscribe((result) => {
+                if (!result) {
+                    console.log("Fallo");
+                }
+                else {
+                    console.log(result);
+                    this.renderTable();
+                }
+            });
+           
         }
     }
 
