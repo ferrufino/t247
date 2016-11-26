@@ -144,3 +144,8 @@ a{
                 -webkit-transform: rotate(-360deg);
             }
 }
+
+.label{
+
+    font-size: 100%;
+}
