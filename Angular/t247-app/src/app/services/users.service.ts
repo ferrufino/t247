@@ -36,6 +36,7 @@ export class UsersService {
         localStorage.removeItem('roles');
         localStorage.removeItem('currentRoleView');
         this.loggedIn = false;
+        this._cacheService.removeAll();
         this._router.navigate(['/login']);
     }
 
