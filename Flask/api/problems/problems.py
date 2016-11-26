@@ -5,7 +5,7 @@ from flask_restplus import Resource
 from api.problems.serializers import problem as api_problem
 from api.problems.serializers import problem_table, problem_description, problem_edition
 from api.restplus import api
-from models import db, Problem, Topic, ProblemTopic, Case, Language
+from models import db, Problem, Topic, ProblemTopic, Case, Language, User
 from sqlalchemy import join
 from sqlalchemy.orm import Load
 from authorization import auth_required
@@ -19,16 +19,26 @@ ns = api.namespace('problems', description='Operations related to problems')
 class ProblemCollection(Resource):
 
     @api.marshal_list_with(api_problem)
-    @auth_required('student')
+    @auth_required('professor')
     def get(self):
         """
         Returns list of problems.
         """
         problems = db.session.query(Problem).order_by(Problem.id).all()
+
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
         
         # Retrieve problem's language name
         for problem in problems:
             problem.language = Language.query.filter(Language.value == problem.language).one().name
+            if (user.role == 'admin'):
+                problem.can_edit = True
+            elif (user.role == 'professor' and problem.author_id == user.id):
+                problem.can_edit = True
+            else:
+                problem.can_edit = False
 
         return problems
 
@@ -60,11 +70,18 @@ class ProblemStatus(Resource):
 class ProblemItem(Resource):
 
     @api.marshal_with(api_problem)
-    @auth_required('student')
+    @auth_required('professor')
     def get(self, id):
         """
         Returns a problem.
         """
+
+        # Check if id is valid
+        try:
+            id = int(id)
+        except ValueError:
+            return None, 404
+
         problem = db.session.query(Problem).filter(Problem.id == id).first()
         
         if (problem is not None):
@@ -133,19 +150,38 @@ class ProblemDescription(Resource):
         """
         Returns the descriptions of a problem.
         """
-        problem = Problem.query.filter(Problem.id == id).one()
+        # Check if id is valid
+        try:
+            id = int(id)
+        except ValueError:
+            return None, 404
+
+        problem = db.session.query(Problem).filter(Problem.id == id).first()
+        
+        if (problem is None):
+            return None, 404          
+
+        # If user is student, check that problem is activated
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        if (user.role == 'student' and problem.active == False):
+            return None, 404
+
+        # Complete missing fields
         cases = db.engine.execute("""
             SELECT c.input, c.output
             FROM problem p, \"case\" c
             WHERE c.problem_id = p.id AND p.id = %d AND c.is_sample = TRUE""" % (id)).fetchall()
 
         descriptions = {}
-        descriptions["english"]      = problem.description_english
-        descriptions["spanish"]      = problem.description_spanish
-        descriptions["title"]        = problem.name
-        descriptions["test_cases"]   = cases
-        descriptions["signature"]    = problem.signature
-        descriptions["language"]     = Language.query.filter(Language.value == problem.language).one().name
+        descriptions["english"]       = problem.description_english
+        descriptions["spanish"]       = problem.description_spanish
+        descriptions["title"]         = problem.name
+        descriptions["test_cases"]    = cases
+        descriptions["signature"]     = problem.signature
+        descriptions["language_name"] = Language.query.filter(Language.value == problem.language).one().name
+        descriptions["language_code"] = problem.language
         
         print(descriptions)
         
@@ -192,8 +228,27 @@ class ProblemsList(Resource):
         """
         Returns list of problems for table display
         """
+
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
-        return result
+        result = db.engine.execute("SELECT p.id, p.name, t.name as topic, p.difficulty, p.active, p.author_id FROM Problem p, Topic t, ProblemTopic pt WHERE p.id = pt.problem_id AND t.id = pt.topic_id").fetchall()
+        
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        
+        problems = []
+
+        # Retrieve problem's language name
+        for row in result:
+            problem = dict(row.items())
+            if (user.role == 'admin'):
+                problem["can_edit"] = True
+            elif (user.role == 'professor' and row.author_id == user.id):
+                problem["can_edit"] = True
+            else:
+                problem["can_edit"] = False
+            problems.append(problem.copy())
+
+        return problems
 
 

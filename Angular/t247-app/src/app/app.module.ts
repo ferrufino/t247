@@ -6,7 +6,6 @@ import {HttpModule}    from '@angular/http';
 import {AppComponent}   from './app.component';
 import {LoginComponent} from "./principal-components/login-component/login.component";
 import {HomeComponent} from "./principal-components/home-component/home.component";
-import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboardComponent} from "./student-components/topics-dashboard/topics-dashboard.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
@@ -14,8 +13,8 @@ import {CreateProblem} from "./general-components/create-problem/create-problem.
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
 import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
-import {Tab} from './common-components/tab/tab.component';
-import {Tabs} from './common-components/tabs/tabs.component';
+import {Tab} from './general-components/tab/tab.component';
+import {Tabs} from './general-components/tabs/tabs.component';
 import {TabStatic} from './general-components/tab-static/tab-static.component';
 import {TabsStatic} from './general-components/tabs-static/tabs-static.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
@@ -99,7 +98,6 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
         AppComponent,
         LoginComponent,
         HomeComponent,
-        ListOfProblems,
         TopicsDashboardComponent,
         CreateProblem,
         SubmitProblem,

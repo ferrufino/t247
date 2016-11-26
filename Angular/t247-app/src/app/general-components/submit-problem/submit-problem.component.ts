@@ -8,7 +8,7 @@ import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
-import {Tabs} from "../../common-components/tabs/tabs.component";
+import {Tabs} from "../tabs/tabs.component";
 
 @Component({
     selector: 'submit-problem',
@@ -30,6 +30,8 @@ export class SubmitProblem implements OnInit {
     private descriptionEnglish;
     private descriptionSpanish;
     private descriptionTitle;
+    private languageName;
+    private languageCode;
 
     private testCases;
     private successMessage:string = "Problem has been submitted, please refresh the site.";
@@ -73,7 +75,6 @@ export class SubmitProblem implements OnInit {
             this.problemId = +params['id'];
             this.getContentDescription(this.problemId);
             let userInfo = JSON.parse(localStorage.getItem("userJson"));
-            console.log(userInfo.id + " " + this.problemId);
             this.getContentAttempt(userInfo.id, this.problemId);
         });
 
@@ -82,7 +83,7 @@ export class SubmitProblem implements OnInit {
         this._supportedLanguages.getLanguages().subscribe(
             response => {
                 this.supportedLanguages = response;
-                this.problemProgLang = this.supportedLanguages[0].value;
+                this.problemProgLang = "cpp";
 
             },
             error => {
@@ -96,7 +97,16 @@ export class SubmitProblem implements OnInit {
 
 
     codeToSubmitReceived() {
-        var progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
+
+        var progLanguage;
+        if(this.signaturePresent != ''){
+
+            progLanguage = this.languageCode;
+
+        }else{
+
+            progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
+        }
         var codeFromEditor = this.codeEditor.getSourceCode();
         let userInfo = JSON.parse(localStorage.getItem("userJson"));
 
@@ -139,8 +149,9 @@ export class SubmitProblem implements OnInit {
                 if (content.signature) {
                     this.codeEditor.setNewSourceCode(content.signature);
                     this.signaturePresent = content.language;
+                    this.languageCode = content.language_code;
+                    this.languageName = content.language_name;
                 }
-                console.log(content.signature);
 
             }
         );

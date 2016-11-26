@@ -8,15 +8,3 @@
     float: right;
     margin-bottom: 50px;
 }
-
-.accept {
-      color: green;
-}
-
-.wrong {
-      color: red;
-}
-
-.notattempt {
-      color: blue;
-}
