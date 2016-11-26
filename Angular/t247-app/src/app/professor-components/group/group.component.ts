@@ -44,6 +44,11 @@ export class GroupComponent implements OnInit {
     this.groupsService.getGroup(this.group.id).subscribe(group => {
       if (group) {
         this.group = group;
+        var enrollmentText = "";
+        this.group.students.forEach(function(element){
+          enrollmentText+=element.enrollment+",";
+        });
+        this.group.enrollmentText = enrollmentText;
       }
     });
   }
