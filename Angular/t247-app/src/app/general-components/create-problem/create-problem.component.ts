@@ -407,7 +407,7 @@ export class CreateProblem implements OnInit, AfterContentChecked {
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
 
           setTimeout(() => {
-            this._router.navigate(['/admin/tab/problems']);
+            this._router.navigate(['/' + JSON.parse(localStorage['userJson'])['role'] + '/tab/problems']);
           }, 2500);
 
         },
