@@ -107,7 +107,7 @@ class UserAuthorization(Resource):
         print('not found')
         abort(401)
 
-
+  
 @ns.route('/edit')
 @api.header('Authorization', 'Auth token', required=True)
 class UserAuthorization(Resource):
@@ -117,7 +117,7 @@ class UserAuthorization(Resource):
     @auth_required('student')
     def put(self):
         """
-        Verifies that token is valid and returns user role if true
+        Used to edit user data during first login
         """
         token = request.headers.get('Authorization', None)
 
