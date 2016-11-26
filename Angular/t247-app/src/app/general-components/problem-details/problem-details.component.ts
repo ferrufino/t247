@@ -136,10 +136,11 @@ export class ProblemDetailsComponent implements OnInit {
 
       'problemDetails': this._formBuilder.group({
         'engDescription': ['', Validators.required],
-        'spnDescription': ['', Validators.required],
+        'spnDescription': ['', Validators.required]
       })
 
     });
+
 
     // These declarations are here because the upper part us async, so these lines prevent
     // a null pointer exception
