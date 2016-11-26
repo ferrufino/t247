@@ -373,6 +373,7 @@ export class CreateProblem implements OnInit, AfterContentChecked {
         let userID = JSON.parse(localStorage.getItem("userJson"))["id"];
 
 
+
         let problemObject = {
             "author_id": userID,
             "name": this.createProblemForm.value.problemDetails.problemName,
@@ -388,6 +389,10 @@ export class CreateProblem implements OnInit, AfterContentChecked {
 
         if (this.problemTypeFlag == 0) {
             problemObject["code"] = this.problemSourceCode;
+
+          setTimeout(() => {
+            this._router.navigate(['/' + JSON.parse(localStorage['userJson'])['role'] + '/tab/problems']);
+          }, 2500);
 
         } else {
             problemObject["code"] = this.problemFunctionCode;
