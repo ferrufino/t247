@@ -153,6 +153,15 @@ export class ProblemDetailsComponent implements OnInit {
 
   }
 
+  updateFormValues(){
+
+    let formObject : any;
+    formObject  = this.editProblemForm.controls['problemDetails'];
+    formObject.controls['engDescription'].setValue(this.descriptionEng);
+    formObject.controls['spnDescription'].setValue(this.descriptionSpn);
+  }
+
+
   emptyDescriptionValidator(control:FormControl) : {[s : string] : boolean} {
 
     if(control.value === ""){
@@ -186,6 +195,7 @@ export class ProblemDetailsComponent implements OnInit {
       "topics": problemTopicsIds
     };
 
+    console.log(this.editProblemForm);
 
     this._problemService.updateProblem(this.problemId, problemObject)
       .subscribe(
