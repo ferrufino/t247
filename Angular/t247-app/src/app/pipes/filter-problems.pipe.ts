@@ -9,7 +9,8 @@ export class FilterProblemsPipe implements PipeTransform {
 
         let ans = [];
         for (let k in items){
-            if((items[k].name?items[k].name.match('^.*' + args +'.*$'):null)) {
+            if((items[k].name?items[k].name.match('^.*' + args +'.*$'):null)
+            || (items[k].topic?items[k].topic.match('^.*' + args +'.*$'):null)) {
                 ans.push({key: k, value: items[k]});
             }
         }
