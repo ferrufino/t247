@@ -1,25 +1,24 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {UsersService} from '../../services/users.service';
 import {GroupsService} from '../../services/groups.service';
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
-import { environment } from '../../../environments/environment';
+import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
+import {environment} from '../../../environments/environment';
 
 
 @Component({
-  selector: 'generic-form',
-  templateUrl: "./generic-form.component.html",
-  styleUrls: ["./generic-form.component.css"]
+    selector: 'generic-form',
+    templateUrl: "./generic-form.component.html",
+    styleUrls: ["./generic-form.component.css"]
 })
-export class GenericFormComponent implements OnInit  {
-  finished:string="";
-  courses:Array<any>;
-  user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
-  topicName:string = "";
-  courseName:string = "";
-  group:any = {course: {id: "", name:""}, enrollmentText: "", period: ""};
-
+export class GenericFormComponent implements OnInit {
+    finished:string = "";
+    courses:Array<any>;
+    user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
+    topicName:string = "";
+    courseName:string = "";
+    group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
     @Input('typeForm') typeOfForm:string;
     @Output() formChange = new EventEmitter();
 
@@ -27,28 +26,28 @@ export class GenericFormComponent implements OnInit  {
                 private coursesService:CoursesService,
                 private usersService:UsersService,
                 private groupsService:GroupsService,
-                private _cacheService: CacheService) {
+                private _cacheService:CacheService) {
     }
 
-    ngOnInit(){
-      console.log(this.typeOfForm);
-      this.coursesService.getCourses().subscribe(
-        courses => {
-          if (!this._cacheService.exists('courses')) {
-            const myArray = [];
-            for (let key in courses) {
-              myArray.push(courses[key]);
-              console.log(courses[key]);
+    ngOnInit() {
+        console.log(this.typeOfForm);
+        this.coursesService.getCourses().subscribe(
+            courses => {
+                if (!this._cacheService.exists('courses')) {
+                    const myArray = [];
+                    for (let key in courses) {
+                        myArray.push(courses[key]);
+                        console.log(courses[key]);
+                    }
+                    this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
+                    this.courses = this._cacheService.get('courses');
+                    //console.log("Se hizo get de courses");
+                }
+                else {
+                    this.courses = this._cacheService.get('courses');
+                }
             }
-            this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
-            this.courses = this._cacheService.get('courses');
-            //console.log("Se hizo get de courses");
-          }
-          else {
-            this.courses = this._cacheService.get('courses');
-          }
-        }
-      );
+        );
     }
 
     onSubmitCourse() {
@@ -71,7 +70,10 @@ export class GenericFormComponent implements OnInit  {
             });
         }
     }
-    onSubmitUser() {
+
+ 
+    onSubmitUser(roleSelected) {
+        this.user.role = roleSelected;
         var llenado = true;
         if (this.user.enrollment === "") {
             window.alert("Missing the enrollment");
@@ -98,7 +100,6 @@ export class GenericFormComponent implements OnInit  {
             llenado = false;
         }
         if (llenado) {
-            console.log(this.user);
             this.usersService.createUser(this.user).subscribe((result) => {
                 if (!result) {
                     console.log("Fallo");
@@ -111,6 +112,7 @@ export class GenericFormComponent implements OnInit  {
             });
         }
     }
+
     onSubmitTopic() {
         var llenado = true;
         if (this.topicName === "") {
@@ -131,38 +133,39 @@ export class GenericFormComponent implements OnInit  {
             });
         }
     }
-    onSubmitGroup(){
-      var llenado = true;
-      this.group.courseId = this.group.course.id;
-      if(this.group.courseId===""){
-        window.alert("Favor de escoger un curso");
-        llenado=false;
-      }
-      if(this.group.enrollmentText===""){
-        window.alert("Favor de dar de alta estudiantes");
-        llenado=false;
-      }
-      if(this.group.period===""){
-        window.alert("Favor de escribir un periodo");
-        llenado = false;
-      }
-      this.group.courseId = Number(this.group.courseId);
-      this.group.enrollments=this.group.enrollmentText.split(",");
-      this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
-      if(llenado){
-          console.log(this.group);
-          this.groupsService.createGroup(this.group).subscribe((result) => {
-            if (!result) {
-              console.log("Fallo");
-            }
-            else {
-              console.log(result);
-              //this.renderTable();
-              this.group = {course: {id: "", name:""}, enrollmentText: "", period: ""};
-              this.formChange.emit();
-            }
-          });
-      }
+
+    onSubmitGroup() {
+        var llenado = true;
+        this.group.courseId = this.group.course.id;
+        if (this.group.courseId === "") {
+            window.alert("Favor de escoger un curso");
+            llenado = false;
+        }
+        if (this.group.enrollmentText === "") {
+            window.alert("Favor de dar de alta estudiantes");
+            llenado = false;
+        }
+        if (this.group.period === "") {
+            window.alert("Favor de escribir un periodo");
+            llenado = false;
+        }
+        this.group.courseId = Number(this.group.courseId);
+        this.group.enrollments = this.group.enrollmentText.split(",");
+        this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
+        if (llenado) {
+            console.log(this.group);
+            this.groupsService.createGroup(this.group).subscribe((result) => {
+                if (!result) {
+                    console.log("Fallo");
+                }
+                else {
+                    console.log(result);
+                    //this.renderTable();
+                    this.group = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+                    this.formChange.emit();
+                }
+            });
+        }
     }
 
 }

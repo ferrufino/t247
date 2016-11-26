@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row">
+    <div class="row table-title-row">
         <div class="col-md-6 col-md-offset-3">
             <h1 *ngIf="!problemsByTopicBool">Table of {{typeOfTableName}}</h1>
         </div>
@@ -55,8 +55,14 @@
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
         <td>{{entry.value.topic}}</td>
         <td>
-            <button *ngIf=" entry.value.active == true" class="btn btn-success" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
-            <button *ngIf=" entry.value.active == false" class="btn btn-danger" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+            <span *ngIf=" entry.value.can_edit == true">
+                <button *ngIf=" entry.value.active == true" class="btn btn-success" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+                <button *ngIf=" entry.value.active == false" class="btn btn-danger" (click)="onChangeStatus(entry.value)">{{entry.value.active}}</button>
+            </span>
+            <span *ngIf=" entry.value.can_edit == false">
+                 <span *ngIf=" entry.value.active == true" class="label label-success" >{{entry.value.active}}</span>
+                <span *ngIf=" entry.value.active == false" class="label label-danger" >{{entry.value.active}}</span>
+            </span>
 
         </td>
         <td><button class="btn btn-primary" (click)="onSelectProblem(entry.value)">Show</button></td>
@@ -72,9 +78,9 @@
       <td *ngIf=" entry.value.difficulty == 0">Easy</td>
       <td *ngIf=" entry.value.difficulty == 1">Medium</td>
       <td *ngIf=" entry.value.difficulty == 2">Hard</td>
-      <td *ngIf=" entry.value.status == 'not_attempted'" class="notattempt">Not attempted</td>
-      <td *ngIf=" entry.value.status == 'accepted'" class="accept">Accepted</td>
-      <td *ngIf=" entry.value.status == 'wrong_answer'" class="wrong">Wrong Answer</td>
+      <td *ngIf=" entry.value.status == 'not_attempted'" class="notattempt"><span class="label label-primary">Not attempted</span></td>
+      <td *ngIf=" entry.value.status == 'accepted'" ><span class="label label-success">Accepted</span></td>
+      <td *ngIf=" entry.value.status == 'wrong_answer'"><span class="label label-danger">Wrong Answer</span></td>
       <td><a class="btn btn-success" (click)="onSelectAssignment(entry.value)" role="button">Solve</a></td>
     </tr>
     </tbody>
@@ -87,27 +93,27 @@
         <td *ngIf=" entry.value.difficulty == 0">Easy</td>
         <td *ngIf=" entry.value.difficulty == 1">Medium</td>
         <td *ngIf=" entry.value.difficulty == 2">Hard</td>
-        <td>{{entry.value.due_date | date: 'dd/MM/yyyy'}}</td>
-        <td *ngIf="entry.value.grade == 100">Yeah</td>
-        <td *ngIf="entry.value.grade != 100">Nop</td>
+        <td><span class="label label-primary">{{entry.value.due_date | date: 'dd/MM/yyyy'}}</span></td>
+        <td *ngIf="entry.value.grade == 100"><span class="label label-success">Yeah</span></td>
+        <td *ngIf="entry.value.grade != 100"><span class="label label-danger">Nop</span></td>
     </tr>
     </tbody>
     <tbody *ngIf="submissionsBool">
     <tr *ngFor="let entry of (content | sort) | filterSubmissions: filterInput.value">
         <td>{{entry.value.name}}</td>
-        <td>{{entry.value.no_of_attempts}}</td>
-        <td *ngIf="entry.value.max_grade == 100">Yeah</td>
-        <td *ngIf="entry.value.max_grade != 100">Nop</td>
+        <td><span class="label label-info">{{entry.value.no_of_attempts}}</span></td>
+        <td *ngIf="entry.value.max_grade == 100"><span class="label label-success">Yeah</span></td>
+        <td *ngIf="entry.value.max_grade != 100"><span class="label label-danger">Nop</span></td>
 
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
-    <tr *ngFor="let entry of (content | sort)">
-        <td>{{entry.student_name}}</td>
-        <td>{{entry.enrollment}}</td>
-        <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
-        <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.grade == 100">Solved</td>
-        <td *ngIf="entry.grade != 100">Not solved</td>
+    <tr *ngFor="let entry of (content | sort)  | filterAssignmentSubmissions: filterInput.value">
+        <td>{{entry.value.student_name}}</td>
+        <td>{{entry.value.enrollment}}</td>
+        <td>{{entry.value.date | date: 'dd/MM/yyyy'}}</td>
+        <td>{{entry.value.no_of_attempts}}</td>
+        <td *ngIf="entry.value.grade == 100">Solved</td>
+        <td *ngIf="entry.value.grade != 100">Not solved</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">

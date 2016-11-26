@@ -103,7 +103,7 @@
                       class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label class="margin-right10" for="selectorLanguages">Solution
                         language: </label>
-                      <select id="selectorLanguages" [value]="problemProgLang" #selectedLanguage>
+                      <select id="selectorLanguages" #selectedLanguage [value]="problemProgLang">
                         <option *ngFor="let lang of supportedLanguages" [value]="lang.value">
                           {{lang.name}}
                         </option>
@@ -134,7 +134,7 @@
                     <div
                       class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label class="margin-right10" for="problemTopic">Problem Topic: </label>
-                      <select id="problemTopic" #selectedProblemTopic [value]="problemTopicID" >
+                      <select id="problemTopic" #selectedProblemTopic [value]="problemTopicID">
                         <option *ngFor="let topic of problemTopics" [value]="topic.id">
                           {{topic.name}}
                         </option>

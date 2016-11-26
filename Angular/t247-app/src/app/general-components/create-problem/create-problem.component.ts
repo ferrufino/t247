@@ -68,7 +68,6 @@ export class CreateProblem implements OnInit {
 
   // Values stored for goBackFunction
   problemDifficultyIndex: number;
-  problemTopicIndex: number;
 
 
   constructor(private _httpProblemsService: EvaluatorService,
@@ -384,7 +383,7 @@ export class CreateProblem implements OnInit {
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
 
           setTimeout(() => {
-            this._router.navigate(['/admin/tab/problems']);
+            this._router.navigate(['/' + JSON.parse(localStorage['userJson'])['role'] + '/tab/problems']);
           }, 2500);
 
         },

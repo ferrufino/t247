@@ -15,7 +15,7 @@ export class ProblemsService {
     private PROBLEM_BY_TOPIC_URL = environment.apiURL + '/problems/listbytopic/';
     private PROBLEM_UPDATE_URL = environment.apiURL + '/problems/';
     private PROBLEM_CHANGE_STATUS_URL = environment.apiURL + '/problems/changestatus/';
-
+    private PROBLEM_DELETE = environment.apiURL + '/problems/';
     constructor(private http:Http) {
     }
 
@@ -73,12 +73,18 @@ export class ProblemsService {
     changeStatusOfProblem(problemId:number, status:number){
         const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
         const options = new RequestOptions({headers: headers});
-
-        console.log("changestatus");
-        console.log(options);
-
+        
         return this.http.put(this.PROBLEM_CHANGE_STATUS_URL + problemId + '/' + status, null, options);
     }
 
+    deleteProblem(problemID:number){
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http.delete(this.PROBLEM_DELETE + problemID, options).map(res => {
+            return res;
+        });
+
+    }
 }
 

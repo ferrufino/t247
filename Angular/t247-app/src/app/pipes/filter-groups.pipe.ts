@@ -9,7 +9,8 @@ export class FilterGroupsPipe implements PipeTransform {
 
         let ans = [];
         for (let k in items){
-            if( (items[k].period?items[k].period.match('^.*' + args +'.*$'):null)) {
+            if( (items[k].period?items[k].period.match('^.*' + args +'.*$'):null)
+                || (items[k].course.name?items[k].course.name.match('^.*' + args +'.*$'):null) ) {
                 ans.push({key: k, value: items[k]});
             }
         }
