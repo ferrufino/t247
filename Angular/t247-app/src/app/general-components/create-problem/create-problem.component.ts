@@ -1,21 +1,11 @@
-import {
-  Component, OnInit, ViewChild, ContentChild, AfterContentInit, AfterContentChecked,
-  AfterViewChecked, AfterViewInit, OnChanges, DoCheck
-} from '@angular/core';
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from "@angular/forms";
-
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 import {TopicsService} from "../../services/topics.service";
-import {EditorComponent} from "../code-editor/editor.component";
-import {Router} from '@angular/router';
-import {isNullOrUndefined} from "util";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'create-problem',
@@ -62,9 +52,6 @@ export class CreateProblem implements OnInit {
   // 0 = full problem, 1 = function
   problemTypeFlag: number = 0;
 
-  // This variable specifies if the problem will be uploaded as copy paste text or if it will be uploaded as a file
-  // 0 = copy and paste, 1 = upload file
-  uploadType: number = 0;
 
   // Values stored for goBackFunction
   problemDifficultyIndex: number;
@@ -91,9 +78,27 @@ export class CreateProblem implements OnInit {
     this.selectedTestCase = null;
     this.displayLoader = false;
     this.problemSourceCode = null;
-    this.problemFunctionCode = null;
-    this.problemTemplateCode = null;
-    this.problemSignatureCode = null;
+
+    // This values are initialized to help as a template
+    this.problemTemplateCode = `#include <iostream>
+using namespace std;
+
+//&function
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << sum(a, b);
+    return 0;
+}`;
+
+    ;
+    this.problemFunctionCode = 'int sum(int a, int b) {' +
+      ' return a + b;' +
+      '};';
+    this.problemSignatureCode = 'int sum(int a, int b){};';
+
+
     this.problemDifficultyIndex = 0;
 
 
