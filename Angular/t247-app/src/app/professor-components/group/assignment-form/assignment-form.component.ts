@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import {
   FormGroup,
   Validators,
@@ -30,7 +31,6 @@ export class AssignmentFormComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _authService: UsersService,
               private _problemsService : ProblemsService) {
-
   }
 
   ngOnInit() {
@@ -58,15 +58,15 @@ export class AssignmentFormComponent implements OnInit {
   }
 
   setAssignment(assignment) {
-    this.start_value = assignment.start_date;
-    this.due_value = assignment.due_date;
+    let start_date = new DatePipe('en-US').transform(assignment.start_date, 'yyyy-MM-dd');
+    let due_date = new DatePipe('en-US').transform(assignment.due_date, 'yyyy-MM-dd');
     this.action = 'edit';
     this.formTitle = 'Edit Assignment';
     this.submitText = 'Update Assignment';
     this.assignmentForm.setValue({assignment: {
       id: assignment.id,
-      startDate: assignment.start_date,
-      dueDate: assignment.due_date,
+      startDate: start_date,
+      dueDate: due_date,
       title: assignment.title,
       groupId: assignment.group_id,
       problemId: assignment.problem.id
@@ -104,5 +104,9 @@ export class AssignmentFormComponent implements OnInit {
           }
         );
     }
+  }
+
+  clear() {
+    this.assignmentForm.reset();
   }
 }
