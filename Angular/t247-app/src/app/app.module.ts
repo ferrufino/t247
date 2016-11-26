@@ -26,6 +26,7 @@ import {FilterProblemsPipe} from './pipes/filter-problems.pipe';
 import {CapitalizePipe} from "./pipes/capitalize.pipe";
 import {FilterAssignmentsPipe} from './pipes/filter-assignments.pipe';
 import {FilterSubmissionsPipe} from './pipes/filter-submissions.pipe';
+import {FilterAssignmentSubmissionsPipe} from './pipes/filter-assignment-submissions.pipe';
 import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
 import {FilterCoursesPipe} from './pipes/filter-courses.pipe';
 import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
@@ -118,6 +119,7 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
         FilterUsersPipe,
         FilterProblemsPipe,
         FilterAssignmentsPipe,
+        FilterAssignmentSubmissionsPipe,
         FilterSubmissionsPipe,
         FilterGroupsPipe,
         FilterCoursesPipe,

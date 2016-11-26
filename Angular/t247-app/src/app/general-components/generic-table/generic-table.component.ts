@@ -165,7 +165,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
-                        this.columns = ["Student", "", "Date of last submission", "Attempts", "Solved"];
+                        this.columns = ["Student", "Enrollment", "Date of last submission", "Attempts", "Solved"];
 
                         this.problemsByTopicBool = false;
                     }

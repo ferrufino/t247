@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row">
+    <div class="row table-title-row">
         <div class="col-md-6 col-md-offset-3">
             <h1 *ngIf="!problemsByTopicBool">Table of {{typeOfTableName}}</h1>
         </div>
@@ -101,13 +101,13 @@
 
     </tr>
     <tbody *ngIf="assignmentSubmissionsBool">
-    <tr *ngFor="let entry of (content | sort)">
-        <td>{{entry.student_name}}</td>
-        <td>{{entry.enrollment}}</td>
-        <td>{{entry.date | date: 'dd/MM/yyyy'}}</td>
-        <td>{{entry.no_of_attempts}}</td>
-        <td *ngIf="entry.grade == 100">Solved</td>
-        <td *ngIf="entry.grade != 100">Not solved</td>
+    <tr *ngFor="let entry of (content | sort)  | filterAssignmentSubmissions: filterInput.value">
+        <td>{{entry.value.student_name}}</td>
+        <td>{{entry.value.enrollment}}</td>
+        <td>{{entry.value.date | date: 'dd/MM/yyyy'}}</td>
+        <td>{{entry.value.no_of_attempts}}</td>
+        <td *ngIf="entry.value.grade == 100">Solved</td>
+        <td *ngIf="entry.value.grade != 100">Not solved</td>
     </tr>
     </tbody>
     <tbody *ngIf="groupsBool">
