@@ -8,7 +8,7 @@ import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
-import {Tabs} from "../../common-components/tabs/tabs.component";
+import {Tabs} from "../tabs/tabs.component";
 
 @Component({
     selector: 'submit-problem',

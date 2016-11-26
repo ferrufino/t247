@@ -14,8 +14,8 @@ import {CreateProblem} from "./general-components/create-problem/create-problem.
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
 import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
-import {Tab} from './common-components/tab/tab.component';
-import {Tabs} from './common-components/tabs/tabs.component';
+import {Tab} from './general-components/tab/tab.component';
+import {Tabs} from './general-components/tabs/tabs.component';
 import {TabStatic} from './general-components/tab-static/tab-static.component';
 import {TabsStatic} from './general-components/tabs-static/tabs-static.component';
 import {TestCasesCreatorComponent} from './general-components/create-problem/test-cases-creator.component';
