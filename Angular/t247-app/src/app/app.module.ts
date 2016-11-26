@@ -6,7 +6,6 @@ import {HttpModule}    from '@angular/http';
 import {AppComponent}   from './app.component';
 import {LoginComponent} from "./principal-components/login-component/login.component";
 import {HomeComponent} from "./principal-components/home-component/home.component";
-import {ListOfProblems} from "./admin-components/list-of-problems.component";
 import {TopicsDashboardComponent} from "./student-components/topics-dashboard/topics-dashboard.component";
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
@@ -99,7 +98,6 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
         AppComponent,
         LoginComponent,
         HomeComponent,
-        ListOfProblems,
         TopicsDashboardComponent,
         CreateProblem,
         SubmitProblem,
