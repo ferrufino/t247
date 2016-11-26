@@ -80,7 +80,7 @@ class User(Base, UserMixin):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=60*60*24*30):
-        s = Serializer('this-really-needs-to-be-changed', expires_in=7200)
+        s = Serializer('this-really-needs-to-be-changed', expires_in=60*60*24*30)
         return s.dumps({'id': self.id, 'role': self.role})
 
     @staticmethod
@@ -234,8 +234,8 @@ class Assignment(Base):
     """docstring for Assignment"""
     __tablename__ = 'assignment'
     title = db.Column(db.String(255), nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    due_date = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    due_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
     group = db.relationship("Group", back_populates="assignments")
