@@ -10,6 +10,7 @@ import {ActivatedRoute} from '@angular/router';
 export class StudentHomeComponent implements OnInit {
 
     @Output() selectedTab : string;
+    @Output() selectedTopic : string;
     isStudent : boolean;
 
     constructor(private _route : ActivatedRoute) {
@@ -25,6 +26,11 @@ export class StudentHomeComponent implements OnInit {
             let tab = event['tab'];
 
             console.log("tab nueva: " + tab);
+
+            if (tab == "topicsdashboard") {
+                this.selectedTopic = event['topic'];
+                //alert("topic: " + event['topic']);
+            }
             
             this.selectedTab = tab;
         });

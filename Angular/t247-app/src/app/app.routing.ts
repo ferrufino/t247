@@ -63,11 +63,15 @@ const appRoutes: Routes = [
         canActivate: [StudentGuard]
     },
     {
+        path: 'student/tab/:tab/:topic',
+        component: StudentHomeComponent,
+        canActivate: [StudentGuard]
+    },
+    {
         path: 'student/tab/:tab',
         component: StudentHomeComponent,
         canActivate: [StudentGuard]
     },
-    
     {
         path: 'login',
         component: LoginComponent,

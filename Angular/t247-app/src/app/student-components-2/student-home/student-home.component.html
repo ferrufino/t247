@@ -8,7 +8,7 @@
                     <generic-table [typetable]="'assignments'"></generic-table>
                 </tab>
                 <tab tabTitle="Topics Dashboard" tabName="topicsdashboard">
-                    <app-topics-dashboard></app-topics-dashboard>
+                    <app-topics-dashboard [selectedTopic]="selectedTopic"></app-topics-dashboard>
                 </tab>
                 <tab *ngIf="isStudent" tabTitle="Submissions" tabName="submissions">
                     <generic-table [typetable]="'submissions'"></generic-table>
