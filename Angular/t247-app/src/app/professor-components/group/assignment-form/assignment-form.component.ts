@@ -75,9 +75,11 @@ export class AssignmentFormComponent implements OnInit {
   }
 
   onSubmit() {
+    let startDate = this.fixDate(this.assignmentForm.value.assignment.startDate);
+    let dueDate =  this.fixDate(this.assignmentForm.value.assignment.dueDate);
     let request = {
-      "start_date": this.assignmentForm.value.assignment.startDate,
-      "due_date": this.assignmentForm.value.assignment.dueDate,
+      "start_date": startDate,
+      "due_date": dueDate,
       "title": this.assignmentForm.value.assignment.title,
       "group_id": this.assignmentForm.value.assignment.groupId,
       "problem_id": this.assignmentForm.value.assignment.problemId
@@ -89,7 +91,7 @@ export class AssignmentFormComponent implements OnInit {
             // Check for server errors
             console.log(data);
             this.refreshParent.emit();
-            this.assignmentForm.reset();
+            this.clear();
           }
         );
     } else {
@@ -100,7 +102,7 @@ export class AssignmentFormComponent implements OnInit {
             // Check for server errors
             console.log(data);
             this.refreshParent.emit();
-            this.assignmentForm.reset();
+            this.clear();
           }
         );
     }
@@ -108,5 +110,16 @@ export class AssignmentFormComponent implements OnInit {
 
   clear() {
     this.assignmentForm.reset();
+    this.submitText = 'Create Assignment';
+    this.formTitle = 'New Assignment';
+    this.action = 'new';
+    this.assignmentForm.patchValue({assignment: { groupId: this.groupId }});
+  }
+
+  fixDate(s_date) {
+    let date = new Date(s_date);
+    let milliseconds = date.getTimezoneOffset()*60*1000;
+    date.setTime(date.getTime() + milliseconds);
+    return date.toISOString();
   }
 }

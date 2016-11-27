@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {ProblemsService} from "../../services/problems.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {TestCase} from "../create-problem/TestCase";
 import {ActivatedRoute, Params, Router}   from '@angular/router';
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 declare var jQuery:any;
 
 
@@ -58,6 +58,7 @@ export class ProblemDetailsComponent implements OnInit {
   difficulties: string[]; // filled from service
 
   constructor(private _problemService: ProblemsService,
+              private  cdr: ChangeDetectorRef,
               private _formBuilder: FormBuilder,
               private _difficultiesService: ProblemDifficulties,
               private route: ActivatedRoute) {
@@ -135,8 +136,8 @@ export class ProblemDetailsComponent implements OnInit {
     this.editProblemForm = this._formBuilder.group({
 
       'problemDetails': this._formBuilder.group({
-        'engDescription': ['', Validators.required],
-        'spnDescription': ['', Validators.required]
+        'engDescription': ['', this.emptyDescriptionValidator],
+        'spnDescription': ['', this.emptyDescriptionValidator]
       })
 
     });
@@ -150,6 +151,24 @@ export class ProblemDetailsComponent implements OnInit {
     this.userInformationObject = JSON.parse(localStorage.getItem("userJson"));
     console.log("Problem id in problem details " + this.problemId);
 
+  }
+
+  updateFormValues(){
+
+    let formObject : any;
+    formObject  = this.editProblemForm.controls['problemDetails'];
+    formObject.controls['engDescription'].setValue(this.descriptionEng);
+    formObject.controls['spnDescription'].setValue(this.descriptionSpn);
+  }
+
+
+  emptyDescriptionValidator(control:FormControl) : {[s : string] : boolean} {
+
+    if(control.value === ""){
+      return {test : true}; // is empty
+    }
+
+    return null; // is not empty
   }
 
 
@@ -176,6 +195,7 @@ export class ProblemDetailsComponent implements OnInit {
       "topics": problemTopicsIds
     };
 
+    console.log(this.editProblemForm);
 
     this._problemService.updateProblem(this.problemId, problemObject)
       .subscribe(
