@@ -44,7 +44,9 @@ export class GenericTableComponent implements OnInit {
     @Input('typetable') typeOfTableName:string;
     @Input('assignment') assignmentId:number;
     @Input('topicId') topicId:number;
-    //typeOfTableName: string = "courses";
+    @Input('assignmentIDForSubmissionsOfAssignment') assgIdForSubmOfAssig: number;
+    @Input('studentIDForSubmissionsOfAssignment') studentIdForSubmOfAssig: number;
+
     columns:Array<string>;
     private problemsBool;
     private problemsByTopicBool;
@@ -55,6 +57,8 @@ export class GenericTableComponent implements OnInit {
     private coursesBool;
     private topicsBool;
     private usersBool;
+    private assignmentIdForAssignment;
+    private studentIdForAssignment;
 
     content:any[] = [];
 
@@ -114,6 +118,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+
                         this.columns = ["Title", "Difficulty", "Status", "Try it"];
                     }
                 );
@@ -145,6 +150,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Name", "Number of Attempts", "Solved"];
                         this.content = submissions;
                     }
@@ -157,6 +163,7 @@ export class GenericTableComponent implements OnInit {
                 this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
                     submissions => {
                         this.content = submissions;
+                        this.assignmentIdForAssignment = this.assignmentId;
                         this.assignmentSubmissionsBool = true;
                         this.problemsBool = false;
                         this.assignmentsBool = false;
@@ -165,13 +172,13 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+
                         this.columns = ["Student", "Enrollment", "Date of last submission", "Attempts", "Solved"];
 
                         this.problemsByTopicBool = false;
                     }
                 );
                 break;
-
             case "groups":
                 this.coursesService.getCourses().subscribe(
                     courses => {
@@ -182,7 +189,6 @@ export class GenericTableComponent implements OnInit {
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.courses = this._cacheService.get('courses');
-                            //console.log("Se hizo get de courses");
                         }
                         else {
                             this.courses = this._cacheService.get('courses');
@@ -212,6 +218,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Name", "Period", "Show Assignments", "Delete"];
                     }
                 );
@@ -241,6 +248,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Title", "Edit", "Delete"];
                     }
                 );
@@ -272,6 +280,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.usersBool = false;
                 this.problemsByTopicBool = false;
+
                 this.columns = ["Title", "Edit", "Delete"];
                 break;
 
@@ -285,6 +294,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.topicsBool = false;
                 this.problemsByTopicBool = false;
+
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(
@@ -447,5 +457,14 @@ export class GenericTableComponent implements OnInit {
         });
     }
 
+    showProblemSubmissionsOfStudent(student_id){
+        this.studentIdForAssignment = student_id;
+        this.renderTable();
+        this.router.navigate(['professor/student-attempts/', this.assignmentIdForAssignment, student_id]);
+    }
+
+    zeroAttempts(){
+        alert("No submissions were done.");
+    }
 
 }
