@@ -33,7 +33,6 @@ import {SubmissionsOfAssignmentComponent} from "./professor-components/submissio
 import {SubmitProblemGuard} from "./services/submit-problem.guard";
 import {TopicGuard} from "./services/topic.guard";
 
-import {Error404Component} from "./general-components/error-404-component/error-404.component";
 
 const appRoutes: Routes = [
     {
