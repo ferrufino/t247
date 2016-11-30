@@ -13,6 +13,17 @@
         <h4>Ready to learn some code?</h4>
         <br><br>
         <!--<form class="col-md-6">-->
+        <div class="row" [class.hidden]="!failedLogin">
+          <div class="alert alert-danger" role="alert">
+            <strong>Login failed.</strong>
+            Please verify your email and password.
+          </div>
+        </div>
+        <div class="row" [class.hidden]="!serverError">
+          <div class="alert alert-danger" role="alert">
+            There seems to be a problem with our servers. Please try again later
+          </div>
+        </div>
         <div class="row">
           <div class="input-group">
             <span class="input-group-addon" id="user-email-input"><span class="glyphicon glyphicon-user"
