@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {UsersService} from '../../services/users.service';
 import { Location }                 from '@angular/common';
 
@@ -12,13 +13,25 @@ export class ProfileComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('userJson'));
 
   editingProfile = false;
-  constructor(private _authService: UsersService, private _editUserService:UsersService,
-              private location: Location) {
+  private form : FormGroup;
+
+  constructor(private _authService: UsersService,
+              private _editUserService:UsersService,
+              private location: Location,
+              private _formBuilder: FormBuilder) {
     this.editingProfile = false;
   }
 
   ngOnInit() {
     this._authService.checkCredentials();
+    this.form = this._formBuilder.group({
+      'user': this._formBuilder.group({
+        'first_name': [this.user.first_name, Validators.required],
+        'last_name': [this.user.last_name, Validators.required],
+        'email': [this.user.email, Validators.required],
+        'password': ['', Validators.required]
+      })
+    });
   }
 
   logout() {
@@ -34,36 +47,25 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    var llenado = true;
-    if(this.user.enrollment===""){
-      window.alert("Missing the enrollment");
-      llenado=false;
-    }
-    if(this.user.first_name===""||this.user.first_name===null){
-      window.alert("Missing first name");
-      llenado=false;
-    }
-    if(this.user.last_name===""||this.user.last_name===null){
-      window.alert("Missing last name");
-      llenado = false;
-    }
-    if(this.user.email===""){
-      window.alert("Missing email");
-      llenado = false;
-    }
-    console.log(this.user);
-    if(llenado){
-      this.editingProfile = false;
-      this._editUserService.editUser(this.user).subscribe((result) => {
-        if (!result) {
-          console.log("Fallo");
-        }
-        else{
-          console.log(this.user);
-          localStorage.setItem("userJson",JSON.stringify(this.user));
-        }
-      });
-    }
+    let request = {
+      "enrollment": this.form.value.user.enrollment,
+      "first_name": this.form.value.user.first_name,
+      "last_name": this.form.value.user.last_name,
+      "role": this.form.value.user.role,
+      "email": this.form.value.user.email,
+      "password": this.form.value.user.password
+    };
+    console.log(request);
+    this.editingProfile = false;
+    this._editUserService.addUserInfoFirstTimeLogIn(request).subscribe((result) => {
+      if (!result) {
+        console.log("Fallo");
+      }
+      else{
+        console.log(this.user);
+        localStorage.setItem("userJson",JSON.stringify(this.user));
+      }
+    });
   }
 
   goBack() {

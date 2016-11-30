@@ -30,7 +30,7 @@ export class GenericFormComponent implements OnInit {
                 private usersService:UsersService,
                 private groupsService:GroupsService,
                 private _cacheService:CacheService,
-                private _formBuilder: FormBuilder,) {
+                private _formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
