@@ -71,7 +71,6 @@ export class GroupFormComponent implements OnInit {
         }
         this.group.courseId = Number(this.group.courseId);
         this.group.enrollmentText = this.group.enrollmentText.replace(/\s/g, '');
-        alert(this.group.enrollmentText);
         this.group.enrollments = this.group.enrollmentText.split(",");
         this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
         if (llenado) {
