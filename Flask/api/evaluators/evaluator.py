@@ -132,10 +132,27 @@ class EvaluatorAttemptSubmission(Resource):
         language = data.get('language')
         problem_id = data.get('problem_id')
         user_id = data.get('user_id')
+
+        # Get no. of last attempt
+        result = db.engine.execute("""
+            SELECT no_of_attempt
+            FROM submission
+            WHERE user_id = %d AND problem_id = %d
+            ORDER BY created
+            DESC
+            LIMIT 1;
+            """ % (user_id, problem_id)).fetchone()
+
+        if (result is None):
+            no_of_attempt = 1
+        else:
+            no_of_attempt = result['no_of_attempt'] + 1
+
         new_submission = Submission(code=code, language=language,
                                     problem_id=problem_id,
                                     user_id=user_id,
-                                    state=SubmissionState.pending)
+                                    state=SubmissionState.pending,
+                                    no_of_attempt=no_of_attempt)
         db.session.add(new_submission)
         db.session.commit()
         submission_id = new_submission.id
