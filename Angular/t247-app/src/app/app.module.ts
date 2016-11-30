@@ -33,6 +33,7 @@ import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
 import {SortPipe} from './pipes/sort.pipe';
 import {FirstLoginComponent} from './student-components/first-login.component';
 
+import {SubmissionsOfAssignmentComponent} from './professor-components/submissions/submissions.component';
 
 import "materialize-css";
 import {MaterializeModule} from "angular2-materialize";
@@ -142,7 +143,8 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
         StudentHomeComponent,
         AdminProfileWrapperComponent,
         ProfessorProfileWrapperComponent,
-        StudentProfileWrapperComponent
+        StudentProfileWrapperComponent,
+        SubmissionsOfAssignmentComponent
     ],
     bootstrap: [AppComponent],
     providers: [
