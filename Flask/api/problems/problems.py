@@ -206,10 +206,10 @@ class ProblemsByTopic(Resource):
         # Mark problem status (not attempted, attempted but wrong answer, or solved)
         for problem in result:
             # Problem not attempted
-            if (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id)" % (problem[0])).fetchall()) > 0):
+            if (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id AND s.user_id = %d)" % (problem[0], user_id)).fetchall()) > 0):
                 problems_list.append({'problem_id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'not_attempted'})
             # Problem attempted but not solved
-            elif (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id AND s.grade = 100)" % (problem[0])).fetchall()) > 0):
+            elif (len(db.engine.execute("SELECT p.id FROM Problem p WHERE p.id = %d AND NOT EXISTS (SELECT s.id FROM Submission s WHERE p.id = s.problem_id AND s.grade = 100 AND s.user_id = %d)" % (problem[0], user_id)).fetchall()) > 0):
                 problems_list.append({'problem_id' : problem[0], 'name' : problem[1], 'difficulty' : problem[2], 'status' : 'wrong_answer'})
             # Problem solved
             else:

@@ -1,14 +1,11 @@
-<h3 *ngIf="problemsBool">
-  <a data-toggle="collapse" data-target="#topicrow" (click)="showTopics()">Show Topics</a>
-</h3>
-<h1 *ngIf="!problemsBool">
+<h1 *ngIf="(this.selectedTopic == undefined)">
   Topics
 </h1>
-<div class="row collapse in" id="topicrow" data-toggle="collapse" data-target="#topicrow" >
-  <div class="col-xs-3 topic-box" *ngFor="let entry of content" (click)="displayProblems(entry)">{{entry.name}}</div>
+<div *ngIf="(this.selectedTopic == undefined)">
+  <div class="col-xs-3 topic-box" *ngFor="let entry of content" (click)="displayProblems(entry.id)">{{entry.name}}</div>
 </div>
 
-<h1 *ngIf="problemsBool">{{selectedTopicName}}</h1>
-<div *ngIf="problemsBool">
-  <generic-table [typetable]="'problemsByTopic'" [topicId]="this.selectedTopicId"></generic-table>
+<h1 *ngIf="(this.selectedTopic != undefined)">{{this.selectedTopicName}}</h1>
+<div *ngIf="(this.selectedTopic != undefined)">
+  <generic-table [typetable]="'problemsByTopic'" [topicId]="+this.selectedTopic"></generic-table>
 </div>

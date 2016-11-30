@@ -27,10 +27,13 @@ import {StudentGuard} from "./services/student.guard";
 import {LoginGuard} from "./services/login.guard";
 import {RootGuard} from "./services/root.guard";
 
+
 import {SubmissionsOfAssignmentComponent} from "./professor-components/submissions/submissions.component";
-import {AdminProfileWrapperComponent} from "./general-components/admin-profile-wrapper/admin-profile-wrapper.component";
-import {ProfessorProfileWrapperComponent} from "./general-components/professor-profile-wrapper/professor-profile-wrapper.component";
-import {StudentProfileWrapperComponent} from "./general-components/student-profile-wrapper/student-profile-wrapper.component";
+
+import {SubmitProblemGuard} from "./services/submit-problem.guard";
+import {TopicGuard} from "./services/topic.guard";
+
+import {Error404Component} from "./general-components/error-404-component/error-404.component";
 
 const appRoutes: Routes = [
     {
@@ -64,11 +67,15 @@ const appRoutes: Routes = [
         canActivate: [StudentGuard]
     },
     {
+        path: 'student/tab/:tab/:topic',
+        component: StudentHomeComponent,
+        canActivate: [TopicGuard]
+    },
+    {
         path: 'student/tab/:tab',
         component: StudentHomeComponent,
         canActivate: [StudentGuard]
     },
-    
     {
         path: 'login',
         component: LoginComponent,
@@ -103,7 +110,7 @@ const appRoutes: Routes = [
     {
         path: 'student/submitProblem/:id',
         component: SubmitProblem,
-        canActivate: [StudentGuard]
+        canActivate: [SubmitProblemGuard]
     },
     {
         path: 'professor/student-attempts/:assig_id/:student_id',
