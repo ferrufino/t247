@@ -13,6 +13,8 @@ export class LoginComponent {
 
   public user = new User();
   public errorMsg = '';
+  private failedLogin = false;
+  private serverError = false;
 
   constructor(private _service:UsersService, private _router : Router) {
 
@@ -20,7 +22,7 @@ export class LoginComponent {
 
   ngOnInit() {
 
-    // TODO: instead of checking 
+    // TODO: instead of checking
     //if (localStorage.getItem("auth_token")) {
     //  this._router.navigate(['admin']);
     //}
@@ -38,6 +40,11 @@ export class LoginComponent {
         }
       },
       err => {
+        if (err.status == 401) {
+          this.failedLogin = true;
+        } else {
+          this.serverError = true;
+        }
         console.error(err);
       }
     );
@@ -47,5 +54,5 @@ export class LoginComponent {
             this.login();
         }
     }
-    
+
 }
