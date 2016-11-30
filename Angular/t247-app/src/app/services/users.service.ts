@@ -98,7 +98,7 @@ export class UsersService {
                 }
                 return res.role;
             }).catch((error:any) => {
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
     }
 
