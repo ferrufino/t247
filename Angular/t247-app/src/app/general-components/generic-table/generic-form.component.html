@@ -9,16 +9,22 @@
                     <h4 class="modal-title">New Course</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="period">Name</label>
-                        <input class="form-control validate" id="nameCourse" type="text"
-                               [(ngModel)]="courseName" name="name">
+                  <div [formGroup]="form">
+                    <div class="form-group" formGroupName="course">
+                      <div class="form-group">
+                          <label for="nameCourse">Name</label>
+                          <input class="form-control validate" id="nameCourse" type="text" formControlName="name">
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmitCourse()">
+                    <button *ngIf="form.valid" type="submit" class="btn btn-primary" data-dismiss="modal" (click)="onSubmitCourse()">
                         Create
+                    </button>
+                    <button *ngIf="form.invalid" type="submit" class="btn btn-primary" disabled="disabled">
+                      Create
                     </button>
                 </div>
             </form>
@@ -36,23 +42,29 @@
      *ngIf="typeOfForm == 'topics' ">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form (ngSubmit)="onSubmitTopic()">
+            <form>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">New Topic</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nameTopic">Name</label>
-                        <input id="nameTopic" type="text" class="validate"
-                               [(ngModel)]="topicName" name="name">
+                  <div [formGroup]="form">
+                    <div formGroupName="topic">
+                      <div class="form-group">
+                          <label for="nameTopic">Name</label>
+                          <input id="nameTopic" type="text" class="form-control validate" formControlName="name" name="name">
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="onSubmitTopic()">
+                    <button *ngIf="form.valid" type="submit" class="btn btn-primary" data-dismiss="modal" (click)="onSubmitTopic()">
                         Create
+                    </button>
+                    <button *ngIf="form.invalid" type="submit" class="btn btn-primary" disabled="disabled">
+                      Create
                     </button>
                 </div>
             </form>
@@ -70,39 +82,47 @@
      *ngIf="typeOfForm == 'groups' ">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form (ngSubmit)="onSubmitGroup()">
+            <form>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="idCourse">Course</label>
-                        <select id="idCourse" class="form-control"
-                                [(ngModel)]="group.course.id" name="idCourse">
-                            <option *ngFor="let course of courses" value={{course.id}}
-                                    [selected]="course.id===group.courseId">
-                                {{course.name}}
-                            </option>
-                        </select>
+                  <div [formGroup]="form">
+                    <div formGroupName="group">
+                      <div class="form-group">
+                          <label for="idCourse">Course</label>
+                          <select id="idCourse" class="form-control" formControlName="course_id"
+                                  [(ngModel)]="group.course.id" name="idCourse">
+                              <option *ngFor="let course of courses" value={{course.id}}
+                                      [selected]="course.id===group.courseId">
+                                  {{course.name}}
+                              </option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="period">Period</label>
+                          <input class="form-control validate" id="period" type="text" formControlName="period"
+                                 [(ngModel)]="group.period" name="periodName">
+                      </div>
+                      <div class="form-group">
+                          <label for="enrollments">Enrollments</label>
+                          <textarea class="form-control validate" id="enrollments" rows="4" formControlName="enrollmentText"
+                                    [(ngModel)]="group.enrollmentText" name="name">
+                          </textarea>
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label for="period">Period</label>
-                        <input class="form-control validate" id="period" type="text"
-                               [(ngModel)]="group.period" name="periodName">
-                    </div>
-                    <div class="form-group">
-                        <label for="enrollments">Enrollments</label>
-            <textarea class="form-control validate" id="enrollments" rows="4"
-                      [(ngModel)]="group.enrollmentText" name="name">
-            </textarea>
-                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="onSubmitGroup()">
-                        Create
+                    <button *ngIf="form.valid" type="submit" class="btn btn-primary" data-dismiss="modal"
+                            (click)="onSubmitGroup()">
+                      Create
+                    </button>
+                    <button *ngIf="form.invalid" type="submit" class="btn btn-primary" disabled="disabled">
+                      Create
                     </button>
                 </div>
             </form>
@@ -129,44 +149,51 @@
                     <h4 class="modal-title">New User</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="enrollmentUser">Enrollment</label>
-                        <input id="enrollmentUser" type="text" class="validate"
-                               [(ngModel)]="user.enrollment" name="enrollmentUser">
+                  <div [formGroup]="form">
+                    <div formGroupName="user">
+                      <div class="form-group">
+                          <label for="enrollmentUser">Enrollment</label>
+                          <input id="enrollmentUser" type="text" class="form-control validate" formControlName="enrollment"
+                                 [(ngModel)]="user.enrollment" name="enrollmentUser">
+                      </div>
+                      <div class="form-group">
+                          <label for="first_name">First Name</label>
+                          <input id="first_name" type="text" class="form-control validate" formControlName="first_name"
+                                 [(ngModel)]="user.first_name" name="first_name">
+                      </div>
+                      <div class="form-group">
+                          <label for="last_name">Last Name</label>
+                          <input id="last_name" type="text" class="form-control validate" formControlName="last_name"
+                                 [(ngModel)]="user.last_name" name="last_name">
+                      </div>
+                      <div class="form-group">
+                          <label for="userRole">Role</label>
+                          <select id="userRole" class="form-control" name="userRole" #selectedRole formControlName="role">
+                              <option value="admin">admin</option>
+                              <option value="professor">professor</option>
+                              <option value="student">student</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="email">Email</label>
+                          <input id="email" type="email" class="form-control validate" formControlName="email"
+                                 [(ngModel)]="user.email" name="email">
+                      </div>
+                      <div class="form-group">
+                          <label for="password">Password</label>
+                          <input id="password" type="password" class="form-control validate" formControlName="password"
+                                 [(ngModel)]="user.password" name="password">
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label for="first_name">First Name</label>
-                        <input id="first_name" type="text" class="validate"
-                               [(ngModel)]="user.first_name" name="first_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name</label>
-                        <input id="last_name" type="text" class="validate"
-                               [(ngModel)]="user.last_name" name="last_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="userRole">Role</label>
-                        <select id="userRole" class="form-control" name="userRole" #selectedRole>
-                            <option value="admin">admin</option>
-                            <option value="professor">professor</option>
-                            <option value="student">student</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input id="email" type="email" class="validate"
-                               [(ngModel)]="user.email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input id="password" type="password" class="validate"
-                               [(ngModel)]="user.password" name="password">
-                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-default" data-dismiss="modal"
+                    <button *ngIf="form.valid" type="submit" class="btn btn-primary" data-dismiss="modal"
                             (click)="onSubmitUser(selectedRole.value)">Create
+                    </button>
+                    <button *ngIf="form.invalid" type="submit" class="btn btn-primary" disabled="disabled">
+                      Create
                     </button>
                 </div>
             </form>

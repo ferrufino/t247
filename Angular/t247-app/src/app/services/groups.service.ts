@@ -43,7 +43,7 @@ export class GroupsService {
     return this.http
     .post(
       this.createUrl,
-      {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
+      {"course_id":group.course_id,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
       options
     )
     .map(res => {

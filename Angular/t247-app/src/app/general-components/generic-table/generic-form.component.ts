@@ -1,4 +1,5 @@
 import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {CoursesService} from '../../services/courses.service.ts';
 import {TopicsService} from '../../services/topics.service.ts';
 import {UsersService} from '../../services/users.service';
@@ -19,6 +20,8 @@ export class GenericFormComponent implements OnInit {
     topicName:string = "";
     courseName:string = "";
     group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+    private form : FormGroup;
+
     @Input('typeForm') typeOfForm:string;
     @Output() formChange = new EventEmitter();
 
@@ -26,7 +29,8 @@ export class GenericFormComponent implements OnInit {
                 private coursesService:CoursesService,
                 private usersService:UsersService,
                 private groupsService:GroupsService,
-                private _cacheService:CacheService) {
+                private _cacheService:CacheService,
+                private _formBuilder: FormBuilder,) {
     }
 
     ngOnInit() {
@@ -48,124 +52,119 @@ export class GenericFormComponent implements OnInit {
                 }
             }
         );
+        switch (this.typeOfForm) {
+          case 'users':
+            this.form = this._formBuilder.group({
+              'user': this._formBuilder.group({
+                'enrollment': ['', Validators.required],
+                'first_name': ['', Validators.required],
+                'last_name': ['', Validators.required],
+                'role': ['', Validators.required],
+                'email': ['', Validators.required],
+                'password': ['', Validators.required]
+              })
+            });
+            break;
+          case 'groups':
+            this.form = this._formBuilder.group({
+              'group': this._formBuilder.group({
+                'course_id': ['', Validators.required],
+                'enrollmentText': ['', Validators.required],
+                'period': ['', Validators.required]
+              })
+            });
+            break;
+          case 'topics':
+            this.form = this._formBuilder.group({
+              'topic': this._formBuilder.group({
+                'name': ['', Validators.required]
+              })
+            });
+            break;
+          case 'courses':
+            this.form = this._formBuilder.group({
+              'course': this._formBuilder.group({
+                'name': ['', Validators.required]
+              })
+            });
+            break;
+          default:
+            break;
+        }
     }
+
 
     onSubmitCourse() {
-        var llenado = true;
-        if (this.courseName === "") {
-            window.alert("Please type a course name");
-            llenado = false;
-        }
-        console.log(this.courseName);
-        if (llenado) {
-            this.coursesService.createCourse(this.courseName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.courseName = '';
-                    this.formChange.emit();
-                }
-            });
-        }
+        let request = {
+            "name": this.form.value.course.name
+        };
+        console.log(request);
+        this.coursesService.createCourse(request.name).subscribe((result) => {
+            if (!result) {
+                console.log("Fallo");
+            } else {
+                console.log(result);
+                this.courseName = '';
+                this.formChange.emit();
+            }
+        });
     }
 
- 
+
     onSubmitUser(roleSelected) {
-        this.user.role = roleSelected;
-        var llenado = true;
-        if (this.user.enrollment === "") {
-            window.alert("Missing the enrollment");
-            llenado = false;
-        }
-        if (this.user.first_name === "") {
-            window.alert("Missing first name");
-            llenado = false;
-        }
-        if (this.user.last_name === "") {
-            window.alert("Missing last name");
-            llenado = false;
-        }
-        if (this.user.role === "") {
-            window.alert("Please choose a role");
-            llenado = false;
-        }
-        if (this.user.email === "") {
-            window.alert("Missing email");
-            llenado = false;
-        }
-        if (this.user.password === "") {
-            window.alert("Missing password");
-            llenado = false;
-        }
-        if (llenado) {
-            this.usersService.createUser(this.user).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
-                    this.formChange.emit();
-                }
-            });
-        }
+        let request = {
+            "enrollment": this.form.value.user.enrollment,
+            "first_name": this.form.value.user.first_name,
+            "last_name": this.form.value.user.last_name,
+            "role": this.form.value.user.role,
+            "email": this.form.value.user.email,
+            "password": this.form.value.user.password
+        };
+        this.usersService.createUser(request).subscribe((result) => {
+            if (!result) {
+                console.log("Fallo");
+            }
+            else {
+                console.log(result);
+                this.user = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
+                this.formChange.emit();
+            }
+        });
     }
 
     onSubmitTopic() {
-        var llenado = true;
-        if (this.topicName === "") {
-            window.alert("Please type a topic name");
-            llenado = false;
-        }
-        console.log(this.topicName);
-        if (llenado) {
-            this.topicsService.createTopic(this.topicName).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    this.topicName = '';
-                    this.formChange.emit();
-                }
-            });
-        }
+        let request = {
+            "name": this.form.value.topic.name
+        };
+        console.log(request);
+        this.topicsService.createTopic(request.name).subscribe((result) => {
+            if (!result) {
+                console.log("Fallo");
+            } else {
+                console.log(result);
+                this.topicName = '';
+                this.formChange.emit();
+            }
+        });
     }
 
     onSubmitGroup() {
-        var llenado = true;
-        this.group.courseId = this.group.course.id;
-        if (this.group.courseId === "") {
-            window.alert("Favor de escoger un curso");
-            llenado = false;
-        }
-        if (this.group.enrollmentText === "") {
-            window.alert("Favor de dar de alta estudiantes");
-            llenado = false;
-        }
-        if (this.group.period === "") {
-            window.alert("Favor de escribir un periodo");
-            llenado = false;
-        }
-        this.group.courseId = Number(this.group.courseId);
-        this.group.enrollments = this.group.enrollmentText.split(",");
-        this.group.professor = JSON.parse(localStorage.getItem('userJson')).id;
-        if (llenado) {
-            console.log(this.group);
-            this.groupsService.createGroup(this.group).subscribe((result) => {
-                if (!result) {
-                    console.log("Fallo");
-                }
-                else {
-                    console.log(result);
-                    //this.renderTable();
-                    this.group = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
-                    this.formChange.emit();
-                }
-            });
-        }
+        let request = {
+            "course_id": this.form.value.group.course_id,
+            "enrollments": this.form.value.group.enrollmentText.split(","),
+            "professor": JSON.parse(localStorage.getItem('userJson')).id,
+            "period": this.form.value.group.period
+        };
+        console.log(request);
+        this.groupsService.createGroup(request).subscribe((result) => {
+            if (!result) {
+                console.log("Fallo");
+            } else {
+                console.log(result);
+                //this.renderTable();
+                this.group = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+                this.formChange.emit();
+            }
+        });
     }
-
 }
