@@ -1,5 +1,6 @@
-import { Component, ContentChildren, QueryList, AfterContentInit,  Output, EventEmitter } from '@angular/core';
+import { Component, ContentChildren, QueryList, AfterContentInit, OnChanges, SimpleChanges, Output, Input, EventEmitter } from '@angular/core';
 import {Tab} from "../tab/tab.component";
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'tabs',
@@ -12,36 +13,70 @@ import {Tab} from "../tab/tab.component";
     <ng-content></ng-content>
   `
 })
-export class Tabs implements AfterContentInit {
+export class Tabs implements OnChanges {
 
     @ContentChildren(Tab) tabs: QueryList<Tab>;
-    @Output() notify = new EventEmitter();
-    tabSelected: number;
+    @Input() selectedTab: string;
+    @Input() baseRoute: string;
+
+    constructor(private _router : Router) {
+
+    }
     // contentChildren are set
     ngAfterContentInit() {
-        // get all active tabs
-        let activeTabs = this.tabs.filter((tab)=>tab.active);
 
-        // if there is no active tab set, activate the first
-        if(activeTabs.length === 0) {
-            this.selectTab(this.tabs.first);
+        console.log(this.selectedTab + " " + this.baseRoute);
+        
+        var arrTabs = this.tabs.toArray();
+            
+        let tabis = arrTabs.filter(tab => tab.tabName == this.selectedTab);
+        var tab : Tab;
+        if (tabis.length == 0) {
+            tab = arrTabs[0];
+        } else {
+            tab = tabis[0];
         }
-    }
+        //alert("tab seleccionada: " + changes['selectedTab']['currentValue']);
 
-
-
-    selectTab(tab: Tab){
-
-        var arrTabs =  this.tabs.toArray();
         for(var i= 0; i<arrTabs.length; i++){
             arrTabs[i].active = false;
-            if(arrTabs[i] == tab) {
-                this.tabSelected = i;
-                this.notify.emit(i);
-            }
         }
         // activate the tab the user has clicked on.
         tab.active = true;
+        
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        //alert("HUBO CAMBIOS");
+        console.log("HUBO CAMBIOS");
+        console.log(changes);
+        console.log(this.selectedTab);
+
+        if (this.tabs) {
+
+            var arrTabs = this.tabs.toArray();
+            
+            let tabis = arrTabs.filter(tab => tab.tabName == this.selectedTab);
+            var tab : Tab;
+            if (tabis.length == 0) {
+                tab = arrTabs[0];
+            } else {
+                tab = tabis[0];
+            }
+            //alert("tab seleccionada: " + changes['selectedTab']['currentValue']);
+
+            for(var i= 0; i<arrTabs.length; i++){
+                arrTabs[i].active = false;
+            }
+            // activate the tab the user has clicked on.
+            tab.active = true;
+            
+        }
+    }
+
+    selectTab(tab: Tab){
+        console.log("PIQUE LA TAB: " + tab.tabName);
+        this._router.navigate([this.baseRoute + '/tab/' + tab.tabName]);        
     }
 
 }

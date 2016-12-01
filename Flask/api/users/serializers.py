@@ -27,3 +27,10 @@ user_creation = api.model('UserCreation', {
     'enrollment': fields.String(required=True, description='User enrollment number'),
     'role': fields.String(required=True, description='User role')
 })
+
+user_edit = api.model('UserEdit', {
+    'password': fields.String(required=True, description='User password'),
+    'first_name': fields.String(required=True, description='User name'),
+    'last_name': fields.String(required=True, description='User last name'),
+    'email': fields.String(required=True, description='User email'),
+})

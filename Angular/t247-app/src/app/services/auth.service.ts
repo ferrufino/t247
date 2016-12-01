@@ -4,6 +4,8 @@ import { Observable, Subject, BehaviorSubject } from "rxjs/Rx";
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import { environment } from '../../environments/environment';
 
+import 'rxjs/add/operator/mergeMap'; 
+
 @Injectable()
 export class AuthService {
     
@@ -96,6 +98,60 @@ export class AuthService {
            });
     }
 
+    isValidProblem(problem_id): Observable<boolean> {
+
+        console.log("PROBLEM ID");
+        console.log(problem_id);
+
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http
+            .get(
+              environment.apiURL + '/problems/description/' + problem_id,
+              options
+            )
+            .map(res => res.json())
+            .map((res) => {
+              console.log("SEGUNDA RESPUESTA");
+              return true;
+            })
+            .catch((error) => {
+            console.log(error);
+            this.router.navigate(['/']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
+           });
+
+    }
+
+    isValidTopic(topic_id): Observable<boolean> {
+
+        console.log("TOPIC ID");
+        console.log(topic_id);
+
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http
+            .get(
+              environment.apiURL + '/topics/' + topic_id,
+              options
+            )
+            .map(res => res.json())
+            .map((res) => {
+              console.log("SEGUNDA RESPUESTA TOPIC");
+              return true;
+            })
+            .catch((error) => {
+            console.log(error);
+            this.router.navigate(['/']);
+            const state = new BehaviorSubject<boolean>(false);
+            return state.asObservable();
+           });
+
+    }
+
     isOutsider(): Observable<boolean> {
 
         const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
@@ -115,7 +171,7 @@ export class AuthService {
             } else if (res.role == 'student') {
               this.router.navigate(['/student']);
             }
-            alert(res.role);
+            
             return false;
           })
           .catch((error) => {
@@ -143,7 +199,7 @@ export class AuthService {
             } else if (res.role == 'student') {
               this.router.navigate(['/student']);
             }
-            alert(res.role);
+
             return false;
           })
           .catch((error) => {

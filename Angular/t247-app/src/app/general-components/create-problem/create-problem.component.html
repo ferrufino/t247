@@ -1,3 +1,5 @@
+<app-site-navbar [showDropdown]="true" [currentRole]="''"></app-site-navbar>
+
 <div class="container">
   <div class="create-problem__component">
     <!-- Problem form -->
@@ -101,7 +103,7 @@
                       class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label class="margin-right10" for="selectorLanguages">Solution
                         language: </label>
-                      <select id="selectorLanguages" #selectedLanguage>
+                      <select id="selectorLanguages" #selectedLanguage [value]="problemProgLang">
                         <option *ngFor="let lang of supportedLanguages" [value]="lang.value">
                           {{lang.name}}
                         </option>
@@ -115,7 +117,7 @@
                       class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label class="margin-right10" for="selectorDiff">Problem
                         difficulty: </label>
-                      <select id="selectorDiff" #selectedDifficulty>
+                      <select id="selectorDiff" #selectedDifficulty [value]="problemDifficultyIndex">
                         <option *ngFor="let diff of difficulties; let idx = index "
                                 [value]="idx">{{diff}}
                         </option>
@@ -132,7 +134,7 @@
                     <div
                       class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label class="margin-right10" for="problemTopic">Problem Topic: </label>
-                      <select id="problemTopic" #selectedProblemTopic>
+                      <select id="problemTopic" #selectedProblemTopic [value]="problemTopicID">
                         <option *ngFor="let topic of problemTopics" [value]="topic.id">
                           {{topic.name}}
                         </option>
@@ -171,14 +173,14 @@
                 <div class="panel-heading clearfix">
                   <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Problem Source
                     Code</h4>
-                  <div class="btn-group pull-right">
-                    <a (click)="uploadType = 0" class="btn btn-default btn-sm"><span
-                      class="glyphicon glyphicon-pencil"
-                      aria-hidden="true"></span></a>
-                    <a (click)="uploadType = 1" class="btn btn-default btn-sm"><span
-                      class="glyphicon glyphicon-file"
-                      aria-hidden="true"></span></a>
-                  </div>
+                  <!--<div class="btn-group pull-right">-->
+                  <!--<a (click)="uploadType = 0" class="btn btn-default btn-sm"><span-->
+                  <!--class="glyphicon glyphicon-pencil"-->
+                  <!--aria-hidden="true"></span></a>-->
+                  <!--<a (click)="uploadType = 1" class="btn btn-default btn-sm"><span-->
+                  <!--class="glyphicon glyphicon-file"-->
+                  <!--aria-hidden="true"></span></a>-->
+                  <!--</div>-->
                 </div>
                 <div class="panel-body">
 
@@ -191,7 +193,7 @@
 
                           <div class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                             <label>Source code</label>
-                            <code-editor #fullCodeEditor [setSourceCode]=""></code-editor>
+                            <code-editor #fullCodeEditor [setSourceCode]="problemSourceCode"></code-editor>
                           </div>
 
                         </div>
@@ -205,25 +207,26 @@
                               class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                               <label>The complete and correct function</label>
                               <code-editor #functionCodeEditor
-                                           [setSourceCode]=""></code-editor>
+                                           [setSourceCode]="problemFunctionCode"></code-editor>
                             </div>
                           </div>
 
                           <div class="row">
                             <div
                               class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-                              <label>Template that will be shown to the student</label>
+                              <label>The full body of the problem, remeber to add ' //&function ' in your code to insert
+                                the function in that place</label>
                               <code-editor #templateCodeEditor
-                                           [setSourceCode]=""></code-editor>
+                                           [setSourceCode]="problemTemplateCode"></code-editor>
                             </div>
                           </div>
 
                           <div class="row">
                             <div
                               class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-                              <label>Signature of the function</label>
+                              <label>Signature of the function (THE STUDENT CAN SEE THIS)</label>
                               <code-editor #signatureCodeEditor
-                                           [setSourceCode]=""></code-editor>
+                                           [setSourceCode]="problemSignatureCode"></code-editor>
                             </div>
                           </div>
 
@@ -253,15 +256,16 @@
             <feedback-card #feedbackCard></feedback-card>
           </div>
 
-          <button [disabled]="!createProblemForm.valid || problemTestCases.length === 0 || displayLoader"
-                  [ngClass]="{'hidden': displayLoader}" type="submit" class="btn btn-warning btn-lg">
+          <button
+            [disabled]="!createProblemForm.valid || emptyTestCasesInput() || problemTestCases.length === 0 || displayLoader"
+            [ngClass]="{'hidden': displayLoader}" type="submit" class="btn btn-warning btn-lg">
             Check Test Cases <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
           </button>
 
           <div *ngIf="displayLoader" class="containerLoader">
-        		<div class="box">
-        			<div class="loader10"></div>
-        		</div>
+            <div class="box">
+              <div class="loader10"></div>
+            </div>
           </div>
 
 
@@ -284,14 +288,14 @@
               <div class="row margin-top20">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                   <p>Input:</p>
-                  <p>{{selectedTestCase.input}}</p>
+                  <p class="white-space">{{selectedTestCase.input}}</p>
                 </div>
               </div>
 
               <div class="row margin-top20">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                   <p>Output:</p>
-                  <p>{{selectedTestCase.output}}</p>
+                  <p class="white-space">{{selectedTestCase.output}}</p>
                 </div>
               </div>
 
@@ -324,7 +328,7 @@
           <span class="glyphicon glyphicon-backward" aria-hidden="true"></span> Previous
         </button>
 
-        <button [disabled]="displayLoader" (click)="createProblemRequest()" type="button"
+        <button [disabled]="displayLoader || emptyTestCasesFeedback()" (click)="createProblemRequest()" type="button"
                 class="btn btn-success" aria-label="Left Align">
           <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit problem
         </button>
@@ -339,7 +343,7 @@
     </div>
 
     <div class="text-center" *ngIf="testCasesReady">
-      <button (click)="testCasesReady = false" type="button" class="btn btn-warning btn-lg">
+      <button (click)="goBackToForm()" type="button" class="btn btn-warning btn-lg">
         Go Back
       </button>
     </div>

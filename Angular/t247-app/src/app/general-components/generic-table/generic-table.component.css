@@ -9,14 +9,7 @@
     margin-bottom: 50px;
 }
 
-.accept {
-      color: green;
-}
-
-.wrong {
-      color: red;
-}
-
-.notattempt {
-      color: blue;
+:host-context(.assignment-component) .table-title-row {
+  display: none;
+  text-transform: uppercase;
 }

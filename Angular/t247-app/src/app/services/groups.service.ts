@@ -11,33 +11,40 @@ export class GroupsService {
 
   private createUrl = this.baseURL+'create';
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
-
-  private options = new RequestOptions({headers: this.headers});
 
   constructor(private http: Http, private _cacheService: CacheService) {
   }
 
   getGroups() {
-    return this.http.get(this.baseURL, this.options).map((response: Response) => response.json());
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
+    return this.http.get(this.baseURL, options).map((response: Response) => response.json());
   }
 
   getGroup(id) {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
       .get(
-        this.baseURL + id, this.options
+        this.baseURL + id, options
       )
       .map((response: Response) => response.json());
   }
 
   createGroup(group){
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
     return this.http
     .post(
       this.createUrl,
-      {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
-      this.headers
+      {"course_id":group.course_id,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
+      options
     )
     .map(res => {
       return res;
@@ -45,11 +52,15 @@ export class GroupsService {
   }
 
   deleteGroup(group){
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
+
     return this.http
     .delete(
       this.baseURL+group.id,
-      this.headers
+      options
     )
     .map(res => {
       return res;
@@ -57,13 +68,17 @@ export class GroupsService {
   }
 
   editGroup(group){
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
     this._cacheService.set('users', [], {expires: Date.now() - 1});
+
     return this.http
     .put(
       this.baseURL+group.id,
       {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
-      this.headers
+      options
     )
     .map(res => {
       return res;

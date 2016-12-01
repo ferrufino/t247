@@ -8,43 +8,87 @@ export class AssignmentsService {
     private baseURL:string = environment.apiURL + '/assignments/';
     private userURL:string = environment.apiURL + '/assignments/bystudent';
     private createURL:string = environment.apiURL + '/assignments/create';
-
-    private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
-
-    private options = new RequestOptions({headers: this.headers});
-
+    private submissionsURL:string = environment.apiURL +'/assignments/studentsubmissionscode/';
     constructor(private http:Http) {
     }
 
     getAssignments() {
-        return this.http.get(this.userURL, this.options).map((response:Response) => response.json());
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http.get(this.userURL, options).map((response:Response) => response.json());
     }
+
   getAssignmentsByStudent(id) {
+
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http.get(
         this.baseURL + 'bystudent/'+id,
-        this.options
+        options
     ).map((response: Response) => response.json());
   }
 
+
     getSubmissions(id) {
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
         return this.http
             .get(
                 this.baseURL + id + '/submissions',
-                this.options
+                options
             )
             .map((response:Response) => response.json());
     }
 
     createAssignment(assignment) {
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
         return this.http
             .post(
                 this.createURL,
                 assignment,
-                this.headers
+                options
             )
             .map(res => {
                 return res;
             });
     }
 
+    editAssignment(assignment) {
+      const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+      const options = new RequestOptions({headers: headers});
+      let id = assignment.id;
+      return this.http
+        .put(
+          this.baseURL + id,
+          assignment,
+          options
+        )
+        .map(res => {
+          return res;
+        });
+  }
+
+    deleteAssignment(id) {
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http.delete(this.baseURL + id, options).map(res => res);
+    }
+
+    getSubmissionsOfAssignment(assign_id, student_id){
+        const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+        const options = new RequestOptions({headers: headers});
+
+        return this.http
+            .get(
+                this.submissionsURL + assign_id + '/' + student_id,
+                options
+            )
+            .map((response:Response) => response.json());
+    }
 }

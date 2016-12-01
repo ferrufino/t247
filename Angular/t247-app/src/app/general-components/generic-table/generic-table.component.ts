@@ -44,7 +44,9 @@ export class GenericTableComponent implements OnInit {
     @Input('typetable') typeOfTableName:string;
     @Input('assignment') assignmentId:number;
     @Input('topicId') topicId:number;
-    //typeOfTableName: string = "courses";
+    @Input('assignmentIDForSubmissionsOfAssignment') assgIdForSubmOfAssig: number;
+    @Input('studentIDForSubmissionsOfAssignment') studentIdForSubmOfAssig: number;
+
     columns:Array<string>;
     private problemsBool;
     private problemsByTopicBool;
@@ -55,6 +57,8 @@ export class GenericTableComponent implements OnInit {
     private coursesBool;
     private topicsBool;
     private usersBool;
+    private assignmentIdForAssignment;
+    private studentIdForAssignment;
 
     content:any[] = [];
 
@@ -80,6 +84,9 @@ export class GenericTableComponent implements OnInit {
             case "problems":
                 this.problemsService.getProblems().subscribe(
                     submissions => {
+                        console.log("PROBLEMAS");
+                        console.log(submissions);
+
                         this.content = submissions;
                         this.problemsBool = true;
                         this.assignmentsBool = false;
@@ -100,6 +107,7 @@ export class GenericTableComponent implements OnInit {
                 let userInformation = JSON.parse(localStorage.getItem("userJson"));
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(
                     problems => {
+
                         this.content = problems;
                         this.problemsByTopicBool = true;
                         this.problemsBool = false;
@@ -110,6 +118,7 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
+
                         this.columns = ["Title", "Difficulty", "Status", "Try it"];
                     }
                 );
@@ -128,6 +137,10 @@ export class GenericTableComponent implements OnInit {
             case "submissions":
                 this.submissionOfProblems.getSubmissions(userInfo.id).subscribe(
                     submissions => {
+
+                        console.log("TODAS LAS SUBMISSIONS");
+                        console.log(submissions);
+
                         this.submissionsBool = true;
                         this.problemsBool = false;
                         this.assignmentsBool = false;
@@ -137,6 +150,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Name", "Number of Attempts", "Solved"];
                         this.content = submissions;
                     }
@@ -149,6 +163,7 @@ export class GenericTableComponent implements OnInit {
                 this.assignmentsService.getSubmissions(this.assignmentId).subscribe(
                     submissions => {
                         this.content = submissions;
+                        this.assignmentIdForAssignment = this.assignmentId;
                         this.assignmentSubmissionsBool = true;
                         this.problemsBool = false;
                         this.assignmentsBool = false;
@@ -157,13 +172,13 @@ export class GenericTableComponent implements OnInit {
                         this.coursesBool = false;
                         this.topicsBool = false;
                         this.usersBool = false;
-                        this.columns = ["Student", "", "Date of last submission", "Attempts", "Solved"];
+
+                        this.columns = ["Student", "Enrollment", "Date of last submission", "Attempts", "Solved"];
 
                         this.problemsByTopicBool = false;
                     }
                 );
                 break;
-
             case "groups":
                 this.coursesService.getCourses().subscribe(
                     courses => {
@@ -174,7 +189,6 @@ export class GenericTableComponent implements OnInit {
                             }
                             this._cacheService.set('courses', myArray, {maxAge: environment.lifeTimeCache});
                             this.courses = this._cacheService.get('courses');
-                            //console.log("Se hizo get de courses");
                         }
                         else {
                             this.courses = this._cacheService.get('courses');
@@ -204,6 +218,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Name", "Period", "Show Assignments", "Delete"];
                     }
                 );
@@ -233,6 +248,7 @@ export class GenericTableComponent implements OnInit {
                         this.topicsBool = false;
                         this.usersBool = false;
                         this.problemsByTopicBool = false;
+
                         this.columns = ["Title", "Edit", "Delete"];
                     }
                 );
@@ -264,6 +280,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.usersBool = false;
                 this.problemsByTopicBool = false;
+
                 this.columns = ["Title", "Edit", "Delete"];
                 break;
 
@@ -277,6 +294,7 @@ export class GenericTableComponent implements OnInit {
                 this.coursesBool = false;
                 this.topicsBool = false;
                 this.problemsByTopicBool = false;
+
                 this.columns = ["Enrollment Id", "First Name", "Last Name", "Type Of User", "Edit", "Delete"];
                 if (!this._cacheService.exists('users')) {
                     this.usersService.getUsers().subscribe(
@@ -301,7 +319,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectGroup(group) {
-        this.router.navigate(['/groups', group.id]);
+        this.router.navigate(['/professor/groups', group.id]);
     }
 
     onSelectTopic(topic) {
@@ -309,7 +327,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteTopic(topic) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this topic?");
         if (r == true) {
             console.log(topic);
             this.topicsService.deleteTopic(topic).subscribe((result) => {
@@ -330,7 +348,7 @@ export class GenericTableComponent implements OnInit {
     }
 
     onDeleteCourse(course) {
-        var r = confirm("Are you sure? All associated groups will be deleted");
+        var r = confirm("Are you sure you want to delete this course? All associated groups will be deleted");
         if (r == true) {
             console.log(course);
             this.coursesService.deleteCourse(course).subscribe((result) => {
@@ -347,7 +365,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onDeleteGroup(group) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this group?");
         if (r == true) {
             console.log(group);
             this.groupsService.deleteGroup(group).subscribe((result) => {
@@ -364,7 +382,7 @@ export class GenericTableComponent implements OnInit {
 
 
     onDeleteUser(user) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this user?");
         if (r == true) {
             console.log(user);
             this.usersService.deleteUser(user).subscribe((result) => {
@@ -384,24 +402,32 @@ export class GenericTableComponent implements OnInit {
     }
 
     onSelectAssignment(problem) {
-        this.router.navigate(['/submitProblem', problem.problem_id]);
+        this.router.navigate(['student/submitProblem', problem.problem_id]);
     }
 
     onSelectProblem(problem) {
-        this.router.navigate(['/problem', problem.id]);
+        this.router.navigate(['problem', problem.id]);
     }
 
     onDeleteProblem(problem) {
-        var r = confirm("Are you sure?");
+        var r = confirm("Are you sure you want to delete this problem? \n" +
+            "All submissions and assignments related to this problem shall be deleted.");
         if (r == true) {
-            //Validate is user is author of problem then detele it
-
-            alert("service hasn't being developed yet!");
+            this.problemsService.deleteProblem(problem.id).subscribe((result) => {
+                if (!result) {
+                    console.log("Fallo");
+                }
+                else {
+                    console.log(result);
+                    this.renderTable();
+                }
+            });
+           
         }
     }
 
     createNewProblem() {
-        this.router.navigate(['/createProblem']);
+        this.router.navigate(['createProblem']);
     }
 
     toggleFilterTag(filterString) {
@@ -431,5 +457,14 @@ export class GenericTableComponent implements OnInit {
         });
     }
 
+    showProblemSubmissionsOfStudent(student_id){
+        this.studentIdForAssignment = student_id;
+        this.renderTable();
+        this.router.navigate(['professor/student-attempts/', this.assignmentIdForAssignment, student_id]);
+    }
+
+    zeroAttempts(){
+        alert("No submissions were done.");
+    }
 
 }

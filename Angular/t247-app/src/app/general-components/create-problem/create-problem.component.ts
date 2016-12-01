@@ -1,17 +1,11 @@
-import {Component, OnInit, ViewChild, ContentChild} from '@angular/core';
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from "@angular/forms";
-
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
 import {EvaluatorService} from "../../services/evaluator.service";
 import {TestCase} from "./TestCase";
 import {TopicsService} from "../../services/topics.service";
-import {EditorComponent} from "../code-editor/editor.component";
-import {Router} from '@angular/router';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'create-problem',
@@ -58,16 +52,17 @@ export class CreateProblem implements OnInit {
   // 0 = full problem, 1 = function
   problemTypeFlag: number = 0;
 
-  // This variable specifies if the problem will be uploaded as copy paste text or if it will be uploaded as a file
-  // 0 = copy and paste, 1 = upload file
-  uploadType: number = 0;
+
+  // Values stored for goBackFunction
+  problemDifficultyIndex: number;
+
 
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
               private _problemDifficulties: ProblemDifficulties,
               private _topicsService: TopicsService,
               private _formBuilder: FormBuilder,
-              private _router : Router) {
+              private _router: Router) {
   }
 
 
@@ -82,10 +77,29 @@ export class CreateProblem implements OnInit {
     this.testCasesReady = false;
     this.selectedTestCase = null;
     this.displayLoader = false;
-    this.problemSourceCode = "";
-    this.problemFunctionCode = "";
-    this.problemTemplateCode = "";
-    this.problemSignatureCode = "";
+    this.problemSourceCode = null;
+
+    // This values are initialized to help as a template
+    this.problemTemplateCode = `#include <iostream>
+using namespace std;
+
+//&function
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << sum(a, b);
+    return 0;
+}`;
+
+    ;
+    this.problemFunctionCode = 'int sum(int a, int b) {' +
+      ' return a + b;' +
+      '};';
+    this.problemSignatureCode = 'int sum(int a, int b){};';
+
+
+    this.problemDifficultyIndex = 0;
 
 
     // Get the values from services
@@ -112,7 +126,6 @@ export class CreateProblem implements OnInit {
 
     // Set the default values
     this.problemDifficulty = this.difficulties[0];
-
 
     // Create the problem form object
     this.createProblemForm = this._formBuilder.group({
@@ -207,6 +220,37 @@ export class CreateProblem implements OnInit {
 
 
   /**
+   * This functions returns true if one test case feedback is empty
+   * @returns {boolean}
+   */
+  emptyTestCasesFeedback() {
+
+    for (let test of this.problemTestCases) {
+      if (test["feedback"] === "" || test["feedback"] === undefined) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  /**
+   * This functions returns true if one test case input is empty
+   * @returns {boolean}
+   */
+  emptyTestCasesInput() {
+
+    for (let test of this.problemTestCases) {
+      if (test["input"] === "" || test["input"] === undefined) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * This function reads the outputs from the evaluator response to complete the test cases.
    * @param data, the response from the evaluator
    * @returns {boolean} a flag that is true when all the test cases have as status successful run
@@ -246,6 +290,8 @@ export class CreateProblem implements OnInit {
     this.displayLoader = true; // display the loader
     this.problemProgLang = selectedLanguage;
     this.problemDifficulty = selectedDifficulty;
+    this.problemDifficultyIndex = Number(selectedDifficulty);
+
 
     let inputs: string[] = this.getInputFromTestCases(); // test cases input strings
 
@@ -272,7 +318,8 @@ export class CreateProblem implements OnInit {
 
           // Check for server errors
           if (data['status'] == "error") {
-            console.log("ERROR - at check problem's test cases");
+            document.getElementById('error-feedback').style.display = "block";
+            this.feedbackCard.hideFeedbackCard("error", data["error"]);
           } else {
             // No errors, get the outputs of the test cases
             this.testCasesReady = this.setOutputForTestCases(data);
@@ -288,6 +335,13 @@ export class CreateProblem implements OnInit {
       );
   }
 
+
+  /**
+   * This function returns the view to the form to create a problem with the values already sent
+   */
+  goBackToForm(): void {
+    this.testCasesReady = false;
+  }
 
   /**
    * This function sends the request to Flask in order to create a new problem and save it to the Data Base
@@ -333,7 +387,9 @@ export class CreateProblem implements OnInit {
           document.getElementById('success-feedback').style.display = "block";
           this.feedbackCard.hideFeedbackCard("success", "Problem successfully created!");
 
-          setTimeout(() => { this._router.navigate(['']); }, 2500);
+          setTimeout(() => {
+            this._router.navigate(['/' + JSON.parse(localStorage['userJson'])['role'] + '/tab/problems']);
+          }, 2500);
 
         },
         error => {

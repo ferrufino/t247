@@ -15,5 +15,6 @@ import { Component, Input } from '@angular/core';
 })
 export class Tab {
     @Input('tabTitle') title: string;
+    @Input('tabName') tabName: string;
     @Input() active = false;
 }

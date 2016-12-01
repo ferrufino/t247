@@ -6,6 +6,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from sqlalchemy.ext.declarative import declared_attr
 from enums import SubmissionState, SubmissionResult
+import pytz
 
 db = SQLAlchemy()
 
@@ -80,7 +81,7 @@ class User(Base, UserMixin):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=60*60*24*30):
-        s = Serializer('this-really-needs-to-be-changed', expires_in=600)
+        s = Serializer('this-really-needs-to-be-changed', expires_in=60*60*24*30)
         return s.dumps({'id': self.id, 'role': self.role})
 
     @staticmethod
@@ -159,7 +160,7 @@ class Group(Base):
                                back_populates="groups")
     professor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     professor = db.relationship("Professor", back_populates="managed_groups")
-    assignments = db.relationship("Assignment", back_populates="group")
+    assignments = db.relationship("Assignment", back_populates="group", cascade="save-update, merge, delete")
 
 
 class Enrollment(Base):
@@ -234,8 +235,8 @@ class Assignment(Base):
     """docstring for Assignment"""
     __tablename__ = 'assignment'
     title = db.Column(db.String(255), nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    due_date = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.DateTime(timezone=True), default=datetime.now(tz=pytz.timezone('America/Monterrey')), nullable=False)
+    due_date = db.Column(db.DateTime(timezone=True), default=datetime.now(tz=pytz.timezone('America/Monterrey')), nullable=False)
 
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
     group = db.relationship("Group", back_populates="assignments")

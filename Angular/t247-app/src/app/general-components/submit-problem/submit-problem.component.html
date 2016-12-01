@@ -1,3 +1,5 @@
+<app-site-navbar [showDropdown]="true" [currentRole]="'student'"></app-site-navbar>
+
 <div class="container submit-code__component">
     <div class="content">
 
@@ -9,8 +11,8 @@
                 <div class="card card-block card-shadow">
                     <h2 class="block__title">{{descriptionTitle}}</h2>
                     <div class="">
-                        <tabs (tabSelected)="assignActiveTab($event);">
-                            <tab tabTitle="English">
+                        <tabs-static (tabSelected)="assignActiveTab($event);">
+                            <tab-static tabTitle="English">
                                 <h4>Description:</h4>
                                 <p class="white-space">{{descriptionEnglish}}</p>
                         <span *ngFor="let case of testCases">
@@ -20,8 +22,8 @@
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
 
-                            </tab>
-                            <tab tabTitle="Español">
+                            </tab-static>
+                            <tab-static tabTitle="Español">
                                 <h4>Description:</h4>
                                 <p class="white-space">{{descriptionSpanish}}</p>
                         <span *ngFor="let case of testCases">
@@ -30,46 +32,48 @@
                             <h4>Output:</h4>
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
-                            </tab>
-                        </tabs>
+                            </tab-static>
+                        </tabs-static>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 ">
                 <div class="card card-block card-shadow">
                     <h2 class="block__title">Problem Submission</h2>
-                    <tabs #tabsVariable (notify)="onNotify($event)">
-                        <tab tabTitle="New Attempt">
+                    <tabs-static #tabsVariable (notify)="onNotify($event)">
+                        <tab-static tabTitle="New Attempt">
                             <div class="new-attempt">
                                 <div class="dropdown-position">
-
                                     <!-- Languages -->
                                     <div *ngIf="signaturePresent == ''" class="row margin-top10">
                                         <div class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                                             <select class="form-control select-prog-lang" id="selectorLanguages"
                                                     #selectedLanguage>
-                                                <option *ngFor="let lang of supportedLanguages" [value]="lang.value">
+                                                <option *ngFor="let lang of supportedLanguages"
+                                                        [value]="lang.value">
                                                     {{lang.name}}
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div *ngIf="signaturePresent != ''">
-                                        <span class="prog-label label label-primary">{{signaturePresent}}</span>
+                                        <span class="prog-label label label-primary">{{languageName}}</span>
                                     </div>
                                 </div>
                                 <code-editor #codeEditor [setSourceCode]=""></code-editor>
                                 <button type="button" class="btn btn-success submit-code-btn"
-                                        (click)="codeToSubmitReceived(selectedLanguage.value)">Submit
+                                        (click)="codeToSubmitReceived()">Submit
                                 </button>
                             </div>
-                        </tab>
-                        <tab *ngFor="let entry of attempts; let myIndex = index" tabTitle="Attempt {{3-myIndex}}">
+                        </tab-static>
+                        <tab-static *ngFor="let entry of attempts; let myIndex = index"
+                                    tabTitle="Attempt {{attempts.length-myIndex}}">
                             <div *ngIf="entry.state == 'SubmissionState.evaluated'">
                                 <p class="attempt-content__title block__title">Grade:
                                     {{entry.grade?entry.grade:"0"}}%</p>
                                 <p class="attempt-content__subtitle ">Programming Language:
-                                    {{entry.language?entry.language:"error"}}</p> <br/>
+                                    <span class="label label-primary">{{entry.language?entry.language:"error"}}</span>
+                                </p> <br/>
                                 <div *ngIf="entry.grade != 100">
                                     <div *ngFor="let fb of entry.feedback_list" class="card-shadow">
                                         <p class="attempt-content__subtitle">Feedback</p>
@@ -92,7 +96,7 @@
                                 <div class="alert alert-warning" role="alert"><h4 class="block__title">Internal Server
                                     Error. Please report to Admin</h4></div>
                             </div>
-                        </tab>
+                        </tab-static>
                         <button type="button" class="btn btn-primary btn-lg btn-modal " id="btn-modal"
                                 data-toggle="modal"
                                 data-target="#myModal" (click)='loadCode()'>
@@ -119,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                    </tabs>
+                    </tabs-static>
                 </div>
             </div>
         </div>

@@ -27,15 +27,21 @@ import {StudentGuard} from "./services/student.guard";
 import {LoginGuard} from "./services/login.guard";
 import {RootGuard} from "./services/root.guard";
 
+
+import {SubmissionsOfAssignmentComponent} from "./professor-components/submissions/submissions.component";
+
+import {SubmitProblemGuard} from "./services/submit-problem.guard";
+import {TopicGuard} from "./services/topic.guard";
+
+
 const appRoutes: Routes = [
-    // TODO sendtoHome
     {
         path: '',
         component: AppComponent,
         canActivate: [RootGuard]
     },
     {
-        path: 'admin/:tab',
+        path: 'admin/tab/:tab',
         component: AdminHomeComponent,
         canActivate: [AdminGuard]
     },
@@ -45,7 +51,7 @@ const appRoutes: Routes = [
         canActivate: [AdminGuard]
     },
     {
-        path: 'professor/:tab',
+        path: 'professor/tab/:tab',
         component: ProfessorHomeComponent,
         canActivate: [ProfessorGuard]
     },
@@ -55,12 +61,17 @@ const appRoutes: Routes = [
         canActivate: [ProfessorGuard]
     },
     {
-        path: 'student/:tab',
+        path: 'student',
         component: StudentHomeComponent,
         canActivate: [StudentGuard]
     },
     {
-        path: 'student',
+        path: 'student/tab/:tab/:topic',
+        component: StudentHomeComponent,
+        canActivate: [TopicGuard]
+    },
+    {
+        path: 'student/tab/:tab',
         component: StudentHomeComponent,
         canActivate: [StudentGuard]
     },
@@ -74,20 +85,7 @@ const appRoutes: Routes = [
       component: ProfileComponent,
       canActivate: [StudentGuard]
     },
-    // TODO  groupsGuard
-    {
-      path: 'groups/:id',
-      component: GroupComponent,
-      resolve : {
-        any: GroupResolve
-      },
-
-    },
-    {
-        path: 'submitProblem/:id',
-        component: SubmitProblem,
-        canActivate: [StudentGuard]
-    },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE
     {
         path: 'problem/:id',
         component: ProblemDetailsComponent,
@@ -97,6 +95,32 @@ const appRoutes: Routes = [
         path: 'createProblem',
         component: CreateProblem,
         canActivate: [ProfessorGuard]
+    },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN GRUPO INEXISTENTE O QUE NO LE PERTENECE
+    {
+      path: 'professor/groups/:id',
+      component: GroupComponent,
+      resolve : {
+        any: GroupResolve
+      },
+      canActivate: [ProfessorGuard]
+    },
+    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE O INACTIVO
+    {
+        path: 'student/submitProblem/:id',
+        component: SubmitProblem,
+        canActivate: [SubmitProblemGuard]
+    },
+    {
+        path: 'professor/student-attempts/:assig_id/:student_id',
+        component: SubmissionsOfAssignmentComponent,
+        canActivate: [ProfessorGuard]
+
+    },
+    {
+        path: '**',
+        component: AppComponent,
+        canActivate: [RootGuard]
     }
 ];
 

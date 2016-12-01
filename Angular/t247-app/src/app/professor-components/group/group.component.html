@@ -1,18 +1,28 @@
-<div class="container">
+<app-site-navbar [showDropdown]="true" [currentRole]="'professor'"></app-site-navbar>
+
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-12">
-      <h3>Group: {{group.period}}</h3>
-      <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#groupFormModal">
-        Edit
-      </button>
+
+    <div class="col-md-12 group-component">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <blockquote>
+            <h1>{{group.course.name}}</h1>
+            <footer>{{group.period}}</footer>
+          </blockquote>
+        </div>
+      </div>
       <hr/>
 
       <div class="row">
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-6">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignmentFormModal">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-primary btn-assig" data-toggle="modal" data-target="#assignmentFormModal">
                 New Assignment
+              </button>
+              <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#groupFormModal">
+                Edit Group
               </button>
             </div>
             <!--
@@ -33,7 +43,7 @@
 
           <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist"
                aria-multiselectable="true">
-            <assignment [assignment]="assignment"></assignment>
+            <assignment [assignment]="assignment" (deleted)="refresh()" (edit)="loadEditForm($event)"></assignment>
           </div> <!--Accordions-->
 
 
@@ -41,7 +51,7 @@
       </div>
     </div>
 
-    <assignment-form [groupId]="group.id" (refreshParent)="refresh()"></assignment-form>
+    <assignment-form #assignmentModal [groupId]="group.id" [action]="'new'" (refreshParent)="refresh()"></assignment-form>
     <group-form [group]="group" [action]="'edit'"></group-form>
 
   </div>

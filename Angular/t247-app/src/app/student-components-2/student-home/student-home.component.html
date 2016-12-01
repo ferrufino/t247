@@ -1,14 +1,16 @@
+<app-site-navbar [showDropdown]="true" [currentRole]="'student'"></app-site-navbar>
+
 <div class="container tabs-style">
     <div class="content">
         <div class="row">
             <tabs [baseRoute]="'student'" [selectedTab]="selectedTab">
-                <tab tabTitle="My Assignments" tabName="assignments">
+                <tab *ngIf="isStudent" tabTitle="My Assignments" tabName="assignments">
                     <generic-table [typetable]="'assignments'"></generic-table>
                 </tab>
                 <tab tabTitle="Topics Dashboard" tabName="topicsdashboard">
-                    <app-topics-dashboard></app-topics-dashboard>
+                    <app-topics-dashboard [selectedTopic]="selectedTopic"></app-topics-dashboard>
                 </tab>
-                <tab tabTitle="Submissions" tabName="submissions">
+                <tab *ngIf="isStudent" tabTitle="Submissions" tabName="submissions">
                     <generic-table [typetable]="'submissions'"></generic-table>
                 </tab>
             </tabs>

@@ -17,20 +17,20 @@ export class TopicsService {
 
   private createUrl = 'http://107.170.255.106:5000/api/topics/create';
 
-  private headers = new Headers({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('auth_token')});
-  private options = new RequestOptions({headers: this.headers});
-
   constructor(private http: Http, private _cacheService: CacheService) {
   }
 
   editTopic(topic) {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('topics', [], {expires: Date.now() - 1});
     console.log("Caching borrado");
     return this.http
       .put(
         this.editUrl + topic.id,
         {"name": topic.name},
-        this.headers
+        options
       )
       .map(res => {
         return res;
@@ -38,11 +38,14 @@ export class TopicsService {
   }
 
   deleteTopic(topic) {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('topics', [], {expires: Date.now() - 1});
     return this.http
       .delete(
         this.deleteUrl + topic.id,
-        this.headers
+        options
       )
       .map(res => {
         return res;
@@ -50,12 +53,15 @@ export class TopicsService {
   }
 
   createTopic(topicName) {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     this._cacheService.set('topics', [], {expires: Date.now() - 1});
     return this.http
       .post(
         this.createUrl,
         {"name": topicName},
-        this.headers
+        options
       )
       .map(res => {
         return res;
@@ -63,15 +69,21 @@ export class TopicsService {
   }
 
   getTopic(id) {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     return this.http
       .get(
-        this.getUrl + id, this.options
+        this.getUrl + id, options
       )
       .map((response: Response) => response.json());
   }
 
   getTopics() {
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
+    const options = new RequestOptions({headers: headers});
+
     const serviceURL: string = 'http://107.170.255.106:5000/api/topics/';
-    return this.http.get(serviceURL, this.options).map((response: Response) => response.json());
+    return this.http.get(serviceURL, options).map((response: Response) => response.json());
   }
 }

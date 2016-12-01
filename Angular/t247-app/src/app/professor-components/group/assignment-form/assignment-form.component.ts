@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import {
   FormGroup,
   Validators,
@@ -17,15 +18,19 @@ export class AssignmentFormComponent implements OnInit {
 
   private assignmentForm : FormGroup;
   private problems;
+  private start_value;
+  private due_value;
+  private submitText = 'Create Assignment';
+  private formTitle = 'New Assignment';
 
   @Input() groupId;
+  @Input() action;
   @Output() refreshParent = new EventEmitter();
 
   constructor(private _service: AssignmentsService,
               private _formBuilder: FormBuilder,
               private _authService: UsersService,
               private _problemsService : ProblemsService) {
-
   }
 
   ngOnInit() {
@@ -42,6 +47,7 @@ export class AssignmentFormComponent implements OnInit {
     );
     this.assignmentForm = this._formBuilder.group({
       'assignment': this._formBuilder.group({
+        'id': '',
         'startDate': ['', Validators.required],
         'dueDate': ['', Validators.required],
         'title': ['', Validators.required],
@@ -51,22 +57,69 @@ export class AssignmentFormComponent implements OnInit {
     });
   }
 
+  setAssignment(assignment) {
+    let start_date = new DatePipe('en-US').transform(assignment.start_date, 'yyyy-MM-dd');
+    let due_date = new DatePipe('en-US').transform(assignment.due_date, 'yyyy-MM-dd');
+    this.action = 'edit';
+    this.formTitle = 'Edit Assignment';
+    this.submitText = 'Update Assignment';
+    this.assignmentForm.setValue({assignment: {
+      id: assignment.id,
+      startDate: start_date,
+      dueDate: due_date,
+      title: assignment.title,
+      groupId: assignment.group_id,
+      problemId: assignment.problem.id
+      },
+    });
+  }
+
   onSubmit() {
+    let startDate = this.fixDate(this.assignmentForm.value.assignment.startDate);
+    let dueDate =  this.fixDate(this.assignmentForm.value.assignment.dueDate);
     let request = {
-      "start_date": this.assignmentForm.value.assignment.startDate,
-      "due_date": this.assignmentForm.value.assignment.dueDate,
+      "start_date": startDate,
+      "due_date": dueDate,
       "title": this.assignmentForm.value.assignment.title,
       "group_id": this.assignmentForm.value.assignment.groupId,
       "problem_id": this.assignmentForm.value.assignment.problemId
     };
+    if (this.action == 'new') {
+      this._service.createAssignment(request)
+        .subscribe(
+          data => {
+            // Check for server errors
+            console.log(data);
+            this.refreshParent.emit();
+            this.clear();
+          }
+        );
+    } else {
+      request['id'] = this.assignmentForm.value.assignment.id;
+      this._service.editAssignment(request)
+        .subscribe(
+          data => {
+            // Check for server errors
+            console.log(data);
+            this.refreshParent.emit();
+            this.clear();
+          }
+        );
+    }
+  }
 
-    this._service.createAssignment(request)
-      .subscribe(
-        data => {
-          // Check for server errors
-          console.log(data);
-          this.refreshParent.emit();
-        }
-      );
+  clear() {
+    this.assignmentForm.reset();
+    this.submitText = 'Create Assignment';
+    this.formTitle = 'New Assignment';
+    this.action = 'new';
+    this.assignmentForm.patchValue({assignment: { groupId: this.groupId }});
+  }
+
+  fixDate(s_date) {
+    let date = new Date(s_date);
+    let milliseconds = date.getTimezoneOffset()*60*1000;
+    date.setTime(date.getTime() + milliseconds);
+    return date.toISOString();
   }
 }

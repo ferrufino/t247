@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {UsersService} from "../../services/users.service";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-site-navbar',
@@ -8,15 +9,23 @@ import {UsersService} from "../../services/users.service";
 })
 export class SiteNavbarComponent implements OnInit {
 
-  @Input() availableRoles: string[];
+  userRoles: string[];
   @Input() showDropdown: boolean;
-  @Input() actualRole: string;
-  @Output() clickedRole = new EventEmitter();
+  @Input() currentRole: string;
 
-  constructor(private _authService: UsersService) {
+  constructor(private _authService: UsersService, private _router: Router) {
   }
 
   ngOnInit() {
+    if (localStorage['roles'])    
+      this.userRoles = JSON.parse(localStorage['roles']);
+
+
+    if (localStorage['userJson'] && this.currentRole == '')
+      this.currentRole = JSON.parse(localStorage['userJson'])['role'];
+
+    console.log(this.userRoles);
+
   }
 
   /**
@@ -28,7 +37,7 @@ export class SiteNavbarComponent implements OnInit {
   }
 
   testFunc(role) {
-    this.clickedRole.emit(role);
+    this._router.navigate(['/' + role.toLowerCase()]);
   }
 
 }

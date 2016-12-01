@@ -1,0 +1,27 @@
+.body-submissions-of-assignment{
+
+   margin-top:  80px;
+}
+
+.btn-round-sm{
+    border-radius: 15px;
+}
+
+.search-bar{
+    width: 450px;
+    height: 35px;
+    float: right;
+    margin-bottom: 50px;
+}
+
+:host-context(.assignment-component) .table-title-row {
+    display: none;
+    text-transform: uppercase;
+}
+
+table{
+
+    width: 80%;
+    margin: 0px auto;
+    margin-top: 20px;
+}

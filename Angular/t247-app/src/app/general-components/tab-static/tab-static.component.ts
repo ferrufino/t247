@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'tab',
+    selector: 'tab-static',
     styles: [`
     .pane{
       padding: 1em;
@@ -13,8 +13,7 @@ import { Component, Input } from '@angular/core';
     </div>
   `
 })
-export class Tab {
+export class TabStatic {
     @Input('tabTitle') title: string;
-    @Input('tabName') tabName: string;
     @Input() active = false;
 }
