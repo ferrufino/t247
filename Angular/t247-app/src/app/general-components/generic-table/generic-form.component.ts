@@ -149,9 +149,11 @@ export class GenericFormComponent implements OnInit {
     }
 
     onSubmitGroup() {
+        let enrollmentText = this.form.value.group.enrollmentText.replace(/\s/g, '');
+        let enrollments = enrollmentText.split(",");
         let request = {
             "course_id": this.form.value.group.course_id,
-            "enrollments": this.form.value.group.enrollmentText.split(","),
+            "enrollments": enrollments,
             "professor": JSON.parse(localStorage.getItem('userJson')).id,
             "period": this.form.value.group.period
         };
