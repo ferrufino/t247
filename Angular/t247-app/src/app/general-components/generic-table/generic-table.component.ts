@@ -460,7 +460,8 @@ export class GenericTableComponent implements OnInit {
     showProblemSubmissionsOfStudent(student_id){
         this.studentIdForAssignment = student_id;
         this.renderTable();
-        this.router.navigate(['professor/student-attempts/', this.assignmentIdForAssignment, student_id]);
+        window.open('professor/student-attempts/' + this.assignmentIdForAssignment + '/' + student_id);
+        //this.router.navigate(['professor/student-attempts/', this.assignmentIdForAssignment, student_id]);
     }
 
     zeroAttempts(){
