@@ -21,7 +21,7 @@
               <button type="button" class="btn btn-primary btn-assig" data-toggle="modal" data-target="#assignmentFormModal">
                 New Assignment
               </button>
-              <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#groupFormModal">
+              <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#createGroupFormModal">
                 Edit Group
               </button>
             </div>
@@ -52,8 +52,7 @@
     </div>
 
     <assignment-form #assignmentModal [groupId]="group.id" [action]="'new'" (refreshParent)="refresh()"></assignment-form>
-    <group-form [group]="group" [action]="'edit'"></group-form>
-
+    <generic-form [typeForm]="'groups'" [group]="group" [action]="'edit'"></generic-form>
   </div>
 
 </div>

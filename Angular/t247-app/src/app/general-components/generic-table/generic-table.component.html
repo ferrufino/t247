@@ -171,11 +171,6 @@
         </tbody>
     </table>
 
-
-    <div *ngIf="groupsBool">
-        <group-form [group]="group" [action]="'create'"></group-form>
-    </div>
-
     <div *ngIf="usersBool">
         <users-edit #userModal (refresh)="renderTable()"></users-edit>
     </div>
