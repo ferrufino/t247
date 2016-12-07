@@ -87,6 +87,9 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
 
 import {SubmitProblemGuard} from "./services/submit-problem.guard";
 import {TopicGuard} from "./services/topic.guard";
+import {ProblemDetailsGuard} from "./services/problem-details.guard";
+import {GroupsGuard} from "./services/groups.guard";
+import {AssignmentGuard} from "./services/assignment.guard";
 
 @NgModule({
     imports: [
@@ -168,7 +171,10 @@ import {TopicGuard} from "./services/topic.guard";
       LoginGuard,
       RootGuard,
       SubmitProblemGuard,
-      TopicGuard
+      TopicGuard,
+      ProblemDetailsGuard,
+      GroupsGuard,
+      AssignmentGuard
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

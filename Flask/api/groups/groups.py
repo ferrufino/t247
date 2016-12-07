@@ -81,11 +81,15 @@ class GroupItem(Resource):
 
         group = Group.query.filter(Group.id == id).first()
 
+        # Check that group exists
+        if (group is None):
+            return None, 404
+
         # If user is professor, check that professor belongs to group
         # Get user
         token = request.headers.get('Authorization', None)
         user = User.verify_auth_token(token)
-        if (user.role == 'professor' and group is not None and group.professor_id != user.id):
+        if (user.role == 'professor' and group.professor_id != user.id):
             return None, 404
 
         return group

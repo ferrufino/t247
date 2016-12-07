@@ -32,7 +32,9 @@ import {SubmissionsOfAssignmentComponent} from "./professor-components/submissio
 
 import {SubmitProblemGuard} from "./services/submit-problem.guard";
 import {TopicGuard} from "./services/topic.guard";
-
+import {ProblemDetailsGuard} from "./services/problem-details.guard";
+import {GroupsGuard} from "./services/groups.guard";
+import {AssignmentGuard} from "./services/assignment.guard";
 
 const appRoutes: Routes = [
     {
@@ -85,36 +87,36 @@ const appRoutes: Routes = [
       component: ProfileComponent,
       canActivate: [StudentGuard]
     },
-    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE
+    // AGREGADO
     {
         path: 'problem/:id',
         component: ProblemDetailsComponent,
-        canActivate: [ProfessorGuard]
+        canActivate: [ProblemDetailsGuard]
     },
     {
         path: 'createProblem',
         component: CreateProblem,
         canActivate: [ProfessorGuard]
     },
-    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN GRUPO INEXISTENTE O QUE NO LE PERTENECE
+    // AGREGADO
     {
       path: 'professor/groups/:id',
       component: GroupComponent,
       resolve : {
         any: GroupResolve
       },
-      canActivate: [ProfessorGuard]
+      canActivate: [GroupsGuard]
     },
-    // FALTA GUARD PARA EVITAR QUE SE ACCEDA UN PROBLEMA INEXISTENTE O INACTIVO
     {
         path: 'student/submitProblem/:id',
         component: SubmitProblem,
         canActivate: [SubmitProblemGuard]
     },
+    // AGREGADO
     {
         path: 'professor/student-attempts/:assig_id/:student_id',
         component: SubmissionsOfAssignmentComponent,
-        canActivate: [ProfessorGuard]
+        canActivate: [AssignmentGuard]
 
     },
     {
