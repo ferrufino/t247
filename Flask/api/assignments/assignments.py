@@ -7,7 +7,7 @@ from api.assignments.serializers import (assignment as api_assignment,
                                          assignment_submission_summary,
                                          student_submission, student_assignment)
 from api.restplus import api
-from models import db, Assignment, Submission, Enrollment
+from models import db, Assignment, Submission, Enrollment, User
 from sqlalchemy import and_
 from authorization import auth_required
 
