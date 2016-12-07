@@ -161,13 +161,15 @@ export class SubmitProblem implements OnInit {
 
         this._httpSubmitProblemService.getAttempts(s_id, id).subscribe(
             content => {
+
                 this.attempts = content;
+                console.log("CODE ATTEMPTS:");
+                console.log(this.attempts);
 
                 for (var i = 0; i < content.length; i++) {
 
                     this.codeAttempts[i] = content[i].code;
                 }
-
 
                 console.log(this.codeAttempts);
             }

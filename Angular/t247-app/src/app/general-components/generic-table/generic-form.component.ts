@@ -19,11 +19,14 @@ export class GenericFormComponent implements OnInit {
     user:any = {enrollment: "", first_name: "", last_name: "", role: "", email: "", password: ""};
     topicName:string = "";
     courseName:string = "";
-    group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+    //group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
     private form : FormGroup;
+    private groupSubmit = 'Create Group';
 
     @Input('typeForm') typeOfForm:string;
     @Output() formChange = new EventEmitter();
+    @Input('group') group:any = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+    @Input('action') action;
 
     constructor(private topicsService:TopicsService,
                 private coursesService:CoursesService,
@@ -68,11 +71,15 @@ export class GenericFormComponent implements OnInit {
           case 'groups':
             this.form = this._formBuilder.group({
               'group': this._formBuilder.group({
-                'course_id': ['', Validators.required],
-                'enrollmentText': ['', Validators.required],
-                'period': ['', Validators.required]
+                'course_id': [this.group.course.id, Validators.required],
+                'enrollmentText': [this.group.enrollmentText, Validators.required],
+                'period': [this.group.period, Validators.required],
+                'id': this.group.id
               })
             });
+            if (this.action == 'edit') {
+              this.groupSubmit = 'Update Group';
+            }
             break;
           case 'topics':
             this.form = this._formBuilder.group({
@@ -155,18 +162,30 @@ export class GenericFormComponent implements OnInit {
             "course_id": this.form.value.group.course_id,
             "enrollments": enrollments,
             "professor": JSON.parse(localStorage.getItem('userJson')).id,
-            "period": this.form.value.group.period
+            "period": this.form.value.group.period,
+            "id": this.form.value.group.id
         };
         console.log(request);
-        this.groupsService.createGroup(request).subscribe((result) => {
+        if (this.action != 'edit') {
+          this.groupsService.createGroup(request).subscribe((result) => {
             if (!result) {
-                console.log("Fallo");
+              console.log("Fallo");
             } else {
-                console.log(result);
-                //this.renderTable();
-                this.group = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
-                this.formChange.emit();
+              console.log(result);
+              //this.renderTable();
+              this.group = {course: {id: "", name: ""}, enrollmentText: "", period: ""};
+              this.formChange.emit();
             }
-        });
+          });
+        } else {
+          this.groupsService.editGroup(request).subscribe((result) => {
+            if (!result) {
+              console.log("Fallo");
+            }
+            else {
+              console.log(result);
+            }
+          });
+        }
     }
 }
