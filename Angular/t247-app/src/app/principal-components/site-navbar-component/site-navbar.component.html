@@ -3,7 +3,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Bit by Bit</a>
+      <a class="navbar-brand" (click)="navigateHome()">Bit by Bit</a>
     </div>
 
     <ul class="nav navbar-nav navbar-right">
@@ -12,7 +12,7 @@
         <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false"> {{currentRole | capitalize}} <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="/profile">Profile</a></li>
+          <li><a (click)="navigateProfile()">Profile</a></li>
           <li class="divider"></li>
           <li *ngFor="let role of userRoles">
             <a (click)="testFunc(role)">{{role | capitalize}}</a>

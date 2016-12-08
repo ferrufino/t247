@@ -69,13 +69,16 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
 import {RoleChangeService} from './services/role-change.service';
 import {AuthService} from "./services/auth.service";
 
-import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
+
+//import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
+import {AdminHomeComponent} from "./admin-components/admin-home/admin-home.component";
+
 import {AdminGuard} from "./services/admin.guard";
 
-import {ProfessorHomeComponent} from "./professor-components-2/professor-home/professor-home.component";
+import {ProfessorHomeComponent} from "./professor-components/professor-home/professor-home.component";
 import {ProfessorGuard} from "./services/professor.guard";
 
-import {StudentHomeComponent} from "./student-components-2/student-home/student-home.component";
+import {StudentHomeComponent} from "./student-components/student-home/student-home.component";
 import {StudentGuard} from "./services/student.guard";
 
 import {LoginGuard} from "./services/login.guard";
@@ -87,6 +90,9 @@ import {StudentProfileWrapperComponent} from "./general-components/student-profi
 
 import {SubmitProblemGuard} from "./services/submit-problem.guard";
 import {TopicGuard} from "./services/topic.guard";
+import {ProblemDetailsGuard} from "./services/problem-details.guard";
+import {GroupsGuard} from "./services/groups.guard";
+import {AssignmentGuard} from "./services/assignment.guard";
 
 @NgModule({
     imports: [
@@ -168,7 +174,10 @@ import {TopicGuard} from "./services/topic.guard";
       LoginGuard,
       RootGuard,
       SubmitProblemGuard,
-      TopicGuard
+      TopicGuard,
+      ProblemDetailsGuard,
+      GroupsGuard,
+      AssignmentGuard
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

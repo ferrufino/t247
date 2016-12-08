@@ -222,6 +222,7 @@ class Submission(Base):
     language = db.Column(db.String(255), nullable=False)
     feedback_list = db.Column(db.JSON)
     grade = db.Column(db.Integer)
+    no_of_attempt = db.Column(db.Integer)
     state = db.Column(db.Enum(SubmissionState))
     result = db.Column(db.Enum(SubmissionResult))
 

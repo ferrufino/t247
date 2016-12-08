@@ -40,4 +40,12 @@ export class SiteNavbarComponent implements OnInit {
     this._router.navigate(['/' + role.toLowerCase()]);
   }
 
+  navigateHome() {
+    this._router.navigate(['/']);
+  }
+
+  navigateProfile() {
+    this._router.navigate(['/profile']);
+  }
+
 }

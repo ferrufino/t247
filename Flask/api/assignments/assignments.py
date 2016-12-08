@@ -7,7 +7,7 @@ from api.assignments.serializers import (assignment as api_assignment,
                                          assignment_submission_summary,
                                          student_submission, student_assignment)
 from api.restplus import api
-from models import db, Assignment, Submission
+from models import db, Assignment, Submission, Enrollment, User
 from sqlalchemy import and_
 from authorization import auth_required
 
@@ -93,6 +93,44 @@ class AssignmentItem(Resource):
         db.session.commit()
         return None, 204
 
+@ns.route('/student/<int:assignment_id>/<int:student_id>')
+@api.response(404, 'Submission not found.')
+@api.header('Authorization', 'Auth token', required=True)
+class SubmissionsToAssignmentByStudent(Resource):
+    @auth_required('professor')
+    def get(self, assignment_id, student_id):
+        """
+        Returns 1 if assignment has been assigned to student
+        """
+
+        # Check if parameters are valid
+        try:
+            student_id = int(student_id)
+            assignment_id = int(assignment_id)
+        except ValueError:
+            return None, 404
+
+        # Check if assignment exists
+        assignment = Assignment.query.filter(Assignment.id == assignment_id).first()
+
+        if (assignment is None):
+            return None, 404
+
+
+        # If user is professor, check that professor belongs to assignment's group
+        # Get user
+        token = request.headers.get('Authorization', None)
+        user = User.verify_auth_token(token)
+        if (user.role == 'professor' and assignment.group.professor_id != user.id):
+            return None, 404
+
+        # Check if student belongs to group
+        result = db.session.query(Enrollment).filter(Enrollment.group_id == assignment.group_id).filter(Enrollment.student_id == student_id).first()
+        
+        if (result is None):
+            return None, 404 
+
+        return { 'status' : 1 }
 
 @ns.route('/<int:assignment_id>/submissions')
 @api.response(404, 'Submission not found.')
@@ -124,13 +162,13 @@ class AssignmentSubmissionSummary(Resource):
 @api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_submission)
-    @auth_required('student')
+    @auth_required('professor')
     def get(self, assignment_id, student_id):
         """
          Returns code of attempts made by user to assignment
         """
         result = db.engine.execute("""
-            SELECT s.created as date, s.grade, s.code
+            SELECT s.created as date, s.grade, s.code, s.language
             FROM submission s, enrollment e, assignment a
             WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.user_id AND s.user_id = %d AND e.group_id = a.group_id AND a.start_date <= s.created AND s.created <= a.due_date
             ORDER BY s.created;""" % (assignment_id, student_id)).fetchall()
@@ -142,7 +180,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
 @api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_assignment)
-    @auth_required('student')
+    @auth_required('professor')
     def get(self, student_id):
         """
          Returns current assignments of student

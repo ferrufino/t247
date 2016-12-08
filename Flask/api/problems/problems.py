@@ -82,10 +82,13 @@ class ProblemItem(Resource):
         except ValueError:
             return None, 404
 
+        # Check if problem exists
         problem = db.session.query(Problem).filter(Problem.id == id).first()
         
         if (problem is not None):
-            problem.language = Language.query.filter(Language.value == problem.language).one().name            
+            problem.language = Language.query.filter(Language.value == problem.language).one().name
+        else:
+            return None, 404
 
         return problem
 

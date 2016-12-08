@@ -73,11 +73,11 @@ export class GroupsService {
 
     this._cacheService.set('groups', [], {expires: Date.now() - 1});
     this._cacheService.set('users', [], {expires: Date.now() - 1});
-
+    debugger;
     return this.http
     .put(
       this.baseURL+group.id,
-      {"course_id":group.courseId,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
+      {"course_id":group.course_id,"enrollments":group.enrollments,"period":group.period,"professor_id":group.professor},
       options
     )
     .map(res => {
