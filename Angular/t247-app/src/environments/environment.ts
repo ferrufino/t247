@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://107.170.255.106:5000/api',
+  apiURL: 'http://http://tutoring247.mty.itesm.mx:5000/api',
   lifeTimeCache: 600
 };
