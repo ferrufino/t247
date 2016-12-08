@@ -26,7 +26,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 app.config.from_object(config.DevelopmentConfig)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+db.init_app(app)
 security = Security(app)
 
 CORS(app)
@@ -57,7 +57,7 @@ def initialize_app(flask_app):
     api.add_namespace(assignments_namespace)
     flask_app.register_blueprint(blueprint)
 
-    db.init_app(flask_app)
+    # db.init_app(flask_app)
 
 
 # @werkzeug.serving.run_with_reloader
