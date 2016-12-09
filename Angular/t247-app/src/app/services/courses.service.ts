@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import '../rxjs-operators';
 import 'rxjs/add/operator/map';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import {environment} from '../../environments/environment';
 
 import {CacheService} from 'ng2-cache/src/services/cache.service';
 
@@ -11,13 +12,13 @@ export class CoursesService {
 
   constructor(private http: Http, private _cacheService: CacheService) { }
 
-  private getUrl = 'http://107.170.255.106:5000/api/courses/';
+  private getUrl = environment.apiURL + '/courses/';
 
-  private editUrl = 'http://107.170.255.106:5000/api/courses/';
+  private editUrl = environment.apiURL + '/courses/';
 
-  private deleteUrl = 'http://107.170.255.106:5000/api/courses/';
+  private deleteUrl = environment.apiURL + '/courses/';
 
-  private createUrl = 'http://107.170.255.106:5000/api/courses/create';
+  private createUrl = environment.apiURL + '/courses/create';
 
     // TODO BIEN
     editCourse(course){
@@ -88,7 +89,7 @@ export class CoursesService {
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
     const options = new RequestOptions({headers: headers});
 
-    const serviceURL : string = 'http://107.170.255.106:5000/api/courses/';
+    const serviceURL : string = environment.apiURL + '/courses/';
     return this.http.get(serviceURL, options).map((response: Response) => response.json());
   }
 
