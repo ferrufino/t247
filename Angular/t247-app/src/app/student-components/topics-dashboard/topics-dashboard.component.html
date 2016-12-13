@@ -1,6 +1,11 @@
 <h1 *ngIf="(this.selectedTopic == undefined)">
   Topics
 </h1>
+
+<div *ngIf="(this.selectedTopic == undefined)">
+  <button class="pull-right" (click)="displayProblems(0)">All problems</button>
+</div>
+
 <div *ngIf="(this.selectedTopic == undefined)">
   <div class="col-xs-3 topic-box" *ngFor="let entry of content" (click)="displayProblems(entry.id)">{{entry.name}}</div>
 </div>

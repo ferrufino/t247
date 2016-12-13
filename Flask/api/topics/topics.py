@@ -54,6 +54,10 @@ class TopicItem(Resource):
         """
         Returns a topic.
         """
+        if (id == 0):
+            return { 'id' : 0, 'name' : 'All problems' }
+
+
         return Topic.query.filter(Topic.id == id).one()
 
     @api.expect(topic_creation)
