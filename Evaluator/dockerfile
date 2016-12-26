@@ -3,6 +3,17 @@ RUN apt-get update --assume-yes && apt-get install --assume-yes gcc python3-dev 
 RUN pip3 install psutil
 RUN apt-get update --assume-yes && apt-get install --assume-yes openjdk-8-jdk
 RUN useradd -ms /bin/bash prisoner
+RUN rm -rf /home/prisoner/*
+RUN touch /home/prisoner/std_in.txt
+RUN touch /home/prisoner/std_out.txt
+RUN touch /home/prisoner/std_err.txt
+RUN touch /home/prisoner/a.out
+RUN touch /home/prisoner/Main.class
+RUN chmod -w /home/prisoner
+RUN chmod 444 /home/prisoner/std_in.txt
+RUN chmod 666 /home/prisoner/std_out.txt
+RUN chmod 666 /home/prisoner/std_err.txt
+RUN chmod 777 /home/prisoner/a.out
+RUN chmod 777 /home/prisoner/Main.class
 USER prisoner
 WORKDIR /home/prisoner
-COPY monitor.py /home/prisoner

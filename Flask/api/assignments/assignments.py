@@ -180,7 +180,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
 @api.header('Authorization', 'Auth token', required=True)
 class AssignmentSubmissionCodeByStudent(Resource):
     @api.marshal_list_with(student_assignment)
-    @auth_required('professor')
+    @auth_required('student')
     def get(self, student_id):
         """
          Returns current assignments of student

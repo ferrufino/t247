@@ -202,8 +202,13 @@ class ProblemsByTopic(Resource):
         """
         
         # Retrieve raw list of problems by topic
-        result = db.engine.execute("SELECT p.id, p.name, p.difficulty FROM Problem p, ProblemTopic pt WHERE p.active=true AND p.id = pt.problem_id AND pt.topic_id = %d" % (topic_id))
-        
+
+        # If topic id == 0, return all problems
+        if (topic_id == 0):
+            result = db.engine.execute("SELECT p.id, p.name, p.difficulty FROM Problem p WHERE p.active=true")
+        else:
+            result = db.engine.execute("SELECT p.id, p.name, p.difficulty FROM Problem p, ProblemTopic pt WHERE p.active=true AND p.id = pt.problem_id AND pt.topic_id = %d" % (topic_id))
+
         problems_list = []
         
         # Mark problem status (not attempted, attempted but wrong answer, or solved)
