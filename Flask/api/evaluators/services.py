@@ -10,6 +10,7 @@ from enums import SubmissionState
 import requests
 import json
 import time
+import random
 
 # Helper compilation settings for the available languages
 arr_src_file = { "cpp" : "a.cpp", "java" : "Main.java" }
@@ -306,7 +307,7 @@ def request_evaluation(data):
     
     print(response)
 
-    requests.post("http://localhost/execution_result", data=response)
+    #requests.post("http://localhost/execution_result", data=response)
     return response   
     
 # Method that returns the least busy worker queue
@@ -316,18 +317,24 @@ def get_least_busy_queue():
     redis_conn = Redis()
     
     size  = 999999
-    index = -1
-    queue = None
+    potential_queues = []
     
     # Connect to queue
     for i in range(5):
          
         q = Queue("j_" + str(i), connection=redis_conn)
         if (len(q) < size):
-            size  = len(q)
-            index = i
-            queue = q
-    
+            size = len(q)
+            potential_queues.clear()
+            potential_queues.append([q, i])
+        elif (len(q) == size):
+            potential_queues.append([q, i])
+
+    pair = random.choice(potential_queues)
+
+    queue = pair[0]
+    index = pair[1]
+
     return queue, index
 
 # Method that creates the 
