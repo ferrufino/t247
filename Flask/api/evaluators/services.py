@@ -262,8 +262,8 @@ def evaluate(request):
                     results.append({ "status" : status })
 
         # 10) Kill container
-        #process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
-        #process.wait()      
+        process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
+        process.wait()      
               
     # Remove src file
     os.remove(working_dir + arr_src_file[language])
@@ -277,7 +277,7 @@ def evaluate(request):
     if (request_type == "submission"):
         return_obj["status"] = SubmissionState.evaluated.value
         return_obj["submission_id"] = submission_id
-        requests.post("http://localhost/api/evaluator/problem_submission_result", json=return_obj) 
+        requests.post("http://localhost:9292/api/evaluator/problem_submission_result", json=return_obj) 
     
     return return_obj 
         
