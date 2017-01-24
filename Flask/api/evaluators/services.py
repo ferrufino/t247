@@ -262,8 +262,8 @@ def evaluate(request):
                     results.append({ "status" : status })
 
         # 10) Kill container
-        process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
-        process.wait()      
+        #process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
+        #process.wait()      
               
     # Remove src file
     os.remove(working_dir + arr_src_file[language])
