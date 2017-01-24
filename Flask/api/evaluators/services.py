@@ -31,7 +31,7 @@ def error_response(error, submission_id):
         else:
             submission_response["status"] = SubmissionState.internal_server_error.value
         submission_response["submission_id"] = submission_id
-        requests.post("http://localhost/api/evaluator/problem_submission_result", json=submission_response) 
+        requests.post("http://localhost:9292/api/evaluator/problem_submission_result", json=submission_response) 
     return response
 
 # Method that destroys the Docker container with the given id
