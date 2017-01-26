@@ -34,8 +34,8 @@ export class SubmitProblem implements OnInit {
     private languageCode;
 
     private testCases;
-    private successMessage:string = "Problem has been submitted, please refresh the site.";
-    private errorMessage:string = "There has been a problem with your submission.";
+    private successMessage:string = "Your code has been submitted!";
+    private errorMessage:string = "There has been a problem with your submission";
     private template:string;
     private myOptions:IMultiSelectOption[] = [
         {id: 1, name: 'C++'},
@@ -95,7 +95,6 @@ export class SubmitProblem implements OnInit {
 
     }
 
-
     codeToSubmitReceived() {
 
         var progLanguage;
@@ -122,7 +121,30 @@ export class SubmitProblem implements OnInit {
         this._httpProblemsService.submitProblem(codeObject).subscribe(
             data => {
                 if (data["status"] == "ok") {
+                    // Set all attempt tabs as inactive
+                    for (var i = 0; i < data["attempts"].length; i++) {
+                        data["attempts"][i].active = null;
+                    }
 
+                    // Activate last attempt tab
+                    data["attempts"][0].active = true;
+
+                    // Update attempts
+                    this.attempts = data["attempts"].slice();
+
+                    // Set attempts' code
+                    for (var i = 0; i < this.attempts.length; i++) {
+                        this.codeAttempts[i] = this.attempts[i].code;
+                    }
+
+                    // Select second tab (which is last attempt's tab)
+                    this.tabsVariable.tabSelected = 1;
+
+                    // Inactivate 'New attempt tab' and hide it
+                    this.tabsVariable.tabs.toArray()[0].active = false;
+                    document.getElementById('btn-modal').style.visibility = 'visible';
+
+                    // Display success message
                     this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                 } else {
                     this.feedbackCard.hideFeedbackCard("error", this.errorMessage);

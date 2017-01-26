@@ -67,7 +67,7 @@
                             </div>
                         </tab-static>
                         <tab-static *ngFor="let entry of attempts; let myIndex = index"
-                                    tabTitle="Attempt {{entry.no_of_attempt}}">
+                                    tabTitle="Attempt {{entry.no_of_attempt}}" active={{entry.active}}>
                             <div *ngIf="entry.state == 'SubmissionState.evaluated'">
                                 <p class="attempt-content__title block__title">Grade:
                                     {{entry.grade?entry.grade:"0"}}%</p>
