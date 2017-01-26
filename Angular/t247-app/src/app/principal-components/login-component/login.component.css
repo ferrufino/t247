@@ -27,3 +27,8 @@
 .input-field .prefix.active {
     color: #000;
 }
+
+/* empty space between email and password inputs */
+.email-input {
+	margin-bottom: 7px;
+}
