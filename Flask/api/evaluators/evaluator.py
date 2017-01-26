@@ -7,11 +7,13 @@ from flask import request
 from flask_restplus import Resource
 from api.evaluators.serializers import (evaluator_submission,
                                         problem_evaluation, problem_creation,
-                                        evaluator_result)
+                                        evaluator_result, problem_submission)
 from api.restplus import api
 import api.evaluators.services as services
 
 from models import db, Problem, Case, Submission, Student, User, ProblemTopic
+from sqlalchemy import and_
+
 from enums import SubmissionState, SubmissionResult
 from authorization import auth_required
 
@@ -118,6 +120,7 @@ class EvaluatorProblemCreation(Resource):
 @api.header('Authorization', 'Auth token', required=True)
 class EvaluatorAttemptSubmission(Resource):
     @api.response(202, 'Attempt succesfully submitted.')
+    @api.marshal_with(problem_submission)
     @api.expect(evaluator_submission)
     @auth_required('student')
     def post(self):
@@ -182,6 +185,13 @@ class EvaluatorAttemptSubmission(Resource):
             data["code"] = code
 
         result = services.request_evaluation(data)
+
+        # Return last 3 attempts in response, so that front-end can re-render tabs
+        attempts = Submission.query.filter(
+                and_(Submission.user_id == user_id, Submission.problem_id == problem_id)).order_by(
+                Submission.id.desc()).limit(3).all() 
+
+        result['attempts'] = attempts
 
         return result
 

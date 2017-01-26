@@ -1,5 +1,7 @@
 from flask_restplus import fields
 from api.restplus import api
+from api.submissions.serializers import last_submission
+
 #submission
 #create a problem
 evaluator_submission = api.model('SubmissionCreation', {
@@ -44,4 +46,9 @@ problem_creation = api.model('ProblemCreation', {
 evaluator_result = api.model('Result', {
     'status': fields.String(required=True, description='Compilation status'),
     'test_cases': fields.List(cls_or_instance=fields.String, required=True, description='Array of strings containing the test cases\' results')
+})
+
+problem_submission = api.model('ProblemSubmission', {
+    'status': fields.String(required=True, description='Submission status'),
+    'attempts': fields.List(fields.Nested(last_submission), required=False, description='Array of objects containing the last 3 attempts')
 })
