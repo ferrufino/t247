@@ -101,8 +101,11 @@ export class GenericTableComponent implements OnInit {
                     }
                 );
                 break;
-
-            case "problemsByTopic":
+            // This case indicates problemsByTopic
+            // We decided to use an empty string because we don't want to display 'problemsByTopic',
+            // but the name of the topic instead (topics-dashboard component is in charge of displaying
+            // the topic name )
+            case "":
                 let ID_topic = this.topicId;
                 let userInformation = JSON.parse(localStorage.getItem("userJson"));
                 this.problemsService.getProblemsFromTopic(ID_topic, userInformation.id).subscribe(

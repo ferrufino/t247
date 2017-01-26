@@ -12,5 +12,5 @@
 
 <h1 *ngIf="(this.selectedTopic != undefined)">{{this.selectedTopicName}}</h1>
 <div *ngIf="(this.selectedTopic != undefined)">
-  <generic-table [typetable]="'problemsByTopic'" [topicId]="+this.selectedTopic"></generic-table>
+  <generic-table [typetable]="''" [topicId]="+this.selectedTopic"></generic-table>
 </div>

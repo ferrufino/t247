@@ -1,9 +1,6 @@
 <div class="container">
-    <div class="row table-title-row">
-        <div class="col-md-6 col-md-offset-3">
-            <h1 *ngIf="!problemsByTopicBool">Table of {{typeOfTableName}}</h1>
-        </div>
-    </div>
+
+    <h1>{{typeOfTableName.charAt(0).toUpperCase() + typeOfTableName.slice(1)}}</h1>
 
 
     <generic-form *ngIf="coursesBool" [typeForm]="'courses'" (formChange)="renderTable();"></generic-form>
