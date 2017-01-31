@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {
     IMultiSelectOption,
     IMultiSelectTexts,
@@ -9,6 +9,8 @@ import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {Tabs} from "../tabs/tabs.component";
+import { HighlightJsService } from 'angular2-highlight-js';
+
 
 @Component({
     selector: 'submit-problem',
@@ -21,7 +23,9 @@ export class SubmitProblem implements OnInit {
     constructor(private _httpProblemsService:EvaluatorService,
                 private _httpSubmitProblemService:SubmitProblemService,
                 private route:ActivatedRoute,
-                private _supportedLanguages:SupportedLanguages) {
+                private _supportedLanguages:SupportedLanguages,
+                private highlightService : HighlightJsService,
+                private el: ElementRef) {
 
     }
 
@@ -107,6 +111,12 @@ export class SubmitProblem implements OnInit {
             progLanguage = (<HTMLInputElement>document.getElementById("selectorLanguages")).value;
         }
         var codeFromEditor = this.codeEditor.getSourceCode();
+
+        // Prevent students from sending empty code
+        if (codeFromEditor.trim() == "") {
+            return;
+        }
+
         let userInfo = JSON.parse(localStorage.getItem("userJson"));
 
         let codeObject = {
@@ -145,9 +155,11 @@ export class SubmitProblem implements OnInit {
                     document.getElementById('btn-modal').style.visibility = 'visible';
 
                     // Display success message
-                    this.feedbackCard.hideFeedbackCard("success", this.successMessage);
+                    // TODO: display proper success notification
+                    //this.feedbackCard.hideFeedbackCard("success", this.successMessage);
                 } else {
-                    this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
+                    // TODO: display proper error notification
+                    //this.feedbackCard.hideFeedbackCard("error", this.errorMessage);
 
                 }
             }
@@ -157,7 +169,17 @@ export class SubmitProblem implements OnInit {
     }
 
     loadCode() {
+        // Manually inserting code in modal so that it is properly displayed (http://stackoverflow.com/questions/40693556/using-highlight-js-in-angular-2)
+        
+        // Insert dummy appropriate content so that real content will be appropriately displayed/highlighted
+        // (even if real content is malformed)
+        this.el.nativeElement.querySelector('.code-attempt').textContent = "int function(string a, string b) { return a[8]; }";
+        this.highlightService.highlight(this.el.nativeElement.querySelector('.code-attempt'));
+
+        // Insert real content
         this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected - 1];
+        this.el.nativeElement.querySelector('.code-attempt').textContent = this.codeAttempts[this.tabsVariable.tabSelected - 1];
+        this.highlightService.highlight(this.el.nativeElement.querySelector('.code-attempt'));
     }
 
     getContentDescription(id) {

@@ -13,23 +13,23 @@
                     <div class="">
                         <tabs-static (tabSelected)="assignActiveTab($event);">
                             <tab-static tabTitle="English">
-                                <h4>Description:</h4>
+                                <h4><b>Description:</b></h4>
                                 <p class="white-space">{{descriptionEnglish}}</p>
                         <span *ngFor="let case of testCases">
-                            <h4>Input:</h4>
+                            <h4><b>Sample Input:</b></h4>
                             <pre class="white-space">{{case.input}}</pre>
-                            <h4>Output:</h4>
+                            <h4><b>Sample Output:</b></h4>
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
 
                             </tab-static>
                             <tab-static tabTitle="Español">
-                                <h4>Description:</h4>
+                                <h4><b>Description:</b></h4>
                                 <p class="white-space">{{descriptionSpanish}}</p>
                         <span *ngFor="let case of testCases">
-                            <h4>Input:</h4>
+                            <h4><b>Sample Input:</b></h4>
                             <pre class="white-space">{{case.input}}</pre>
-                            <h4>Output:</h4>
+                            <h4><b>Sample Output:</b></h4>
                             <pre class="white-space">{{case.output}}</pre>
                         </span>
                             </tab-static>
@@ -113,7 +113,7 @@
                                         <h4 class="modal-title">Attempted Code</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <pre>{{codeFromAttempt}}</pre>
+                                        <pre><code class="code-attempt">{{codeFromAttempt}}</code></pre>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">

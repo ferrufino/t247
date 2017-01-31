@@ -94,6 +94,8 @@ import {ProblemDetailsGuard} from "./services/problem-details.guard";
 import {GroupsGuard} from "./services/groups.guard";
 import {AssignmentGuard} from "./services/assignment.guard";
 
+import { HighlightJsService } from '../../node_modules/angular2-highlight-js'; 
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -177,7 +179,8 @@ import {AssignmentGuard} from "./services/assignment.guard";
       TopicGuard,
       ProblemDetailsGuard,
       GroupsGuard,
-      AssignmentGuard
+      AssignmentGuard,
+      HighlightJsService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
