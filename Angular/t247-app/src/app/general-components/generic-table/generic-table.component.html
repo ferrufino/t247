@@ -124,8 +124,9 @@
                     {{entry.value.no_of_attempts}}
                 </button>
             </td>
-            <td *ngIf="entry.value.grade == 100">Solved</td>
-            <td *ngIf="entry.value.grade != 100">Not solved</td>
+            <td *ngIf="entry.value.grade == 100"><span class="label label-success">Solved</span></td>
+            <td *ngIf="entry.value.grade != 100 && entry.value.no_of_attempts != 0"><span class="label label-danger">Not solved</span></td>
+            <td *ngIf="entry.value.grade != 100 && entry.value.no_of_attempts == 0"><span class="label label-info">Not attempted</span></td>
         </tr>
         </tbody>
         <tbody *ngIf="groupsBool">
