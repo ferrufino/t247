@@ -170,16 +170,16 @@ export class SubmitProblem implements OnInit {
 
     loadCode() {
         // Manually inserting code in modal so that it is properly displayed (http://stackoverflow.com/questions/40693556/using-highlight-js-in-angular-2)
-        
+        var codeElement = this.el.nativeElement.querySelector('.code-attempt');
+
         // Insert dummy appropriate content so that real content will be appropriately displayed/highlighted
         // (even if real content is malformed)
-        this.el.nativeElement.querySelector('.code-attempt').textContent = "int function(string a, string b) { return a[8]; }";
-        this.highlightService.highlight(this.el.nativeElement.querySelector('.code-attempt'));
+        codeElement.textContent = "int function(string a, string b) { return a[8]; }";
 
         // Insert real content
         this.codeFromAttempt = this.codeAttempts[this.tabsVariable.tabSelected - 1];
-        this.el.nativeElement.querySelector('.code-attempt').textContent = this.codeAttempts[this.tabsVariable.tabSelected - 1];
-        this.highlightService.highlight(this.el.nativeElement.querySelector('.code-attempt'));
+        codeElement.textContent = this.codeAttempts[this.tabsVariable.tabSelected - 1];
+        this.highlightService.highlight(codeElement);
     }
 
     getContentDescription(id) {
