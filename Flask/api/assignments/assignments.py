@@ -192,7 +192,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
             JOIN "group" g ON g.id = a.group_id
             JOIN course c ON c.id = g.course_id
             JOIN enrollment e ON e.group_id = a.group_id AND e.student_id = %d
-            LEFT JOIN submission s ON p.id = s.problem_id AND e.student_id = s.user_id
+            LEFT JOIN submission s ON p.id = s.problem_id AND e.student_id = s.user_id AND a.start_date <= s.created AND s.created <= a.due_date
             WHERE a.start_date <= NOW() AND NOW() <= a.due_date
             GROUP BY a.title, p.name, p.id, p.difficulty, c.name, a.due_date
             ORDER BY a.due_date;
