@@ -263,7 +263,7 @@ def evaluate(request):
                         
     # Prepare returned object
     return_obj = {}
-    return_obj["status"] = "compiled successfully":
+    return_obj["status"] = "compiled successfully"
     return_obj["test_cases"] = results
        
     if (request_type == "submission"):
