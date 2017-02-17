@@ -71,6 +71,8 @@ def evaluate(request):
     test_cases    = []
     ctr_name      = "judge_" + str(judge_id)
     working_dir   = base_dir + "compilation/" + ctr_name  + "/"
+
+    ctr_name      = ctr_name + "_" + str(random.randint(100,999))
     
     # Student submission parameters
     if (request_type == "submission"):
