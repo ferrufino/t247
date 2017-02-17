@@ -144,6 +144,9 @@ def evaluate(request):
         
     try:
         stdout, stderr = process.communicate(timeout=20)
+        print("\n\n\n")
+        print(process.returncode)
+        print("\n\n\n")
         if (process.returncode != 0):
             remove_container(ctr_name)
             return error_response("Error while compiling code inside container", submission_id)
