@@ -221,6 +221,10 @@ class EvaluatorProblemSubmissionResult(Resource):
         if status != SubmissionState.evaluated.value:
             grade = 0
         else:
+            print(" --- ")
+            print("DATOS DE EVALUACION")
+            print(data)
+            print(" --- ")
             test_cases = data['test_cases']
             problem_test_cases = problem.cases
             missed_cases = 0
