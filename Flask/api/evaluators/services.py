@@ -137,17 +137,14 @@ def evaluate(request):
         return error_response("Error while copying source file to container for code compilation", submission_id)
     
     # 1.3) Compile source file
-        
+    if (language == 'cpp'):
+        process = subprocess.Popen(['docker', 'exec', ctr_name, 'g++', '-std=c++11', 'a.cpp', '-o', 'a.out'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    elif (language == 'java'):
+        process = subprocess.Popen(['docker', 'exec', ctr_name, 'javac', 'Main.java'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)       
+
     try:
-        if (language == 'cpp'):
-            process = subprocess.Popen(['docker', 'exec', ctr_name, 'g++', '-std=c++11', 'a.cpp', '-o', 'a.out'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        elif (language == 'java'):
-            process = subprocess.Popen(['docker', 'exec', ctr_name, 'javac', 'Main.java'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
         stdout, stderr = process.communicate(timeout=20)
-        print("\n\n\n")
-        print(process.returncode)
-        print("\n\n\n")
+
         if (process.returncode != 0):
             remove_container(ctr_name)
             return error_response("Error while compiling code inside container", submission_id)
@@ -156,127 +153,118 @@ def evaluate(request):
         process.wait()
         remove_container(ctr_name)
         return error_response("Error while compiling code inside container", submission_id)
-          
-    # Verify proper compilation    
-    stdout = str(stdout, 'utf-8')
-    stderr = str(stderr, 'utf-8')
-    
-    if (stdout is "" and stderr is ""):
-    
-        compilation_status = "compiled successfully"
 
-        # Iterate over different test cases
-        for test_no in range(total_tests):                           
-                       
-            # 4) Copy input file to container
-            
-            # a) Problem creation: create file from string and copy it
-            if (request_type == "creation"):
-                with open(working_dir + "std_in.txt", "w+") as text_file:
-                    print(test_cases[test_no], file=text_file, end="")
-                process = subprocess.Popen(['docker', 'cp', working_dir + "std_in.txt", ctr_name+':/home/prisoner/std_in.txt'])
-            
-            # b) Code submission: copy file from problem folder
-            elif (request_type == "submission"):
-                 process = subprocess.Popen(['docker', 'cp', problem_dir + "input/" + input_files[test_no], ctr_name+':/home/prisoner/std_in.txt'])   
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
-            
-            if (execution_status == False):
-                return error_response("Error while copying input to container", submission_id)
+    # Iterate over different test cases
+    for test_no in range(total_tests):                           
+                   
+        # 4) Copy input file to container
+        
+        # a) Problem creation: create file from string and copy it
+        if (request_type == "creation"):
+            with open(working_dir + "std_in.txt", "w+") as text_file:
+                print(test_cases[test_no], file=text_file, end="")
+            process = subprocess.Popen(['docker', 'cp', working_dir + "std_in.txt", ctr_name+':/home/prisoner/std_in.txt'])
+        
+        # b) Code submission: copy file from problem folder
+        elif (request_type == "submission"):
+             process = subprocess.Popen(['docker', 'cp', problem_dir + "input/" + input_files[test_no], ctr_name+':/home/prisoner/std_in.txt'])   
+        
+        # Capture errors while running Docker
+        execution_status = wait_and_recover(process, 3, ctr_name)
+        
+        if (execution_status == False):
+            return error_response("Error while copying input to container", submission_id)
 
-            # 5) Copy monitor.py to container
+        # 5) Copy monitor.py to container
+        
+        # a) Problem creation: create file from string and copy it
+        process = subprocess.Popen(['docker', 'cp', base_dir + 'monitor.py', ctr_name+':/home/prisoner/monitor.py'])   
+        
+        # Capture errors while running Docker
+        execution_status = wait_and_recover(process, 3, ctr_name)
+        
+        if (execution_status == False):
+            return error_response("Error while copying monitor.py to container", submission_id)
             
-            # a) Problem creation: create file from string and copy it
-            process = subprocess.Popen(['docker', 'cp', base_dir + 'monitor.py', ctr_name+':/home/prisoner/monitor.py'])   
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
-            
-            if (execution_status == False):
-                return error_response("Error while copying monitor.py to container", submission_id)
-                
-            # 6) Execute  
-            process = subprocess.Popen(['docker', 'exec', ctr_name, 'python3', 'monitor.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # 6) Execute  
+        process = subprocess.Popen(['docker', 'exec', ctr_name, 'python3', 'monitor.py', str(language), str(time_limit), str(memory_limit)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-            try:
-                status, placeholder = process.communicate(timeout=5)
-                if (process.returncode != 0):
-                    remove_container(ctr_name)
-                    return error_response("Error while executing code inside container", submission_id)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
+        try:
+            status, placeholder = process.communicate(timeout=5)
+            if (process.returncode != 0):
                 remove_container(ctr_name)
-                return error_response("Error while executing code inside container", submission_id) 
-            
-            # 7) Retrieve stdout from container
-            process = subprocess.Popen(['docker', 'cp', ctr_name+':/home/prisoner/std_out.txt', working_dir + 'std_out.txt'])
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
-            
-            if (execution_status == False):
-                return error_response("Error while retrieving output from container", submission_id)
-           
-            # Remove files
-            file = open(working_dir + "std_out.txt", "r")
-            output = file.read()
-            os.remove(working_dir + "std_out.txt")
+                return error_response("Error while executing code inside container", submission_id)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+            remove_container(ctr_name)
+            return error_response("Error while executing code inside container", submission_id) 
+        
+        # 7) Retrieve stdout from container
+        process = subprocess.Popen(['docker', 'cp', ctr_name+':/home/prisoner/std_out.txt', working_dir + 'std_out.txt'])
+        
+        # Capture errors while running Docker
+        execution_status = wait_and_recover(process, 3, ctr_name)
+        
+        if (execution_status == False):
+            return error_response("Error while retrieving output from container", submission_id)
+       
+        # Remove files
+        file = open(working_dir + "std_out.txt", "r")
+        output = file.read()
+        os.remove(working_dir + "std_out.txt")
 
-            # 8.1) Clear stdout contents in container
-            process = subprocess.Popen(['docker', 'exec', '--user', 'prisoner', ctr_name, 'cp', '/dev/null', '/home/prisoner/std_out.txt'])
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
+        # 8.1) Clear stdout contents in container
+        process = subprocess.Popen(['docker', 'exec', '--user', 'prisoner', ctr_name, 'cp', '/dev/null', '/home/prisoner/std_out.txt'])
+        
+        # Capture errors while running Docker
+        execution_status = wait_and_recover(process, 3, ctr_name)
 
-            if (execution_status == False):
-                return error_response("Error while clearing stdout contents in container", submission_id)
+        if (execution_status == False):
+            return error_response("Error while clearing stdout contents in container", submission_id)
 
-            # 8.2) Clear stderr contents in container
-            process = subprocess.Popen(['docker', 'exec', '--user', 'prisoner', ctr_name, 'cp', '/dev/null', '/home/prisoner/std_err.txt'])
-            
-            # Capture errors while running Docker
-            execution_status = wait_and_recover(process, 3, ctr_name)
+        # 8.2) Clear stderr contents in container
+        process = subprocess.Popen(['docker', 'exec', '--user', 'prisoner', ctr_name, 'cp', '/dev/null', '/home/prisoner/std_err.txt'])
+        
+        # Capture errors while running Docker
+        execution_status = wait_and_recover(process, 3, ctr_name)
 
-            if (execution_status == False):
-                return error_response("Error while clearing stderr contents in container", submission_id)
-                        
-            # Get expected output
-            if (request_type == "submission"):
-                file = open(problem_dir + "output/" + output_files[test_no], "r")
-                expected_output = file.read()
-                expected_output = expected_output[:-1]
-           
-            # 9) Insert test case entry in results array
-            status = status.decode("UTF-8")
-                        
-            # Compare actual vs expected output
-            if (request_type == "submission"):
-                if (status == "successful run"):
-                    results.append("accepted" if (output == expected_output) else "wrong answer")
-                else:
-                    results.append(status)
-            # Return output as is
-            elif (request_type == "creation"):
-                if (status == "successful run"):
-                    results.append({ "status" : status, "output" : output })
-                else:
-                    results.append({ "status" : status })
+        if (execution_status == False):
+            return error_response("Error while clearing stderr contents in container", submission_id)
+                    
+        # Get expected output
+        if (request_type == "submission"):
+            file = open(problem_dir + "output/" + output_files[test_no], "r")
+            expected_output = file.read()
+            expected_output = expected_output[:-1]
+       
+        # 9) Insert test case entry in results array
+        status = status.decode("UTF-8")
+                    
+        # Compare actual vs expected output
+        if (request_type == "submission"):
+            if (status == "successful run"):
+                results.append("accepted" if (output == expected_output) else "wrong answer")
+            else:
+                results.append(status)
+        # Return output as is
+        elif (request_type == "creation"):
+            if (status == "successful run"):
+                results.append({ "status" : status, "output" : output })
+            else:
+                results.append({ "status" : status })
 
-        # 10) Kill container
-        process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
-        process.wait()      
+    # 10) Kill container
+    process = subprocess.Popen(['docker', 'rm', ctr_name, '-f'])
+    process.wait()      
               
     # Remove src file
     os.remove(working_dir + arr_src_file[language])
                         
     # Prepare returned object
     return_obj = {}
-    return_obj["status"] = compilation_status
-    if (compilation_status == "compiled successfully"):
-        return_obj["test_cases"] = results
+    return_obj["status"] = "compiled successfully":
+    return_obj["test_cases"] = results
        
     if (request_type == "submission"):
         return_obj["status"] = SubmissionState.evaluated.value
