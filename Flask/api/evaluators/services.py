@@ -137,12 +137,13 @@ def evaluate(request):
         return error_response("Error while copying source file to container for code compilation", submission_id)
     
     # 1.3) Compile source file
-    if (language == 'cpp'):
-        process = subprocess.Popen(['docker', 'exec', ctr_name, 'g++', '-std=c++11', 'a.cpp', '-o', 'a.out'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    elif (language == 'java'):
-        process = subprocess.Popen(['docker', 'exec', ctr_name, 'javac', 'Main.java'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
     try:
+        if (language == 'cpp'):
+            process = subprocess.Popen(['docker', 'exec', ctr_name, 'g++', '-std=c++11', 'a.cpp', '-o', 'a.out'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        elif (language == 'java'):
+            process = subprocess.Popen(['docker', 'exec', ctr_name, 'javac', 'Main.java'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
         stdout, stderr = process.communicate(timeout=20)
         print("\n\n\n")
         print(process.returncode)
