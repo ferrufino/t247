@@ -19,7 +19,7 @@
         <tr *ngFor="let element of table; let i = index">
             <td>{{i+1}}</td>
             <td>{{element.grade}}</td>
-            <td>{{element.date| date: 'dd/MM/yyyy'}}</td>
+            <td>{{element.date}}</td>
             <td><button class="btn btn-primary" data-toggle="modal" href="#myModal" (click)="loadModal(element.code)">Show</button></td>
         </tr>
         </tbody>

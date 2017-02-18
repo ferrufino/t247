@@ -146,7 +146,7 @@ class AssignmentSubmissionSummary(Resource):
         the assignment so far
         """
         result = db.engine.execute("""
-            SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(s.id) as no_of_attempts, MAX(s.created) as date, MAX(s.grade) as grade
+            SELECT u.id as student_id, (u.first_name || ' ' || u.last_name) as student_name, u.enrollment, COUNT(s.id) as no_of_attempts, to_char(MAX(s.created), 'dd/mm/yyyy hh12:mi AM') as date, MAX(s.grade) as grade
             from "user" u
             join enrollment e on u.id = e.student_id
             join assignment a ON a.id = %d AND e.group_id = a.group_id
@@ -169,7 +169,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns code of attempts made by user to assignment
         """
         result = db.engine.execute("""
-            SELECT s.created as date, s.grade, s.code, s.language
+            SELECT to_char(s.created, 'dd/mm/yyyy hh12:mi AM') as date, s.grade, s.code, s.language
             FROM submission s, enrollment e, assignment a
             WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.user_id AND s.user_id = %d AND e.group_id = a.group_id AND a.start_date <= s.created AND s.created <= a.due_date
             ORDER BY s.created;""" % (assignment_id, student_id)).fetchall()
@@ -187,7 +187,7 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns current assignments of student
         """
         result = db.engine.execute("""
-            SELECT a.title, p.name as problem_name, p.id as problem_id, p.difficulty, c.name as course_name, a.due_date, MAX(s.grade) as grade
+            SELECT a.title, p.name as problem_name, p.id as problem_id, p.difficulty, c.name as course_name, to_char(a.due_date, 'dd/mm/yyyy') as due_date, MAX(s.grade) as grade
             FROM assignment a
             JOIN problem p ON p.id = a.problem_id
             JOIN "group" g ON g.id = a.group_id
