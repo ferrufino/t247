@@ -19,8 +19,8 @@ class Base(db.Model):
 
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, default=datetime.utcnow)
+    created = db.Column(db.DateTime, default=datetime.now)
+    updated = db.Column(db.DateTime, default=datetime.now)
 
     # @declared_attr
     # def __tablename__(cls):
