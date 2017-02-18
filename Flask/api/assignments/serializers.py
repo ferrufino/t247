@@ -25,12 +25,12 @@ assignment_submission_summary = api.model('AssignmentSubmissionSummary', {
     'student_name': fields.String(required=True, description='Student name'),
     'enrollment': fields.String(required=True, description='Student enrollment'),
     'no_of_attempts': fields.Integer(required=True, description='Number of attempts'),
-    'date': fields.DateTime(required=True, description='Date of last submission'),
+    'date': fields.String(required=True, description='Date of last submission'),
     'grade': fields.Integer(required=True, description='Maximum grade')
 })
 
 student_submission = api.model('StudentSubmission', {
-    'date': fields.DateTime(required=True, description='Submission date'),
+    'date': fields.String(required=True, description='Submission date'),
     'grade': fields.Integer(required=True, description='Submission grade'),
     'code': fields.String(required=True, description='Submission code'),
     'language': fields.String(required=True, description='Submission code language')
@@ -42,6 +42,6 @@ student_assignment = api.model('StudentAssignment', {
     'problem_id': fields.Integer(required=True, description='Problem id'),
     'difficulty': fields.Integer(required=True, description='Problem difficulty'),
     'course_name': fields.String(required=True, description='Course name'),
-    'due_date': fields.DateTime(required=True, description='Due date'),
+    'due_date': fields.String(required=True, description='Due date'),
     'grade': fields.Integer(required=True, description='Grade')
 })
