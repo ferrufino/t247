@@ -113,7 +113,7 @@
         <tr *ngFor="let entry of (content | sort)  | filterAssignmentSubmissions: filterInput.value">
             <td>{{entry.value.student_name}}</td>
             <td>{{entry.value.enrollment}}</td>
-            <td>{{entry.value.date | date: 'dd/MM/yyyy'}}</td>
+            <td>{{(entry.value.date | date: 'dd/MM/yyyy hh:mm a') || "-"}}</td>
             <td *ngIf="entry.value.no_of_attempts!=0">
                 <button class="btn btn-primary" (click)="showProblemSubmissionsOfStudent(entry.value.student_id)">
                     {{entry.value.no_of_attempts}}
@@ -124,7 +124,7 @@
                     {{entry.value.no_of_attempts}}
                 </button>
             </td>
-            <td><b>{{entry.value.grade}}</b></td>
+            <td><b>{{entry.value.grade || "0"}}</b></td>
             <td *ngIf="entry.value.grade == 100"><span class="label label-success">Solved</span></td>
             <td *ngIf="entry.value.grade != 100 && entry.value.no_of_attempts != 0"><span class="label label-danger">Not solved</span></td>
             <td *ngIf="entry.value.grade != 100 && entry.value.no_of_attempts == 0"><span class="label label-info">Not attempted</span></td>
