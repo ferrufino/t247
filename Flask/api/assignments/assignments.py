@@ -44,8 +44,8 @@ class AssignmentCreation(Resource):
         """
         data = request.json
         title = data.get('title')
-        start_date = data.get('start_date') + " 00:00:00"
-        due_date = data.get('due_date') + " 23:59:59"
+        start_date = data.get('start_date')[:10] + " 00:00:00"
+        due_date = data.get('due_date')[:10] + " 23:59:59"
         group_id = data.get('group_id')
         problem_id = data.get('problem_id')
 
