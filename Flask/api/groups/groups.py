@@ -24,13 +24,11 @@ class GroupCollection(Resource):
         Returns list of groups.
         """
 
-        # If user is professor, retrieve just groups of professor
+        # Retrieve just groups of professor
         token = request.headers.get('Authorization', None)
         user = User.verify_auth_token(token)
-        if (user.role == 'professor'):
-            groups = Group.query.filter(Group.professor_id == user.id).order_by(Group.id).all()
-        else:
-            groups = Group.query.order_by(Group.id).all()
+        groups = Group.query.filter(Group.professor_id == user.id).order_by(Group.id).all()
+        
         return groups
 
 
