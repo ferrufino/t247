@@ -78,6 +78,10 @@ class AssignmentItem(Resource):
         Updates an assignment.
         """
         data = request.json
+
+        data["start_date"] = data.get('start_date')[:10] + " 00:00:00"
+        data["due_date"]   = data.get('due_date')[:10] + " 23:59:59"
+
         Assignment.query.filter(Assignment.id == id).update(data)
         db.session.commit()
         return None, 204
