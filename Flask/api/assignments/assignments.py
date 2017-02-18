@@ -152,6 +152,7 @@ class AssignmentSubmissionSummary(Resource):
             join assignment a ON a.id = %d AND e.group_id = a.group_id
             left join submission s on s.problem_id = a.problem_id AND s.user_id = u.id AND a.start_date <= s.created AND s.created <= a.due_date
             group by u.id, student_name, u.enrollment
+            order by u.enrollment
             """ % (assignment_id)).fetchall()
 
         return result
