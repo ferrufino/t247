@@ -31,7 +31,7 @@
 
 .attempt-content__title{
     font-family: inherit;
-    font-size: large;
+    font-size: 21px;
 }
 .attempt-content__subtitle{
     font-family: inherit;
@@ -41,9 +41,6 @@
 .attempt-content__status{
     font-family: inherit;
     font-size: small;
-}
-.btn-modal{
-    margin-left: 40%;
 }
 
 .prog-label{

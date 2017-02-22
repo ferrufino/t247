@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <code-editor #codeEditor [setSourceCode]=""></code-editor>
-                                <button type="button" class="btn btn-success submit-code-btn"
+                                <button type="button" class="btn btn-success btn-lg submit-code-btn"
                                         (click)="codeToSubmitReceived()">Submit
                                 </button>
                             </div>
@@ -69,14 +69,16 @@
                         <tab-static *ngFor="let entry of attempts; let myIndex = index"
                                     tabTitle="Attempt {{entry.no_of_attempt}}" active={{entry.active}}>
                             <div *ngIf="entry.state == 'SubmissionState.evaluated'">
-                                <p class="attempt-content__title block__title"><b>Grade:</b>
-                                    {{entry.grade?entry.grade:"0"}}%</p>
+                                <p *ngIf="entry.grade == 100" class="attempt-content__title block__title"><span class="label label-success"><b>Grade:</b>
+                                    {{entry.grade}}%</span></p>
+                                <p *ngIf="entry.grade != 100" class="attempt-content__title block__title"><span class="label label-warning"><b>Grade:</b>
+                                    {{entry.grade}}%</span></p>
                                 <p class="attempt-content__subtitle ">Programming Language:
                                     <span class="label label-primary">{{entry.language?entry.language:"error"}}</span>
                                 </p> <br/>
                                 <div *ngIf="entry.grade != 100">
-                                    <div *ngFor="let fb of entry.feedback_list" class="card-shadow">
-                                        <p class="attempt-content__subtitle">Feedback</p>
+                                    <div *ngFor="let fb of entry.feedback_list; let feedbackIndex = index" class="card-shadow">
+                                        <p class="attempt-content__subtitle">Feedback {{feedbackIndex + 1}}:</p>
                                         <pre> {{fb.feedback?fb.feedback:"error"}}</pre>
                                         <p class="attempt-content__status">Status: <span class="label label-danger">{{fb.status?fb.status:"error"}}</span>
                                         </p>
@@ -85,23 +87,45 @@
                                 </div>
                             </div>
                             <div *ngIf="entry.state == 'SubmissionState.pending'">
+                                <p *ngIf="entry.grade != 100" class="attempt-content__title block__title"><span class="label label-warning"><b>Grade:</b>
+                                    Pending</span></p>
+                                <p class="attempt-content__subtitle ">Programming Language:
+                                    <span class="label label-primary">{{entry.language?entry.language:"error"}}</span>
+                                </p> <br/>
                                 <div class="alert alert-success" role="alert"><h4 class="block__title">Problem is being
                                     evaluated, please refresh the site.</h4></div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary btn-lg reload" id="btn-update" (click)='reload(myIndex)'>
+                                        Update
+                                    </button>
+                                </div>
                             </div>
                             <div *ngIf="entry.state == 'SubmissionState.compilation_error'">
+                                <p *ngIf="entry.grade != 100" class="attempt-content__title block__title"><span class="label label-warning"><b>Grade:</b>
+                                    {{entry.grade}}%</span></p>
+                                <p class="attempt-content__subtitle ">Programming Language:
+                                    <span class="label label-primary">{{entry.language?entry.language:"error"}}</span>
+                                </p> <br/>
                                 <div class="alert alert-danger" role="alert"><h4 class="block__title">Compilation
                                     error</h4></div>
                             </div>
                             <div *ngIf="entry.state == 'SubmissionState.internal_server_error'">
+                                <p *ngIf="entry.grade != 100" class="attempt-content__title block__title"><span class="label label-warning"><b>Grade:</b>
+                                    {{entry.grade}}%</span></p>
+                                <p class="attempt-content__subtitle ">Programming Language:
+                                    <span class="label label-primary">{{entry.language?entry.language:"error"}}</span>
+                                </p> <br/>
                                 <div class="alert alert-warning" role="alert"><h4 class="block__title">Internal Server
                                     Error. Please report to Admin</h4></div>
                             </div>
+                            <div *ngIf="entry.state != 'SubmissionState.pending'" class="text-center">
+                                <button type="button" class="btn btn-primary btn-lg" 
+                                    data-toggle="modal"
+                                    data-target="#myModal" (click)='loadCode()'>
+                                    See Attempt
+                                </button>
+                            </div>
                         </tab-static>
-                        <button type="button" class="btn btn-primary btn-lg btn-modal " id="btn-modal"
-                                data-toggle="modal"
-                                data-target="#myModal" (click)='loadCode()'>
-                            See Attempt
-                        </button>
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">

@@ -11,7 +11,6 @@ import {SupportedLanguages, ProgLanguage} from "../../services/supported-languag
 import {Tabs} from "../tabs/tabs.component";
 import { HighlightJsService } from 'angular2-highlight-js';
 
-
 @Component({
     selector: 'submit-problem',
     templateUrl: './submit-problem.component.html',
@@ -95,7 +94,28 @@ export class SubmitProblem implements OnInit {
             }
         );
         this.codeFromAttempt = this.codeAttempts[0];
-        document.getElementById('btn-modal').style.visibility = 'hidden';
+        //document.getElementById('btn-modal').style.visibility = 'hidden';
+
+    }
+
+    reloadAttemptCode(data) {
+
+        // Set all attempt tabs as inactive
+        for (var i = 0; i < data.length; i++) {
+            data[i].active = null;
+        }
+
+        // Activate tab (in case it is an attempt tab)
+        if (this.tabsVariable.tabSelected > 0)
+            data[this.tabsVariable.tabSelected - 1].active = true;
+
+        // Update attempts
+        this.attempts = data.slice();
+
+        // Set attempts' code
+        for (var i = 0; i < this.attempts.length; i++) {
+            this.codeAttempts[i] = this.attempts[i].code;
+        }
 
     }
 
@@ -152,7 +172,7 @@ export class SubmitProblem implements OnInit {
 
                     // Inactivate 'New attempt tab' and hide it
                     this.tabsVariable.tabs.toArray()[0].active = false;
-                    document.getElementById('btn-modal').style.visibility = 'visible';
+                    //document.getElementById('btn-modal').style.visibility = 'visible';
 
                     // Display success message
                     // TODO: display proper success notification
@@ -226,9 +246,39 @@ export class SubmitProblem implements OnInit {
 
     onNotify(index:number):void {
         if (index == 0) {
-            document.getElementById('btn-modal').style.visibility = 'hidden';
+            //document.getElementById('btn-modal').style.visibility = 'hidden';
         } else {
-            document.getElementById('btn-modal').style.visibility = 'visible';
+            //document.getElementById('btn-modal').style.visibility = 'visible';
         }
+    }
+
+    reload(tabNo) {
+
+        // Retrieve reload buttons and disable all of them
+        var reloadButtons = document.getElementsByClassName("reload");
+        var button;
+        for (var i = 0; i < reloadButtons.length; i ++) {
+            button = <HTMLButtonElement>reloadButtons[i];
+            button.disabled = true; 
+        }
+
+
+        let userInfo = JSON.parse(localStorage.getItem("userJson"));
+
+        // Get timestamp before sending request to server
+        var reloadRequestStartTime = performance.now();
+
+        this._httpSubmitProblemService.getAttempts(userInfo.id, this.problemId).subscribe(
+            content => {
+
+                // Get timestamp after receiving response from server
+                var reloadRequestEndTime = performance.now();
+                var duration = reloadRequestEndTime - reloadRequestStartTime;
+
+                // Apply a timeout of at least 2.5 seconds
+                // (so that users don't click button excessiveley)
+                setTimeout(() => { this.reloadAttemptCode(content); }, 2500.0 - duration);
+            }
+        );
     }
 }
