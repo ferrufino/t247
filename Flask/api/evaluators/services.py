@@ -212,7 +212,7 @@ def evaluate(request):
             return error_response("Error while retrieving output from container", submission_id)
        
         # Remove files
-        file = open(working_dir + "std_out.txt", "r")
+        file = open(working_dir + "std_out.txt", "r", errors='replace')
         output = file.read()
         os.remove(working_dir + "std_out.txt")
 
