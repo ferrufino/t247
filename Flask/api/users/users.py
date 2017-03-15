@@ -191,6 +191,24 @@ class UserItem(Resource):
         return None, 204
 
 
+@ns.route('/<int:id>/reset_password')
+@api.header('Authorization', 'Auth token', required=True)
+@api.response(404, 'User not found.')
+class UserResetPassword(Resource):
+
+    @api.marshal_with(api_user)
+    @api.response(204, 'Password reseted.')
+    @auth_required('admin')
+    def put(self, id):
+        """
+        Resets a users password to its enrollment number.
+        """
+        user = User.query.filter(User.id == id).one()
+        user.hash_password(user.enrollment)
+        db.session.commit()
+        return None, 204
+
+
 @auth.verify_password
 def verify_password(email_or_token, password):
     # first try to authenticate by token

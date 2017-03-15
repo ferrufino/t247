@@ -32,6 +32,10 @@
                 <input id="email" type="email" class="form-control validate"
                        [(ngModel)]="userEdit.email" name="email">
               </div>
+              <div class="form-group">
+                <button id="resetPasswordButton" type="button" class="btn btn-warning"
+                        (click)="resetPassword()">Reset Password</button>
+              </div>
             </form>
           </div>
         </div>

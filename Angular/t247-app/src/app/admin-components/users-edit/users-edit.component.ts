@@ -59,4 +59,15 @@ export class UserEditComponent implements OnInit{
         });
       }
     }
+
+    resetPassword() {
+      this._authService.resetPassword(this.userEdit)
+          .subscribe((result) => {
+              if (!result) {
+                alert("Password reset failed. Please try again later");
+              } else {
+                console.log(this.userEdit);
+              }
+          });
+    }
 }

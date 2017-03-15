@@ -233,4 +233,24 @@ export class UsersService {
             });
     }
 
+    resetPassword(user) {
+      const headers = new Headers({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'localhost:4200',
+        'Authorization': localStorage.getItem('auth_token')
+      });
+      const options = new RequestOptions({headers: headers});
+      const url = environment.apiURL + '/users/' + user.id + '/reset_password';
+      return this.http
+          .put(
+              url,
+              {},
+              options
+          )
+          .map(res => {
+              return res;
+          });
+    }
+
+
 }
