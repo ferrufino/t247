@@ -2,8 +2,8 @@ import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import {Response} from "@angular/http";
 import {Router} from '@angular/router';
-import {CoursesService} from '../../services/courses.service.ts';
-import {TopicsService} from '../../services/topics.service.ts';
+import {CoursesService} from '../../services/courses.service';
+import {TopicsService} from '../../services/topics.service';
 import {GroupsService} from "../../services/groups.service";
 
 import {AssignmentsService} from '../../services/assignments.service';

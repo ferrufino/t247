@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { CoursesService } from '../../services/courses.service.ts';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'courses-edit',

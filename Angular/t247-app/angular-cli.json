@@ -7,9 +7,9 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": "assets",
+      "assets": ["assets", "styles"],
       "index": "index.html",
-      "main": "main-polymer.ts",
+      "main": "main.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
@@ -18,11 +18,9 @@
         "styles.css"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.js",
-        "../node_modules/materialize-css/dist/js/materialize.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }

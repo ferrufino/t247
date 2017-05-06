@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { TopicsService } from '../../services/topics.service.ts';
+import { TopicsService } from '../../services/topics.service';
 
 @Component({
   selector: 'topics-edit',

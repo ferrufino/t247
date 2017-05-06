@@ -1,9 +1,4 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {
-    IMultiSelectOption,
-    IMultiSelectTexts,
-    IMultiSelectSettings
-} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {EvaluatorService} from "../../services/evaluator.service";
 import {SubmitProblemService} from "../../services/submit-problem.service";
 import {ActivatedRoute, Params}   from '@angular/router';
@@ -40,10 +35,6 @@ export class SubmitProblem implements OnInit {
     private successMessage:string = "Your code has been submitted!";
     private errorMessage:string = "There has been a problem with your submission";
     private template:string;
-    private myOptions:IMultiSelectOption[] = [
-        {id: 1, name: 'C++'},
-        {id: 2, name: 'Java'},
-    ];
 
     private codeAttempts:Array<any> = [1, 2, 3];
     private posTabActive:number = 0;
@@ -58,18 +49,6 @@ export class SubmitProblem implements OnInit {
     problemProgLang:string; // The selected language of the problem
     attempts;
 
-
-    private mySettings:IMultiSelectSettings = {
-
-        selectionLimit: 1,
-        closeOnSelect: true,
-        checkedStyle: 'checkboxes'
-    };
-
-    private myTexts:IMultiSelectTexts = {
-        checked: 'checked',
-        defaultTitle: 'Programming Languages'
-    };
     private problemId;
 
     ngOnInit() {

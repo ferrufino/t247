@@ -5,7 +5,7 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location } from '@angular/common';
 import { CacheService } from 'ng2-cache/src/services/cache.service';
 import { CacheStoragesEnum } from 'ng2-cache/src/enums/cache-storages.enum';
-import { CoursesService } from '../../services/courses.service.ts';
+import { CoursesService } from '../../services/courses.service';
 import { environment } from '../../../environments/environment';
 
 @Component({

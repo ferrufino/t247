@@ -1,7 +1,7 @@
 import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
-import {CoursesService} from '../../services/courses.service.ts';
-import {TopicsService} from '../../services/topics.service.ts';
+import {CoursesService} from '../../services/courses.service';
+import {TopicsService} from '../../services/topics.service';
 import {UsersService} from '../../services/users.service';
 import {GroupsService} from '../../services/groups.service';
 import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';

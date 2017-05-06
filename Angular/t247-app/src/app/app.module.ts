@@ -35,9 +35,6 @@ import {FirstLoginComponent} from './student-components/first-login.component';
 
 import {SubmissionsOfAssignmentComponent} from './professor-components/submissions/submissions.component';
 
-import "materialize-css";
-import {MaterializeModule} from "angular2-materialize";
-
 import {UsersService} from "./services/users.service";
 import {CoursesService} from "./services/courses.service";
 import {GroupsService} from "./services/groups.service";
@@ -52,7 +49,6 @@ import {CoursesEditComponent} from "./admin-components/courses-edit/courses-edit
 import {TopicsEditComponent} from "./admin-components/topics-edit/topics-edit.component";
 import {UserEditComponent} from "./admin-components/users-edit/users-edit.component";
 
-import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 import {CodemirrorModule} from 'ng2-codemirror';
 import {EditorComponent} from './general-components/code-editor/editor.component';
 import {GroupComponent} from "./professor-components/group/group.component";
@@ -62,7 +58,6 @@ import {SiteNavbarComponent} from "./principal-components/site-navbar-component/
 
 import {AssignmentFormComponent} from "./professor-components/group/assignment-form/assignment-form.component";
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
-import { PolymerElement } from '@vaadin/angular2-polymer';
 import {GroupFormComponent} from "./professor-components/group/group-form/group-form.component";
 import {FeedbackCardComponent} from "./general-components/feedback-card/feedback-card.component";
 
@@ -103,8 +98,6 @@ import { HighlightJsService } from '../../node_modules/angular2-highlight-js';
         HttpModule,
         ReactiveFormsModule,
         routing,
-        MaterializeModule,
-        MultiselectDropdownModule,
         CodemirrorModule
     ],
     declarations: [
@@ -145,7 +138,6 @@ import { HighlightJsService } from '../../node_modules/angular2-highlight-js';
       ProblemDetailsComponent,
         UserEditComponent,
         SiteNavbarComponent,
-        PolymerElement('vaadin-date-picker'),
         AssignmentFormComponent,
         GroupFormComponent,
         FeedbackCardComponent,

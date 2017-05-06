@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AssignmentsService } from '../../services/assignments.service.ts';
+import { AssignmentsService } from '../../services/assignments.service';
 
 @Component({
   selector: 'assignment',
