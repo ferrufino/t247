@@ -25,8 +25,8 @@ export class SubmitProblem implements OnInit {
 
     /*Main Variables Declaration*/
     private progLangToSubmit;
-    private descriptionEnglish;
-    private descriptionSpanish;
+    @ViewChild('descriptionEnglish') descriptionEnglish;
+    @ViewChild('descriptionSpanish') descriptionSpanish;
     private descriptionTitle;
     private languageName;
     private languageCode;
@@ -185,8 +185,8 @@ export class SubmitProblem implements OnInit {
 
         this._httpSubmitProblemService.getDescriptions(id).subscribe(
             content => {
-                this.descriptionEnglish = content.english;
-                this.descriptionSpanish = content.spanish;
+                this.descriptionEnglish.nativeElement.innerHTML = content.english;
+                this.descriptionSpanish.nativeElement.innerHTML = content.spanish;
                 this.descriptionTitle = content.title;
                 this.testCases = content.test_cases;
                 if (content.signature) {

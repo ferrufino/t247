@@ -89,7 +89,8 @@ import {ProblemDetailsGuard} from "./services/problem-details.guard";
 import {GroupsGuard} from "./services/groups.guard";
 import {AssignmentGuard} from "./services/assignment.guard";
 
-import { HighlightJsService } from '../../node_modules/angular2-highlight-js'; 
+import { HighlightJsService } from '../../node_modules/angular2-highlight-js';
+import { CKEditorModule } from 'ng2-ckeditor'; 
 
 @NgModule({
     imports: [
@@ -98,7 +99,8 @@ import { HighlightJsService } from '../../node_modules/angular2-highlight-js';
         HttpModule,
         ReactiveFormsModule,
         routing,
-        CodemirrorModule
+        CodemirrorModule,
+        CKEditorModule
     ],
     declarations: [
         AppComponent,

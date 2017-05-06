@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, AfterViewInit, ViewChild} from "@angular/core";
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
@@ -14,13 +14,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./create-problem.component.css']
 })
 
-export class CreateProblem implements OnInit {
+export class CreateProblem implements OnInit, AfterViewInit {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
   @ViewChild('functionCodeEditor') functionEditorComponent;
   @ViewChild('templateCodeEditor') templateEditorComponent;
   @ViewChild('signatureCodeEditor') signatureEditorComponent;
+  @ViewChild('editor_english') editor_english;
+  @ViewChild('editor_spanish') editor_spanish;
 
   // Feedback part
   @ViewChild('feedbackCard') feedbackCard;
@@ -47,7 +49,6 @@ export class CreateProblem implements OnInit {
   testCaseIndex: number; // Number that is equal to the index of the displayed test case
   selectedTestCase: TestCase; // Current Test Case being displayed
 
-
   // This variable specifies the form type that will be displayed, in order to upload the problem
   // 0 = full problem, 1 = function
   problemTypeFlag: number = 0;
@@ -55,7 +56,6 @@ export class CreateProblem implements OnInit {
 
   // Values stored for goBackFunction
   problemDifficultyIndex: number;
-
 
   constructor(private _httpProblemsService: EvaluatorService,
               private _supportedLanguages: SupportedLanguages,
@@ -65,6 +65,15 @@ export class CreateProblem implements OnInit {
               private _router: Router) {
   }
 
+  ngAfterViewInit() {
+    // Initialize english editor content
+    this.editor_english.value = "Description in English";
+    this.editor_english.instance.setData("Description in English");
+
+    // Initialize spanish editor content
+    this.editor_spanish.value = "Descripción en Español";
+    this.editor_spanish.instance.setData("Descripción en Español");
+  }
 
   /**
    * This function runs when the component starts, here the problem form is created.
@@ -78,7 +87,7 @@ export class CreateProblem implements OnInit {
     this.selectedTestCase = null;
     this.displayLoader = false;
     this.problemSourceCode = null;
-
+    
     // This values are initialized to help as a template
     this.problemTemplateCode = `#include <iostream>
 using namespace std;

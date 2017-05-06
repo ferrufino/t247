@@ -14,7 +14,7 @@
                         <tabs-static (tabSelected)="assignActiveTab($event);">
                             <tab-static tabTitle="English">
                                 <h4><b>Description:</b></h4>
-                                <p class="white-space">{{descriptionEnglish}}</p>
+                                <div #descriptionEnglish></div>
                         <span *ngFor="let case of testCases">
                             <h4><b>Sample Input:</b></h4>
                             <pre class="white-space">{{case.input}}</pre>
@@ -25,7 +25,7 @@
                             </tab-static>
                             <tab-static tabTitle="Español">
                                 <h4><b>Description:</b></h4>
-                                <p class="white-space">{{descriptionSpanish}}</p>
+                                <div #descriptionSpanish></div>
                         <span *ngFor="let case of testCases">
                             <h4><b>Sample Input:</b></h4>
                             <pre class="white-space">{{case.input}}</pre>

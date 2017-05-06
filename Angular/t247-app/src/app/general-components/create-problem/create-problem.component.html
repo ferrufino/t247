@@ -35,25 +35,21 @@
                              aria-describedby="label_problemName">
                     </div>
                   </div>
-
                   <!-- Descriptions -->
                   <div class="row margin-top20">
                     <div
                       class="input-group margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label for="desc_eng">Problem description: English</label>
-                      <textarea id="desc_eng" rows="6" formControlName="engDescription"
-                                class="form-control"></textarea>
+                      <ckeditor formControlName="engDescription" #editor_english [config]="{ toolbar : [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', 'Underline', 'Subscript', 'Superscript', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] }, { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }, { name: 'block', items: [ 'NumberedList', 'BulletedList', 'Blockquote' ] }, { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }], extraPlugins: 'divarea'}"></ckeditor>
                     </div>
                   </div>
                   <div class="row margin-top20 margin-bottom20">
                     <div
-                      class="input-group margin-top20 margin-bottom20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      class="input-group margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
                       <label for="desc_spn">Problem description: Spanish</label>
-                      <textarea id="desc_spn" rows="6" formControlName="spnDescription"
-                                class="form-control"></textarea>
+                      <ckeditor formControlName="spnDescription" #editor_spanish [config]="{ toolbar : [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', 'Underline', 'Subscript', 'Superscript', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] }, { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }, { name: 'block', items: [ 'NumberedList', 'BulletedList', 'Blockquote' ] }, { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }], extraPlugins: 'divarea'}"></ckeditor>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
