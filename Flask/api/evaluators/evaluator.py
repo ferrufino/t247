@@ -39,7 +39,9 @@ class EvaluatorProblemEvaluation(Resource):
 
         # Verify that problem name is unique
         name = data.get('name')
-        if Problem.query.filter_by(name=name).first() is not None:
+        is_update = data.get('is_update')      
+
+        if Problem.query.filter_by(name=name).first() is not None and not is_update:
             return {'error': 'A problem with that name already exists'}, 400
 
         # Evaluate test cases in worker, and synchronously retrieve results

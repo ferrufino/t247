@@ -22,6 +22,9 @@ export class ProblemDetailsComponent implements OnInit {
   @ViewChild('signatureCodeEditor') signatureEditorComponet;
   @ViewChild('templateCodeEditor') templateEditorComponet;
 
+  @ViewChild('descriptionEnglish') descriptionEnglish;
+  @ViewChild('descriptionSpanish') descriptionSpanish;
+
   private userInformationObject: any; // Used to check if the user can edit the problem
   private problemId;
   // Author details
@@ -61,7 +64,8 @@ export class ProblemDetailsComponent implements OnInit {
               private  cdr: ChangeDetectorRef,
               private _formBuilder: FormBuilder,
               private _difficultiesService: ProblemDifficulties,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -88,9 +92,8 @@ export class ProblemDetailsComponent implements OnInit {
           this.authorId = authorObject["id"];
 
           // Problem information
-          this.problemName = response["name"];
-          this.descriptionEng = response["description_english"];
-          this.descriptionSpn = response["description_spanish"];
+          this.descriptionEnglish.nativeElement.innerHTML = response["description_english"];
+          this.descriptionSpanish.nativeElement.innerHTML = response["description_spanish"];
 
           // Problem details
           this.timeLimit = response["time_limit"];
@@ -171,55 +174,9 @@ export class ProblemDetailsComponent implements OnInit {
     return null; // is not empty
   }
 
-
-  /**
-   * This function makes the request to edit the problem, sending the corresponding object
-   * @param difficultyId
-   */
-  editProblemRequest(difficultyId: number): any {
-
-    let problemTopicsIds : number[];
-    problemTopicsIds = [];
-
-    // Get the IDs of the topics
-    for(let topic of this.problemTopics){
-      problemTopicsIds.push(topic["id"]);
-    }
-
-
-
-    let problemObject = {
-      "description_english": this.editProblemForm.value.problemDetails.engDescription,
-      "description_spanish": this.editProblemForm.value.problemDetails.spnDescription,
-      "difficulty": difficultyId,
-      "topics": problemTopicsIds
-    };
-
-    console.log(this.editProblemForm);
-
-    this._problemService.updateProblem(this.problemId, problemObject)
-      .subscribe(
-        data => {
-
-          document.getElementById('success-feedback').style.display = "block";
-          this.feedbackCard.hideFeedbackCard("success", "Problem successfully edited!");
-
-          // Update the Descriptions and the difficulty
-
-          this.descriptionEng = this.editProblemForm.value.problemDetails.engDescription;
-          this.descriptionSpn = this.editProblemForm.value.problemDetails.spnDescription;
-          this.problemDifficultyLabel = this._difficultiesService.getDifficultyLabel(difficultyId);
-
-        },
-        error => {
-
-          document.getElementById('error-feedback').style.display = "block";
-          this.feedbackCard.hideFeedbackCard("error", error);
-        }
-      );
-
+  goToEditProblem() {
+    this.router.navigate(['/editProblem', this.problemId]);
   }
-
 
   /**
    * This function recieves the data from the service and pushes TestCase objects to the array

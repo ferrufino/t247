@@ -11,6 +11,7 @@ import requests
 import json
 import time
 import random
+import shutil
 
 # Helper compilation settings for the available languages
 arr_src_file = { "cpp" : "a.cpp", "java" : "Main.java" }
@@ -57,7 +58,6 @@ def wait_and_recover(process, timeout, judge_name):
 # Method that runs submitted code in a sandboxed environment (Docker container)
 # and returns the evaluation results
 def evaluate(request):
-
     # Base parameters     
     request_type   = request["request_type"]
     code           = request["code"]
@@ -215,13 +215,13 @@ def evaluate(request):
         file = open(working_dir + "std_out.txt", "r", errors='replace')
         output = file.read()
         os.remove(working_dir + "std_out.txt")
-
+        
         # 8.1) Clear stdout contents in container
         process = subprocess.Popen(['docker', 'exec', '--user', 'prisoner', ctr_name, 'cp', '/dev/null', '/home/prisoner/std_out.txt'])
         
         # Capture errors while running Docker
         execution_status = wait_and_recover(process, 3, ctr_name)
-
+        
         if (execution_status == False):
             return error_response("Error while clearing stdout contents in container", submission_id)
 
@@ -230,7 +230,7 @@ def evaluate(request):
         
         # Capture errors while running Docker
         execution_status = wait_and_recover(process, 3, ctr_name)
-
+        
         if (execution_status == False):
             return error_response("Error while clearing stderr contents in container", submission_id)
                     
@@ -282,7 +282,7 @@ def request_evaluation(data):
     q, judge_id = get_least_busy_queue()
     
     data["judge_id"] = judge_id
-    
+
     job = q.enqueue_call(func=api.evaluators.services.evaluate, args=(data,), ttl=10000, timeout=60000000)
     
     # Immediate return after problem submission
@@ -355,7 +355,14 @@ def upload_problem(data):
         # Output
         with open(output_dir + str(i), "w+") as text_file:
             print(test_cases[i]['output'], file=text_file)
+    
+    return { 'status' : 'ok' }
 
-    return { 'status' : 'ok' }   
+def update_test_cases_in_filesystem(data):
+    # Delete directory
+    problem_dir = base_dir + 'problems/' + str(data['problem_id']) + '/'
+    shutil.rmtree(problem_dir)
+
+    upload_problem(data)
    
 

@@ -10,6 +10,7 @@ import {TopicsDashboardComponent} from "./student-components/topics-dashboard/to
 import {ProfileComponent} from "./general-components/profile/profile.component";
 import {ViewUsersComponent} from "./admin-components/view-users/view-users.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
+import {EditProblem} from "./general-components/edit-problem/edit-problem.component";
 import {StudentComponentsComponent} from './student-components/student-components.component';
 import {GenericTableComponent} from './general-components/generic-table/generic-table.component';
 import {GenericFormComponent} from './general-components/generic-table/generic-form.component';
@@ -108,6 +109,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
         HomeComponent,
         TopicsDashboardComponent,
         CreateProblem,
+        EditProblem,
         SubmitProblem,
         EditorComponent,
         ProfileComponent,

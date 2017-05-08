@@ -1,0 +1,58 @@
+<app-site-navbar [showDropdown]="true" [currentRole]="''"></app-site-navbar>
+
+<div class="row">
+  <div class="col-xd-12 col-md-12 col-lg-12">
+
+    <div *ngIf="testcaseslist.length == 0" class="text-center">
+      <button (click)="addTestCase()" type="button" class="btn btn-lg btn-success">
+        Add new test case
+      </button>
+    </div>
+
+
+    <div style="margin-bottom: 50px;" *ngFor="let testcase of testcaseslist; let idx = index; let last = last;">
+
+      <div class="jumbotron" [ngClass]="{'incorrect-test-box': testcase.status !== 'successful run'}">
+
+        <!-- TODO: CHECK THAT THIS CSS CLASSES WORK -->
+        <p *ngIf="testcase.status === 'successful run'">Test Case number: {{idx + 1}}</p>
+        <p *ngIf="testcase.status !== 'successful run'">
+          Test Case number: {{idx + 1}} - Error: {{testcase.status}}
+        </p>
+
+        <div class="row">
+
+          <div class="input-group col-xs-10 col-md-10 col-lg-10 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+            <label>Input for this test case:</label>
+            <textarea [(ngModel)]="testcase.input" rows="5" class="form-control"></textarea>
+          </div>
+
+        </div>
+
+        <div class="row margin-top20">
+          <div class="text-center">
+            <h3>Add test case to description?  <input type="checkbox" [(ngModel)]="testcase.is_sample"> </h3>
+          </div>
+
+          <div class="text-center">
+            <button (click)="deleteTestCase(idx)" type="button" class="btn btn-danger" aria-label="Left Align">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete test
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="last" class="text-center">
+        <button (click)="addTestCase()" type="button" class="btn btn-lg btn-success">
+          Add new test case
+        </button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>

@@ -11,10 +11,16 @@
     </div>
   </div>
 
-  <div class="row">
-
+  <div class="row" *ngIf="canEditProblem()">
     <div class="col-sm-12 col-md-8 col-lg-8">
+      <a (click)="goToEditProblem()" class="btn btn-lg btn-warning btn-new pull-left">
+        Edit Problem <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-8">  
       <!-- Left panel -->
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -27,14 +33,14 @@
           <div class="row margin-top20">
             <div class="margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
               <label for="desc_eng">Problem description: English</label>
-              <div class="well white-space" id="desc_eng">{{descriptionEng}}</div>
+              <div class="well" id="desc_eng" #descriptionEnglish></div>
             </div>
           </div>
           <div class="row margin-top20 margin-bottom20">
             <div
               class="margin-top20 margin-bottom20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
               <label for="desc_spn">Problem description: Spanish</label>
-              <div class="well white-space" id="desc_spn">{{descriptionSpn}}</div>
+              <div class="well" id="desc_spn" #descriptionSpanish></div>
             </div>
           </div>
 
@@ -176,88 +182,6 @@
 
     </div>
 
-  </div>
-
-  <div class="text-center margin-top20 margin-bottom20">
-    <button *ngIf="canEditProblem()" (click)="updateFormValues()" type="button" class="btn btn-warning btn-lg" data-toggle="modal"
-            data-target="#editProblemModal">
-      Edit problem <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-    </button>
-  </div>
-
-
-  <!-- Modal to edit component -->
-  <div class="modal fade" id="editProblemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Edit Problem</h4>
-        </div>
-        <div class="modal-body">
-
-          <div class="container">
-
-            <form [formGroup]="editProblemForm" (ngSubmit)="editProblemRequest(selectedDifficulty.value)">
-
-              <div class="row" formGroupName="problemDetails">
-
-                <div class="row container">
-
-                  <div class="col-sm-12 col-lg-6 col-md-6">
-
-
-                    <!-- Descriptions -->
-                    <div class="row margin-top20">
-                      <div class="input-group margin-top20">
-                        <label for="desc_engEdit">Problem description: English</label>
-                        <textarea id="desc_engEdit" rows="6" formControlName="engDescription" [value]="descriptionEng"
-                                  class="form-control white-space"></textarea>
-                      </div>
-                    </div>
-                    <div class="row margin-top20 margin-bottom20">
-                      <div class="input-group margin-top20">
-                        <label for="desc_spnEdit">Problem description: Spanish</label>
-                        <textarea id="desc_spnEdit" rows="6" formControlName="spnDescription" [value]="descriptionSpn"
-                                  class="form-control white-space"></textarea>
-                      </div>
-                    </div>
-
-                    <!-- Difficulty -->
-                    <div class="row margin-top10">
-                      <div
-                        class="input-group">
-                        <label class="margin-right10" for="selectorDiffEdit">Problem difficulty: </label>
-                        <select id="selectorDiffEdit" [value]="problemDifficultyId" #selectedDifficulty>
-                          <option *ngFor="let diff of difficulties; let idx = index " [value]="idx">{{diff}}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-
-
-                    <div class="text-center margin-top20">
-
-                      <div class="submit-code__feedback-card">
-                        <feedback-card #feedbackCard></feedback-card>
-                      </div>
-
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                      <button [disabled]="!editProblemForm.valid" type="submit" class="btn btn-primary">Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
   </div>
 
 </div>

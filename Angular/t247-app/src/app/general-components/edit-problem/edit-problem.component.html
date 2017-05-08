@@ -1,0 +1,359 @@
+<app-site-navbar [showDropdown]="true" [currentRole]="''"></app-site-navbar>
+
+<div class="container edit-problem">
+
+  <div class="row margin-bottom20">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <blockquote>
+        <h1>{{problemName}}</h1>
+        <footer>Problem created by: {{authorName}}</footer>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="">
+    <!-- Problem form -->
+    <div *ngIf="!testCasesReady" class="container">
+
+      <!-- Start of Problem Basic data -->
+
+      <form [formGroup]="createProblemForm"
+            (ngSubmit)="updateProblem(selectedLanguage.value, selectedDifficulty.value, selectedProblemTopic.value)">
+
+        <div class="row" formGroupName="problemDetails">
+
+          <!-- PROBLEM DATA -->
+          <div class="row">
+
+            <div class="col-sm-12 col-md-8 col-lg-8">
+
+              <!-- Left panel -->
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Problem information</h3>
+                </div>
+
+                <div class="panel-body">
+
+                  <!-- Problem name -->
+                  <div class="row margin-top20">
+                    <div
+                      class="input-group margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <span class="input-group-addon" id="label_problemName">Problem name</span>
+                      <input id="problem_name" formControlName="problemName" type="text"
+                             class="form-control"
+                             aria-describedby="label_problemName"
+                             readonly>
+                    </div>
+                  </div>
+                  <!-- Descriptions -->
+                  <div class="row margin-top20">
+                    <div
+                      class="input-group margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <label for="desc_eng">Problem description: English</label>
+                      <ckeditor formControlName="engDescription" #editor_english [config]="{ toolbar : [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', 'Underline', 'Subscript', 'Superscript', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] }, { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }, { name: 'block', items: [ 'NumberedList', 'BulletedList', 'Blockquote' ] }, { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }], extraPlugins: 'divarea'}"></ckeditor>
+                    </div>
+                  </div>
+                  <div class="row margin-top20 margin-bottom20">
+                    <div
+                      class="input-group margin-top20 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <label for="desc_spn">Problem description: Spanish</label>
+                      <ckeditor formControlName="spnDescription" #editor_spanish [config]="{ toolbar : [{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', 'Underline', 'Subscript', 'Superscript', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] }, { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }, { name: 'block', items: [ 'NumberedList', 'BulletedList', 'Blockquote' ] }, { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }], extraPlugins: 'divarea'}"></ckeditor>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-4 col-lg-4">
+
+              <!-- Right panel -->
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Problem details</h3>
+                </div>
+
+                <div class="panel-body">
+
+                  <label>Memory and time limit</label>
+
+                  <!-- Memory limit -->
+                  <div class="row margin-top10">
+                    <div
+                      class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                  <span class="input-group-addon" id="label_memoryLimit"><span class="glyphicon glyphicon-hdd"
+                                                                               aria-hidden="true"></span> (MB)</span>
+                      <input id="memory_limit" formControlName="memoryLimit" type="number"
+                             class="form-control"
+                             aria-describedby="label_memoryLimit">
+                    </div>
+                  </div>
+
+                  <!-- Time limit -->
+                  <div class="row margin-top10 margin-bottom20">
+                    <div
+                      class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                  <span class="input-group-addon" id="label_timeLimit"><span class="glyphicon glyphicon-time"
+                                                                             aria-hidden="true"></span> (Seconds)</span>
+                      <input id="time_limit" formControlName="timeLimit" type="number"
+                             class="form-control"
+                             aria-describedby="label_timeLimit">
+                    </div>
+                  </div>
+
+                  <hr>
+                  <label>Language and difficulty</label>
+
+                  <!-- Languages -->
+                  <div class="row margin-top10">
+                    <div
+                      class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <label class="margin-right10" for="selectorLanguages">Solution
+                        language: </label>
+                      <select id="selectorLanguages" #selectedLanguage [value]="problemProgLang">
+                        <option *ngFor="let lang of supportedLanguages" [value]="lang.value">
+                          {{lang.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Difficulty -->
+                  <div class="row margin-top10">
+                    <div
+                      class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <label class="margin-right10" for="selectorDiff">Problem
+                        difficulty: </label>
+                      <select id="selectorDiff" #selectedDifficulty [(value)]="problemDifficultyIndex">
+                        <option *ngFor="let diff of difficulties; let idx = index "
+                                [value]="idx">{{diff}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <hr>
+                  <label>Type of problem</label>
+
+                  <!-- Topic -->
+                  <div class="row margin-top10">
+                    <div
+                      class="input-group col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <label class="margin-right10" for="problemTopic">Problem Topic: </label>
+                      <select id="problemTopic" #selectedProblemTopic [(value)]="problemTopicID">
+                        <option *ngFor="let topic of problemTopics" [value]="topic.id">
+                          {{topic.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row margin-top10">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                      <div class="btn-group" role="group" aria-label="...">
+                        <button (click)="problemTypeFlag = 0" type="button"
+                                class="btn btn-default">Full problem
+                        </button>
+                        <button (click)="problemTypeFlag = 1" type="button"
+                                class="btn btn-default">Function problem
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PROBLEM SOURCE -->
+        <div class="row">
+
+          <div class="row">
+            <div class="col-xd-12 col-md-12 col-lg-12">
+
+              <div class="panel panel-primary">
+                <div class="panel-heading clearfix">
+                  <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Problem Source
+                    Code</h4>
+                  <!--<div class="btn-group pull-right">-->
+                  <!--<a (click)="uploadType = 0" class="btn btn-default btn-sm"><span-->
+                  <!--class="glyphicon glyphicon-pencil"-->
+                  <!--aria-hidden="true"></span></a>-->
+                  <!--<a (click)="uploadType = 1" class="btn btn-default btn-sm"><span-->
+                  <!--class="glyphicon glyphicon-file"-->
+                  <!--aria-hidden="true"></span></a>-->
+                  <!--</div>-->
+                </div>
+                <div class="panel-body">
+
+                  <!-- This section is used to upload the problem's files -->
+                  <div id="problem-file-upload">
+                    <div [ngSwitch]="problemTypeFlag">
+
+                      <div *ngSwitchCase="0">
+                        <div class="row">
+
+                          <div class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                            <label>Source code</label>
+                            <code-editor #fullCodeEditor></code-editor>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="1">
+                        <div class="row">
+
+                          <div class="row">
+                            <div
+                              class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                              <label>The complete and correct function</label>
+                              <code-editor #functionCodeEditor
+                                           [setSourceCode]="problemFunctionCode"></code-editor>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div
+                              class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                              <label>The full body of the problem, remeber to add ' //&function ' in your code to insert
+                                the function in that place</label>
+                              <code-editor #templateCodeEditor
+                                           [setSourceCode]="problemTemplateCode"></code-editor>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div
+                              class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                              <label>Signature of the function (THE STUDENT CAN SEE THIS)</label>
+                              <code-editor #signatureCodeEditor
+                                           [setSourceCode]="problemSignatureCode"></code-editor>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- This section renders the TestCases component -->
+        <div id="testcases-section">
+          <app-test-cases-creator [(testcaseslist)]="problemTestCases"></app-test-cases-creator>
+        </div>
+
+        <div class="text-center margin-top20">
+
+          <div class="submit-code__feedback-card">
+            <feedback-card #feedbackCard></feedback-card>
+          </div>
+
+          <button
+            [disabled]="!createProblemForm.valid || emptyTestCasesInput() || problemTestCases.length === 0 || displayLoader"
+            [ngClass]="{'hidden': displayLoader}" type="submit" class="btn btn-warning btn-lg">
+            Update Problem <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          </button>
+
+          <div *ngIf="displayLoader" class="containerLoader">
+            <div class="box">
+              <div class="loader10"></div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+
+    </div>
+
+
+    <div style="margin-bottom: 100px;" class="jumbotron" *ngIf="testCasesReady">
+
+      <div class="row">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Test Case number: {{testCaseIndex}}</h3>
+          </div>
+          <div class="panel-body">
+
+            <div class="container">
+              <div class="row margin-top20">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <p>Input:</p>
+                  <p class="white-space">{{selectedTestCase.input}}</p>
+                </div>
+              </div>
+
+              <div class="row margin-top20">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <p>Output:</p>
+                  <p class="white-space">{{selectedTestCase.output}}</p>
+                </div>
+              </div>
+
+              <div class="row margin-top20">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <label>Feedback for this test case:</label>
+                  <textarea [(ngModel)]="selectedTestCase.feedback" rows="6"
+                            class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="panel-footer">
+            <div class="text-center">
+              <h4>Add test case to description? <input type="checkbox"
+                                                       [(ngModel)]="selectedTestCase.is_sample"></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center margin-top20">
+
+        <div class="submit-code__feedback-card">
+          <feedback-card #feedbackCard></feedback-card>
+        </div>
+
+        <button (click)="previousTestCase()" type="button" class="btn btn-info" aria-label="Left Align">
+          <span class="glyphicon glyphicon-backward" aria-hidden="true"></span> Previous
+        </button>
+
+        <button [disabled]="displayLoader || emptyTestCasesFeedback()" (click)="updateProblemRequest()" type="button"
+                class="btn btn-success" aria-label="Left Align">
+          <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit problem
+        </button>
+
+        <button (click)="nextTestCase()" type="button" class="btn btn-info" aria-label="Left Align">
+          <span class="glyphicon glyphicon-forward" aria-hidden="true"></span> Next
+        </button>
+
+
+      </div>
+
+    </div>
+
+    <div class="text-center" *ngIf="testCasesReady">
+      <button (click)="goBackToForm()" type="button" class="btn btn-warning btn-lg">
+        Go Back
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -19,6 +19,7 @@ problem_evaluation = api.model('ProblemEvalution', {
     'language': fields.String(required=True, description='Language of the code to be executed'),
     'time_limit': fields.Integer(required=True, description='Number of seconds before TLE'),
     'memory_limit': fields.Integer(required=True, description='Number of KBs before MLE'),
+    'is_update': fields.Boolean(required=False, description='Flag that indicates if problem is being updated'),
     'test_cases': fields.List(cls_or_instance=fields.String, required=True, description='Array of strings containing the test cases\' input')
 })
 

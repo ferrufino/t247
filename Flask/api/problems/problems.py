@@ -9,6 +9,7 @@ from models import db, Problem, Topic, ProblemTopic, Case, Language, User
 from sqlalchemy import join
 from sqlalchemy.orm import Load
 from authorization import auth_required
+from api.evaluators.services import update_test_cases_in_filesystem
 
 log = logging.getLogger(__name__)
 
@@ -104,7 +105,7 @@ class ProblemItem(Resource):
 
         return None, 204
 
-    @api.expect(problem_edition)
+    @api.expect(api_problem)
     @api.response(204, 'Problem successfully updated.')
     @auth_required('professor')
     def put(self, id):
@@ -112,32 +113,40 @@ class ProblemItem(Resource):
         Updates a problem.
         """
         data = request.json
-        
-        topics = data['topics']
-        #cases  = data.get('cases')
 
-        del data['topics']
-        #del data['cases']
+        topics = data['topics']
+        test_cases  = data.get('cases')
+        data.pop('topics', None)
+        data.pop('cases', None)
 
         # Update problem's common fields
         Problem.query.filter(Problem.id == id).update(data)
-        db.session.commit()
+
+        # Update test cases
+        if (test_cases is not None):
+            Case.query.filter(Case.problem_id == id).delete()
+
+            # Create test cases
+            for i in range(len(test_cases)):
+                new_case = Case(is_sample=test_cases[i]['is_sample'],
+                                input=test_cases[i]['input'],
+                                feedback=test_cases[i]['feedback'],
+                                output=test_cases[i]['output'],
+                                problem_id=id)
+                db.session.add(new_case)
+
+            update_test_cases_in_filesystem({'problem_id' : id, 'test_cases' : test_cases})
+
 
         # Delete problem's topics
         ProblemTopic.query.filter(ProblemTopic.problem_id == id).delete()
+        
+        # Create new problem's topic
+        new_problemtopic = ProblemTopic(problem_id=id,
+                                    topic_id=topics)
+        db.session.add(new_problemtopic)
+        
         db.session.commit()
-
-        # Create new problem's topics
-        for topic_id in topics:
-            new_problemtopic = ProblemTopic(problem_id=id,
-                                        topic_id=topic_id)
-            db.session.add(new_problemtopic)
-            db.session.commit()
-
-        # Update test cases
-        #for case in cases:
-        #    Case.query.filter(Case.id == case['id']).update({'is_sample' : case['is_sample']})
-        #    db.session.commit()
 
         return None, 204
         

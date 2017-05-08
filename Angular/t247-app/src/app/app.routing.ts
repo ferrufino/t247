@@ -9,6 +9,7 @@ import { GroupResolve }   from "./services/group-resolve.service";
 import {SubmitProblem} from "./general-components/submit-problem/submit-problem.component";
 import {ProblemDetailsComponent} from "./general-components/problem-details/problem-details.component";
 import {CreateProblem} from "./general-components/create-problem/create-problem.component";
+import {EditProblem} from "./general-components/edit-problem/edit-problem.component";
 
 
 import {AdminHomeComponent} from "./admin-components/admin-home/admin-home.component";
@@ -94,6 +95,11 @@ const appRoutes: Routes = [
         path: 'createProblem',
         component: CreateProblem,
         canActivate: [ProfessorGuard]
+    },
+    {
+        path: 'editProblem/:id',
+        component: EditProblem,
+        //canActivate: [ProfessorGuard]
     },
     // AGREGADO
     {
