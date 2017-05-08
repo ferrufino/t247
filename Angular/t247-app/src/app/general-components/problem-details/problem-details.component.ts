@@ -92,6 +92,7 @@ export class ProblemDetailsComponent implements OnInit {
           this.authorId = authorObject["id"];
 
           // Problem information
+          this.problemName = response["name"];
           this.descriptionEnglish.nativeElement.innerHTML = response["description_english"];
           this.descriptionSpanish.nativeElement.innerHTML = response["description_spanish"];
 
