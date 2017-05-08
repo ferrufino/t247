@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {SupportedLanguages, ProgLanguage} from "../../services/supported-languages.service";
 import {ProblemDifficulties} from "../../services/problem-difficulties.service";
@@ -15,7 +15,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
   styleUrls: ['./edit-problem.component.css']
 })
 
-export class EditProblem implements OnInit, AfterViewInit {
+export class EditProblem implements OnInit {
 
   // Local variables to the 4 code editors
   @ViewChild('fullCodeEditor') fullEditorComponent;
@@ -85,87 +85,9 @@ export class EditProblem implements OnInit, AfterViewInit {
               private _formBuilder: FormBuilder,
               private _router: Router,
               private route: ActivatedRoute) {
-  }
-
-  ngAfterViewInit() {
     this.route.params.forEach((params: Params) => {
       this.problemId = +params['id'];
-      this._problemService.getProblemInformation(this.problemId).subscribe(
-        response => {
-
-          // Store problem's original values, which we will compare
-          // in order to determine if problem has to be executed again
-          // before updating its contents
-          this.originalValues.timeLimit = response.time_limit;
-          this.originalValues.memoryLimit = response.memory_limit;
-          if (response.language == "C++") {
-             this.originalValues.language = "cpp";  
-          } else {
-             this.originalValues.language = "java";
-          }
-          if (response.signature) {
-            this.originalValues.problemTypeFlag = 1;
-          } else {
-            this.originalValues.problemTypeFlag = 0;
-          }
-          this.originalValues.testCases = JSON.parse(JSON.stringify(response.cases));
-          this.originalValues.sourceCode = response.code;
-          this.originalValues.functionCode = response.code;
-          this.originalValues.templateCode = response.template;
-          this.originalValues.signatureCode = response.signature;
-
-          // Set problems contents
-          this.problemName = response.name;
-          let authorObject = response["author"];
-
-          // Author details
-          this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
-          
-          for (let i = 0; i < response.cases.length; i ++) {
-            response.cases[i].status = 'successful run';
-          }
-
-          this.problemTestCases = response.cases;
-
-          // Restore source code depending on problem type
-          if (response.signature) {
-            // Function problem
-            this.problemTypeFlag = 1;
-            
-            this.problemFunctionCode = response.code;
-            this.problemTemplateCode = response.template;
-            this.problemSignatureCode = response.signature;
-          } else {
-            // Regular problem
-            this.problemTypeFlag = 0;
-            
-            this.fullEditorComponent.setNewSourceCode(response.code);
-          }        
-
-          // Set <select>'s values
-          if (response.language == "C++") {
-            this.problemProgLang = "cpp";  
-          } else {
-            this.problemProgLang = "java";
-          }
-          this.problemDifficultyIndex = Number(response.difficulty);
-          this.problemTopicID = Number(response.topics[0].id);
-
-          // Form validator
-          this.createProblemForm.setValue({ 'problemDetails' :
-            {
-              'problemName' : response.name,
-              'engDescription': response.description_english,
-              'spnDescription': response.description_spanish,
-              'memoryLimit': response.memory_limit,
-              'timeLimit': response.time_limit
-            }
-          });
-
-          }
-      );
     });
-
   }
 
   problemId; 
@@ -204,21 +126,100 @@ int main() {
     // Get the values from services
     this.difficulties = this._problemDifficulties.getDifficulties(); // Call the fake service
 
-    this._supportedLanguages.getLanguages().subscribe(
-      respose => {
-        this.supportedLanguages = respose;
-      },
-      error => {
-        console.log("Error loading the supported languages!");
-      }
-    );
-
+    // Get topics
     this._topicsService.getTopics().subscribe(
       response => {
         response.sort((a, b) => {
           return (a.name).localeCompare(b.name);
         });
         this.problemTopics = response;
+        // Get languages
+        this._supportedLanguages.getLanguages().subscribe(
+          respose => {
+            this.supportedLanguages = respose;
+            // Load problem
+            this._problemService.getProblemInformation(this.problemId).subscribe(
+              response => {
+
+                // Store problem's original values, which we will compare
+                // in order to determine if problem has to be executed again
+                // before updating its contents
+                this.originalValues.timeLimit = response.time_limit;
+                this.originalValues.memoryLimit = response.memory_limit;
+                if (response.language == "C++") {
+                   this.originalValues.language = "cpp";  
+                } else {
+                   this.originalValues.language = "java";
+                }
+                if (response.signature) {
+                  this.originalValues.problemTypeFlag = 1;
+                } else {
+                  this.originalValues.problemTypeFlag = 0;
+                }
+                this.originalValues.testCases = JSON.parse(JSON.stringify(response.cases));
+                this.originalValues.sourceCode = response.code;
+                this.originalValues.functionCode = response.code;
+                this.originalValues.templateCode = response.template;
+                this.originalValues.signatureCode = response.signature;
+
+                // Set problems contents
+                this.problemName = response.name;
+                let authorObject = response["author"];
+
+                // Author details
+                this.authorName = authorObject["first_name"] + " " + authorObject["last_name"];
+                
+                for (let i = 0; i < response.cases.length; i ++) {
+                  response.cases[i].status = 'successful run';
+                }
+
+                this.problemTestCases = response.cases;
+
+                // Restore source code depending on problem type
+                if (response.signature) {
+                  // Function problem
+                  this.problemTypeFlag = 1;
+                  
+                  this.problemFunctionCode = response.code;
+                  this.problemTemplateCode = response.template;
+                  this.problemSignatureCode = response.signature;
+                } else {
+                  // Regular problem
+                  this.problemTypeFlag = 0;
+                  
+                  this.fullEditorComponent.setNewSourceCode(response.code);
+                }        
+
+                // Set <select>'s values
+                if (response.language == "C++") {
+                  this.problemProgLang = "cpp";  
+                } else {
+                  this.problemProgLang = "java";
+                }
+                this.problemDifficultyIndex = Number(response.difficulty);
+                this.problemTopicID = Number(response.topics[0].id);
+
+                this.selectedLanguage.value = this.problemProgLang;
+                this.selectedProblemTopic.value = this.problemTopicID;
+
+                // Form validator
+                this.createProblemForm.setValue({ 'problemDetails' :
+                  {
+                    'problemName' : response.name,
+                    'engDescription': response.description_english,
+                    'spnDescription': response.description_spanish,
+                    'memoryLimit': response.memory_limit,
+                    'timeLimit': response.time_limit
+                  }
+                });
+
+                }
+            );
+          },
+          error => {
+            console.log("Error loading the supported languages!");
+          }
+        );
       },
       error => {
         console.log("Error loading the topics!");
