@@ -173,9 +173,9 @@ class AssignmentSubmissionCodeByStudent(Resource):
          Returns code of attempts made by user to assignment
         """
         result = db.engine.execute("""
-            SELECT to_char(s.created, 'dd/mm/yyyy hh12:mi AM') as date, s.grade, s.code, s.language
-            FROM submission s, enrollment e, assignment a
-            WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.user_id AND s.user_id = %d AND e.group_id = a.group_id AND a.start_date <= s.created AND s.created <= a.due_date
+            SELECT u.first_name, u.last_name, to_char(s.created, 'dd/mm/yyyy hh12:mi AM') as date, s.grade, s.code, s.language
+            FROM submission s, enrollment e, assignment a, "user" u
+            WHERE s.problem_id = a.problem_id AND a.id = %d AND e.student_id = s.user_id AND s.user_id = %d AND e.group_id = a.group_id AND u.id = s.user_id AND a.start_date <= s.created AND s.created <= a.due_date
             ORDER BY s.created;""" % (assignment_id, student_id)).fetchall()
 
         return result

@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody *ngIf="problemsBool">
-        <tr *ngFor="let entry of (content | sort) | filterProblems: filterInput.value">
+        <tr *ngFor="let entry of (content | sortProblem) | filterProblems: filterInput.value">
             <td>{{entry.value.name}}</td>
             <td *ngIf=" entry.value.difficulty == 0">Easy</td>
             <td *ngIf=" entry.value.difficulty == 1">Medium</td>

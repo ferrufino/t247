@@ -32,6 +32,8 @@ import {FilterGroupsPipe} from './pipes/filter-groups.pipe';
 import {FilterCoursesPipe} from './pipes/filter-courses.pipe';
 import {FilterTopicsPipe} from './pipes/filter-topics.pipe';
 import {SortPipe} from './pipes/sort.pipe';
+import {SortProblemPipe} from './pipes/sort-problem.pipe';
+import {SortAssignmentPipe} from './pipes/sort-assignment.pipe';
 import {FirstLoginComponent} from './student-components/first-login.component';
 
 import {SubmissionsOfAssignmentComponent} from './professor-components/submissions/submissions.component';
@@ -91,7 +93,7 @@ import {GroupsGuard} from "./services/groups.guard";
 import {AssignmentGuard} from "./services/assignment.guard";
 
 import { HighlightJsService } from '../../node_modules/angular2-highlight-js';
-import { CKEditorModule } from 'ng2-ckeditor'; 
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
     imports: [
@@ -134,6 +136,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         FilterCoursesPipe,
         FilterTopicsPipe,
         SortPipe,
+        SortProblemPipe,
+        SortAssignmentPipe,
         FirstLoginComponent,
         TopicsEditComponent,
         CoursesEditComponent,

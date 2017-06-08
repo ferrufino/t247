@@ -425,7 +425,7 @@ export class GenericTableComponent implements OnInit {
                     this.renderTable();
                 }
             });
-           
+
         }
     }
 
