@@ -26,7 +26,7 @@
     "ng2-codemirror": "^1.1.1"
   },
   "devDependencies": {
-    "@angular/cli": "latest",
+    "@angular/cli": "1.0.0",
     "@angular/compiler-cli": "latest"
   }
 }
