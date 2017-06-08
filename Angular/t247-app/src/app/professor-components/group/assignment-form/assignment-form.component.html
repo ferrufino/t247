@@ -29,7 +29,7 @@
               <div class="form-group">
                 <label for="assignment_group_id">Problem</label>
                 <select class="form-control" id="assignment_problem_id" formControlName="problemId" aria-describedby="label_problem" required>
-                  <option *ngFor="let p of problems" [value]="p.id">{{p.name}}</option>
+                  <option *ngFor="let p of (problems | sort)" [value]="p.id">{{p.name}}</option>
                 </select>
               </div>
             </div>

@@ -41,7 +41,7 @@
             -->
           </div>
 
-          <div *ngFor="let assignment of group.assignments" class="panel-group" id="accordion" role="tablist"
+          <div *ngFor="let assignment of (group.assignments | sortAssignment)" class="panel-group" id="accordion" role="tablist"
                aria-multiselectable="true">
             <assignment [assignment]="assignment" (deleted)="refresh()" (edit)="loadEditForm($event)"></assignment>
           </div> <!--Accordions-->

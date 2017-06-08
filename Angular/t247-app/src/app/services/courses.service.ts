@@ -88,7 +88,6 @@ export class CoursesService {
   getCourses() {
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'localhost:4200', 'Authorization': localStorage.getItem('auth_token')});
     const options = new RequestOptions({headers: headers});
-
     const serviceURL : string = environment.apiURL + '/courses/';
     return this.http.get(serviceURL, options).map((response: Response) => response.json());
   }

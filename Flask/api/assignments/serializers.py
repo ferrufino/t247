@@ -30,6 +30,8 @@ assignment_submission_summary = api.model('AssignmentSubmissionSummary', {
 })
 
 student_submission = api.model('StudentSubmission', {
+    'first_name': fields.String(required=True, description='Student name'),
+    'last_name': fields.String(required=True, description='Student last name'),
     'date': fields.String(required=True, description='Submission date'),
     'grade': fields.Integer(required=True, description='Submission grade'),
     'code': fields.String(required=True, description='Submission code'),

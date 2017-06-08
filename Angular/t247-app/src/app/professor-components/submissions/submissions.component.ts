@@ -29,7 +29,7 @@ export class SubmissionsOfAssignmentComponent implements OnInit, OnChanges {
             this.studentId = +params['student_id'];
             this.assignmentsService.getSubmissionsOfAssignment( this.assignmentId, this.studentId).subscribe(
                 submissions => {
-                    
+
                     this.table = submissions;
                     console.log(this.table);
                 }
