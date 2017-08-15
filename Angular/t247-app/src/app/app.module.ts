@@ -67,6 +67,8 @@ import {FeedbackCardComponent} from "./general-components/feedback-card/feedback
 import {RoleChangeService} from './services/role-change.service';
 import {AuthService} from "./services/auth.service";
 
+import { DatePickerModule } from 'ng2-datepicker';
+
 
 //import {AdminHomeComponent} from "./admin-components2/admin-home/admin-home.component";
 import {AdminHomeComponent} from "./admin-components/admin-home/admin-home.component";
@@ -103,7 +105,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         ReactiveFormsModule,
         routing,
         CodemirrorModule,
-        CKEditorModule
+        CKEditorModule,
+        DatePickerModule
     ],
     declarations: [
         AppComponent,

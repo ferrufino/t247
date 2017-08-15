@@ -75,8 +75,8 @@ export class AssignmentFormComponent implements OnInit {
   }
 
   onSubmit() {
-    let startDate = this.fixDate(this.assignmentForm.value.assignment.startDate);
-    let dueDate =  this.fixDate(this.assignmentForm.value.assignment.dueDate);
+    let startDate = this.fixDate(this.assignmentForm.value.assignment.startDate.formatted);
+    let dueDate =  this.fixDate(this.assignmentForm.value.assignment.dueDate.formatted);
     let request = {
       "start_date": startDate,
       "due_date": dueDate,
