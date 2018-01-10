@@ -78,6 +78,8 @@ class User(Base, UserMixin):
         self.password_hash = pwd_context.encrypt(password)
 
     def verify_password(self, password):
+        if not password:
+            return False
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=60*60*24*30):
