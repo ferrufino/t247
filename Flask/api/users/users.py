@@ -212,6 +212,9 @@ class UserResetPassword(Resource):
 @auth.verify_password
 def verify_password(email_or_token, password):
     # first try to authenticate by token
+    if not email_or_token
+        return False
+
     user = User.verify_auth_token(email_or_token)
     if not user:
         # try to authenticate with username/password
